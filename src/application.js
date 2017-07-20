@@ -13,6 +13,8 @@ import socketio from 'feathers-socketio'
 import authentication from 'feathers-authentication'
 import jwt from 'feathers-authentication-jwt'
 import local from 'feathers-authentication-local'
+import oauth2 from 'feathers-authentication-oauth2'
+import GithubStrategy from 'passport-github'
 import { Database } from './db'
 
 function auth () {
@@ -23,6 +25,10 @@ function auth () {
   app.configure(authentication(config))
   app.configure(jwt())
   app.configure(local())
+  app.configure(oauth2({
+    name: 'github',
+    Strategy: GithubStrategy
+  }))
   // The `authentication` service is used to create a JWT.
   // The before `create` hook registers strategies that can be used
   // to create a new valid JWT (e.g. local or oauth2)
