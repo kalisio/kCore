@@ -9,8 +9,8 @@ module.exports = {
     find: [ authenticate('jwt') ],
     get: [ authenticate('jwt') ],
     create: [
-      processUserProfile('github', { email: 'profile.emails[0].value' }),
-      processUserProfile('google', { email: 'profile.emails[0].value' }),
+      processUserProfile('github', { email: 'profile.emails[0].value', name: 'profile.displayName' }),
+      processUserProfile('google', { email: 'profile.emails[0].value', name: 'profile.displayName' }),
       hashPassword()
     ],
     update: [ authenticate('jwt') ],
