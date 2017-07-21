@@ -1,3 +1,4 @@
+import { processUserProfile } from '../../hooks'
 const { authenticate } = require('feathers-authentication').hooks
 const { hashPassword } = require('feathers-authentication-local').hooks
 const commonHooks = require('feathers-hooks-common')
@@ -7,7 +8,11 @@ module.exports = {
     all: [],
     find: [ authenticate('jwt') ],
     get: [ authenticate('jwt') ],
-    create: [ hashPassword() ],
+    create: [
+      processUserProfile('github', { email: 'profile.emails[0].value' }),
+      processUserProfile('google', { email: 'profile.emails[0].value' }),
+      hashPassword()
+    ],
     update: [ authenticate('jwt') ],
     patch: [ authenticate('jwt') ],
     remove: [ authenticate('jwt') ]

@@ -15,6 +15,7 @@ import jwt from 'feathers-authentication-jwt'
 import local from 'feathers-authentication-local'
 import oauth2 from 'feathers-authentication-oauth2'
 import GithubStrategy from 'passport-github'
+import GoogleStrategy from 'passport-google-oauth20'
 import { Database } from './db'
 
 function auth () {
@@ -28,6 +29,10 @@ function auth () {
   app.configure(oauth2({
     name: 'github',
     Strategy: GithubStrategy
+  }))
+  app.configure(oauth2({
+    name: 'google',
+    Strategy: GoogleStrategy
   }))
   // The `authentication` service is used to create a JWT.
   // The before `create` hook registers strategies that can be used
