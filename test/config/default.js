@@ -20,7 +20,15 @@ module.exports = {
       'local'
     ],
     path: API_PREFIX + '/authentication',
-    service: API_PREFIX + '/users'
+    service: API_PREFIX + '/users',
+    github: {
+      clientID: '157fe8bd095367192168',
+      clientSecret: '5dd578eb36bf00d0c7c8dbee6ea36d44529d97cf'
+    },
+    google: {
+      clientID: '761859104517-4j6qul9rds52immbhm0ggrq2jbb4fvqk.apps.googleusercontent.com',
+      clientSecret: 'a03PrspLJLIUqnJ7ANtLgutd'
+    }
   },
   logs: {
     Console: {
