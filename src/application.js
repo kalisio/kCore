@@ -100,6 +100,37 @@ export function createService (name, app, modelsPath, servicesPath, options) {
   return service
 }
 
+export function createContextualService (context, name, app, modelsPath, servicesPath, options) {
+  const createFeathersService = require('feathers-' + app.db.adapter)
+  const configureModel = require(path.join(modelsPath, name + '.model.' + app.db.adapter))
+
+  const paginate = app.get('paginate')
+  const serviceOptions = Object.assign({
+    name: name,
+    paginate
+  }, options || {})
+  configureModel(app, serviceOptions)
+
+  // Initialize our service with any options it requires
+  let service = createFeathersService(serviceOptions)
+  // Get our initialized service so that we can register hooks and filters
+  service = declareService(context._id + '/' + name, app, service)
+  // Register hooks and filters
+  service = configureService(name, service, servicesPath)
+  // Optionnally a specific service mixin can be provided, apply it
+  try {
+    const serviceMixin = require(path.join(servicesPath, name, name + '.service'))
+    service.mixin(serviceMixin)
+  } catch (error) {
+    // As this is optionnal this require has to fail silently
+  }
+  // Then configuration
+  service.name = name
+  service.app = app
+
+  return service
+}
+
 function setupLogger (logsConfig) {
   // Remove winston defaults
   try {
@@ -135,9 +166,16 @@ export default function kaelia () {
   app.getService = function (path) {
     return app.service(app.get('apiPath') + '/' + path)
   }
+  app.getContextualService = function (object, path) {
+    return app.service(app.get('apiPath') + '/' + object._id + '/' + path)
+  }
   // This is used to create standard services
   app.createService = function (name, modelsPath, servicesPath, options) {
     return createService(name, app, modelsPath, servicesPath, options)
+  }
+  // This is used to create services attached to a given context object
+  app.createContextualService = function (object, name, modelsPath, servicesPath, options) {
+    return createContextualService(object, name, app, modelsPath, servicesPath, options)
   }
 
   // Enable CORS, security, compression, and body parsing
