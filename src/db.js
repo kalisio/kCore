@@ -44,9 +44,14 @@ export class MongoDatabase extends Database {
   async connect () {
     try {
       this._db = await mongodb.connect(this._dbUrl)
+      return this._db
     } catch (error) {
       logger.error('Could not connect to ' + this.app.get('db').adapter + ' database, please check your configuration')
     }
+  }
+
+  get instance () {
+    return this._db
   }
 
   collection (name) {

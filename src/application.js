@@ -163,11 +163,15 @@ export default function kaelia () {
   setupLogger(app.get('logs'))
 
   // This avoid managing the API path before each service name
-  app.getService = function (path) {
-    return app.service(app.get('apiPath') + '/' + path)
-  }
-  app.getContextualService = function (object, path) {
-    return app.service(app.get('apiPath') + '/' + object._id + '/' + path)
+  app.getService = function (path, context) {
+    // Context is given as string ID
+    if (typeof context === 'string') {
+      return app.service(app.get('apiPath') + '/' + context + '/' + path)
+    } else if (typeof context === 'object') {
+      return app.service(app.get('apiPath') + '/' + context._id + '/' + path)
+    } else {
+      return app.service(app.get('apiPath') + '/' + path)
+    }
   }
   // This is used to create standard services
   app.createService = function (name, modelsPath, servicesPath, options) {
