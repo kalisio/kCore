@@ -9,6 +9,7 @@ import bodyParser from 'body-parser'
 import feathers from 'feathers'
 import configuration from 'feathers-configuration'
 import hooks from 'feathers-hooks'
+import { pick, merge } from 'feathers-commons'
 import rest from 'feathers-rest'
 import socketio from 'feathers-socketio'
 import authentication from 'feathers-authentication'
@@ -84,26 +85,48 @@ export function configureService (name, service, servicesPath) {
   return service
 }
 
-export function createService (name, app, modelsPath, servicesPath, options) {
-  const createFeathersService = require('feathers-' + app.db.adapter)
-  const configureModel = require(path.join(modelsPath, name + '.model.' + app.db.adapter))
+export function createProxyService (options) {
+  const targetService = options.service
+  function proxy(params) {
+    if (options.params) {
+      if (options.params === 'function') return options.params(params)
+      else return merge(params, options.params)
+    }
+    else return params
+  }
+  return {
+    find(params) { return targetService.find(proxy(params)) },
+    get(id, params) { return targetService.get(id, proxy(params)) },
+    create(data, params) { return targetService.create(id, proxy(params)) },
+    update(id, data, params) { return targetService.update(id, proxy(params)) },
+    patch(id, data, params) { return targetService.patch(id, proxy(params)) },
+    remove(id, params) { return targetService.remove(id, proxy(params)) }
+  }
+}
 
+export function createService (name, app, options) {
+  const createFeathersService = require('feathers-' + app.db.adapter)
+  
   const paginate = app.get('paginate')
   const serviceOptions = Object.assign({
     name: name,
     paginate
   }, options || {})
-  configureModel(app, serviceOptions)
+  // For service proxy there isn't any model
+  if (!options.proxy) {
+    const configureModel = require(path.join(options.modelsPath, name + '.model.' + app.db.adapter))
+    configureModel(app, serviceOptions)
+  }
 
   // Initialize our service with any options it requires
-  let service = createFeathersService(serviceOptions)
+  let service = options.proxy ? createProxyService(options.proxy) : createFeathersService(serviceOptions)
   // Get our initialized service so that we can register hooks and filters
-  service = declareService(name, app, service)
+  service = declareService(options.path || name, app, service)
   // Register hooks and filters
-  service = configureService(name, service, servicesPath)
+  service = configureService(name, service, options.servicesPath)
   // Optionnally a specific service mixin can be provided, apply it
   try {
-    const serviceMixin = require(path.join(servicesPath, name, name + '.service'))
+    const serviceMixin = require(path.join(options.servicesPath, name, name + '.service'))
     service.mixin(serviceMixin)
   } catch (error) {
     // As this is optionnal this require has to fail silently
@@ -116,42 +139,6 @@ export function createService (name, app, modelsPath, servicesPath, options) {
   }
 
   debug(service.name + ' service regitration completed')
-
-  return service
-}
-
-export function createContextualService (context, name, app, modelsPath, servicesPath, options) {
-  const createFeathersService = require('feathers-' + app.db.adapter)
-  const configureModel = require(path.join(modelsPath, name + '.model.' + app.db.adapter))
-
-  const paginate = app.get('paginate')
-  const serviceOptions = Object.assign({
-    name: name,
-    paginate
-  }, options || {})
-  configureModel(app, serviceOptions)
-
-  // Initialize our service with any options it requires
-  let service = createFeathersService(serviceOptions)
-  // Get our initialized service so that we can register hooks and filters
-  service = declareService(context._id + '/' + name, app, service)
-  // Register hooks and filters
-  service = configureService(name, service, servicesPath)
-  // Optionnally a specific service mixin can be provided, apply it
-  try {
-    const serviceMixin = require(path.join(servicesPath, name, name + '.service'))
-    service.mixin(serviceMixin)
-  } catch (error) {
-    // As this is optionnal this require has to fail silently
-  }
-  // Then configuration
-  service.name = name
-  service.app = app
-  if (options) {
-    service.perspectives = options.perspectives
-  }
-
-  debug(service.name + ' contextual service regitration completed')
 
   return service
 }
@@ -203,12 +190,8 @@ export default function kaelia () {
     return configureService(name, service, servicesPath)
   }
   // This is used to create standard services
-  app.createService = function (name, modelsPath, servicesPath, options) {
-    return createService(name, app, modelsPath, servicesPath, options)
-  }
-  // This is used to create services attached to a given context object
-  app.createContextualService = function (object, name, modelsPath, servicesPath, options) {
-    return createContextualService(object, name, app, modelsPath, servicesPath, options)
+  app.createService = function (name, options) {
+    return createService(name, app, options)
   }
 
   // Enable CORS, security, compression, and body parsing
