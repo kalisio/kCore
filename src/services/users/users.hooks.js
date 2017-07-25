@@ -1,4 +1,4 @@
-import { processUserProfile } from '../../hooks'
+import { processUserProfile, processPerspectives } from '../../hooks'
 const { authenticate } = require('feathers-authentication').hooks
 const { hashPassword } = require('feathers-authentication-local').hooks
 const commonHooks = require('feathers-hooks-common')
@@ -19,7 +19,7 @@ module.exports = {
   },
 
   after: {
-    all: [commonHooks.when(hook => hook.params.provider, commonHooks.discard('password'))],
+    all: [commonHooks.when(hook => hook.params.provider, commonHooks.discard('password')), processPerspectives],
     find: [],
     get: [],
     create: [],

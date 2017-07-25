@@ -6,7 +6,7 @@ import chailint from 'chai-lint'
 import core, { kaelia } from '../src'
 
 describe('kCore', () => {
-  let app
+  let app, userService, userObject
 
   before(() => {
     chailint(chai, util)
@@ -21,8 +21,38 @@ describe('kCore', () => {
 
   it('registers the user service', () => {
     app.configure(core)
-    let service = app.getService('users')
-    expect(service).toExist()
+    userService = app.getService('users')
+    expect(userService).toExist()
+  })
+
+  it('creates a user', () => {
+    return userService.create({ email: 'test@test.org', name: 'test-user', profile: { phone: '0623256968' } })
+    .then(user => {
+      userObject = user
+      return userService.find({ query: { name: 'test-user' } })
+      .then(users => {
+        expect(users.data.length > 0).beTrue()
+        // By default no perspective
+        expect(users.data[0].profile).beUndefined()
+      })
+    })
+  })
+
+  it('get a user perspective', () => {
+    return userService.find({ query: { $select: ['profile'] } })
+    .then(users => {
+      expect(users.data[0].profile.phone).toExist()
+    })
+  })
+
+  it('removes a user', () => {
+    return userService.remove(userObject._id)
+    .then(user => {
+      return userService.find({ query: { name: 'test-user' } })
+      .then(users => {
+        expect(users.data.length === 0).beTrue()
+      })
+    })
   })
 
   it('registers the log options', () => {
@@ -33,5 +63,11 @@ describe('kCore', () => {
     // expect(fs.existsSync(logFilePath)).to.equal(true)
     let content = fs.readFileSync(logFilePath)
     expect(content.includes(log)).to.equal(true)
+  })
+
+  // Cleanup
+  after(() => {
+    userService.Model.drop()
+    app.db.instance.dropDatabase()
   })
 })

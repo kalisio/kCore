@@ -1,4 +1,5 @@
 import path from 'path'
+import makeDebug from 'debug'
 import logger from 'winston'
 import 'winston-daily-rotate-file'
 import compress from 'compression'
@@ -17,6 +18,8 @@ import oauth2 from 'feathers-authentication-oauth2'
 import GithubStrategy from 'passport-github'
 import GoogleStrategy from 'passport-google-oauth20'
 import { Database } from './db'
+
+const debug = makeDebug('kaelia:kCore')
 
 function auth () {
   const app = this
@@ -49,21 +52,33 @@ function auth () {
   })
 }
 
-function declareService (name, app, service) {
+export function declareService (name, app, service) {
   const path = app.get('apiPath') + '/' + name
   // Initialize our service
   app.use(path, service)
 
+  debug(name + ' service declared on path ' + path)
+
   return app.getService(name)
 }
 
-function configureService (name, service, servicesPath) {
-  const hooks = require(path.join(servicesPath, name, name + '.hooks'))
-  service.hooks(hooks)
+export function configureService (name, service, servicesPath) {
+  try {
+    const hooks = require(path.join(servicesPath, name, name + '.hooks'))
+    service.hooks(hooks)
+    debug(name + ' service hooks configured')
+  } catch (error) {
+    // As this is optionnal this require has to fail silently
+  }
 
   if (service.filter) {
-    const filters = require(path.join(servicesPath, name, name + '.filters'))
-    service.filter(filters)
+    try {
+      const filters = require(path.join(servicesPath, name, name + '.filters'))
+      service.filter(filters)
+      debug(name + ' service filters configured')
+    } catch (error) {
+    // As this is optionnal this require has to fail silently
+    }
   }
 
   return service
@@ -96,6 +111,11 @@ export function createService (name, app, modelsPath, servicesPath, options) {
   // Then configuration
   service.name = name
   service.app = app
+  if (options) {
+    service.perspectives = options.perspectives
+  }
+
+  debug(service.name + ' service regitration completed')
 
   return service
 }
@@ -127,6 +147,11 @@ export function createContextualService (context, name, app, modelsPath, service
   // Then configuration
   service.name = name
   service.app = app
+  if (options) {
+    service.perspectives = options.perspectives
+  }
+
+  debug(service.name + ' contextual service regitration completed')
 
   return service
 }
@@ -172,6 +197,10 @@ export default function kaelia () {
     } else {
       return app.service(app.get('apiPath') + '/' + path)
     }
+  }
+  // This is used to add hooks/filters to services
+  app.configureService = function (name, service, servicesPath) {
+    return configureService(name, service, servicesPath)
   }
   // This is used to create standard services
   app.createService = function (name, modelsPath, servicesPath, options) {
