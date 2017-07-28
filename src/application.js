@@ -9,7 +9,7 @@ import bodyParser from 'body-parser'
 import feathers from 'feathers'
 import configuration from 'feathers-configuration'
 import hooks from 'feathers-hooks'
-import { pick, merge } from 'feathers-commons'
+import { merge } from 'feathers-commons'
 import rest from 'feathers-rest'
 import socketio from 'feathers-socketio'
 import authentication from 'feathers-authentication'
@@ -87,49 +87,68 @@ export function configureService (name, service, servicesPath) {
 
 export function createProxyService (options) {
   const targetService = options.service
-  function proxy(params) {
+  function proxy (params) {
     if (options.params) {
-      if (options.params === 'function') return options.params(params)
-      else return merge(params, options.params)
-    }
-    else return params
+      let proxyParams
+      if (options.params === 'function') {
+        proxyParams = options.params(params)
+      } else {
+        proxyParams = merge(params, options.params)
+      }
+      return proxyParams
+    } else return params
   }
   return {
-    find(params) { return targetService.find(proxy(params)) },
-    get(id, params) { return targetService.get(id, proxy(params)) },
-    create(data, params) { return targetService.create(id, proxy(params)) },
-    update(id, data, params) { return targetService.update(id, proxy(params)) },
-    patch(id, data, params) { return targetService.patch(id, proxy(params)) },
-    remove(id, params) { return targetService.remove(id, proxy(params)) }
+    find (params) { return targetService.find(proxy(params)) },
+    get (id, params) { return targetService.get(id, proxy(params)) },
+    create (data, params) { return targetService.create(data, proxy(params)) },
+    update (id, data, params) { return targetService.update(id, data, proxy(params)) },
+    patch (id, data, params) { return targetService.patch(id, data, proxy(params)) },
+    remove (id, params) { return targetService.remove(id, proxy(params)) }
   }
 }
 
 export function createService (name, app, options) {
   const createFeathersService = require('feathers-' + app.db.adapter)
-  
+
   const paginate = app.get('paginate')
   const serviceOptions = Object.assign({
     name: name,
     paginate
   }, options || {})
-  // For service proxy there isn't any model
-  if (!options.proxy) {
+  // For DB services a model has to be provided
+  let dbService = true
+  try {
     const configureModel = require(path.join(options.modelsPath, name + '.model.' + app.db.adapter))
     configureModel(app, serviceOptions)
+  } catch (error) {
+    // As this is optionnal this require has to fail silently
+    dbService = false
   }
 
   // Initialize our service with any options it requires
-  let service = options.proxy ? createProxyService(options.proxy) : createFeathersService(serviceOptions)
+  let service
+  if (dbService) {
+    service = createFeathersService(serviceOptions)
+  } else if (options.proxy) {
+    service = createProxyService(options.proxy)
+  } else {
+    // Otherwise we expect the service to be provided as a Feathers service interface
+    service = require(path.join(options.servicesPath, name, name + '.service'))
+  }
+
   // Get our initialized service so that we can register hooks and filters
   service = declareService(options.path || name, app, service)
   // Register hooks and filters
   service = configureService(name, service, options.servicesPath)
   // Optionnally a specific service mixin can be provided, apply it
-  try {
-    const serviceMixin = require(path.join(options.servicesPath, name, name + '.service'))
-    service.mixin(serviceMixin)
-  } catch (error) {
-    // As this is optionnal this require has to fail silently
+  if (dbService) {
+    try {
+      const serviceMixin = require(path.join(options.servicesPath, name, name + '.service'))
+      service.mixin(serviceMixin)
+    } catch (error) {
+      // As this is optionnal this require has to fail silently
+    }
   }
   // Then configuration
   service.name = name
@@ -138,7 +157,7 @@ export function createService (name, app, options) {
     service.perspectives = options.perspectives
   }
 
-  debug(service.name + ' service regitration completed')
+  debug(service.name + ' service registration completed')
 
   return service
 }
