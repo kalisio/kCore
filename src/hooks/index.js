@@ -1,4 +1,4 @@
-import { marshallComparisonQuery, marshallGeometryQuery } from './query'
+import { marshallComparisonQuery, marshallGeometryQuery, populateObject, populateObjects } from './query'
 import { log } from './logger'
 import { processUserProfile } from './provider'
 import { processPerspectives } from './model'
@@ -8,7 +8,9 @@ let hooks = {
   processUserProfile,
   processPerspectives,
   marshallComparisonQuery,
-  marshallGeometryQuery
+  marshallGeometryQuery,
+  populateObject,
+  populateObjects
 }
 
 export default hooks

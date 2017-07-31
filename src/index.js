@@ -8,9 +8,9 @@ export * from './db'
 */
 // However for now we face a bug in babel so that transform-runtime with export * from 'x' generates import statements in transpiled code
 // Tracked here : https://github.com/babel/babel/issues/2877
-import { log, processUserProfile, processPerspectives, marshallGeometryQuery, marshallComparisonQuery } from './hooks'
+import { log, processUserProfile, processPerspectives, marshallGeometryQuery, marshallComparisonQuery, populateObject, populateObjects } from './hooks'
 import kaelia from './application'
-export let hooks = { log, processUserProfile, processPerspectives, marshallComparisonQuery, marshallGeometryQuery }
+export let hooks = { log, processUserProfile, processPerspectives, marshallComparisonQuery, marshallGeometryQuery, populateObject, populateObjects }
 export { kaelia }
 export { Database } from './db'
 
