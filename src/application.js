@@ -186,7 +186,7 @@ function setupLogger (logsConfig) {
   })
 }
 
-export default function kaelia () {
+export function kaelia () {
   let app = feathers()
   // Load app configuration first
   app.configure(configuration())
