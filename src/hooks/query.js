@@ -67,30 +67,41 @@ export function populateObject (serviceField, idField, nameServiceAs, nameIdAs) 
     if (typeof _.get(params, nameIdAs || idField) === 'object') return Promise.resolve(hook)
 
     // Get service where we can find the object to populate
-    // Make hook usable with query params as well
-    let service = _.get(data, serviceField) || _.get(query, serviceField) // Name first
-    service = app.getService(service) // Then real object
+    // Make hook usable with query params as well and service name or real object
+    let service = _.get(data, serviceField) || _.get(query, serviceField)
+    if (typeof service === 'string') {
+      const message = `Cannot find the service for ${serviceField} = ${service} to dynamically populate.`
+      service = app.getService(service)
+      if (!service) {
+        throw new Error(message)
+      }
+    } else if (!service) {
+      throw new Error(`No ${serviceField} given to dynamically populate.`)
+    }
     // Then the object ID
     let id = _.get(data, idField) || _.get(query, idField)
 
-    if (!service) {
-      throw new Error(`Cannot find the ${serviceField} to dynamically populate.`)
-    }
     if (!id) {
       throw new Error(`Cannot find the ${idField} to dynamically populate.`)
     }
 
     // Set the retrieved service on the same field or given one in hook params
     _.set(params, nameServiceAs || serviceField, service)
-
-    return service.get(id).then(object => {
-      if (!object) {
-        throw new Error(`Cannot find object with id ${id} to dynamically populate.`)
-      }
-      // Set the retrieved object on the same field or given one in hook params
-      _.set(params, nameIdAs || idField, object)
-      return hook
-    })
+    // Let it work with id string or real object
+    if (typeof id === 'string') {
+      return service.get(id, { user: hook.params.user, authorised: true }).then(object => {
+        if (!object) {
+          throw new Error(`Cannot find object with id ${id} to dynamically populate.`)
+        }
+        // Set the retrieved object on the same field or given one in hook params
+        _.set(params, nameIdAs || idField, object)
+        return hook
+      })
+    } else {
+      // Set the object on the same field or given one in hook params
+      _.set(params, nameIdAs || idField, id)
+      return Promise.resolve(hook)
+    }
   }
 }
 
@@ -105,12 +116,16 @@ export function populateObjects (serviceField, idField, nameServiceAs, nameIdAs)
     if (Array.isArray(_.get(params, nameIdAs || idField))) return Promise.resolve(hook)
 
     // Get service where we can find the object to populate
-    // Make hook usable with query params as well
-    let serviceName = _.get(data, serviceField) || _.get(query, serviceField)
-    let service = app.getService(serviceName)
-
-    if (!service) {
-      throw new Error(`Cannot find the service for ${serviceField} = ${serviceName} to dynamically populate.`)
+    // Make hook usable with query params as well and service name or real object
+    let service = _.get(data, serviceField) || _.get(query, serviceField)
+    if (typeof service === 'string') {
+      const message = `Cannot find the service for ${serviceField} = ${service} to dynamically populate.`
+      service = app.getService(service)
+      if (!service) {
+        throw new Error(message)
+      }
+    } else if (!service) {
+      throw new Error(`No ${serviceField} given to dynamically populate.`)
     }
 
     // Set the retrieved service on the same field or given one in hook params
@@ -120,21 +135,27 @@ export function populateObjects (serviceField, idField, nameServiceAs, nameIdAs)
     let id = _.get(data, idField) || _.get(query, idField)
     // If no ID given we perform a find, no pagination to be sure we get all objects
     if (!id) {
-      return service.find({ paginate: false }).then(objects => {
-        // console.log(objects)
+      return service.find({ paginate: false }, { user: hook.params.user, authorised: true }).then(objects => {
         // Set the retrieved objects on the same field or given one in hook params
         _.set(params, nameIdAs || idField, objects)
         return hook
       })
     } else {
-      return service.get(id).then(object => {
-        if (!object) {
-          throw new Error(`Cannot find object for ${idField} = ${id} to dynamically populate.`)
-        }
-        // Set the retrieved object on the same field or given one in hook params
-        _.set(params, nameIdAs || idField, [object])
-        return hook
-      })
+      // Let it work with id string or real object
+      if (typeof id === 'string') {
+        return service.get(id, { user: hook.params.user, authorised: true }).then(object => {
+          if (!object) {
+            throw new Error(`Cannot find object for ${idField} = ${id} to dynamically populate.`)
+          }
+          // Set the retrieved object on the same field or given one in hook params
+          _.set(params, nameIdAs || idField, [object])
+          return hook
+        })
+      } else {
+        // Set the object on the same field or given one in hook params
+        _.set(params, nameIdAs || idField, [id])
+        return Promise.resolve(hook)
+      }
     }
   }
 }
