@@ -135,6 +135,10 @@ export function createService (name, app, options) {
   } else {
     // Otherwise we expect the service to be provided as a Feathers service interface
     service = require(path.join(options.servicesPath, name, name + '.service'))
+    // If we get a function try to call it assuming it will return the service object
+    if (typeof service === 'function') {
+      service = service(name, app, options)
+    }
   }
 
   // Get our initialized service so that we can register hooks and filters
