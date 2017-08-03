@@ -40,6 +40,7 @@
     "start": "npm run compile && node --harmony_async_await lib"
   },
   "standard": {
+    "parser": "babel-eslint",
     "sourceType": "module",
     "env": [
       "mocha"
@@ -80,6 +81,7 @@
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
+    "babel-eslint": "^7.2.3",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-export-extensions": "^6.22.0",
     "babel-plugin-transform-runtime": "^6.0.0",
