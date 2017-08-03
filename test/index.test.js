@@ -82,14 +82,17 @@ describe('kCore', () => {
     })
   })
 
-  it('registers the log options', () => {
+  it('registers the log options', (done) => {
     let log = 'This is a log test'
     let now = new Date()
     logger.info(log)
     let logFilePath = path.join(__dirname, 'test-log-' + now.toISOString().slice(0, 10) + '.log')
     // expect(fs.existsSync(logFilePath)).to.equal(true)
-    let content = fs.readFileSync(logFilePath, 'utf8')
-    expect(content.includes(log)).to.equal(true)
+    fs.readFile(logFilePath, 'utf8', (err, content) => {
+      expect(err).beNull()
+      expect(content.includes(log)).to.equal(true)
+      done()
+    })
   })
 
   // Cleanup
