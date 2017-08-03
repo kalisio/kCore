@@ -15,7 +15,6 @@ describe('kCore', () => {
     app = kaelia()
     port = app.get('port')
     baseUrl = `http://localhost:${port}${app.get('apiPath')}`
-    console.log(baseUrl)
     return app.db.connect()
   })
 
