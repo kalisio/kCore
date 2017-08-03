@@ -36,11 +36,11 @@ describe('kCore', () => {
     .then(user => {
       userObject = user
       return userService.find({ query: { name: 'test-user' } })
-      .then(users => {
-        expect(users.data.length > 0).beTrue()
-        // By default no perspective
-        expect(users.data[0].profile).beUndefined()
-      })
+    })
+    .then(users => {
+      expect(users.data.length > 0).beTrue()
+      // By default no perspective
+      expect(users.data[0].profile).beUndefined()
     })
   })
 
@@ -75,9 +75,9 @@ describe('kCore', () => {
     return userService.remove(userObject._id)
     .then(user => {
       return userService.find({ query: { name: 'test-user' } })
-      .then(users => {
-        expect(users.data.length === 0).beTrue()
-      })
+    })
+    .then(users => {
+      expect(users.data.length === 0).beTrue()
     })
   })
 
