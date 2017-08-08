@@ -8,7 +8,7 @@ export * from './store'
 export * as hooks from './hooks'
 
 export default function init () {
-  const app = this
+  // const app = this
 
   logger.debug('Initializing kaelia core')
 }
