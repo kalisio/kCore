@@ -216,6 +216,12 @@ export function kaelia () {
   app.createService = function (name, options) {
     return createService(name, app, options)
   }
+  // Override Feathers configure that do not manage async operations,
+  // here we also simply call the function given as parameter but await for it
+  app.configure = async function (fn) {
+    await fn.call(this)
+    return this
+  }
 
   // Enable CORS, security, compression, and body parsing
   app.use(cors())
