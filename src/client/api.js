@@ -37,7 +37,7 @@ export function kaelia () {
     // Context is given as string ID
     if (typeof context === 'string') {
       return api.service(config.apiPath + '/' + context + '/' + path)
-    } else if (typeof context === 'object') {
+    } else if (typeof context === 'object' && context !== null) {
       return api.service(config.apiPath + '/' + context._id + '/' + path)
     } else {
       return api.service(config.apiPath + '/' + path)
