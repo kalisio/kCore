@@ -1,0 +1,28 @@
+<template>
+  <q-field
+    :icon="icon"
+    :label="label"
+    :helper="helper"
+    :error-label="errorLabel"
+    :label-width="labelWidth"
+    :error="hasError"
+  >
+    <q-chips-input 
+      v-model="model" 
+      @change="touch" />
+  </q-field>
+</template>
+
+<script>
+import { QField, QChipsInput } from 'quasar'
+import formMixins from '../../mixins/form'
+
+export default {
+  name: 'k-chips-field',
+  components: {
+    QField,
+    QChipsInput
+  },
+  mixins: [formMixins.baseField]
+}
+</script>

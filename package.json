@@ -1,6 +1,6 @@
 {
   "name": "kCore",
-  "description": "Basic utils to support Kaelia applications and services",
+  "description": "Basic utils to support Kalsio applications and services",
   "version": "0.1.0",
   "homepage": "https://github.com/kaelia-tech/kCore",
   "main": "lib/",
@@ -8,8 +8,8 @@
     "lib/": "lib/client/"
   },
   "keywords": [
-    "kaelia",
-    "kaelia-plugin"
+    "Kalisio",
+    "Kalisio-plugin"
   ],
   "license": "MIT",
   "repository": {
@@ -17,7 +17,7 @@
     "url": "git://github.com/kaelia-tech/kCore.git"
   },
   "author": {
-    "name": "Kaelia contributors",
+    "name": "Kalisio contributors",
     "url": "https://github.com/kaelia-tech"
   },
   "contributors": [],
@@ -53,6 +53,8 @@
     "lib": "lib"
   },
   "dependencies": {
+    "ajv": "^5.2.2",
+    "annyang": "^2.6.0",
     "body-parser": "^1.17.1",
     "compression": "^1.6.2",
     "cors": "^2.8.1",
@@ -85,6 +87,8 @@
     "rxjs": "^5.4.1",
     "socket.io-client": "^1.7.3",
     "uberproto": "^1.2.0",
+    "vue-avatar": "^2.0.0",
+    "vue-router": "^2.7.0",
     "winston": "^2.3.1",
     "winston-daily-rotate-file": "^1.4.6"
   },
