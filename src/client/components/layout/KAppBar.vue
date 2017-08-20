@@ -34,7 +34,7 @@ export default {
   created () {
     // Apply the configuration
     this.title = this.store().get('config.appBar.title', 'kApp')
-    this.subtitle = this.store().get('config.appBar.subtitle', 'Powered by Kaelia')
+    this.subtitle = this.store().get('config.appBar.subtitle', 'Powered by Kalisio')
     this.voiceEnabled = this.store().get('config.appBar.speech', false)
   }
 }

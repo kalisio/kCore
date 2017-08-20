@@ -2,7 +2,7 @@ import moment from 'moment'
 import _ from 'lodash'
 // import makeDebug from 'debug'
 
-// const debug = makeDebug('kaelia:kCore')
+// const debug = makeDebug('kalisio:kCore')
 
 function marshallComparisonFieldsInQuery (queryObject) {
   _.forOwn(queryObject, (value, key) => {

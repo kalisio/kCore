@@ -6,7 +6,7 @@ import reactive from 'feathers-reactive'
 import rxjs from 'rxjs'
 import config from 'config'
 
-export function kaelia () {
+export function kalisio () {
   let api = feathers()
   // Setup log level
   if (config.logs && config.logs.level) {

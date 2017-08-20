@@ -20,7 +20,7 @@ import GithubStrategy from 'passport-github'
 import GoogleStrategy from 'passport-google-oauth20'
 import { Database } from './db'
 
-const debug = makeDebug('kaelia:kCore')
+const debug = makeDebug('kalisio:kCore')
 
 function auth () {
   const app = this
@@ -190,7 +190,7 @@ function setupLogger (logsConfig) {
   })
 }
 
-export function kaelia () {
+export function kalisio () {
   let app = feathers()
   // Load app configuration first
   app.configure(configuration())

@@ -42,6 +42,6 @@ module.exports = {
   },
   db: {
     adapter: 'mongodb',
-    url: (containerized ? 'mongodb://mongodb:27017/kaelia-test' : 'mongodb://127.0.0.1:27017/kaelia-test')
+    url: (containerized ? 'mongodb://mongodb:27017/kalisio-test' : 'mongodb://127.0.0.1:27017/kalisio-test')
   }
 }

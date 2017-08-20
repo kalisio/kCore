@@ -1,8 +1,8 @@
 {
   "name": "kCore",
-  "description": "Basic utils to support Kalsio applications and services",
+  "description": "Basic utils to support Kalisio applications and services",
   "version": "0.1.0",
-  "homepage": "https://github.com/kaelia-tech/kCore",
+  "homepage": "https://github.com/kalisio/kCore",
   "main": "lib/",
   "browser": {
     "lib/": "lib/client/"
@@ -14,15 +14,15 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/kaelia-tech/kCore.git"
+    "url": "git://github.com/kalisio/kCore.git"
   },
   "author": {
     "name": "Kalisio contributors",
-    "url": "https://github.com/kaelia-tech"
+    "url": "https://github.com/kalisio"
   },
   "contributors": [],
   "bugs": {
-    "url": "https://github.com/kaelia-tech/kCore/issues"
+    "url": "https://github.com/kalisio/kCore/issues"
   },
   "engines": {
     "node": ">= 4.6.0"
@@ -55,7 +55,6 @@
   "dependencies": {
     "ajv": "^5.2.2",
     "annyang": "^2.6.0",
-    "babel-loader": "^7.1.1",
     "body-parser": "^1.17.1",
     "compression": "^1.6.2",
     "cors": "^2.8.1",

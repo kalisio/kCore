@@ -21,6 +21,7 @@ export default {
     KScreen,
     KForm
   },
+  dependencies: ['api', 'store'],
   data () {
     return {
       schema: {

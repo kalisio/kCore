@@ -4,7 +4,7 @@ import fs from 'fs-extra'
 import request from 'superagent'
 import chai, { util, expect } from 'chai'
 import chailint from 'chai-lint'
-import core, { kaelia } from '../src'
+import core, { kalisio } from '../src'
 
 describe('kCore', () => {
   let app, server, port, baseUrl, accessToken, userService, userObject
@@ -12,7 +12,7 @@ describe('kCore', () => {
   before(() => {
     chailint(chai, util)
 
-    app = kaelia()
+    app = kalisio()
     port = app.get('port')
     baseUrl = `http://localhost:${port}${app.get('apiPath')}`
     return app.db.connect()

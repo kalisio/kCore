@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { discard } from 'feathers-hooks-common'
 // import makeDebug from 'debug'
 
-// const debug = makeDebug('kaelia:kCore')
+// const debug = makeDebug('kalisio:kCore')
 
 export function processPerspectives (hook) {
   let params = hook.params
