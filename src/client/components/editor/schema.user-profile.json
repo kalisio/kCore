@@ -10,7 +10,7 @@
       "maxLength": 128,
       "minLength": 3,
       "field": {
-        "type": "text",
+        "component": "form/KTextField",
         "label": "Name",
         "helper": "Type your name"
       }
@@ -20,15 +20,15 @@
       "format": "email",
       "default": "nom@domaine.xyz",
       "field": {
-        "type": "email",
+        "component": "form/KEmailField",
         "label": "Email",
         "helper": "Type your email address"
       }
     },
     "phone": { 
-      "type": "number",
+      "type": "string",
       "field": {
-        "type": "phone",
+        "component": "form/KPhoneField",
         "label": "Phone",
         "helper": "Type your phone number"
       }

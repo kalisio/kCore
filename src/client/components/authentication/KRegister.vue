@@ -47,7 +47,7 @@ export default {
             "minLength": 3,
             "maxLength": 128,
             "field": {
-              "type": "text",
+              "component": "form/KTextField",
               "label": "Name",
               "helper": "Type your name",
             }
@@ -56,7 +56,7 @@ export default {
             "type": "string", 
             "format": "email",
             "field": {
-              "type": "email",
+              "component": "form/KEmailField",
               "label": "Email",
               "helper": "Type your email address",
             }
@@ -64,7 +64,7 @@ export default {
           "password": { 
             "type": "string",
             "field": {
-              "type": "password",
+              "component": "form/KPasswordField",
               "label": "Password",
               "helper": "Type your password",
             }
@@ -74,7 +74,7 @@ export default {
               "$data": "1/password" 
             },
             "field": {
-              "type": "password",
+              "component": "form/KPasswordField",
               "label": "Confirm Password",
               "helper": "Type your password again",
             }

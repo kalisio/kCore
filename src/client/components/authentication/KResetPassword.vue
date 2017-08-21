@@ -35,7 +35,7 @@ export default {
             "type": "string", 
             "format": "email",
             "field": {
-              "type": "email",
+              "component": "form/KPasswordField",
               "label": "Email",
               "helper": "Type your email address",
             }

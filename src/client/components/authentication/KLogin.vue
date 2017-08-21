@@ -67,7 +67,7 @@ export default {
             "type": "string", 
             "format": "email",
             "field": {
-              "type": "email",
+              "component": "form/KEmailField",
               "label": "Email",
               "helper": "Type your email address",
             }
@@ -75,7 +75,7 @@ export default {
           "password": { 
             "type": "string",
             "field": {
-              "type": "password",
+              "component": "form/KPasswordField",
               "label": "Password",
               "helper": "Type your password",
             }

@@ -5,9 +5,8 @@
     -->
     <template v-for="property in schema.properties">
       <component
-        :is="'k-' + property.field.type + '-field'"
+        :is="property.componentKey"
         :ref="property.name"
-        :form="$refs.form"
         :property="property"
         :display="schema.form.properties"
         @touched="touch"
@@ -27,26 +26,13 @@
 import _ from 'lodash'
 import Ajv from 'ajv'
 import { QBtn } from 'quasar'
-import KTextField from './KTextField.vue'
-import KNumberField from './KNumberField.vue'
-import KEmailField from './KEmailField.vue'
-import KPasswordField from './KPasswordField.vue'
-import KPhoneField from './KPhoneField.vue'
-import KUrlField from './KUrlField.vue'
-import KChipsField from './KChipsField.vue'
 
 export default {
   name: 'k-form',
   components: {
-    KTextField,
-    KNumberField,
-    KEmailField,
-    KPasswordField,
-    KPhoneField,
-    KUrlField,
-    KChipsField,
     QBtn
   },
+  dependencies: ['store'],
   props: {
     schema: {
       type: Object,
@@ -111,12 +97,24 @@ export default {
     }
   },
   created () {
+    let Store = this.store()
+    let loadComponent = Store.get('loadComponent')
     // Initialize the values to an empty object
     this.values = {}
-    // Iterate through the properties in order to add a name to each property corresponding to the key
+    // Iterate through the properties in order to 
+    // 1- assign a name corresponding to the key to enable a binding between properties and fields
+    // 2- assign a component key corresponding to the component path 
+    // 3- load the component if not previously loaded
     Object.keys(this.schema.properties).forEach(propertyKey => {
       let property = this.schema.properties[propertyKey]
       property['name'] = propertyKey
+      // is the field already loaded ?
+      let componentKey = _.kebabCase(property.field.component)
+      property['componentKey'] = componentKey
+       // is the component already loaded ?
+      if (!this.$options.components[componentKey]) {
+        this.$options.components[componentKey] = loadComponent(property.field.component)
+      } 
     })
     // Create the AJV instance
     this.ajv = new Ajv({ 
