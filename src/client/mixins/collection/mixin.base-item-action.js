@@ -13,7 +13,7 @@ let baseItemAction = {
       if (typeof action === 'function') {
         action.call(this, item)
       } else {
-        logger.warn('baseItemAction:onActionRequested: invalid handler')
+        logger.warn('[onActionRequested] invalid handler')
       }
     }
   }

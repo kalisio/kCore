@@ -69,7 +69,9 @@ export default {
     },
     fill (values) {
       Object.keys(values).forEach(field => {
-        this.$refs[field][0].fill(values[field])
+        if (this.$refs[field]) {
+          this.$refs[field][0].fill(values[field])
+        }
       })
     },
     submit () {

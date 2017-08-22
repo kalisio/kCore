@@ -4,11 +4,11 @@ let editItemMixin = {
   dependencies: ['store'],
   methods: {
     editItem (item) {
-      let formRoute = Store.get(`config.${this.service}.form`, '')
-      if (formRoute) {
-        this.$router.push({ name: formRoute, params: { id: item._id } })
+      let route = this.store().get(`config.${this.service}.editItem`, '')
+      if (route) {
+        this.$router.push({ name: route })
       } else {
-        logger.warn('editItemMixin:editItem: no route specified for the service ' + this.service)
+        logger.warn('[editItem] no route specified for the service ' + this.service)
       }
     }
   },
