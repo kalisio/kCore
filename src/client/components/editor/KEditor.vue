@@ -3,7 +3,7 @@
     <k-form v-if="schema"
       ref="form"
       :schema="schema"
-      submit-button="Save" 
+      :submit-button="mode === 'Editing' ? 'Update':'Create'" 
       @submitted="onSubmitted" />
   </div>
 </template>
@@ -27,14 +27,14 @@ export default {
     return {
       submitButton: 'Create',
       schema: null,
-      item: {}
+      item: null
     }
   },
   methods: {
     onSubmitted (values) {
-      // Update the item perspective
-      if (this.id) {
-        // Edition mode => patch the item
+      // Update the item 
+      if (this.mode === 'Editing') {
+        // Edtng mode => patch the item
         // Do we need to patch a perspective of the item ?
         if (this.parameters.perspective) {
           this.item[this.parameters.perspective] = values
@@ -60,8 +60,9 @@ export default {
     }
   },
   created () {
-    let Store = this.store()
+    this.mode = 'Creation'
     // Retrieve the schema to build the form
+    let Store = this.store()
     let loadSchema = Store.get('loadSchema')
     loadSchema(this.parameters.schema)
     .then(schema => {
@@ -78,11 +79,13 @@ export default {
           this.service.get(this.id, { query: { $select: [this.parameters.perspective] } } )
           .then(item => {
             this.item = item
+            this.mode = 'Editing'
           })
         } else {
           this.service.get(this.id)
           .then(item => {
             this.item = item
+            this.mode = 'Editing'
           })
         }
       }
