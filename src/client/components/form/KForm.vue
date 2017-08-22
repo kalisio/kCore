@@ -49,8 +49,14 @@ export default {
   },
   methods: {
     touch (field, value) {
-      // Store the value
-      this.values[field] = value
+      // Store the value if not empty
+      if (_.isEmpty(value))  {
+        if (this.values[field]) {
+          delete this.Values[field]
+        }
+      } else {
+        this.values[field] = value
+      }
       // Validate the form 
       if (! this.validator(this.values)) {
         // If not value check whether an error is assigned to the field
