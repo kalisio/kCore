@@ -40,10 +40,8 @@ export default {
       required: true
     },
     context: {
-      type: Object,
-      default: function () {
-        return null
-      }
+      type: String,
+      default: ''
     },
     actions: {
       type: Array,

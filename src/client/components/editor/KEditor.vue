@@ -46,7 +46,7 @@ export default {
       }
       else {
         // Creation mode => create the item
-        this.service.create(this.item)
+        this.service.create(values)
       }
     }
   },
@@ -69,7 +69,7 @@ export default {
       // Assigns the schema to this editor
       this.schema = schema
       // Retrieve the service
-      this.service = this.api().getService(this.parameters.service)
+      this.service = this.api().getService(this.parameters.service, Store.get(this.parameters.context))
       // Retrieve the id using the Store
       this.id = Store.get(this.parameters.id)
       // Do we need to get the item ?

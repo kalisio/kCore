@@ -25,7 +25,7 @@ export default {
     this.$options.components['k-collection'] = loadComponent('collection/KCollection')
     // Setups the collection
     this.service = 'users'
-    this.context = Store.get('organisation', null)
+    this.context = Store.get('organisation')._id
   }
 }
 </script>
