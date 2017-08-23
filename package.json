@@ -82,7 +82,7 @@
     "passport-github": "^1.1.0",
     "passport-google-oauth20": "^1.0.0",
     "quasar-extras": "^0.0.7",
-    "quasar-framework": "git+https://git@github.com/quasarframework/quasar-edge.git",
+    "quasar-framework": "^0.14.1",
     "request": "^2.81.0",
     "rxjs": "^5.4.1",
     "socket.io-client": "^1.7.3",
