@@ -3,7 +3,7 @@ import logger from 'loglevel'
 let editItemMixin = {
   methods: {
     editItem (item) {
-      let route = this.$store.get(`config.${this.service}.editItem`, '')
+      let route = this.$store.get(`config.${this.service.path}.editItem`, '')
       if (route) {
         this.$store.set('selection', item)
         this.$router.push({ name: route })

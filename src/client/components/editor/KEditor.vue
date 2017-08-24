@@ -17,8 +17,9 @@ export default {
   components: {
     KForm,
   },
+  mixins: [mixins.service],
   props: {
-    object: {
+    subject: {
       type: String,
       default: ''
     },
@@ -33,7 +34,6 @@ export default {
       schema: null,
     }
   },
-  mixins: [mixins.service],
   methods: {
     onSubmitted (values) {
       // Update the item 
@@ -63,8 +63,8 @@ export default {
       // Assigns the schema to this editor
       this.schema = schema
       // Retrieve the object id to be edited
-      if (this.$store.get(this.object)) {
-        this.id = this.$store.get(this.object)._id
+      if (this.$store.get(this.subject)) {
+        this.id = this.$store.get(this.subject)._id
       }
       // Do we need to get the item ?
       if (this.id)  {

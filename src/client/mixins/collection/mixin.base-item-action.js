@@ -7,7 +7,7 @@ let baseItemAction = {
     }
   },
   methods: {
-    onActionRequested (handler, item) {
+    onActionTriggered (handler, item) {
       let action = this[handler]
       if (typeof action === 'function') {
         action.call(this, item)

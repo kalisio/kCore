@@ -7,6 +7,12 @@ let serviceMixin = {
       required: true
     }
   },
+  watch: {
+    service: function (parameters) {
+      let context = this.$store.get(parameters.context, null)
+      this._service = this.$api.getService(parameters.path, context)
+    }
+  },
   methods: {
     find (params) { 
       return this._service.find(params) 
