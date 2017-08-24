@@ -42,9 +42,9 @@ export default {
   },
   mixins: [
     mixins.service,
-    mixins.collection.createItem, 
-    mixins.collection.deleteItem, 
-    mixins.collection.editItem
+    mixins.createItem, 
+    mixins.deleteItem, 
+    mixins.editItem
   ],
   data () {
     return {

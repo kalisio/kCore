@@ -1,11 +1,15 @@
 import authenticationMixin from './mixin.authentication'
 import serviceMixin from './mixin.service'
 import fieldMixin from './mixin.field'
-import collectionMixins from './collection'
+import createItemMixin from './mixin.create-item'
+import editItemMixin from './mixin.edit-item'
+import deleteItemMixin from './mixin.delete-item'
 
 export default {
   authentication: authenticationMixin,
   service: serviceMixin,
-  collection: collectionMixins,
+  createItem: createItemMixin,
+  editItem: editItemMixin,
+  deleteItem: deleteItemMixin,
   field: fieldMixin
 }
