@@ -38,9 +38,9 @@
     "watch": "npm run compile && babel --watch -d lib/ src/",
     "lint": "standard src/**/*.js test/**/*.js --fix",
     "mocha": "cross-env NODE_CONFIG_DIR=./test/config/ mocha --opts mocha.opts",
-    "coverage": "cross-env NODE_CONFIG_DIR=./test/config/ node --harmony_async_await node_modules/istanbul/lib/cli cover node_modules/mocha/bin/_mocha -- --opts mocha.opts",
+    "coverage": "cross-env NODE_CONFIG_DIR=./test/config/ node node_modules/istanbul/lib/cli cover node_modules/mocha/bin/_mocha -- --opts mocha.opts",
     "test": "npm run compile && npm run lint && npm run coverage",
-    "start": "npm run compile && node --harmony_async_await lib"
+    "start": "npm run compile && node lib"
   },
   "standard": {
     "parser": "babel-eslint",
