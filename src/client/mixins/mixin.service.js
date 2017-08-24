@@ -9,11 +9,18 @@ let serviceMixin = {
   },
   watch: {
     service: function (parameters) {
-      let context = this.$store.get(parameters.context, null)
-      this._service = this.$api.getService(parameters.path, context)
+      this._configureService()
     }
   },
   methods: {
+    _configureService () {
+      let path = this.service.path
+      let context = this.$store.get(this.service.context, null)
+      this._service = this.$api.getService(path, context)
+      if (!this._service) {
+        logger.error('Could not find any service with the specified \'service\' property')
+      }
+    },
     find (params) { 
       return this._service.find(params) 
     },
@@ -34,16 +41,7 @@ let serviceMixin = {
     }
   },
   created () {
-    if (!this.service.path) {
-      logger.error('The \'service\' property should contains a \'path\' property')
-      return
-    }
-    let path = this.service.path
-    let context = this.$store.get(this.service.context, null)
-    this._service = this.$api.getService(path, context)
-    if (!this._service) {
-      logger.error('The specified service doest not exist')
-    }
+    this._configureService()
   }
 }
 

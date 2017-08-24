@@ -19,7 +19,7 @@ export default {
   },
   mixins: [mixins.service],
   props: {
-    subject: {
+    object: {
       type: String,
       default: ''
     },
@@ -34,7 +34,40 @@ export default {
       schema: null,
     }
   },
+  watch: {
+    service: function () {
+      this.updateObject()
+    },
+    object: function() {
+      this.updateObject()
+    }
+  },
   methods: {
+    updateObject () {
+      // Retrieve the object id to be edited
+      if (this.$store.get(this.object)) {
+        this.id = this.$store.get(this.object)._id
+      }
+      // Do we need to get the item ?
+      if (this.id)  {
+        // Do we need to apply a selection using a specified perspective ?
+        let params = {}
+        if (this.parameters.perspective) {
+          params = { query: { $select: [this.parameters.perspective] } }
+        }
+        this.get(this.id, params)
+        .then(values => {
+          if (this.parameters.perspective) {
+            this.$refs.form.fill(values[this.parameters.perspective])
+          } else {
+            this.$refs.form.fill(values)
+          }
+          this.mode = 'Editing'
+        }) 
+      } else {
+        this.mode = 'Creation'
+      }
+    },
     onSubmitted (values) {
       // Update the item 
       if (this.mode === 'Editing') {
@@ -62,27 +95,7 @@ export default {
     .then(schema => {
       // Assigns the schema to this editor
       this.schema = schema
-      // Retrieve the object id to be edited
-      if (this.$store.get(this.subject)) {
-        this.id = this.$store.get(this.subject)._id
-      }
-      // Do we need to get the item ?
-      if (this.id)  {
-        // Do we need to apply a selection using a specified perspective ?
-        let params = {}
-        if (this.parameters.perspective) {
-          params = { query: { $select: [this.parameters.perspective] } }
-        }
-        this.get(this.id, params)
-        .then(values => {
-          if (this.parameters.perspective) {
-            this.$refs.form.fill(values[this.parameters.perspective])
-          } else {
-            this.$refs.form.fill(values)
-          }
-          this.mode = 'Editing'
-        }) 
-      }
+      this.updateObject()
     })
   }
 }
