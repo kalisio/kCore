@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../../../src/client/mixins/authentication/index.js"],"names":[],"mappings":";;;;;;AAAA","file":"index.js","sourcesContent":["import authentication from './mixin.authentication'\r\n\r\nexport default authentication\r\n"]}
