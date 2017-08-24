@@ -12,6 +12,7 @@ let deleteItemMixin = {
             label: 'Delete',
             handler: () => {
               // delete the required item
+              // TODO : use mixin.service to handle the issu
               this.$api.getService(this.service).remove(item._id)
             }
           }

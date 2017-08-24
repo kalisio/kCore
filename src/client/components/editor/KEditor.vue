@@ -10,6 +10,7 @@
 
 <script>
 import { KForm } from '../form'
+import mixins from '../../mixins'
 
 export default {
   name: 'k-editor',
@@ -17,6 +18,10 @@ export default {
     KForm,
   },
   props: {
+    object: {
+      type: String,
+      default: ''
+    },
     parameters: {
       type: Object,
       required: true
@@ -24,68 +29,59 @@ export default {
   },
   data () {
     return {
-      submitButton: 'Create',
+      mode: 'Creation',
       schema: null,
-      item: null
     }
   },
+  mixins: [mixins.service],
   methods: {
     onSubmitted (values) {
       // Update the item 
       if (this.mode === 'Editing') {
         // Edtng mode => patch the item
         // Do we need to patch a perspective of the item ?
+        let data ={}
         if (this.parameters.perspective) {
-          this.item[this.parameters.perspective] = values
+          data[this.parameters.perspective] = values
         } else {
           // Patch the entire item
-          this.item = values
+          data = values
         }
-        this.service.patch(this.id, this.item)
+        this.patch(this.id, data)
       }
       else {
         // Creation mode => create the item
-        this.service.create(values)
-      }
-    }
-  },
-  watch: {
-    item: function (values) {
-      if (this.parameters.perspective) {
-        this.$refs.form.fill(values[this.parameters.perspective])
-      } else {
-        this.$refs.form.fill(values)
+        this.create(values)
       }
     }
   },
   created () {
-    this.mode = 'Creation'
     // Retrieve the schema to build the form
     let loadSchema = this.$store.get('loadSchema')
     loadSchema(this.parameters.schema)
     .then(schema => {
       // Assigns the schema to this editor
       this.schema = schema
-      // Retrieve the service
-      this.service = this.$api.getService(this.parameters.service, this.$store.get(this.parameters.context))
-      // Retrieve the id using the this.$store
-      this.id = this.$store.get(this.parameters.id)
+      // Retrieve the object id to be edited
+      if (this.$store.get(this.object)) {
+        this.id = this.$store.get(this.object)._id
+      }
       // Do we need to get the item ?
       if (this.id)  {
         // Do we need to apply a selection using a specified perspective ?
+        let params = {}
         if (this.parameters.perspective) {
-          this.service.get(this.id, { query: { $select: [this.parameters.perspective] } } )
-          .then(item => {
-            this.item = item
-            this.mode = 'Editing'
-          })
-        } else {
-          this.service.get(this.id)
-          .then(item => {
-            this.item = item
-            this.mode = 'Editing'
-          })
+          params = { query: { $select: [this.parameters.perspective] } }
         }
+        this.get(this.id, params)
+        .then(values => {
+          if (this.parameters.perspective) {
+            this.$refs.form.fill(values[this.parameters.perspective])
+          } else {
+            this.$refs.form.fill(values)
+          }
+          this.mode = 'Editing'
+        }) 
       }
     })
   }
