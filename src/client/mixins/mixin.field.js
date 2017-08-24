@@ -1,5 +1,3 @@
-import _ from 'lodash'
-
 let fieldMixin = {
   props: {
     property: {
@@ -65,7 +63,7 @@ let fieldMixin = {
   },
   mounted () {
     // Initialize the model with a default value if any
-    if (_.has(this.property, 'default')) {
+    if (this.property.default) {
       this.fill(this.property.default)
     }
   }
