@@ -8,7 +8,7 @@ let editItemMixin = {
         this.$store.set('selection', item)
         this.$router.push({ name: route })
       } else {
-        logger.warn('[editItem] no route specified for the service ' + this.service)
+        logger.warn('No route specified for the service ' + this.service)
       }
     }
   },

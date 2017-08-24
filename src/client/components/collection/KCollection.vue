@@ -42,7 +42,6 @@ export default {
   },
   mixins: [
     mixins.service,
-    mixins.collection.baseItemAction, 
     mixins.collection.createItem, 
     mixins.collection.deleteItem, 
     mixins.collection.editItem
@@ -53,7 +52,8 @@ export default {
       items: [],
       nbTotalItems: 0,
       nbItemsPerPage: 12,
-      currentPage: 1
+      currentPage: 1,
+      actions: []
     }
   },
   computed: {
@@ -98,9 +98,14 @@ export default {
         return action.scope === type
       })
     },
-    /*onActionTriggered (handler, item) {
-      this.$emit('actionRequested', handler, item)
-    }*/
+     onActionTriggered (handler, item) {
+      let action = this[handler]
+      if (typeof action === 'function') {
+        action.call(this, item)
+      } else {
+        logger.warn('[onActionRequested] invalid handler')
+      }
+    }
   },
   created () {
     // Setup the configuration path using the service as a prefix

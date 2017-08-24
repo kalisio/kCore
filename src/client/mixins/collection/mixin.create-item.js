@@ -7,7 +7,7 @@ let createItemMixin = {
       if (route) {
         this.$router.push({ name: route })
       } else {
-        logger.warn('[createItem] no route specified for the service ' + this.service)
+        logger.warn('No route specified for the service ' + this.service)
       }
     }
   },
