@@ -1,11 +1,11 @@
+import authenticationMixin from './mixin.authentication'
 import serviceMixin from './mixin.service'
 import fieldMixin from './mixin.field'
-import authenticationMixin from './authentication'
 import collectionMixins from './collection'
 
 export default {
-  service: serviceMixin,
   authentication: authenticationMixin,
+  service: serviceMixin,
   collection: collectionMixins,
   field: fieldMixin
 }
