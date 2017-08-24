@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-let baseFieldMixin = {
+let fieldMixin = {
   props: {
     property: {
       type: Object,
@@ -71,4 +71,4 @@ let baseFieldMixin = {
   }
 }
 
-export default baseFieldMixin
+export default fieldMixin
