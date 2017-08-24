@@ -1,1 +1,1 @@
-{"version":3,"sources":["../../../../src/client/components/users/index.js"],"names":["KUsers"],"mappings":";;;;;;;AAAA;;;;;;QAGEA,M","file":"index.js","sourcesContent":["import KUsers from './KUsers.vue'\n\nexport {\n  KUsers\n}\n"]}
+{"version":3,"sources":["../../../../src/client/components/users/index.js"],"names":["KUsers"],"mappings":";;;;;;;AAAA;;;;;;QAGEA,M","file":"index.js","sourcesContent":["import KUsers from './KUsers.vue'\r\n\r\nexport {\r\n  KUsers\r\n}\r\n"]}
