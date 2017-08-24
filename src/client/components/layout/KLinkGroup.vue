@@ -16,7 +16,6 @@ export default {
     QCollapsible,
     KLinkList
   },
-  dependencies: ['store'],
   props: {
     name: {
       type: String,
@@ -29,14 +28,13 @@ export default {
     }
   },
   created () {
-    let Store = this.store()
     // Load the configuration
     let confPath = 'config.' + this.name
-    this.icon = Store.get(confPath + '.icon', '')
-    this.label = Store.get(confPath + '.label', this.name)
-    this.bgColor = Store.get(confPath + '.bgColor', 'bg-light')
-    this.textColor = Store.get(confPath + '.textColor', 'text-dark')
-    this.lists = Store.get(confPath + '.content', [])
+    this.icon = this.$store.get(confPath + '.icon', '')
+    this.label = this.$store.get(confPath + '.label', this.name)
+    this.bgColor = this.$store.get(confPath + '.bgColor', 'bg-light')
+    this.textColor = this.$store.get(confPath + '.textColor', 'text-dark')
+    this.lists = this.$store.get(confPath + '.content', [])
   }
 }
 </script>

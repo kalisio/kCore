@@ -17,7 +17,6 @@ export default {
     QTabs,
     QTab
   },
-  dependencies: ['store'],
   data () {
     return {
       tabs: [],
@@ -35,7 +34,7 @@ export default {
     '$route' (to, from) {
       this.tabs = []
       this.selectedTab = ''
-      Object.entries(this.store().get('config.tabNav')).forEach(entry => {
+      Object.entries(this.$store.get('config.tabNav')).forEach(entry => {
         entry[1].forEach(tab => {
           if (tab.route === to.name) {
             this.tabs = entry[1]

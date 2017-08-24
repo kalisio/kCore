@@ -29,7 +29,6 @@ export default {
     QSideLink,
     QItemSeparator,
   },
-  dependencies: ['store'],
   props: {
     name: {
       type: String,
@@ -64,10 +63,9 @@ export default {
     }
   },
   created () {
-    let Store = this.store()
     // Load the configuration
     let confPath = 'config.' + this.name
-    let data = Store.get(confPath + '.data')
+    let data = this.$store.get(confPath + '.data')
     if (data) {
       if (_.isArray(data)) {
         this.data = data
@@ -75,7 +73,7 @@ export default {
       else if(_.isString(data)) {
         this.property = _.last(_.split(data, '.'))
         this.path = _.replace(data, '.' + this.property, '')
-        this.object = Store.get(this.path, null)
+        this.object = this.$store.get(this.path, null)
       }
       else {
         logger.warn('created(): invalid data value')

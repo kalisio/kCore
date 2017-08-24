@@ -16,7 +16,6 @@ export default {
   components: {
     KForm,
   },
-  dependencies: ['api', 'store'],
   props: {
     parameters: {
       type: Object,
@@ -62,16 +61,15 @@ export default {
   created () {
     this.mode = 'Creation'
     // Retrieve the schema to build the form
-    let Store = this.store()
-    let loadSchema = Store.get('loadSchema')
+    let loadSchema = this.$store.get('loadSchema')
     loadSchema(this.parameters.schema)
     .then(schema => {
       // Assigns the schema to this editor
       this.schema = schema
       // Retrieve the service
-      this.service = this.api().getService(this.parameters.service, Store.get(this.parameters.context))
-      // Retrieve the id using the Store
-      this.id = Store.get(this.parameters.id)
+      this.service = this.$api.getService(this.parameters.service, this.$store.get(this.parameters.context))
+      // Retrieve the id using the this.$store
+      this.id = this.$store.get(this.parameters.id)
       // Do we need to get the item ?
       if (this.id)  {
         // Do we need to apply a selection using a specified perspective ?

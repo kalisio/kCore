@@ -33,7 +33,6 @@ export default {
     QList,
     QPagination
   },
-  dependencies: ['api', 'store'],
   props: {
     service: {
       type: String,
@@ -105,20 +104,19 @@ export default {
     }
   },
   created () {
-    let Store = this.store()
     // Retrieve the API to the service
-    this.serviceApi = this.api().getService(this.service, this.context)
+    this.serviceApi = this.$api.getService(this.service, this.context)
     // Setup the configuration path using the service as a prefix
     let confPath = `config.${this.service}`
     // Retrieve the number of items per page
-    this.nbItemsPerPage = Store.get(confPath + '.nbItemsPerPage', 12)
+    this.nbItemsPerPage = this.$store.get(confPath + '.nbItemsPerPage', 12)
     // Retrieve the loadComponent function and load the components
     // We need this so that we can dynamically load the component
     // with a function that has previously been statically analyzed by the bundler (eg webpack)
-    let loadComponent = Store.get('loadComponent')
-    this.$options.components['k-filter'] = loadComponent(Store.get(confPath + '.filter', 'collection/KFilter'))
-    this.$options.components['k-renderer'] = loadComponent(Store.get(confPath + '.renderer', 'collection/KCardItem'))
-    this.$options.components['k-fab'] = loadComponent(Store.get(confPath + '.fab', 'collection/KFab'))
+    let loadComponent = this.$store.get('loadComponent')
+    this.$options.components['k-filter'] = loadComponent(this.$store.get(confPath + '.filter', 'collection/KFilter'))
+    this.$options.components['k-renderer'] = loadComponent(this.$store.get(confPath + '.renderer', 'collection/KCardItem'))
+    this.$options.components['k-fab'] = loadComponent(this.$store.get(confPath + '.fab', 'collection/KFab'))
   },
   mounted () {
     // populate the vue

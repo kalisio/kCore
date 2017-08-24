@@ -32,7 +32,6 @@ export default {
   components: {
     QBtn
   },
-  dependencies: ['store'],
   props: {
     schema: {
       type: Object,
@@ -49,7 +48,7 @@ export default {
   },
   methods: {
     touch (field, value) {
-      // Store the value if not empty
+      // this.$store the value if not empty
       if (_.isEmpty(value))  {
         if (this.values[field]) {
           delete this.Values[field]
@@ -105,8 +104,7 @@ export default {
     }
   },
   created () {
-    let Store = this.store()
-    let loadComponent = Store.get('loadComponent')
+    let loadComponent = this.$store.get('loadComponent')
     // Initialize the values to an empty object
     this.values = {}
     // Iterate through the properties in order to 

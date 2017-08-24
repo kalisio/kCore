@@ -33,7 +33,6 @@ export default {
   components: {
     KScreen
   },
-  dependencies: ['api', 'store'],
   data () {
     return {
       appName: '',
@@ -42,8 +41,8 @@ export default {
   },
   mixins: [mixins.authentication],
   created () {
-    this.appName = this.store().get('config.appName', 'kApp')
-    this.publisherName = this.store().get('config.publisher.name', 'Kalisio')
+    this.appName = this.$store.get('config.appName', 'kApp')
+    this.publisherName = this.$store.get('config.publisher.name', 'Kalisio')
     this.logout()
   }
 }

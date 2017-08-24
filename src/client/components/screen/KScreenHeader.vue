@@ -7,16 +7,14 @@
 <script>
 export default {
   name: 'k-screen-header',
-  dependencies: ['store'],
   data () {
     return {
       banner: ''
     }
   },
   created () {
-    let Store = this.store()
-    let resolveAsset = Store.get('resolveAsset')
-    this.banner = resolveAsset(Store.get('config.screen.header', 'kalisio-banner.png'))
+    let resolveAsset = this.$store.get('resolveAsset')
+    this.banner = resolveAsset(this.$store.get('config.screen.header', 'kalisio-banner.png'))
   }
 }
 </script>

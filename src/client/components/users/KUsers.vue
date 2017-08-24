@@ -11,7 +11,6 @@ import mixins from '../../mixins/collection'
 
 export default {
   name: 'k-users',
-  dependencies: ['store'],
   data () {
     return {
       context: null
@@ -19,13 +18,12 @@ export default {
   },
   mixins: [mixins.baseItemAction, mixins.createItem, mixins.deleteItem, mixins.editItem],
   created () {
-    let Store = this.store()
     // Load the collection component
-    let loadComponent = Store.get('loadComponent')
+    let loadComponent = this.$store.get('loadComponent')
     this.$options.components['k-collection'] = loadComponent('collection/KCollection')
     // Setups the collection
     this.service = 'users'
-    this.context = Store.get('organisation')._id
+    this.context = this.$store.get('organisation')._id
   }
 }
 </script>
