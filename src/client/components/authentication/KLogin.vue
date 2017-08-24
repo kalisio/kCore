@@ -53,7 +53,6 @@ export default {
     KForm,
     KScreen
   },
-  dependencies: ['api', 'store'],
   data () {
     return {
       schema: {
@@ -105,7 +104,7 @@ export default {
   },
   created () {
     // Retrieve the availalbe providers
-    this.providers = this.store().get('config.login.providers', [])
+    this.providers = this.$store.get('config.login.providers', [])
   }
 }
 </script>

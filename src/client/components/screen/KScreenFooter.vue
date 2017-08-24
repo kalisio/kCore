@@ -20,7 +20,6 @@ import { openURL } from 'quasar'
 
 export default {
   name: 'k-screen-footer',
-  dependencies: ['store'],
   data () {
     return {
       links: []
@@ -32,7 +31,7 @@ export default {
     }
   },
   created () {
-    this.links = this.store().get('config.screen.footer', [])
+    this.links = this.$store.get('config.screen.footer', [])
   }
 }
 </script>

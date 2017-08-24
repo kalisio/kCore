@@ -50,7 +50,6 @@ export default {
     QCardMain,
     QBtn
   },
-  dependencies: ['store'],
   props: {
     title: {
       type: String,
@@ -70,18 +69,17 @@ export default {
     }
   },
   created () {
-    let Store = this.store()
     // Retrieve the loadComponent function and load the components
     // We need this so that we can dynamically load the component
     // with a function that has previously been statically analyzed by the bundler (eg webpack)
-    let loadComponent = Store.get('loadComponent')
-    this.$options.components['k-screen-header'] = loadComponent(Store.get('screen.header', 'screen/KScreenHeader'))
-    this.$options.components['k-screen-footer'] = loadComponent(Store.get('screen.footer', 'screen/KScreenFooter'))
+    let loadComponent = this.$store.get('loadComponent')
+    this.$options.components['k-screen-header'] = loadComponent(this.$store.get('screen.header', 'screen/KScreenHeader'))
+    this.$options.components['k-screen-footer'] = loadComponent(this.$store.get('screen.footer', 'screen/KScreenFooter'))
     // setup the color schema
-    this.color = Store.get('screen.color', 'bg-white')
-    this.textColor = Store.get('screen.textColor', 'text-dark')
-    this.bgColor = Store.get('screen.bgColor', 'bg-light')
-    this.bgTextColor = Store.get('screen.bgTextColor', 'text-dark')
+    this.color = this.$store.get('screen.color', 'bg-white')
+    this.textColor = this.$store.get('screen.textColor', 'text-dark')
+    this.bgColor = this.$store.get('screen.bgColor', 'bg-light')
+    this.bgTextColor = this.$store.get('screen.bgTextColor', 'text-dark')
   }
 }
 </script>

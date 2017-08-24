@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../src/client/components/editor/index.js"],"names":["KEditor"],"mappings":";;;;;;;AAAA;;;;;;QAGEA,O","file":"index.js","sourcesContent":["import KEditor from './KEditor.vue'\n\nexport {\n  KEditor\n}\n"]}

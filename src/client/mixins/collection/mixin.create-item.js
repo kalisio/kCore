@@ -1,10 +1,9 @@
 import logger from 'loglevel'
 
 let createItemMixin = {
-  dependencies: ['store'],
   methods: {
     createItem () {
-      let route = this.store().get(`config.${this.service}.createItem`, '')
+      let route = this.$store.get(`config.${this.service}.createItem`, '')
       if (route) {
         this.$router.push({ name: route })
       } else {

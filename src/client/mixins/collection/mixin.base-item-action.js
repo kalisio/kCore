@@ -1,7 +1,6 @@
 import logger from 'loglevel'
 
 let baseItemAction = {
-  dependencies: ['api'],
   data () {
     return {
       actions: []

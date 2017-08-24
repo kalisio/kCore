@@ -33,7 +33,6 @@ export default {
   components: {
     QLayout
   },
-  dependencies: ['store'],
   data () {
     return {}
   },
@@ -43,14 +42,13 @@ export default {
     }
   },
   created () {
-    let Store = this.store()
     // Retrieve the loadComponent function and load the components
     // We need this so that we can dynamically load the component
     // with a function that has previously been statically analyzed by the bundler (eg webpack)
-    let loadComponent = Store.get('loadComponent')
-    this.$options.components['k-app-bar'] = loadComponent(Store.get('config.layout.appBar', 'layout/KAppBar'))
-    this.$options.components['k-tab-nav'] = loadComponent(Store.get('config.layout.tabNav', 'layout/KTabNav'))
-    this.$options.components['k-side-nav'] = loadComponent(Store.get('config.layout.sideNav', 'layout/KSideNav'))
+    let loadComponent = this.$store.get('loadComponent')
+    this.$options.components['k-app-bar'] = loadComponent(this.$store.get('config.layout.appBar', 'layout/KAppBar'))
+    this.$options.components['k-tab-nav'] = loadComponent(this.$store.get('config.layout.tabNav', 'layout/KTabNav'))
+    this.$options.components['k-side-nav'] = loadComponent(this.$store.get('config.layout.sideNav', 'layout/KSideNav'))
   },
   mounted () {
     Events.$on('speech-recognition', phrases => {

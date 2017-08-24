@@ -33,7 +33,6 @@ export default {
     QItemMain,
     Avatar
   },
-  dependencies: ['store'],
   data () {
     return {
       name: '',
@@ -41,16 +40,15 @@ export default {
     }
   },
   created () {
-    let Store = this.store()
     // Retrieve the the user info
-    this.name = Store.get('user.name')
-    this.id = Store.get('user._id')
+    this.name = this.$store.get('user.name')
+    this.id = this.$store.get('user._id')
     // Load the configuration
     let confPath = 'config.' + this.name
-    this.bgColor = Store.get(confPath + '.bgColor', 'bg-dark')
-    this.textColor = Store.get(confPath + '.textColor', 'text-white')
-    this.iconColor = Store.get(confPath + '.iconColor', 'white')
-    this.route = Store.get(confPath + '.route', 'profile')
+    this.bgColor = this.$store.get(confPath + '.bgColor', 'bg-dark')
+    this.textColor = this.$store.get(confPath + '.textColor', 'text-white')
+    this.iconColor = this.$store.get(confPath + '.iconColor', 'white')
+    this.route = this.$store.get(confPath + '.route', 'profile')
   }
 }
 </script>

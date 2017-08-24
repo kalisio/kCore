@@ -11,24 +11,22 @@ import _ from 'lodash'
 
 export default {
   name: 'k-side-nav',
-  dependencies: ['store'],
   data () {
     return {
       components: []
     }
   },
   created () {
-    let Store = this.store()
     // Retrieve the loadComponent function and load the components
     // We need this so that we can dynamically load the component
     // with a function that has previously been statically analyzed by the bundler (eg webpack)
-    let loadComponent = Store.get('loadComponent')
+    let loadComponent = this.$store.get('loadComponent')
     // Setup the components structure
     // We build an array of components using the SideNav properties
     // A component is defined with 
     //   - the renderer: the Vue component to be used for the rendering
     //   - the name: the key to retrieve the configuration
-    let content = Store.get('config.sideNav', {})
+    let content = this.$store.get('config.sideNav', {})
     Object.entries(content).forEach(element => {
       // Setup the component
       let component = {}
