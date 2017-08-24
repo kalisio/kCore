@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../../../src/client/mixins/form/index.js"],"names":["baseField"],"mappings":";;;;;;AAAA;;;;;;kBAEe;AACbA;AADa,C","file":"index.js","sourcesContent":["import baseField from './mixin.base-field'\n\nexport default {\n  baseField\n}\n"]}
