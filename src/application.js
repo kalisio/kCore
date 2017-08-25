@@ -18,6 +18,7 @@ import local from 'feathers-authentication-local'
 import oauth2 from 'feathers-authentication-oauth2'
 import GithubStrategy from 'passport-github'
 import GoogleStrategy from 'passport-google-oauth20'
+import OAuth2Verifier from './verifier'
 import { Database } from './db'
 
 const debug = makeDebug('kalisio:kCore')
@@ -32,11 +33,13 @@ function auth () {
   app.configure(local())
   app.configure(oauth2({
     name: 'github',
-    Strategy: GithubStrategy
+    Strategy: GithubStrategy,
+    Verifier: OAuth2Verifier
   }))
   app.configure(oauth2({
     name: 'google',
-    Strategy: GoogleStrategy
+    Strategy: GoogleStrategy,
+    Verifier: OAuth2Verifier
   }))
   // The `authentication` service is used to create a JWT.
   // The before `create` hook registers strategies that can be used
