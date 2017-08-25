@@ -64,28 +64,25 @@ export default {
       return this.filter !== ''
     }
   },
-  watch: {
-    service: function (parameters) {
-      this.updateItems()
-    }
-  },
   methods: {
     updateItems () {
-      // Sets the number of items to be loaded
-      if (this.nbItemsPerPage > 0) {
-        this.query.$limit = this.nbItemsPerPage
-        this.query.$skip = (this.currentPage - 1) * this.nbItemsPerPage
+      if (this.isServiceValid()) {
+        // Sets the number of items to be loaded
+        if (this.nbItemsPerPage > 0) {
+          this.query.$limit = this.nbItemsPerPage
+          this.query.$skip = (this.currentPage - 1) * this.nbItemsPerPage
+        }
+        // find the desire items
+        this.find({
+          rx: {
+            listStrategy: 'always'
+          },
+          query: this.query
+        }).subscribe(response => {
+          this.items = response.data
+          this.nbTotalItems = response.total
+        })
       }
-      // find the desire items
-      this.find({
-        rx: {
-          listStrategy: 'always'
-        },
-        query: this.query
-      }).subscribe(response => {
-        this.items = response.data
-        this.nbTotalItems = response.total
-      })
     },
     onPageChanged () {
       this.updateItems()
@@ -119,10 +116,12 @@ export default {
     this.$options.components['k-filter'] = loadComponent(this.$store.get(confPath + '.filter', 'collection/KFilter'))
     this.$options.components['k-renderer'] = loadComponent(this.$store.get(confPath + '.renderer', 'collection/KCardItem'))
     this.$options.components['k-fab'] = loadComponent(this.$store.get(confPath + '.fab', 'collection/KFab'))
-  },
-  mounted () {
-    // populate the vue
+     // Populate the vue once
     this.updateItems()
+    // Subscribe to the service changed event
+    this.$on('service-changed', _ =>  {
+      this.updateItems()
+    })
   }
 }
 </script>

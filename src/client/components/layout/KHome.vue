@@ -9,13 +9,6 @@ export default {
   name: 'k-home',
   components: {
     KLayout
-  },
-  data () {
-    return {
-    }
-  },
-  mounted () {
-    // Need to restore the route
   }
 }
 </script>

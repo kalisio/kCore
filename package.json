@@ -34,7 +34,7 @@
     "release:minor": "npm version minor && npm publish",
     "release:major": "npm version major && npm publish",
     "changelog": "github_changelog_generator && git add CHANGELOG.md && git commit -am \"Updating changelog\"",
-    "compile": "shx rm -rf lib/ && babel -d lib/ src/ -s",
+    "compile": "shx rm -rf lib/ && babel -d lib/ src/ -s --copy-files",
     "watch": "npm run compile && babel --watch -d lib/ src/",
     "lint": "standard src/**/*.js test/**/*.js --fix",
     "mocha": "cross-env NODE_CONFIG_DIR=./test/config/ mocha --opts mocha.opts",

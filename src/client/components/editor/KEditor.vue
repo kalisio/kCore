@@ -35,56 +35,57 @@ export default {
     }
   },
   watch: {
-    service: function () {
-      this.updateObject()
-    },
     object: function() {
       this.updateObject()
     }
   },
   methods: {
     updateObject () {
-      // Retrieve the object id to be edited
-      if (this.$store.get(this.object)) {
-        this.id = this.$store.get(this.object)._id
-      }
-      // Do we need to get the item ?
-      if (this.id)  {
-        // Do we need to apply a selection using a specified perspective ?
-        let params = {}
-        if (this.parameters.perspective) {
-          params = { query: { $select: [this.parameters.perspective] } }
+      if (this.isServiceValid()) {
+        // Retrieve the object id to be edited
+        if (this.$store.get(this.object)) {
+          this.id = this.$store.get(this.object)._id
         }
-        this.get(this.id, params)
-        .then(values => {
+        // Do we need to get the item ?
+        if (this.id)  {
+          // Do we need to apply a selection using a specified perspective ?
+          let params = {}
           if (this.parameters.perspective) {
-            this.$refs.form.fill(values[this.parameters.perspective])
-          } else {
-            this.$refs.form.fill(values)
+            params = { query: { $select: [this.parameters.perspective] } }
           }
-          this.mode = 'Editing'
-        }) 
-      } else {
-        this.mode = 'Creation'
+          this.get(this.id, params)
+          .then(values => {
+            if (this.parameters.perspective) {
+              this.$refs.form.fill(values[this.parameters.perspective])
+            } else {
+              this.$refs.form.fill(values)
+            }
+            this.mode = 'Editing'
+          }) 
+        } else {
+          this.mode = 'Creation'
+        }
       }
     },
     onSubmitted (values) {
-      // Update the item 
-      if (this.mode === 'Editing') {
-        // Edtng mode => patch the item
-        // Do we need to patch a perspective of the item ?
-        let data ={}
-        if (this.parameters.perspective) {
-          data[this.parameters.perspective] = values
-        } else {
-          // Patch the entire item
-          data = values
+      if (this.isServiceValid()) {
+        // Update the item 
+        if (this.mode === 'Editing') {
+          // Edtng mode => patch the item
+          // Do we need to patch a perspective of the item ?
+          let data ={}
+          if (this.parameters.perspective) {
+            data[this.parameters.perspective] = values
+          } else {
+            // Patch the entire item
+            data = values
+          }
+          this.patch(this.id, data)
         }
-        this.patch(this.id, data)
-      }
-      else {
-        // Creation mode => create the item
-        this.create(values)
+        else {
+          // Creation mode => create the item
+          this.create(values)
+        }
       }
     }
   },
@@ -96,6 +97,10 @@ export default {
       // Assigns the schema to this editor
       this.schema = schema
       this.updateObject()
+      // Subscribe to the service changed event
+      this.$on('service-changed', _ =>  {
+        this.updateObject()
+      })
     })
   }
 }

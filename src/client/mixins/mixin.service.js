@@ -1,4 +1,5 @@
 import logger from 'loglevel'
+import { Events } from 'quasar'
 
 let serviceMixin = {
   props: {
@@ -8,24 +9,40 @@ let serviceMixin = {
     }
   },
   watch: {
-    service: function (parameters) {
-      this._configureService()
+    service: function () {
+      this.configureService()
     }
   },
   methods: {
-    _configureService () {
-      let path = this.service.path
-      let context = this.$store.get(this.service.context, null)
-      this._service = this.$api.getService(path, context)
-      if (!this._service) {
-        logger.error('Could not find any service with the specified \'service\' property')
+    isServiceValid () {
+      return this._service !== null
+    },
+    configureService () {
+      if (this.service.context) {
+
+        let eventName = this.service.context + '-changed'
+
+        this.$q.events.$on(eventName, this.onServiceContextChanged)
+        this.onServiceContextChanged()
+      } else {
+        this._service = this.$api.getService(this.service.path)
+        this.$emit('service-changed')
       }
     },
-    find (params) { 
+    onServiceContextChanged () {
+      let context = this.$store.get(this.service.context)
+      if (context) {
+        this._service = this.$api.getService(this.service.path, context)
+        this.$emit('service-changed')
+      } else {
+        this._service = null
+      }
+    },
+    find (params) {
       return this._service.find(params) 
     },
-    get (id, params) { 
-      return this._service.get(id, params) 
+    get (id, params) {
+      return this._service.get(id, params)
     },
     create (data, params) { 
       return this._service.create(data, params) 
@@ -41,7 +58,7 @@ let serviceMixin = {
     }
   },
   created () {
-    this._configureService()
+    this.configureService()
   }
 }
 
