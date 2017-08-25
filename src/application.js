@@ -162,6 +162,15 @@ export function createService (name, app, options) {
   service.app = app
   service.options = options
 
+  // Add some utility functions
+  service.getPath = function () {
+    if (service.options) {
+      return service.options.path || service.name
+    } else {
+      return service.name
+    }
+  }
+
   debug(service.name + ' service registration completed')
 
   return service
