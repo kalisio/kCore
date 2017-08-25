@@ -1,6 +1,4 @@
-import _ from 'lodash'
-
-let baseFieldMixin = {
+let fieldMixin = {
   props: {
     property: {
       type: Object,
@@ -65,10 +63,10 @@ let baseFieldMixin = {
   },
   mounted () {
     // Initialize the model with a default value if any
-    if (_.has(this.property, 'default')) {
+    if (this.property.default) {
       this.fill(this.property.default)
     }
   }
 }
 
-export default baseFieldMixin
+export default fieldMixin

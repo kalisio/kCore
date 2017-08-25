@@ -15,7 +15,7 @@
 
 <script>
 import { QField, QChipsInput } from 'quasar'
-import mixins from '../../mixins/form'
+import mixins from '../../mixins'
 
 export default {
   name: 'k-chips-field',
@@ -23,6 +23,6 @@ export default {
     QField,
     QChipsInput
   },
-  mixins: [mixins.baseField]
+  mixins: [mixins.field]
 }
 </script>

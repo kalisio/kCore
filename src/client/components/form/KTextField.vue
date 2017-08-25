@@ -16,7 +16,7 @@
 
 <script>
 import { QField, QInput } from 'quasar'
-import mixins from '../../mixins/form'
+import mixins from '../../mixins'
 
 export default {
   name: 'k-text-field',
@@ -24,6 +24,6 @@ export default {
     QField,
     QInput
   },
-  mixins: [mixins.baseField]
+  mixins: [mixins.field]
 }
 </script>

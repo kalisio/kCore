@@ -26,6 +26,7 @@
 
 <script>
 import { QList, QPagination } from 'quasar'
+import mixins from '../../mixins'
 
 export default {
   name: 'k-collection',
@@ -34,32 +35,25 @@ export default {
     QPagination
   },
   props: {
-    service: {
-      type: String,
-      required: true
-    },
-    context: {
-      type: String,
-      default: ''
-    },
-    actions: {
-      type: Array,
-      default: function () {
-        return []
-      }
-    },
     layout: {
       type: String,
       default: 'col-xs-12 col-sm-6 col-lg-4 col-xl-3'
     }
   },
+  mixins: [
+    mixins.service,
+    mixins.createItem, 
+    mixins.deleteItem, 
+    mixins.editItem
+  ],
   data () {
     return {
       query: {},
       items: [],
       nbTotalItems: 0,
       nbItemsPerPage: 12,
-      currentPage: 1
+      currentPage: 1,
+      actions: []
     }
   },
   computed: {
@@ -70,6 +64,11 @@ export default {
       return this.filter !== ''
     }
   },
+  watch: {
+    service: function (parameters) {
+      this.updateItems()
+    }
+  },
   methods: {
     updateItems () {
       // Sets the number of items to be loaded
@@ -78,7 +77,7 @@ export default {
         this.query.$skip = (this.currentPage - 1) * this.nbItemsPerPage
       }
       // find the desire items
-      this.serviceApi.find({
+      this.find({
         rx: {
           listStrategy: 'always'
         },
@@ -99,15 +98,18 @@ export default {
         return action.scope === type
       })
     },
-    onActionTriggered (handler, item) {
-      this.$emit('actionRequested', handler, item)
+     onActionTriggered (handler, item) {
+      let action = this[handler]
+      if (typeof action === 'function') {
+        action.call(this, item)
+      } else {
+        logger.warn('[onActionRequested] invalid handler')
+      }
     }
   },
   created () {
-    // Retrieve the API to the service
-    this.serviceApi = this.$api.getService(this.service, this.context)
     // Setup the configuration path using the service as a prefix
-    let confPath = `config.${this.service}`
+    let confPath = `config.${this.service.path}`
     // Retrieve the number of items per page
     this.nbItemsPerPage = this.$store.get(confPath + '.nbItemsPerPage', 12)
     // Retrieve the loadComponent function and load the components

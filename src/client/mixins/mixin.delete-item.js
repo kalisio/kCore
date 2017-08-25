@@ -12,7 +12,7 @@ let deleteItemMixin = {
             label: 'Delete',
             handler: () => {
               // delete the required item
-              this.$api.getService(this.service).remove(item._id)
+              this.remove(item._id)
             }
           }
         ]
