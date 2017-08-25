@@ -160,9 +160,7 @@ export function createService (name, app, options) {
   // Then configuration
   service.name = name
   service.app = app
-  if (options) {
-    service.perspectives = options.perspectives
-  }
+  service.options = options
 
   debug(service.name + ' service registration completed')
 

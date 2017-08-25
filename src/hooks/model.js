@@ -10,10 +10,10 @@ export function processPerspectives (hook) {
   let service = hook.service
 
   // Test if some perspectives are defined on the model
-  if (!service.perspectives) return
+  if (!service.options || !service.options.perspectives) return
 
   // Iterate through known perspectives of the model
-  service.perspectives.forEach(perspective => {
+  service.options.perspectives.forEach(perspective => {
     // Only discard if not explicitely asked by $select
     if (_.isNil(query) || _.isNil(query.$select) || !query.$select.includes(perspective)) {
       discard(perspective)(hook)
