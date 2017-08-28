@@ -8,7 +8,7 @@ let guards = []
 // a name to jump to a given route
 
 // Guard unauthenticated users
-export function checkAuthenticated (user, to, from, next) {
+export function authenticationGuard (user, to, from, next) {
   // All routes under /home are assumed to be authenticated
   if (to.path.startsWith('/home')) {
     // If the user is here then he is authenticated
@@ -47,6 +47,3 @@ beforeGuard.unregisterGuard = function (guard) {
   guards = guards.filter(registeredGuard => registeredGuard !== guard)
 }
 
-// Register all default guards
-// Default for unauthenticated users
-beforeGuard.registerGuard(checkAuthenticated)
