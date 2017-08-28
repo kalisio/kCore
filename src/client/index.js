@@ -9,7 +9,7 @@ import logger from 'loglevel'
 
 export * from './api'
 export * from './store'
-export * from './guard'
+export * from './guards'
 export * as mixins from './mixins'
 export * as hooks from './hooks'
 
