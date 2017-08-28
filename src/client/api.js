@@ -33,15 +33,18 @@ export function kalisio () {
   }))
 
   // This avoid managing the API path before each service name
-  api.getService = function (path, context) {
+  api.getServicePath = function (path, context) {
     // Context is given as string ID
     if (typeof context === 'string') {
-      return api.service(config.apiPath + '/' + context + '/' + path)
+      return config.apiPath + '/' + context + '/' + path
     } else if (typeof context === 'object' && context !== null) {
-      return api.service(config.apiPath + '/' + context._id + '/' + path)
+      return config.apiPath + '/' + context._id + '/' + path
     } else {
-      return api.service(config.apiPath + '/' + path)
+      return config.apiPath + '/' + path
     }
+  }
+  api.getService = function (path, context) {
+    return api.service(api.getServicePath(path, context))
   }
 
   api.users = api.getService('users')
