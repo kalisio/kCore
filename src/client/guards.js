@@ -1,3 +1,4 @@
+import logger from 'loglevel'
 import { Store } from './store'
 
 // Guards that can be added to customize route guards
@@ -28,13 +29,17 @@ export function beforeGuard (to, from, next) {
   // Run registered guards
   guards.forEach(guard => {
     let result = guard(user, to, from, next)
-    console.log(result)
     if (typeof result === 'string') {
+      logger.debug('Navigation guard redirected to route ' + result)
       next({ name: result })
-    } else {
-      next(result)
+    } else if (!result) {
+      logger.debug('Navigation aborted by guard')
+      next(false)
     }
   })
+
+  logger.debug('Navigation guards passed')
+  next()
 }
 
 beforeGuard.registerGuard = function (guard) {
