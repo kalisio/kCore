@@ -1,14 +1,20 @@
-import logger from 'loglevel'
 import { Events } from 'quasar'
 
 let serviceMixin = {
   props: {
+    context: {
+      type: String,
+      default: ''
+    },
     service: {
-      type: Object,
+      type: String,
       required: true
     }
   },
   watch: {
+    context: function () {
+      this.configureService()
+    },
     service: function () {
       this.configureService()
     }
@@ -18,24 +24,10 @@ let serviceMixin = {
       return this._service !== null
     },
     configureService () {
-      if (this.service.context) {
-
-        let eventName = this.service.context + '-changed'
-
-        this.$q.events.$on(eventName, this.onServiceContextChanged)
-        this.onServiceContextChanged()
+      if (this.context === '') {
+        this._service = this.$api.getService(this.service)
       } else {
-        this._service = this.$api.getService(this.service.path)
-        this.$emit('service-changed')
-      }
-    },
-    onServiceContextChanged () {
-      let context = this.$store.get(this.service.context)
-      if (context) {
-        this._service = this.$api.getService(this.service.path, context)
-        this.$emit('service-changed')
-      } else {
-        this._service = null
+        this._service = this.$api.getService(this.service, this.context)
       }
     },
     find (params) {

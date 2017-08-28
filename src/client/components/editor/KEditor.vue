@@ -19,13 +19,13 @@ export default {
   },
   mixins: [mixins.service],
   props: {
-    object: {
+    id: {
       type: String,
       default: ''
     },
-    parameters: {
-      type: Object,
-      required: true
+    perspective: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -34,29 +34,24 @@ export default {
       schema: null,
     }
   },
-  watch: {
-    object: function() {
-      this.updateObject()
-    }
-  },
   methods: {
     updateObject () {
       if (this.isServiceValid()) {
         // Retrieve the object id to be edited
-        if (this.$store.get(this.object)) {
-          this.id = this.$store.get(this.object)._id
-        }
+        // if (this.$store.get(this.object)) {
+        //  this.id = this.$store.get(this.object)._id
+        //}
         // Do we need to get the item ?
         if (this.id)  {
           // Do we need to apply a selection using a specified perspective ?
           let params = {}
-          if (this.parameters.perspective) {
-            params = { query: { $select: [this.parameters.perspective] } }
+          if (this.perspective) {
+            params = { query: { $select: [this.perspective] } }
           }
           this.get(this.id, params)
           .then(values => {
-            if (this.parameters.perspective) {
-              this.$refs.form.fill(values[this.parameters.perspective])
+            if (this.perspective !== '') {
+              this.$refs.form.fill(values[this.perspective])
             } else {
               this.$refs.form.fill(values)
             }
@@ -74,8 +69,8 @@ export default {
           // Edtng mode => patch the item
           // Do we need to patch a perspective of the item ?
           let data ={}
-          if (this.parameters.perspective) {
-            data[this.parameters.perspective] = values
+          if (this.perspective !== '') {
+            data[this.perspective] = values
           } else {
             // Patch the entire item
             data = values
@@ -92,7 +87,14 @@ export default {
   created () {
     // Retrieve the schema to build the form
     let loadSchema = this.$store.get('loadSchema')
-    loadSchema(this.parameters.schema)
+    let schemaName = this.service
+    if (this.id) {
+      schemaName += '-update' 
+    } else {
+      schemaName +="-create"
+    }
+    console.log('loading ' + schemaName)
+    loadSchema(schemaName)
     .then(schema => {
       // Assigns the schema to this editor
       this.schema = schema
