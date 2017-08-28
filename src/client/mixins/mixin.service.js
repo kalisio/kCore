@@ -12,10 +12,8 @@ let serviceMixin = {
     }
   },
   watch: {
-    context: function () {
-      this.configureService()
-    },
-    service: function () {
+    '$route' (to, from) {
+      // react to route changes with the same component
       this.configureService()
     }
   },
@@ -29,6 +27,7 @@ let serviceMixin = {
       } else {
         this._service = this.$api.getService(this.service, this.context)
       }
+      this.$emit('service-changed')
     },
     find (params) {
       return this._service.find(params) 

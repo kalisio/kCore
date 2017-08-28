@@ -3,11 +3,10 @@ import logger from 'loglevel'
 let createItemMixin = {
   methods: {
     createItem () {
-      let route = this.$store.get(`config.${this.service.path}.createItem`, '')
-      if (route) {
-        this.$router.push({ name: route })
+      if (this.context) {
+        this.$router.push({ name: 'create', params: { context: this.context, service: this.service } })
       } else {
-        logger.warn('No route specified for the service ' + this.service)
+        this.$router.push({ name: 'create', params: { service: this.service } })
       }
     }
   },

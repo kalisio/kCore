@@ -34,18 +34,18 @@ export default {
     QList,
     QPagination
   },
-  props: {
-    layout: {
-      type: String,
-      default: 'col-xs-12 col-sm-6 col-lg-4 col-xl-3'
-    }
-  },
   mixins: [
     mixins.service,
     mixins.createItem, 
     mixins.deleteItem, 
     mixins.editItem
   ],
+  props: {
+    layout: {
+      type: String,
+      default: 'col-xs-12 col-sm-6 col-lg-4 col-xl-3'
+    }
+  },
   data () {
     return {
       query: {},
@@ -106,7 +106,7 @@ export default {
   },
   created () {
     // Setup the configuration path using the service as a prefix
-    let confPath = `config.${this.service.path}`
+    let confPath = `config.${this.service}`
     // Retrieve the number of items per page
     this.nbItemsPerPage = this.$store.get(confPath + '.nbItemsPerPage', 12)
     // Retrieve the loadComponent function and load the components

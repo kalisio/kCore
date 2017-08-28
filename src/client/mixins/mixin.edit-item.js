@@ -1,14 +1,10 @@
-import logger from 'loglevel'
-
 let editItemMixin = {
   methods: {
     editItem (item) {
-      let route = this.$store.get(`config.${this.service.path}.editItem`, '')
-      if (route) {
-        this.$store.set('selection', item)
-        this.$router.push({ name: route })
+      if (this.context) {
+        this.$router.push({ name: 'update', params: { context: this.context, service: this.service, id: item._id } })
       } else {
-        logger.warn('No route specified for the service ' + this.service)
+        this.$router.push({ name: 'update', params: { service: this.service, id: item.id } })
       }
     }
   },

@@ -11,7 +11,7 @@
     -->
     <div>
       <q-list highlight no-border>
-        <q-side-link item :to="route" exact>
+        <q-side-link item :to="route()" exact>
           <q-item-main :label="name" />
           <q-item-side icon="perm_identity" :color="iconColor" right />
         </q-side-link>
@@ -39,15 +39,10 @@ export default {
       id: ''
     }
   },
-  computed: {
+  methods: {
     route () {
       let userId = this.$store.get('user')._id
-      let context = this.$store.get('context')
-      if (context) {
-        return { name: 'update', params: { context: context._id, service: 'users', id: userId } }
-      } else {
-        return { name: 'update', params: { service: 'users', id: userId } }
-      }
+      return { name: 'update', params: { service: 'users', id: userId } }
     }
   },
   created () {

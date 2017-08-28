@@ -89,9 +89,9 @@ export default {
     let loadSchema = this.$store.get('loadSchema')
     let schemaName = this.service
     if (this.id) {
-      schemaName += '-update' 
+      schemaName += '.update' 
     } else {
-      schemaName +="-create"
+      schemaName +=".create"
     }
     console.log('loading ' + schemaName)
     loadSchema(schemaName)

@@ -1,9 +1,9 @@
 <template>
   <!--q-list highlight no-border-->
   <div>
-    <template v-for="link in links">
+    <template v-for="link in links()">
       <q-side-link v-if="link.label" item 
-        :to="{name: link.route}" 
+        :to="route(link)" 
         :exact="link.exact ? true : false"
         :replace="link.replace ? true: false"
         :append="link.append ? true:false">
@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import logger from 'loglevel'
 import { QItemSide, QItemMain, QSideLink, QItemSeparator } from 'quasar'
 
@@ -35,12 +34,18 @@ export default {
       required: true
     }
   },
-  computed: {
+  data () {
+    return {
+      data: [],
+      object: null
+    }
+  },
+  methods: {
     links () {
-      if (! _.isEmpty(this.data)) {
+      if (this.data) {
         return this.data
       }
-      if (! _.isNull(this.object)) {
+      if (this.object) {
         let result = []
         if (this.object[this.property]) {
           this.object[this.property].forEach(item => {
@@ -54,12 +59,17 @@ export default {
         return result
       }
       return []
-    }
-  },
-  data () {
-    return {
-      data: [],
-      object: null
+    },
+    route (link) {
+      if (link.params) {
+        let params = Object.assign({}, link.params)
+        if (params.context) {
+          let contextId = this.$store.get(params.context)
+          params.context = contextId
+        }
+        return { name: link.route, params: params }
+      }
+      return { name: link.route }
     }
   },
   created () {
