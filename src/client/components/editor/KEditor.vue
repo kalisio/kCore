@@ -93,7 +93,6 @@ export default {
     } else {
       schemaName +=".create"
     }
-    console.log('loading ' + schemaName)
     loadSchema(schemaName)
     .then(schema => {
       // Assigns the schema to this editor

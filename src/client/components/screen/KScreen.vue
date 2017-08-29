@@ -1,6 +1,6 @@
 <template>
   <div class="row justify-center items-center window-height window-width" :class="[bgColor, bgTextColor]">
-    <div style="width: 480px">
+    <div style="width: 540px">
       <!--
         Header section
       -->

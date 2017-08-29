@@ -4,9 +4,9 @@ let createItemMixin = {
   methods: {
     createItem () {
       if (this.context) {
-        this.$router.push({ name: 'create', params: { context: this.context, service: this.service } })
+        this.$router.push({ name: 'collection', params: { context: this.context, service: this.service, action: 'create' } })
       } else {
-        this.$router.push({ name: 'create', params: { service: this.service } })
+        this.$router.push({ name: 'collection', params: { service: this.service, action: 'create' } })
       }
     }
   },
