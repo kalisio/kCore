@@ -38,7 +38,7 @@ import { QCard, QCardTitle, QCardActions, QCardSeparator, QCardMain, QItem, QIte
 import Avatar from 'vue-avatar/dist/Avatar'
 
 export default {
-  name: 'k-card-item',
+  name: 'k-card',
   components: {
     QCard,
     QCardTitle,
