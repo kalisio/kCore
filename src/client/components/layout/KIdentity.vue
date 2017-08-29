@@ -42,7 +42,7 @@ export default {
   methods: {
     route () {
       let userId = this.$store.get('user')._id
-      return { name: 'update', params: { service: 'users', id: userId } }
+      return { name: 'collection', params: { service: 'users', action: 'edit', id: userId } }
     }
   },
   created () {

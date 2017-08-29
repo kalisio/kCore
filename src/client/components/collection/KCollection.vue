@@ -31,7 +31,7 @@ export default {
   },
   watch: {
     '$route': function $route(to, from) {
-      // React to route changes
+      // React to route changes and reconfigure the components if needed
       this.configure();
     }
   },
