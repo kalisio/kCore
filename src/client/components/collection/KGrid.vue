@@ -4,7 +4,7 @@
       Filter section 
     -->
     <div v-if="hasFilter">
-      <k-filter v-model="query" @filter-changed="onFilterChanged" />
+      <k-filter @filter-changed="onFilterChanged" />
     </div>
     <!-- 
       Items section 
@@ -42,7 +42,6 @@ export default {
   },
   data () {
     return {
-      query: {},
       items: [],
       nbTotalItems: 0,
       nbItemsPerPage: 12,
@@ -86,21 +85,25 @@ export default {
       this.actions = this.$store.get(confPath + '.actions')
       // Clears the query
       this.query = {}
+      this.filterQuery = {}
       this.updateItems()
     },
     updateItems () {
       if (this.isServiceValid()) {
+        let query = Object.assign({}, this.filterQuery)
         // Sets the number of items to be loaded
         if (this.nbItemsPerPage > 0) {
-          this.query.$limit = this.nbItemsPerPage
-          this.query.$skip = (this.currentPage - 1) * this.nbItemsPerPage
+          Object.assign(query, {
+            $limit: this.nbItemsPerPage,
+            $skip: (this.currentPage - 1) * this.nbItemsPerPage
+          })
         }
         // find the desire items
         this.find({
           rx: {
             listStrategy: 'always'
           },
-          query: this.query
+          query
         }).subscribe(response => {
           this.items = response.data
           this.nbTotalItems = response.total
@@ -110,7 +113,8 @@ export default {
     onPageChanged () {
       this.updateItems()
     },
-    onFilterChanged () {
+    onFilterChanged (filterQuery) {
+      this.filterQuery = Object.assign({}, filterQuery)
       this.updateItems()
     },
     filterActions (type = '') {
@@ -131,6 +135,7 @@ export default {
     this.renderer = ''
     this.filter = ''
     this.fab = ''
+    this.filterQuery = {}
     this.update()
     // Subscribe to the service changed event
     this.$on('service-changed', _ =>  {
