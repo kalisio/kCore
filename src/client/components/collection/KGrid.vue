@@ -20,7 +20,7 @@
     <!--
       Fab section 
     -->
-    <k-fab :actions="filterActions()" @action-triggered="onActionTriggered" />
+    <k-fab :actions="filterActions('fab')" @action-triggered="onActionTriggered" />
   </div>
 </template>
 
