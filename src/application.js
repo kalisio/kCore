@@ -31,16 +31,20 @@ function auth () {
   app.configure(authentication(config))
   app.configure(jwt())
   app.configure(local())
-  app.configure(oauth2({
-    name: 'github',
-    Strategy: GithubStrategy,
-    Verifier: OAuth2Verifier
-  }))
-  app.configure(oauth2({
-    name: 'google',
-    Strategy: GoogleStrategy,
-    Verifier: OAuth2Verifier
-  }))
+  if (config.github) {
+    app.configure(oauth2({
+      name: 'github',
+      Strategy: GithubStrategy,
+      Verifier: OAuth2Verifier
+    }))
+  }
+  if (config.google) {
+    app.configure(oauth2({
+      name: 'google',
+      Strategy: GoogleStrategy,
+      Verifier: OAuth2Verifier
+    }))
+  }
   // The `authentication` service is used to create a JWT.
   // The before `create` hook registers strategies that can be used
   // to create a new valid JWT (e.g. local or oauth2)
