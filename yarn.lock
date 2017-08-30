@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"2.4.2@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/2.4.2/-/2.4.2-1.0.0.tgz#f04aa2cbb039f6f89757edf1145df9ffb85345c2"
+
 "@types/express-serve-static-core@*":
   version "4.0.48"
   resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.0.48.tgz#b4fa06b0fce282e582b4535ff7fac85cc90173e9"

@@ -1,8 +1,7 @@
 <template>
-  
   <q-item>
     <!--
-      Icon section
+      Avatar section
     -->
     <slot name="avatar">
     </slot>
@@ -25,7 +24,7 @@
         <q-popover>
           <q-list link>
             <q-item v-for="action in actions" :key="action">
-              <q-item-main :label="action.label" @click="$emit('actionTrigerred', action.handler, item)" />
+              <q-item-main :label="action.label" @click="$emit('action-triggered', action.handler, item)" />
             </q-item>
           </q-list>
         </q-popover>
@@ -38,7 +37,7 @@
 import { QList, QItem, QItemSide, QItemMain, QItemTile, QBtn, QIcon, QPopover } from 'quasar'
 
 export default {
-  name: 'k-list-item',
+  name: 'k-item',
   components: {
     QList,
     QItem,
@@ -59,10 +58,6 @@ export default {
       default: function () {
         return []
       }
-    }
-  },
-  data () {
-    return {
     }
   }
 }

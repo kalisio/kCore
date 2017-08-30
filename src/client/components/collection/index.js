@@ -1,13 +1,13 @@
-import KCollection from './KCollection.vue'
+import KCard from './KCard.vue'
 import KFab from './KFab.vue'
 import KFilter from './KFilter.vue'
-import KCardItem from './KCardItem.vue'
-import KListItem from './KListItem.vue'
+import KGrid from './KGrid.vue'
+import KItem from './KItem.vue'
 
 export {
-  KCollection,
+  KCard,
   KFab,
   KFilter,
-  KCardItem,
-  KListItem
+  KGrid,
+  KItem
 }

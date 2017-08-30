@@ -32,7 +32,7 @@ export default {
       var filter = Object.assign({}, this.value)
       filter.name = this.search
       this.$emit('input', filter)
-      this.$emit('filterChanged', filter)
+      this.$emit('filter-changed', filter)
     })
   }
 }

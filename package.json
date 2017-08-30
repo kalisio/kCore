@@ -53,6 +53,7 @@
     "lib": "lib"
   },
   "dependencies": {
+    "2.4.2": "^1.0.0",
     "ajv": "^5.2.2",
     "annyang": "^2.6.0",
     "body-parser": "^1.17.1",

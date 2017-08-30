@@ -4,14 +4,14 @@
       Filter section 
     -->
     <div v-if="hasFilter">
-      <k-filter v-model="query" @filterChanged="onFilterChanged" />
+      <k-filter v-model="query" @filter-changed="onFilterChanged" />
     </div>
     <!-- 
       Items section 
     -->
     <div class="row">
       <div v-for="item in items" :key="item" :class="layout">
-        <k-renderer :item="item" :actions="filterActions('item')" @actionTrigerred="onActionTriggered" />
+        <k-renderer :item="item" :actions="filterActions('item')" @action-triggered="onActionTriggered" />
       </div>
     </div>
     <div class="self-center">
@@ -20,26 +20,20 @@
     <!--
       Fab section 
     -->
-    <k-fab :actions="filterActions()" @actionTrigerred="onActionTriggered" />
+    <k-fab :actions="filterActions()" @action-triggered="onActionTriggered" />
   </div>
 </template>
 
 <script>
-import { QList, QPagination } from 'quasar'
+import { QPagination } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-grid',
   components: {
-    QList,
     QPagination
   },
-  mixins: [
-    mixins.service,
-    mixins.createItem, 
-    mixins.deleteItem, 
-    mixins.editItem
-  ],
+  mixins: [mixins.service, mixins.itemActions],
   props: {
     layout: {
       type: String,
@@ -64,13 +58,36 @@ export default {
       return this.filter !== ''
     }
   },
-  watch: {
-    '$route': function $route(to, from) {
-      // React to route changes with the same component
-      
-    }
-  },
   methods: {
+    update () {
+      // Setup the configuration path using the service as a prefix
+      let confPath = `config.${this.service}_grid`
+      // Retrieve the number of items per page
+      this.nbItemsPerPage = this.$store.get(confPath + '.nbItemsPerPage', 12)
+      // Retrieve the required components
+      let loadComponent = this.$store.get('loadComponent')
+      let renderer = this.$store.get(confPath + '.renderer', 'collection/KCard')
+      if (this.renderer !== renderer) {
+        console.log('loading renderer')
+        this.$options.components['k-renderer'] = loadComponent(renderer)
+        this.renderer = renderer
+      }
+      let filter = this.$store.get(confPath + '.filter', 'collection/KFilter')
+      if (this.filter !== filter) {
+        this.$options.components['k-filter'] = loadComponent(filter)
+        this.filter = filter
+      }
+      let fab = this.$store.get(confPath + '.fab', 'collection/KFab')
+      if (this.fab !== fab) {
+        this.$options.components['k-fab'] = loadComponent(fab)
+        this.fab = fab
+      }
+      // Retrieve the actions
+      this.actions = this.$store.get(confPath + '.actions')
+      // Clears the query
+      this.query = {}
+      this.updateItems()
+    },
     updateItems () {
       if (this.isServiceValid()) {
         // Sets the number of items to be loaded
@@ -101,7 +118,7 @@ export default {
         return action.scope === type
       })
     },
-     onActionTriggered (handler, item) {
+    onActionTriggered (handler, item) {
       let action = this[handler]
       if (typeof action === 'function') {
         action.call(this, item)
@@ -111,22 +128,13 @@ export default {
     }
   },
   created () {
-    // Setup the configuration path using the service as a prefix
-    let confPath = `config.${this.service}`
-    // Retrieve the number of items per page
-    this.nbItemsPerPage = this.$store.get(confPath + '.nbItemsPerPage', 12)
-    // Retrieve the loadComponent function and load the components
-    // We need this so that we can dynamically load the component
-    // with a function that has previously been statically analyzed by the bundler (eg webpack)
-    let loadComponent = this.$store.get('loadComponent')
-    this.$options.components['k-filter'] = loadComponent(this.$store.get(confPath + '.filter', 'item/KFilter'))
-    this.$options.components['k-renderer'] = loadComponent(this.$store.get(confPath + '.renderer', 'item/KCard'))
-    this.$options.components['k-fab'] = loadComponent(this.$store.get(confPath + '.fab', 'collection/KFab'))
-     // Populate the vue once
-    this.updateItems()
+    this.renderer = ''
+    this.filter = ''
+    this.fab = ''
+    this.update()
     // Subscribe to the service changed event
     this.$on('service-changed', _ =>  {
-      this.updateItems()
+      this.update()
     })
   }
 }

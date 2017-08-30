@@ -11,7 +11,7 @@
           v-for="action in actions" 
           :key="action.id"
           color="secondary"
-          @click="$emit('actionTrigerred', action.handler)"
+          @click="$emit('action-triggered', action.handler)"
           :icon="action.icon">
         </q-fab-action>
     </q-fab>
@@ -21,7 +21,7 @@
     <q-btn v-else-if="actions.length === 1" round 
       color="primary"
       class="fixed"
-      @click="$emit('actionTrigerred', actions[0].handler)"
+      @click="$emit('action-triggered', actions[0].handler)"
       style="right: 18px; bottom: 18px">
       <q-icon :name="actions[0].icon" />
     </q-btn>

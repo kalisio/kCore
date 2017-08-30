@@ -25,7 +25,7 @@
     <q-card-separator />
     <q-card-actions>
       <template v-for="action in actions">   
-        <q-btn flat color="primary" :icon="action.icon" @click="$emit('actionTrigerred', action.handler, item)">
+        <q-btn flat color="primary" :icon="action.icon" @click="$emit('action-triggered', action.handler, item)">
           <small>{{ action.label }}</small>
         </q-btn>
       </template>
@@ -61,10 +61,6 @@ export default {
       default: function () {
         return []
       }
-    }
-  },
-  data () {
-    return {
     }
   }
 }

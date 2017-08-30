@@ -68,14 +68,13 @@ export default {
         if (this.mode === 'Editing') {
           // Edtng mode => patch the item
           // Do we need to patch a perspective of the item ?
-          let data ={}
           if (this.perspective !== '') {
+            let data = {}
             data[this.perspective] = values
+            this.patch(this.id, data)
           } else {
-            // Patch the entire item
-            data = values
+            this.update(this.id, values)
           }
-          this.patch(this.id, data)
         }
         else {
           // Creation mode => create the item
