@@ -46,7 +46,52 @@ export default {
       default: ''
     }
   },
+  watch: {
+    schema: function () {
+      this.build()
+    }
+  },
   methods: {
+    build () {
+      let loadComponent = this.$store.get('loadComponent')
+      // Initialize the values to an empty object
+      this.values = {}
+      // Iterate through the properties in order to 
+      // 1- assign a name corresponding to the key to enable a binding between properties and fields
+      // 2- assign a component key corresponding to the component path 
+      // 3- load the component if not previously loaded
+      Object.keys(this.schema.properties).forEach(propertyKey => {
+        let property = this.schema.properties[propertyKey]
+        // 1- assign a name corresponding to the key to enable a binding between properties and fields
+        property['name'] = propertyKey
+        // 2- assign a component key corresponding to the component path
+        let componentKey = _.kebabCase(property.field.component)
+        property['componentKey'] = componentKey
+        // 3- load the component if not previously loaded
+        if (!this.$options.components[componentKey]) {
+          this.$options.components[componentKey] = loadComponent(property.field.component)
+        }
+        // 4 - assign the default value if any
+        if (property.default) {
+          this.values[propertyKey] = property.default
+        }
+      })
+      // Create the AJV instance
+      this.ajv = new Ajv({ 
+        allErrors: true,
+        coerceTypes: true,
+        $data: true
+      })
+      // Compile the schema
+      this.validator = this.ajv.compile(this.schema)
+    },
+    fill (values) {
+      Object.keys(values).forEach(field => {
+        if (this.$refs[field]) {
+          this.$refs[field][0].fill(values[field])
+        }
+      })
+    },
     touch (field, value) {
       // this.$store the value if not empty
       if (_.isEmpty(value))  {
@@ -71,13 +116,6 @@ export default {
       }
       // Validate the field
       this.$refs[field][0].validate()
-    },
-    fill (values) {
-      Object.keys(values).forEach(field => {
-        if (this.$refs[field]) {
-          this.$refs[field][0].fill(values[field])
-        }
-      })
     },
     submit () {
       // Validate this form
@@ -104,32 +142,7 @@ export default {
     }
   },
   created () {
-    let loadComponent = this.$store.get('loadComponent')
-    // Initialize the values to an empty object
-    this.values = {}
-    // Iterate through the properties in order to 
-    // 1- assign a name corresponding to the key to enable a binding between properties and fields
-    // 2- assign a component key corresponding to the component path 
-    // 3- load the component if not previously loaded
-    Object.keys(this.schema.properties).forEach(propertyKey => {
-      let property = this.schema.properties[propertyKey]
-      property['name'] = propertyKey
-      // is the field already loaded ?
-      let componentKey = _.kebabCase(property.field.component)
-      property['componentKey'] = componentKey
-       // is the component already loaded ?
-      if (!this.$options.components[componentKey]) {
-        this.$options.components[componentKey] = loadComponent(property.field.component)
-      } 
-    })
-    // Create the AJV instance
-    this.ajv = new Ajv({ 
-      allErrors: true,
-      coerceTypes: true,
-      $data: true
-    })
-    // Compile the schema
-    this.validator = this.ajv.compile(this.schema)
+    this.build()
   }
 }
 </script>
