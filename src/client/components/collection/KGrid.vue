@@ -98,7 +98,7 @@ export default {
           })
         }
         // find the desire items
-        this.find({
+        this.serviceFind({
           rx: {
             listStrategy: 'always'
           },

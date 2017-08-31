@@ -26,7 +26,7 @@ let itemActionsMixin = {
             label: 'Delete',
             handler: () => {
               // delete the required item
-              this.remove(item._id)
+              this.serviceRemove(item._id)
             }
           }
         ]

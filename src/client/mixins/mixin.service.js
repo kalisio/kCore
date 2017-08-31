@@ -29,22 +29,22 @@ let serviceMixin = {
       }
       this.$emit('service-changed')
     },
-    find (params) {
+    serviceFind (params) {
       return this._service.find(params) 
     },
-    get (id, params) {
+    serviceGet (id, params) {
       return this._service.get(id, params)
     },
-    create (data, params) { 
+    serviceCreate (data, params) { 
       return this._service.create(data, params) 
     },
-    update (id, data, params) { 
+    serviceUpdate (id, data, params) { 
       return this._service.update(id, data, params) 
     },
-    patch (id, data, params) { 
+    servicePatch (id, data, params) { 
       return this._service.patch(id, data, params) 
     },
-    remove (id, params) { 
+    serviceRemove (id, params) { 
       return this._service.remove(id, params) 
     }
   },

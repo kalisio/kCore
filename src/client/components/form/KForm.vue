@@ -128,7 +128,9 @@ export default {
       // Validate this form
       // If the validation fails, it iterates though the errors in order
       // to update the validation status of each field
-      if (! this.validator(this.fieldValues)) {
+      if (this.validator(this.fieldValues)) {
+        this.$emit('submitted', this.fieldValues)
+      } else {
         this.validator.errors.forEach(error => {
           if (error.keyword === 'required') {
             let property = error.params.missingProperty
@@ -140,9 +142,7 @@ export default {
             }
           }
         })
-      } else {
-        this.$emit('submitted', this.fieldValues)
-      }
+      } 
     },
     clear () {
       Object.keys(this.schema.properties).forEach(propertyKey => {

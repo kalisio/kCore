@@ -66,7 +66,7 @@ export default {
           if (this.perspective) {
             params = { query: { $select: [this.perspective] } }
           }
-          this.get(this.id, params)
+          this.serviceGet(this.id, params)
           .then(values => {
             if (this.perspective !== '') {
               this.$refs.form.fill(values[this.perspective])
@@ -89,14 +89,14 @@ export default {
           if (this.perspective !== '') {
             let data = {}
             data[this.perspective] = values
-            this.patch(this.id, data)
+            this.servicePatch(this.id, data)
           } else {
-            this.update(this.id, values)
+            this.serviceUpdate(this.id, values)
           }
         }
         else {
           // Creation mode => create the item
-          this.create(values)
+          this.serviceCreate(values)
         }
       }
     },
