@@ -10,4 +10,5 @@ module.exports = async function () {
     servicesPath,
     perspectives: ['profile', 'github', 'google']
   })
+  app.createService('tags', { modelsPath, servicesPath })
 }

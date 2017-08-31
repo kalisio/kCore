@@ -1,5 +1,6 @@
 import moment from 'moment'
 import _ from 'lodash'
+import { ObjectID } from 'mongodb'
 // import makeDebug from 'debug'
 
 // const debug = makeDebug('kalisio:kCore')
@@ -65,6 +66,7 @@ export function populateObject (serviceField, idField, nameServiceAs, nameIdAs) 
 
     // Check if not already done
     if (typeof _.get(params, nameIdAs || idField) === 'object') return Promise.resolve(hook)
+    if (typeof _.get(params, nameServiceAs || serviceField) === 'object') return Promise.resolve(hook)
 
     // Get service where we can find the object to populate
     // Make hook usable with query params as well and service name or real object
@@ -79,8 +81,7 @@ export function populateObject (serviceField, idField, nameServiceAs, nameIdAs) 
       throw new Error(`No ${serviceField} given to dynamically populate.`)
     }
     // Then the object ID
-    let id = _.get(data, idField) || _.get(query, idField)
-
+    let id = _.get(data, idField) || _.get(query, idField) || _.get(hook, 'id')
     if (!id) {
       throw new Error(`Cannot find the ${idField} to dynamically populate.`)
     }
@@ -88,8 +89,8 @@ export function populateObject (serviceField, idField, nameServiceAs, nameIdAs) 
     // Set the retrieved service on the same field or given one in hook params
     _.set(params, nameServiceAs || serviceField, service)
     // Let it work with id string or real object
-    if (typeof id === 'string') {
-      return service.get(id, { user: hook.params.user }).then(object => {
+    if (typeof id === 'string' || ObjectID.isValid(id)) {
+      return service.get(id.toString(), { user: hook.params.user }).then(object => {
         if (!object) {
           throw new Error(`Cannot find object with id ${id} to dynamically populate.`)
         }
@@ -114,6 +115,7 @@ export function populateObjects (serviceField, idField, nameServiceAs, nameIdAs)
 
     // Check if not already done
     if (Array.isArray(_.get(params, nameIdAs || idField))) return Promise.resolve(hook)
+    if (typeof _.get(params, nameServiceAs || serviceField) === 'object') return Promise.resolve(hook)
 
     // Get service where we can find the object to populate
     // Make hook usable with query params as well and service name or real object
@@ -132,7 +134,7 @@ export function populateObjects (serviceField, idField, nameServiceAs, nameIdAs)
     _.set(params, nameServiceAs || serviceField, service)
 
     // Then the object ID
-    let id = _.get(data, idField) || _.get(query, idField)
+    let id = _.get(data, idField) || _.get(query, idField) || _.get(hook, 'id')
     // If no ID given we perform a find, no pagination to be sure we get all objects
     if (!id) {
       return service.find({ paginate: false }, { user: hook.params.user }).then(objects => {
@@ -142,8 +144,8 @@ export function populateObjects (serviceField, idField, nameServiceAs, nameIdAs)
       })
     } else {
       // Let it work with id string or real object
-      if (typeof id === 'string') {
-        return service.get(id, { user: hook.params.user }).then(object => {
+      if (typeof id === 'string' || ObjectID.isValid(id)) {
+        return service.get(id.toString(), { user: hook.params.user }).then(object => {
           if (!object) {
             throw new Error(`Cannot find object for ${idField} = ${id} to dynamically populate.`)
           }
