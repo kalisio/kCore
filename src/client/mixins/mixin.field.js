@@ -44,28 +44,40 @@ let fieldMixin = {
     }
   },
   methods: {
+    value () {
+      return this.model
+    },
+    clear () {
+      this.assign(this.property.default ? this.property.default : '')
+    },
+    restore () {
+      this.assign(this.property.backup)
+    },
+    fill (value) {
+      this.property['backup'] = value
+      this.assign(value)
+    },
+    assign (value) {
+      if (this.model !== value) {
+        this.model = value
+        this.touch()
+      }
+    },
+    touch () {
+      this.$emit('field-touched', this.property.name, this.model)
+    },
     validate () {
       this.error = ''
     },
     invalidate (error) {
       this.error = error
-    },
-    touch () {
-      this.$emit('touched', this.property.name, this.model)
-    },
-    value () {
-      return this.model
-    },
-    fill (value) {
-      this.model = value
-      this.touch()
     }
   },
   mounted () {
-    // Initialize the model with a default value if any
-    if (this.property.default) {
-      this.fill(this.property.default)
-    }
+    // Clear the model (assign a default value if any)
+    this.clear()
+    // Tell the form the field is ready
+    this.$emit('field-ready', this.property.name)
   }
 }
 

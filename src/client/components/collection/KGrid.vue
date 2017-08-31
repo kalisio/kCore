@@ -67,7 +67,6 @@ export default {
       let loadComponent = this.$store.get('loadComponent')
       let renderer = this.$store.get(confPath + '.renderer', 'collection/KCard')
       if (this.renderer !== renderer) {
-        console.log('loading renderer')
         this.$options.components['k-renderer'] = loadComponent(renderer)
         this.renderer = renderer
       }

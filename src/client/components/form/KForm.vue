@@ -9,7 +9,8 @@
         :ref="property.name"
         :property="property"
         :display="schema.form.properties"
-        @touched="touch"
+        @field-touched="onFieldTouched"
+        @field-ready="onFieldReady"
       />
     </template>
     <!--
@@ -17,6 +18,8 @@
     -->
     <div class="row justify-around" style="padding: 18px">
       <q-btn v-if="cancelButton !== ''" color="primary" @click="cancel">{{ cancelButton }}</q-btn>
+      <q-btn v-if="clearButton !== ''" color="primary" @click="clear">{{ clearButton }}</q-btn>
+      <q-btn v-if="restoreButton !== ''" color="primary" @click="restore">{{ restoreButton }}</q-btn>
       <q-btn color="primary" @click="submit">{{ submitButton }}</q-btn>
     </div>
   </div>
@@ -41,68 +44,39 @@ export default {
       type: String,
       default: 'Submit',
     },
+    clearButton: {
+      type: String,
+      default: ''
+    },
+    restoreButton: {
+      type: String,
+      default: ''
+    },
     cancelButton: {
       type: String,
       default: ''
     }
   },
-  watch: {
-    schema: function () {
-      this.build()
-    }
-  },
   methods: {
-    build () {
-      let loadComponent = this.$store.get('loadComponent')
-      // Initialize the values to an empty object
-      this.values = {}
-      // Iterate through the properties in order to 
-      // 1- assign a name corresponding to the key to enable a binding between properties and fields
-      // 2- assign a component key corresponding to the component path 
-      // 3- load the component if not previously loaded
-      Object.keys(this.schema.properties).forEach(propertyKey => {
-        let property = this.schema.properties[propertyKey]
-        // 1- assign a name corresponding to the key to enable a binding between properties and fields
-        property['name'] = propertyKey
-        // 2- assign a component key corresponding to the component path
-        let componentKey = _.kebabCase(property.field.component)
-        property['componentKey'] = componentKey
-        // 3- load the component if not previously loaded
-        if (!this.$options.components[componentKey]) {
-          this.$options.components[componentKey] = loadComponent(property.field.component)
-        }
-        // 4 - assign the default value if any
-        if (property.default) {
-          this.values[propertyKey] = property.default
-        }
-      })
-      // Create the AJV instance
-      this.ajv = new Ajv({ 
-        allErrors: true,
-        coerceTypes: true,
-        $data: true
-      })
-      // Compile the schema
-      this.validator = this.ajv.compile(this.schema)
+    onFieldReady (field) {
+      // Increments the number of ready fields
+      this.nbFieldReady++
+      // Check whether the form is ready, that is to say all the fields are ready
+      if (this.nbFieldReady === _.size(this.schema.properties)) {
+        this.$emit('form-ready')
+      }
     },
-    fill (values) {
-      Object.keys(values).forEach(field => {
-        if (this.$refs[field]) {
-          this.$refs[field][0].fill(values[field])
-        }
-      })
-    },
-    touch (field, value) {
+    onFieldTouched (field, value) {
       // this.$store the value if not empty
       if (_.isEmpty(value))  {
-        if (this.values[field]) {
-          delete this.Values[field]
+        if (this.fieldValues[field]) {
+          delete this.fieldValues[field]
         }
       } else {
-        this.values[field] = value
+        this.fieldValues[field] = value
       }
       // Validate the form 
-      if (! this.validator(this.values)) {
+      if (! this.validator(this.fieldValues)) {
         // If not value check whether an error is assigned to the field
         for (let i = 0; i < this.validator.errors.length; i++) {
           let error = this.validator.errors[i]
@@ -117,11 +91,44 @@ export default {
       // Validate the field
       this.$refs[field][0].validate()
     },
+    build () {
+      // Compile the schema
+      this.validator = this.ajv.compile(this.schema)
+      // Clear the field values/states
+      this.fieldValues = {}
+      this.nbFieldReady = 0
+      // 1- assign a name corresponding to the key to enable a binding between properties and fields
+      // 2- assign a component key corresponding to the component path 
+      // 3- load the component if not previously loaded
+      let loadComponent = this.$store.get('loadComponent')
+      Object.keys(this.schema.properties).forEach(propertyKey => {
+        let property = this.schema.properties[propertyKey]
+        // 1- assign a name corresponding to the key to enable a binding between properties and fields
+        property['name'] = propertyKey
+        // 2- assign a component key corresponding to the component path
+        let componentKey = _.kebabCase(property.field.component)
+        property['componentKey'] = componentKey
+        // 3- load the component if not previously loaded
+        if (!this.$options.components[componentKey]) {
+          this.$options.components[componentKey] = loadComponent(property.field.component)
+        } else {
+          // Otherwise tell the field is ready
+          this.onFieldReady(propertyKey)
+        }
+      })
+    },
+    fill (values) {
+      Object.keys(values).forEach(field => {
+        if (this.$refs[field]) {
+          this.$refs[field][0].fill(values[field])
+        } 
+      })
+    },
     submit () {
       // Validate this form
       // If the validation fails, it iterates though the errors in order
       // to update the validation status of each field
-      if (! this.validator(this.values)) {
+      if (! this.validator(this.fieldValues)) {
         this.validator.errors.forEach(error => {
           if (error.keyword === 'required') {
             let property = error.params.missingProperty
@@ -134,14 +141,30 @@ export default {
           }
         })
       } else {
-        this.$emit('submitted', this.values)
+        this.$emit('submitted', this.fieldValues)
       }
+    },
+    clear () {
+      Object.keys(this.schema.properties).forEach(propertyKey => {
+        this.$refs[propertyKey][0].clear()
+      })
+    },
+    restore () {
+      Object.keys(this.schema.properties).forEach(propertyKey => {
+        this.$refs[propertyKey][0].restore()
+      })
     },
     cancel () {
       this.$emit('canceled')
     }
   },
   created () {
+    // Create the AJV instance
+    this.ajv = new Ajv({ 
+      allErrors: true,
+      coerceTypes: true,
+      $data: true
+    })
     this.build()
   }
 }

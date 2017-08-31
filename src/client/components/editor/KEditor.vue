@@ -3,8 +3,10 @@
     <k-form v-if="schema"
       ref="form"
       :schema="schema"
-      :submit-button="mode === 'Editing' ? 'Update':'Create'" 
-      @submitted="onSubmitted" />
+      :submit-button="mode === 'Editing' ? 'Update':'Create'"
+      @submitted="onSubmitted" 
+      @canceled="onCanceled" 
+      @form-ready="onFormReady" />
   </div>
 </template>
 
@@ -35,12 +37,28 @@ export default {
     }
   },
   methods: {
+    update () {
+      let schemaName = this.service
+      if (this.id) {
+        schemaName += '.update' 
+      } else {
+        schemaName += ".create"
+      }
+      if (this.schemaName !== schemaName) {
+        this.schema = null
+        let loadSchema = this.$store.get('loadSchema')
+        loadSchema(schemaName)
+        .then(schema => {
+          // Assigns the schema to this editor
+          this.schemaName = schemaName
+          this.schema = schema
+        })
+      } else {
+        this.updateObject()
+      }
+    },
     updateObject () {
       if (this.isServiceValid()) {
-        // Retrieve the object id to be edited
-        // if (this.$store.get(this.object)) {
-        //  this.id = this.$store.get(this.object)._id
-        //}
         // Do we need to get the item ?
         if (this.id)  {
           // Do we need to apply a selection using a specified perspective ?
@@ -81,27 +99,18 @@ export default {
           this.create(values)
         }
       }
+    },
+    onCanceled () {
+      // TODO
+    },
+    onFormReady () {
+      this.updateObject()
     }
   },
   created () {
-    // Retrieve the schema to build the form
-    let loadSchema = this.$store.get('loadSchema')
-    let schemaName = this.service
-    if (this.id) {
-      schemaName += '.update' 
-    } else {
-      schemaName +=".create"
-    }
-    loadSchema(schemaName)
-    .then(schema => {
-      // Assigns the schema to this editor
-      this.schema = schema
-      this.updateObject()
-      // Subscribe to the service changed event
-      this.$on('service-changed', _ =>  {
-        this.updateObject()
-      })
-    })
+    this.schemaName = ''
+    this.update()
+    this.$on('service-changed', _ =>  this.update())
   }
 }
 </script>
