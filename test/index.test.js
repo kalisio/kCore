@@ -7,7 +7,8 @@ import chailint from 'chai-lint'
 import core, { kalisio } from '../src'
 
 describe('kCore', () => {
-  let app, server, port, baseUrl, accessToken, userService, userObject
+  let app, server, port, baseUrl, accessToken,
+    userService, userObject, tagService
 
   before(() => {
     chailint(chai, util)
@@ -22,10 +23,12 @@ describe('kCore', () => {
     expect(typeof core).to.equal('function')
   })
 
-  it('registers the user service', (done) => {
+  it('registers the services', (done) => {
     app.configure(core)
     userService = app.getService('users')
     expect(userService).toExist()
+    tagService = app.getService('tags')
+    expect(tagService).toExist()
     // Now app is configured launch the server
     server = app.listen(port)
     server.once('listening', _ => done())
@@ -58,6 +61,55 @@ describe('kCore', () => {
     return userService.find({ query: { $select: ['profile'] } })
     .then(users => {
       expect(users.data[0].profile.phone).toExist()
+    })
+  })
+
+  it('creates a user tag', () => {
+    return tagService.create({
+      scope: 'skills',
+      value: 'developer'
+    }, {
+      query: {
+        resource: userObject._id.toString(),
+        resourcesService: 'users'
+      }
+    })
+    .then(tag => {
+      expect(tag).toExist()
+      expect(tag.count).to.equal(1)
+      return tagService.find({ query: { value: 'developer' } })
+    })
+    .then(tags => {
+      expect(tags.data.length > 0).beTrue()
+      expect(tags.data[0].scope).to.equal('skills')
+      return userService.find({ query: { name: 'test-user' } })
+    })
+    .then(users => {
+      expect(users.data.length > 0).beTrue()
+      expect(users.data[0].tags).toExist()
+      expect(users.data[0].tags.length > 0).beTrue()
+    })
+  })
+
+  it('removes a user tag', () => {
+    return tagService.remove(userObject._id, {
+      query: {
+        scope: 'skills',
+        value: 'developer',
+        resourcesService: 'users'
+      }
+    })
+    .then(tag => {
+      expect(tag).toExist()
+      return tagService.find({ query: { value: 'developer' } })
+    })
+    .then(tags => {
+      expect(tags.data.length === 0).beTrue()
+      return userService.find({ query: { name: 'test-user' } })
+    })
+    .then(users => {
+      expect(users.data.length > 0).beTrue()
+      expect(users.data[0].tags.length === 0).beTrue()
     })
   })
 
