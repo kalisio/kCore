@@ -47,19 +47,8 @@ let fieldMixin = {
     onChanged () {
       this.$emit('field-changed', this.property.name, this.model)
     },
-    value () {
-      return this.model
-    },
-    reset () {
-      this.assign(this.property.default ? this.property.default : '')
-    },
     fill (value) {
-      this.property.default = value
-      this.assign(value)
-    },
-    assign (value) {
       this.model = value
-      this.onChanged()
     },
     validate () {
       this.error = ''
@@ -69,8 +58,8 @@ let fieldMixin = {
     }
   },
   mounted () {
-    // Clear the model (assign a default value if any)
-    this.reset()
+    // Clear the model (assign a default value if not)
+    this.model = this.property.default ? this.property.default : ''
     // Tell the form the field is ready
     this.$emit('field-ready')
   }
