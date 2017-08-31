@@ -80,7 +80,7 @@ export default {
         }
       }
     },
-    onSubmitted (values) {
+    onSubmitted (values, done) {
       if (this.isServiceValid()) {
         // Update the item 
         if (this.mode === 'Editing') {
@@ -99,6 +99,7 @@ export default {
           this.serviceCreate(values)
         }
       }
+      done()
     },
     onCanceled () {
       // TODO

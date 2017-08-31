@@ -19,7 +19,7 @@
     <div class="row justify-around" style="padding: 18px">
       <q-btn v-if="cancelButton !== ''" color="primary" @click="cancel">{{ cancelButton }}</q-btn>
       <q-btn v-if="resetButton !== ''" color="primary" @click="reset">{{ resetButton }}</q-btn>
-      <q-btn :disabled="!canSubmit" color="primary" @keyup.enter="submit" @click="submit">{{ submitButton }}</q-btn>
+      <q-btn loader color="primary" @click="submit">{{ submitButton }}</q-btn>
     </div>
   </div>
 </template>
@@ -32,7 +32,7 @@ import { QBtn } from 'quasar'
 export default {
   name: 'k-form',
   components: {
-    QBtn
+    QBtn,
   },
   props: {
     schema: {
@@ -50,11 +50,6 @@ export default {
     cancelButton: {
       type: String,
       default: ''
-    }
-  },
-  data () {
-    return {
-      canSubmit: false
     }
   },
   methods: {
@@ -77,8 +72,6 @@ export default {
       }
       // Checks whether the form is valid
       if (! this.validator(this.values)) {
-        // If not disable submit button
-        this.canSubmit = false
         // Checks whether the touched field has an error
         let error = this.hasFieldError(field)
         if (error) {
@@ -89,7 +82,6 @@ export default {
       } 
       // Validate the field
       this.$refs[field][0].validate()
-      this.canSubmit = true
     },
     hasFieldError (field) {
       for (let i = 0; i < this.validator.errors.length; i++) {
@@ -106,7 +98,6 @@ export default {
       return null
     },
     build () {
-      this.canSubmit = false
       // Compile the schema
       this.validator = this.ajv.compile(this.schema)
       // Clear the field values/states
@@ -152,7 +143,6 @@ export default {
       return true
     },
     fill (values) {
-      this.canSubmit = false
       this.values = {}
       Object.keys(this.schema.properties).forEach(property => {
         let value = _.get(values, property, '')
@@ -165,7 +155,6 @@ export default {
       this.validate()
     },
     reset () {
-      this.canSubmit = false
       this.values = {}
       Object.keys(this.schema.properties).forEach(property => {
         let value = _.get(this.schema.properties[property], 'default', '')
@@ -174,14 +163,15 @@ export default {
       })
       this.validate()
     },
-    submit () {
-      this.canSubmit = false
-      if (this.validate()) {
-        this.$emit('submitted', this.values)
-      }
-    },
     cancel () {
       this.$emit('canceled')
+    },
+    submit (event, done) {
+      if (this.validate()) {
+        this.$emit('submitted', this.values, done)
+      } else  {
+        done()
+      }
     }
   },
   created () {
