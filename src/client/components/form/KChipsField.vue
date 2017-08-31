@@ -9,7 +9,7 @@
   >
     <q-chips-input 
       v-model="model" 
-      @change="touch" />
+      @change="onChanged" />
   </q-field>
 </template>
 

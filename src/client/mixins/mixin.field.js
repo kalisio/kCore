@@ -44,27 +44,22 @@ let fieldMixin = {
     }
   },
   methods: {
+    onChanged () {
+      this.$emit('field-changed', this.property.name, this.model)
+    },
     value () {
       return this.model
     },
-    clear () {
+    reset () {
       this.assign(this.property.default ? this.property.default : '')
     },
-    restore () {
-      this.assign(this.property.backup)
-    },
     fill (value) {
-      this.property['backup'] = value
+      this.property.default = value
       this.assign(value)
     },
     assign (value) {
-      if (this.model !== value) {
-        this.model = value
-        this.touch()
-      }
-    },
-    touch () {
-      this.$emit('field-touched', this.property.name, this.model)
+      this.model = value
+      this.onChanged()
     },
     validate () {
       this.error = ''
@@ -75,9 +70,9 @@ let fieldMixin = {
   },
   mounted () {
     // Clear the model (assign a default value if any)
-    this.clear()
+    this.reset()
     // Tell the form the field is ready
-    this.$emit('field-ready', this.property.name)
+    this.$emit('field-ready')
   }
 }
 

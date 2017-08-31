@@ -9,7 +9,7 @@
         :ref="property.name"
         :property="property"
         :display="schema.form.properties"
-        @field-touched="onFieldTouched"
+        @field-changed="onFieldChanged"
         @field-ready="onFieldReady"
       />
     </template>
@@ -18,9 +18,8 @@
     -->
     <div class="row justify-around" style="padding: 18px">
       <q-btn v-if="cancelButton !== ''" color="primary" @click="cancel">{{ cancelButton }}</q-btn>
-      <q-btn v-if="clearButton !== ''" color="primary" @click="clear">{{ clearButton }}</q-btn>
-      <q-btn v-if="restoreButton !== ''" color="primary" @click="restore">{{ restoreButton }}</q-btn>
-      <q-btn color="primary" @click="submit">{{ submitButton }}</q-btn>
+      <q-btn v-if="resetButton !== ''" color="primary" @click="reset">{{ resetButton }}</q-btn>
+      <q-btn :disabled="!canSubmit" color="primary" @keyup.enter="submit" @click="submit">{{ submitButton }}</q-btn>
     </div>
   </div>
 </template>
@@ -44,11 +43,7 @@ export default {
       type: String,
       default: 'Submit',
     },
-    clearButton: {
-      type: String,
-      default: ''
-    },
-    restoreButton: {
+    resetButton: {
       type: String,
       default: ''
     },
@@ -57,8 +52,13 @@ export default {
       default: ''
     }
   },
+  data () {
+    return {
+      canSubmit: false
+    }
+  },
   methods: {
-    onFieldReady (field) {
+    onFieldReady () {
       // Increments the number of ready fields
       this.nbFieldReady++
       // Check whether the form is ready, that is to say all the fields are ready
@@ -66,7 +66,7 @@ export default {
         this.$emit('form-ready')
       }
     },
-    onFieldTouched (field, value) {
+    onFieldChanged (field, value) {
       // this.$store the value if not empty
       if (_.isEmpty(value))  {
         if (this.fieldValues[field]) {
@@ -75,23 +75,38 @@ export default {
       } else {
         this.fieldValues[field] = value
       }
-      // Validate the form 
+      // Checks whether the form is valid
       if (! this.validator(this.fieldValues)) {
-        // If not value check whether an error is assigned to the field
-        for (let i = 0; i < this.validator.errors.length; i++) {
-          let error = this.validator.errors[i]
-          let property = _.replace(error.dataPath, '.', '')
-          if (property === field) {
-            // Found an error assigned to the field then invalidate it
-            this.$refs[field][0].invalidate(error.message)
-            return
-          }
+        // If not disable submit button
+        this.canSubmit = false
+        // Checks whether the touched field has an error
+        let error = this.hasFieldError(field)
+        if (error) {
+          // Invalidate the field
+          this.$refs[field][0].invalidate(error.message)
+          return
         }
-      }
+      } 
       // Validate the field
       this.$refs[field][0].validate()
+      this.canSubmit = true
+    },
+    hasFieldError (field) {
+      for (let i = 0; i < this.validator.errors.length; i++) {
+        let error = this.validator.errors[i]
+        // Check whether the field is required
+        if (error.keyword === 'required') {
+          if (error.params.missingProperty === field) return error
+        } else {
+          // Check whether is the field in invalid
+          let fieldDataPath = "." + field
+          if (error.dataPath === fieldDataPath) return error
+        }
+      }
+      return null
     },
     build () {
+      this.canSubmit = false
       // Compile the schema
       this.validator = this.ajv.compile(this.schema)
       // Clear the field values/states
@@ -113,46 +128,35 @@ export default {
           this.$options.components[componentKey] = loadComponent(property.field.component)
         } else {
           // Otherwise tell the field is ready
-          this.onFieldReady(propertyKey)
+          this.onFieldReady()
         }
       })
     },
     fill (values) {
       Object.keys(values).forEach(field => {
-        if (this.$refs[field]) {
-          this.$refs[field][0].fill(values[field])
-        } 
+        if (this.$refs[field]) this.$refs[field][0].fill(values[field])
       })
+      this.canSubmit = false
     },
     submit () {
+      this.canSubmit = false
       // Validate this form
       // If the validation fails, it iterates though the errors in order
       // to update the validation status of each field
       if (this.validator(this.fieldValues)) {
         this.$emit('submitted', this.fieldValues)
       } else {
-        this.validator.errors.forEach(error => {
-          if (error.keyword === 'required') {
-            let property = error.params.missingProperty
-            this.$refs[property][0].invalidate(error.message)
-          } else {
-            let property = _.replace(error.dataPath, '.', '')
-            if (Object.keys(this.schema.properties).includes(property)) {
-              this.$refs[property][0].invalidate(error.message)
-            }
-          }
+        this.schema.properties.forEach(property => {
+          let error = this.hasFieldError(property)
+          if (error) this.$refs[property][0].invalidate(error.message)
         })
       } 
     },
-    clear () {
+    reset () {
       Object.keys(this.schema.properties).forEach(propertyKey => {
-        this.$refs[propertyKey][0].clear()
+        this.$refs[propertyKey][0].reset()
       })
-    },
-    restore () {
-      Object.keys(this.schema.properties).forEach(propertyKey => {
-        this.$refs[propertyKey][0].restore()
-      })
+      this.canSubmit = false
     },
     cancel () {
       this.$emit('canceled')

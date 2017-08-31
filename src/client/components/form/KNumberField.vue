@@ -10,7 +10,7 @@
     <q-input
       type="number"
       v-model="model"
-      @blur="touch" />
+      @change="onChanged" />
   </q-field>
 </template>
 
