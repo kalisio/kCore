@@ -60,8 +60,12 @@ let fieldMixin = {
     }
   },
   mounted () {
-    // Clear the model (assign a default value if not)
-    this.model = this.property.default ? this.property.default : ''
+    // Init the model with the default value if any
+    if (this.property.default) {
+      this.fill(this.property.default)
+      // The the form to validate this field
+      this.onChanged() 
+    }
     // Tell the form the field is ready
     this.$emit('field-ready')
   }
