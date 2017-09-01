@@ -4,7 +4,9 @@
       Filter section 
     -->
     <div v-if="hasFilter">
-      <k-filter @filter-changed="onFilterChanged" />
+      <k-autocomplete />
+      <k-pattern-filter @filter-changed="onFilterChanged" />
+      <k-tag-filter @filter-changed="onFilterChanged" />
     </div>
     <!-- 
       Items section 
@@ -26,12 +28,16 @@
 
 <script>
 import { QPagination } from 'quasar'
+import { KAutocomplete, KTagFilter, KPatternFilter } from '.'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-grid',
   components: {
-    QPagination
+    QPagination,
+    KAutocomplete,
+    KTagFilter,
+    KPatternFilter
   },
   mixins: [mixins.service, mixins.itemActions],
   props: {
@@ -114,6 +120,7 @@ export default {
     },
     onFilterChanged (filterQuery) {
       this.filterQuery = Object.assign({}, filterQuery)
+      console.log(filterQuery)
       this.updateItems()
     },
     filterActions (type = '') {
