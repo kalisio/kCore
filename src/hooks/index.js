@@ -1,5 +1,4 @@
 export * from './query'
 export * from './logger'
-export * from './provider'
-export * from './model'
+export * from './hook.model'
 export * from './tags'

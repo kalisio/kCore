@@ -55,7 +55,7 @@ export function removeTag (hook) {
   }
   const value = hook.params.query.value
   const scope = hook.params.query.scope
-  
+
   return tagService.find({ value, scope })
   .then(result => {
     // If it already exist decrease counter and erase it if not used anymore
@@ -106,7 +106,6 @@ export function tagResource (hook) {
     return Promise.resolve(hook)
   }
 }
-
 
 export function untagResource (hook) {
   if (hook.type !== 'after') {

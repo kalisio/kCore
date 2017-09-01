@@ -20,3 +20,22 @@ export function processPerspectives (hook) {
     }
   })
 }
+
+// The hook serialize allows to copy/move some properties within the objects holded by the hook
+// It applies an array of rules defined by:
+// - source: the path to the property to be copied
+// - target: the path where to copy the property
+// - delete: a flag to define whether the hook has to delete the source property
+export function serialize (rules) {
+  return function (hook) {
+    rules.forEach(rule => {
+      const source = _.get(hook.data, rule.source)
+      if (!_.isNil(source)) {
+        _.set(hook.data, rule.target, source)
+        if (rule.delete) {
+          _.unset(hook.data, rule.source)
+        }
+      }
+    })
+  }
+}
