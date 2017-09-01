@@ -49,13 +49,12 @@ export function removeTag (hook) {
   }
 
   const tagService = hook.service
-  const resourcesService = hook.params.resourcesService
   if (!hook.params || !hook.params.query || !hook.params.query.value || !hook.params.query.scope) {
     throw new BadRequest('Scope and value should be provided to create a tag')
   }
   const value = hook.params.query.value
   const scope = hook.params.query.scope
-  
+
   return tagService.find({ value, scope })
   .then(result => {
     // If it already exist decrease counter and erase it if not used anymore
@@ -106,7 +105,6 @@ export function tagResource (hook) {
     return Promise.resolve(hook)
   }
 }
-
 
 export function untagResource (hook) {
   if (hook.type !== 'after') {

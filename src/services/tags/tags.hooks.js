@@ -1,6 +1,6 @@
 import { populateResource, addTag, removeTag, tagResource, untagResource } from '../../hooks'
-const { authenticate } = require('feathers-authentication').hooks
 import { disallow, iff } from 'feathers-hooks-common'
+const { authenticate } = require('feathers-authentication').hooks
 
 module.exports = {
   before: {

@@ -133,7 +133,7 @@ export function populateObjects (serviceField, idField, nameServiceAs, nameIdAs)
       debug(`Skipping populating ${serviceProperty} as already done`)
       return Promise.resolve(hook)
     }
-    
+
     // Get service where we can find the object to populate
     // Make hook usable with query params as well and service name or real object
     let service = _.get(data, serviceField) || _.get(query, serviceField)

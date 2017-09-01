@@ -1,5 +1,3 @@
-import { Events } from 'quasar'
-
 let serviceMixin = {
   props: {
     context: {
@@ -30,22 +28,22 @@ let serviceMixin = {
       this.$emit('service-changed')
     },
     serviceFind (params) {
-      return this._service.find(params) 
+      return this._service.find(params)
     },
     serviceGet (id, params) {
       return this._service.get(id, params)
     },
-    serviceCreate (data, params) { 
-      return this._service.create(data, params) 
+    serviceCreate (data, params) {
+      return this._service.create(data, params)
     },
-    serviceUpdate (id, data, params) { 
-      return this._service.update(id, data, params) 
+    serviceUpdate (id, data, params) {
+      return this._service.update(id, data, params)
     },
-    servicePatch (id, data, params) { 
-      return this._service.patch(id, data, params) 
+    servicePatch (id, data, params) {
+      return this._service.patch(id, data, params)
     },
-    serviceRemove (id, params) { 
-      return this._service.remove(id, params) 
+    serviceRemove (id, params) {
+      return this._service.remove(id, params)
     }
   },
   created () {
