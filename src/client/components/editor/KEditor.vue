@@ -4,6 +4,7 @@
       ref="form"
       :schema="schema"
       :submit-button="mode === 'Editing' ? 'Update':'Create'"
+      :cancel-button="cancelButton"
       @submitted="onSubmitted" 
       @canceled="onCanceled" 
       @form-ready="onFormReady" />
@@ -32,8 +33,9 @@ export default {
   },
   data () {
     return {
-      mode: 'Creation',
-      schema: null,
+      mode: 'Edition',
+      cancelButton: '',
+      schema: null
     }
   },
   methods: {
@@ -77,6 +79,7 @@ export default {
           }) 
         } else {
           this.mode = 'Creation'
+          this.cancelButton = 'Cancel'
         }
       }
     },
@@ -85,13 +88,12 @@ export default {
         // Update the item 
         if (this.mode === 'Editing') {
           // Edtng mode => patch the item
-          // Do we need to patch a perspective of the item ?
           if (this.perspective !== '') {
             let data = {}
             data[this.perspective] = values
             this.servicePatch(this.id, data)
           } else {
-            this.serviceUpdate(this.id, values)
+            this.servicePatch(this.id, values)
           }
         }
         else {

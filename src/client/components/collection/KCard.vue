@@ -1,23 +1,16 @@
 <template>
   <q-card>
     <!--
-      Title section
-    -->
-    <q-card-title class="bg-light">
-      <slot name="title">
-        <q-item>
-          <q-item-side><avatar :username="item.name" :size="36" /></q-item-side>
-          <q-item-main :label="item.name" />
-        </q-item>
-      </slot>
-    </q-card-title>
-    <!--
       Content section
     -->
     <q-card-main class="bg-light">
-      <slot name="content">
-        {{ item.description }}
-      </slot>
+      <q-item>
+        <q-item-side><avatar :username="item.name" :size="36" /></q-item-side>
+        <q-item-main>
+          <q-item-tile label>{{ item.name }}</q-item-tile>
+          <q-item-tile sublabel>{{ item.description }}</q-item-tile>
+        </q-item-main>
+      </q-item>
     </q-card-main>
     <!--
       Actions section
@@ -34,7 +27,7 @@
 </template>
 
 <script>
-import { QCard, QCardTitle, QCardActions, QCardSeparator, QCardMain, QItem, QItemMain, QItemSide, QBtn } from 'quasar'
+import { QCard, QCardTitle, QCardActions, QCardSeparator, QCardMain, QItem, QItemMain, QItemTile, QItemSide, QBtn } from 'quasar'
 import Avatar from 'vue-avatar/dist/Avatar'
 
 export default {
@@ -47,6 +40,7 @@ export default {
     QCardMain,
     QItem,
     QItemMain,
+    QItemTile,
     QItemSide,
     QBtn,
     Avatar
