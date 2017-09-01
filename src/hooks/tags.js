@@ -3,7 +3,7 @@ import { BadRequest } from 'feathers-errors'
 import { populateObject } from './query'
 import makeDebug from 'debug'
 
-const debug = makeDebug('kalisio:kCore:tags')
+const debug = makeDebug('kalisio:kCore:hooks:tags')
 
 export function populateResource (hook) {
   if (hook.type !== 'before') {
@@ -49,7 +49,6 @@ export function removeTag (hook) {
   }
 
   const tagService = hook.service
-  const resourcesService = hook.params.resourcesService
   if (!hook.params || !hook.params.query || !hook.params.query.value || !hook.params.query.scope) {
     throw new BadRequest('Scope and value should be provided to create a tag')
   }

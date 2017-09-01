@@ -51,4 +51,3 @@ beforeGuard.registerGuard = function (guard) {
 beforeGuard.unregisterGuard = function (guard) {
   guards = guards.filter(registeredGuard => registeredGuard !== guard)
 }
-
