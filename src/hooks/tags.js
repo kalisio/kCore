@@ -3,7 +3,7 @@ import { BadRequest } from 'feathers-errors'
 import { populateObject } from './query'
 import makeDebug from 'debug'
 
-const debug = makeDebug('kalisio:kCore:tags')
+const debug = makeDebug('kalisio:kCore:hooks:tags')
 
 export function populateResource (hook) {
   if (hook.type !== 'before') {
