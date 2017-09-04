@@ -40,7 +40,7 @@ let fieldMixin = {
   data () {
     return {
       // The model to used for data binding with the field
-      model: '',
+      model: null,
       // The error message
       error: ''
     }
