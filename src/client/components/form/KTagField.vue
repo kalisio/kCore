@@ -11,7 +11,7 @@
       <k-autocomplete ref="search" :class="autocompleteSize" @item-selected="onTagAdded" />
       <q-icon class="icon col-1" name="add" color="primary" @click="onCreateTag"/>
       <div class="row col-7" v-if="tags.length > 0">
-        <q-chip v-for="tag in tags" :key="tag" icon="tag.icon" color="primary" @close="onTagRemoved(tag)" closable>
+        <q-chip v-for="tag in tags" :key="tag" icon="label" color="primary" @close="onTagRemoved(tag)" closable>
           {{ tag.label }}
         </q-chip>
       </div>
@@ -55,7 +55,7 @@ export default {
       this.updateModel() 
     },
     onCreateTag () {
-      const newTag = { label: this.$refs.search.selection }
+      const newTag = { label: this.$refs.search.selection, icon: '' }
       if(_.findIndex(this.tags, function(tag) { return tag.label === newTag.label }) === -1) {
         this.tags.push(newTag)
         this.updateModel()

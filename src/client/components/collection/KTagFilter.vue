@@ -2,7 +2,7 @@
   <div>
     <k-autocomplete :class="autocompleteSize" @item-selected="onAddTag" />
     <div class="row col-8" v-if="tags.length > 0">
-      <q-chip v-for="tag in tags" :key="tag" icon="tag.icon" color="primary" @close="onRemoveTag" closable>
+      <q-chip v-for="tag in tags" :key="tag" icon="label" color="primary" @close="onRemoveTag" closable>
         {{ tag.label }}
       </q-chip>
     </div>
