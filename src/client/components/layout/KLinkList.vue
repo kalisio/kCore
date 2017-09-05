@@ -42,26 +42,20 @@ export default {
   },
   methods: {
     links () {
-      console.log('links')
-      console.log(this.object)
-      console.log(this.data)
       if (this.data) {
         return this.data
       }
       if (this.object) {
         let result = []
-        console.log(this.property)
         if (this.object[this.property]) {
           this.object[this.property].forEach(item => {
-            console.log(item)
-            // TODO: enhance the mapping between the observed property and the links
+            // FIXME: enhance the mapping between the observed property and the links
             let link = {}
             link['label'] = item.name
             link['route'] = this.property
             result.push(link)
           })
         }
-        console.log(result)
         return result
       }
       return []
