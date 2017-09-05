@@ -36,26 +36,32 @@ export default {
   },
   data () {
     return {
-      data: [],
+      data: null,
       object: null
     }
   },
   methods: {
     links () {
+      console.log('links')
+      console.log(this.object)
+      console.log(this.data)
       if (this.data) {
         return this.data
       }
       if (this.object) {
         let result = []
+        console.log(this.property)
         if (this.object[this.property]) {
           this.object[this.property].forEach(item => {
+            console.log(item)
             // TODO: enhance the mapping between the observed property and the links
             let link = {}
-            link.label = item.name
-            link.route = this.property
+            link['label'] = item.name
+            link['route'] = this.property
             result.push(link)
           })
         }
+        console.log(result)
         return result
       }
       return []
@@ -82,8 +88,8 @@ export default {
       }
       else if(_.isString(data)) {
         this.property = _.last(_.split(data, '.'))
-        this.path = _.replace(data, '.' + this.property, '')
-        this.object = this.$store.get(this.path, null)
+        let path = _.replace(data, '.' + this.property, '')
+        this.object = this.$store.get(path, null)
       }
       else {
         logger.warn('created(): invalid data value')
