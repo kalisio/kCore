@@ -1,6 +1,6 @@
 <template>
-  <q-search ref="search" v-model="selection">
-    <q-autocomplete @search="onSearch" @selected="onSelected" />
+  <q-search v-model="selection">
+    <q-autocomplete @search="onSearch" @selected="onSelected" @close="onClose"/>
   </q-search>
 </template>
 
@@ -49,6 +49,8 @@ export default {
     },
     onSelected (item) {
       this.$emit('item-selected', item)
+    },
+    onClose () {
     }
   },
   mounted () {

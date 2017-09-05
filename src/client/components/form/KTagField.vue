@@ -8,8 +8,9 @@
     :error="hasError"
   >
     <div class="row justify-between">
-      <k-autocomplete :class="autocompleteSize" @item-selected="onTagAdded" />
-      <div class="row col-8" v-if="tags.length > 0">
+      <k-autocomplete ref="search" :class="autocompleteSize" @item-selected="onTagAdded" />
+      <q-icon class="icon col-1" name="add" color="primary" @click="onCreateTag"/>
+      <div class="row col-7" v-if="tags.length > 0">
         <q-chip v-for="tag in tags" :key="tag" icon="tag.icon" color="primary" @close="onTagRemoved(tag)" closable>
           {{ tag.label }}
         </q-chip>
@@ -19,7 +20,7 @@
 </template>
 
 <script>
-import { QField, QChip } from 'quasar'
+import { QField, QChip, QIcon } from 'quasar'
 import { KAutocomplete } from '../collection'
 import mixins from '../../mixins'
 
@@ -28,12 +29,13 @@ export default {
   components: {
     QField,
     QChip,
+    QIcon,
     KAutocomplete
   },
   mixins: [mixins.field],
   computed: {
     autocompleteSize () { 
-      return this.tags.length > 0 ? 'col-3' : 'col-12'
+      return this.tags.length > 0 ? 'col-4' : 'col-11'
     }
   },
   data () {
@@ -52,6 +54,13 @@ export default {
       this.tags = this.tags.filter(tag => tag.label !== oldTag.label)
       this.updateModel() 
     },
+    onCreateTag () {
+      const newTag = { label: this.$refs.search.selection }
+      if(_.findIndex(this.tags, function(tag) { return tag.label === newTag.label }) === -1) {
+        this.tags.push(newTag)
+        this.updateModel()
+      }
+    },
     updateModel () {
       this.model = this.tags
       this.onChanged()
@@ -59,3 +68,11 @@ export default {
   }
 }
 </script>
+
+<style>
+.icon {
+  cursor: pointer;
+  font-size: 24px;
+  color: rgba(0, 0, 0, .54);
+}
+</style>
