@@ -111,6 +111,7 @@
     "containerized": "^1.0.2",
     "cpx": "^1.5.0",
     "cross-env": "^4.0.0",
+    "css-loader": "^0.28.7",
     "isomorphic-fetch": "^2.2.1",
     "istanbul": "^1.1.0-alpha.1",
     "jsdom": "^10.1.0",
@@ -119,7 +120,10 @@
     "npm-run-all": "^4.1.1",
     "shx": "^0.2.2",
     "standard": "^10.0.2",
-    "superagent": "^3.5.2"
+    "superagent": "^3.5.2",
+    "vue-loader": "^13.0.4",
+    "vue-style-loader": "^3.0.1",
+    "vue-template-compiler": "^2.4.2"
   },
   "peerDependencies": {}
 }
