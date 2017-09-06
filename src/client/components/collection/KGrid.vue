@@ -13,7 +13,7 @@
     -->
     <div class="row">
       <div v-for="item in items" :key="item" :class="layout">
-        <k-renderer :item="item" :actions="actions" @action-triggered="onActionTriggered" />
+        <k-renderer :item="item" :actions="actions" />
       </div>
     </div>
     <div class="self-center">
@@ -35,7 +35,7 @@ export default {
     KTagFilter,
     KPatternFilter
   },
-  mixins: [mixins.service, mixins.itemActions],
+  mixins: [mixins.service],
   props: {
     actions: {
       type: Array,

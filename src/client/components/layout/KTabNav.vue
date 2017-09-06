@@ -32,6 +32,8 @@ export default {
   },
   watch: {
     '$route' (to, from) {
+      let definedTabs = this.$store.get('config.tabNav')
+      if (!definedTabs) return
       this.tabs = []
       this.selectedTab = ''
       Object.entries(this.$store.get('config.tabNav')).forEach(entry => {
