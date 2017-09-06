@@ -33,7 +33,7 @@ import mixins from '../../mixins'
 
 export default {
   name: 'k-card',
-  mixins: [mixins.item],
+  mixins: [mixins.baseItem],
   components: {
     QCard,
     QCardTitle,

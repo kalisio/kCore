@@ -1,15 +1,13 @@
-import item from './mixin.item'
-import activity from './mixin.activity'
-import authenticationMixin from './mixin.authentication'
-import serviceMixin from './mixin.service'
-import fieldMixin from './mixin.field'
-import itemActionsMixin from './mixin.item-actions'
+import authentication from './mixin.authentication'
+import baseItem from './mixin.base-item'
+import baseField from './mixin.base-field'
+import service from './mixin.service'
+import itemActions from './mixin.item-actions'
 
 export default {
-  item,
-  activity,
-  authentication: authenticationMixin,
-  service: serviceMixin,
-  field: fieldMixin,
-  itemActions: itemActionsMixin
+  authentication,
+  baseItem,
+  baseField,
+  service,
+  itemActions
 }

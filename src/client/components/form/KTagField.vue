@@ -32,7 +32,7 @@ export default {
     QIcon,
     KAutocomplete
   },
-  mixins: [mixins.field],
+  mixins: [mixins.baseField],
   computed: {
     autocompleteSize () { 
       return this.tags.length > 0 ? 'col-4' : 'col-11'

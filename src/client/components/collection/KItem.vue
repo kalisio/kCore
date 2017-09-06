@@ -24,7 +24,7 @@
         <q-popover>
           <q-list link>
             <q-item v-for="action in actions" :key="action">
-              <q-item-main :label="action.label" @click="$emit('action-triggered', action.handler, item)" />
+              <q-item-main :label="action.label" @click="onActionTriggered(action.handler, item)" />
             </q-item>
           </q-list>
         </q-popover>
@@ -35,9 +35,11 @@
 
 <script>
 import { QList, QItem, QItemSide, QItemMain, QItemTile, QBtn, QIcon, QPopover } from 'quasar'
+import mixins from '../../mixins'
 
 export default {
   name: 'k-item',
+  mixins: [mixins.baseItem],  
   components: {
     QList,
     QItem,

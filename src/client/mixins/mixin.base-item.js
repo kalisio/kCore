@@ -1,4 +1,4 @@
-let itemMixin = {
+let baseItemMixin = {
   props: {
     item: {
       type: Object,
@@ -18,4 +18,4 @@ let itemMixin = {
   }
 }
 
-export default itemMixin
+export default baseItemMixin
