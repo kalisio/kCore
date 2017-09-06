@@ -47,18 +47,6 @@ export default {
     QBtn,
     QIcon,
     QPopover
-  },
-  props: {
-    item: {
-      type: Object,
-      required: true
-    },
-    actions: {
-      type: Array,
-      default: function () {
-        return []
-      }
-    }
   }
 }
 </script>

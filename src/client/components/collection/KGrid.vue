@@ -13,16 +13,12 @@
     -->
     <div class="row">
       <div v-for="item in items" :key="item" :class="layout">
-        <k-renderer :item="item" :actions="filterActions('item')" @action-triggered="onActionTriggered" />
+        <k-renderer :item="item" :actions="actions" @action-triggered="onActionTriggered" />
       </div>
     </div>
     <div class="self-center">
       <q-pagination v-model="currentPage" :max="nbPages" style="padding: 18px" @input="onPageChanged" />
     </div>
-    <!--
-      Fab section 
-    -->
-    <k-fab :actions="filterActions('fab')" @action-triggered="onActionTriggered" />
   </div>
 </template>
 
@@ -41,6 +37,12 @@ export default {
   },
   mixins: [mixins.service, mixins.itemActions],
   props: {
+    actions: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    },
     layout: {
       type: String,
       default: 'col-xs-12 col-sm-6 col-lg-4 col-xl-3'
@@ -51,8 +53,7 @@ export default {
       items: [],
       nbTotalItems: 0,
       nbItemsPerPage: 12,
-      currentPage: 1,
-      actions: []
+      currentPage: 1
     }
   },
   computed: {
@@ -81,13 +82,6 @@ export default {
         this.$options.components['k-filter'] = loadComponent(filter)
         this.filter = filter
       }
-      let fab = this.$store.get(confPath + '.fab', 'collection/KFab')
-      if (this.fab !== fab) {
-        this.$options.components['k-fab'] = loadComponent(fab)
-        this.fab = fab
-      }
-      // Retrieve the actions
-      this.actions = this.$store.get(confPath + '.actions')
       // Clears the query
       this.query = {}
       this.filterQuery = {}
@@ -122,25 +116,11 @@ export default {
       this.filterQuery = Object.assign({}, filterQuery)
       console.log(filterQuery)
       this.updateItems()
-    },
-    filterActions (type = '') {
-      return this.actions.filter(function (action) {
-        return action.scope === type
-      })
-    },
-    onActionTriggered (handler, item) {
-      let action = this[handler]
-      if (typeof action === 'function') {
-        action.call(this, item)
-      } else {
-        logger.warn('[onActionRequested] invalid handler')
-      }
     }
   },
   created () {
     this.renderer = ''
     this.filter = ''
-    this.fab = ''
     this.filterQuery = {}
     this.update()
     // Subscribe to the service changed event

@@ -18,7 +18,7 @@
     <q-card-separator />
     <q-card-actions>
       <template v-for="action in actions">   
-        <q-btn flat color="primary" :icon="action.icon" @click="$emit('action-triggered', action.handler, item)">
+        <q-btn flat color="primary" :icon="action.icon" @click="onActionTriggered(action.handler, item)">
           <small>{{ action.label }}</small>
         </q-btn>
       </template>
@@ -29,9 +29,11 @@
 <script>
 import { QCard, QCardTitle, QCardActions, QCardSeparator, QCardMain, QItem, QItemMain, QItemTile, QItemSide, QBtn } from 'quasar'
 import Avatar from 'vue-avatar/dist/Avatar'
+import mixins from '../../mixins'
 
 export default {
   name: 'k-card',
+  mixins: [mixins.item],
   components: {
     QCard,
     QCardTitle,
@@ -44,18 +46,6 @@ export default {
     QItemSide,
     QBtn,
     Avatar
-  },
-  props: {
-    item: {
-      type: Object,
-      required: true
-    },
-    actions: {
-      type: Array,
-      default: function () {
-        return []
-      }
-    }
   }
 }
 </script>

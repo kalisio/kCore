@@ -2,7 +2,7 @@
   <div>
     <k-autocomplete :class="autocompleteSize" @item-selected="onAddTag" />
     <div class="row col-8" v-if="tags.length > 0">
-      <q-chip v-for="tag in tags" :key="tag" icon="label" color="primary" @close="onRemoveTag" closable>
+      <q-chip v-for="tag in tags" :key="tag" icon="label" color="primary" @close="onRemoveTag(tag)" closable>
         {{ tag.label }}
       </q-chip>
     </div>
@@ -16,8 +16,13 @@ import { KAutocomplete } from '.'
 export default {
   name: 'k-tag-filter',
   components: {
-    QChip,
-    KAutocomplete
+    KAutocomplete,
+    QChip
+  },
+  computed: {
+    autocompleteSize () { 
+      return this.tags.length > 0 ? 'col-4' : 'col-11'
+    }
   },
   data () {
     return {
