@@ -2,7 +2,7 @@
   <div v-show="tabs.length > 0">
     <q-tabs v-model="selected" align="justify" @select="onTabChanged" inverted>
       <template v-for="tab in tabs">
-        <q-tab slot="title" :name="tab.label" :label="tab.label" :icon="tab.icon" />
+        <q-tab slot="title" :name="tab.name" :label="tab.label" :icon="tab.icon" />
       </template>
     </q-tabs>
   </div>
@@ -32,7 +32,7 @@ export default {
   methods: {
     onTabChanged (newTab) {
       if (this.$route.name !== newTab) {
-        let tab = lodash.find(this.tabs, function(t) { return t.label === newTab })
+        let tab = lodash.find(this.tabs, function(t) { return t.name === newTab })
         if (tab) {
           this.$router.push(tab.route)
         }

@@ -42,7 +42,7 @@ export default {
   methods: {
     route () {
       let userId = this.$store.get('user')._id
-      return { name: 'switch', params: { service: 'users', action: 'edit', id: userId, perspective: 'profile' } }
+      return { name: 'identity-activity', params: { operation: 'edit', id: userId } }
     }
   },
   created () {
