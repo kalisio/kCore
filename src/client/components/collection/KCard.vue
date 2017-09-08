@@ -18,9 +18,7 @@
     <q-card-separator />
     <q-card-actions>
       <template v-for="action in actions">   
-        <q-btn flat color="primary" :icon="action.icon" @click="onActionTriggered(action.handler, item)">
-          <small>{{ action.label }}</small>
-        </q-btn>
+        <q-btn flat color="primary" :icon="action.icon" @click="onActionTriggered(action.handler, item)" />
       </template>
     </q-card-actions>
   </q-card>
