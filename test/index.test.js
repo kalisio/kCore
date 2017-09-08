@@ -35,7 +35,15 @@ describe('kCore', () => {
   })
 
   it('creates a user', () => {
-    return userService.create({ email: 'test@test.org', password: 'test-password', name: 'test-user', profile: { phone: '0623256968' } })
+    return userService.create({
+      email: 'test@test.org',
+      password: 'test-password',
+      name: 'test-user',
+      tags: [{
+        scope: 'skills',
+        value: 'developer'
+      }],
+      profile: { phone: '0623256968' } })
     .then(user => {
       userObject = user
       return userService.find({ query: { name: 'test-user' } })
@@ -47,6 +55,12 @@ describe('kCore', () => {
       expect(users.data[0].description).toExist()
       expect(users.data[0].email).toExist()
       expect(users.data[0].profile).beUndefined()
+      return tagService.find({ query: { value: 'developer' } })
+    })
+    .then(tags => {
+      expect(tags.data.length > 0).beTrue()
+      expect(tags.data[0].value).to.equal('developer')
+      expect(tags.data[0].scope).to.equal('skills')
     })
   })
 
@@ -72,7 +86,7 @@ describe('kCore', () => {
   it('creates a user tag', () => {
     return tagService.create({
       scope: 'skills',
-      value: 'developer'
+      value: 'manager'
     }, {
       query: {
         resource: userObject._id.toString(),
@@ -100,7 +114,7 @@ describe('kCore', () => {
     return tagService.remove(userObject._id, {
       query: {
         scope: 'skills',
-        value: 'developer',
+        value: 'manager',
         resourcesService: 'users'
       }
     })
@@ -135,6 +149,10 @@ describe('kCore', () => {
     })
     .then(users => {
       expect(users.data.length === 0).beTrue()
+      return tagService.find({ query: { value: 'developer' } })
+    })
+    .then(tags => {
+      expect(tags.data.length === 0).beTrue()
     })
   })
 

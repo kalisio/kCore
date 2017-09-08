@@ -57,14 +57,14 @@ export function marshallGeometryQuery (hook) {
   }
 }
 
-export function populateObject (serviceField, idField, nameServiceAs, nameIdAs) {
+export function populateObject (options) {
   return function (hook) {
     let app = hook.app
     let data = hook.data
     let params = hook.params
     let query = params.query
-    const idProperty = nameIdAs || idField
-    const serviceProperty = nameServiceAs || serviceField
+    const idProperty = options.nameIdAs || options.idField
+    const serviceProperty = options.nameServiceAs || options.serviceField
 
     // Check if not already done
     if (typeof _.get(params, idProperty) === 'object') {
@@ -78,20 +78,23 @@ export function populateObject (serviceField, idField, nameServiceAs, nameIdAs) 
 
     // Get service where we can find the object to populate
     // Make hook usable with query params as well and service name or real object
-    let service = _.get(data, serviceField) || _.get(query, serviceField)
+    let service = _.get(data, options.serviceField) || _.get(query, options.serviceField)
     if (typeof service === 'string') {
-      const message = `Cannot find the service for ${serviceField} = ${service} to dynamically populate.`
+      const message = `Cannot find the service for ${options.serviceField} = ${service} to dynamically populate.`
       service = app.getService(service)
       if (!service) {
-        throw new Error(message)
+        if (options.throwOnNotFound) throw new Error(message)
+        else return Promise.resolve(hook)
       }
     } else if (!service) {
-      throw new Error(`No ${serviceField} given to dynamically populate.`)
+      if (options.throwOnNotFound) throw new Error(`No ${options.serviceField} given to dynamically populate.`)
+      else return Promise.resolve(hook)
     }
     // Then the object ID
-    let id = _.get(data, idField) || _.get(query, idField) || _.get(hook, 'id')
+    let id = _.get(data, options.idField) || _.get(query, options.idField) || _.get(hook, 'id')
     if (!id) {
-      throw new Error(`Cannot find the ${idField} to dynamically populate.`)
+      if (options.throwOnNotFound) throw new Error(`Cannot find the ${options.idField} to dynamically populate.`)
+      else return Promise.resolve(hook)
     }
 
     debug(`Populating ${idProperty} with ID ${id}`)
@@ -101,7 +104,8 @@ export function populateObject (serviceField, idField, nameServiceAs, nameIdAs) 
     if (typeof id === 'string' || ObjectID.isValid(id)) {
       return service.get(id.toString(), { user: hook.params.user }).then(object => {
         if (!object) {
-          throw new Error(`Cannot find object with id ${id} to dynamically populate.`)
+          if (options.throwOnNotFound) throw new Error(`Cannot find object with id ${id} to dynamically populate.`)
+          else return hook
         }
         // Set the retrieved object on the same field or given one in hook params
         _.set(params, idProperty, object)
@@ -115,14 +119,14 @@ export function populateObject (serviceField, idField, nameServiceAs, nameIdAs) 
   }
 }
 
-export function populateObjects (serviceField, idField, nameServiceAs, nameIdAs) {
+export function populateObjects (options) {
   return function (hook) {
     let app = hook.app
     let data = hook.data
     let params = hook.params
     let query = params.query
-    const idProperty = nameIdAs || idField
-    const serviceProperty = nameServiceAs || serviceField
+    const idProperty = options.nameIdAs || options.idField
+    const serviceProperty = options.nameServiceAs || options.serviceField
 
     // Check if not already done
     if (Array.isArray(_.get(params, idProperty))) {
@@ -136,22 +140,24 @@ export function populateObjects (serviceField, idField, nameServiceAs, nameIdAs)
 
     // Get service where we can find the object to populate
     // Make hook usable with query params as well and service name or real object
-    let service = _.get(data, serviceField) || _.get(query, serviceField)
+    let service = _.get(data, options.serviceField) || _.get(query, options.serviceField)
     if (typeof service === 'string') {
-      const message = `Cannot find the service for ${serviceField} = ${service} to dynamically populate.`
+      const message = `Cannot find the service for ${options.serviceField} = ${service} to dynamically populate.`
       service = app.getService(service)
       if (!service) {
-        throw new Error(message)
+        if (options.throwOnNotFound) throw new Error(message)
+        else return Promise.resolve(hook)
       }
     } else if (!service) {
-      throw new Error(`No ${serviceField} given to dynamically populate.`)
+      if (options.throwOnNotFound) throw new Error(`No ${options.serviceField} given to dynamically populate.`)
+      else return Promise.resolve(hook)
     }
 
     // Set the retrieved service on the same field or given one in hook params
     _.set(params, serviceProperty, service)
 
     // Then the object ID
-    let id = _.get(data, idField) || _.get(query, idField)
+    let id = _.get(data, options.idField) || _.get(query, options.idField)
     // If no ID given we perform a find, no pagination to be sure we get all objects
     if (!id) {
       debug(`Populating ${idProperty}`)
@@ -166,7 +172,8 @@ export function populateObjects (serviceField, idField, nameServiceAs, nameIdAs)
       if (typeof id === 'string' || ObjectID.isValid(id)) {
         return service.get(id.toString(), { user: hook.params.user }).then(object => {
           if (!object) {
-            throw new Error(`Cannot find ${idField} = ${id} to dynamically populate.`)
+            if (options.throwOnNotFound) throw new Error(`Cannot find ${options.idField} = ${id} to dynamically populate.`)
+            else return hook
           }
           // Set the retrieved object on the same field or given one in hook params
           _.set(params, idProperty, [object])

@@ -9,13 +9,28 @@ export function populateResource (hook) {
   if (hook.type !== 'before') {
     throw new Error(`The 'populateResource' hook should only be used as a 'before' hook.`)
   }
-
-  return populateObject('resourcesService', 'resource')(hook)
+  
+  // Avoid populating any target resource when resource parameters are not present
+  return populateObject({ serviceField: 'resourcesService', idField: 'resource', throwOnNotFound: false })(hook)
 }
 
-export function addTag (hook) {
+export function updateTags (hook) {
+  const tags = (hook.method === 'remove' ? hook.result.tags : hook.data.tags)
+  if (!tags) {
+    return Promise.resolve(hook)
+  }
+  let tagsService = hook.app.getService('tags')
+  return Promise.all(tags.map(tag => {
+    return (hook.method === 'remove' ? tagsService.remove(null, { query: tag }) : tagsService.create(tag))
+  }))
+  .then(results => {
+    return hook
+  })
+}
+
+export function addTagIfNew (hook) {
   if (hook.type !== 'before') {
-    throw new Error(`The 'addTag' hook should only be used as a 'before' hook.`)
+    throw new Error(`The 'addTagIfNew' hook should only be used as a 'before' hook.`)
   }
 
   const tagService = hook.service
@@ -43,11 +58,12 @@ export function addTag (hook) {
   })
 }
 
-export function removeTag (hook) {
+export function removeTagIfUnused (hook) {
   if (hook.type !== 'before') {
-    throw new Error(`The 'removeTag' hook should only be used as a 'before' hook.`)
+    throw new Error(`The 'removeTagIfUnused' hook should only be used as a 'before' hook.`)
   }
 
+  console.log('ggf')
   const tagService = hook.service
   if (!hook.params || !hook.params.query || !hook.params.query.value || !hook.params.query.scope) {
     throw new BadRequest('Scope and value should be provided to create a tag')
@@ -82,7 +98,6 @@ export function tagResource (hook) {
   if (hook.type !== 'after') {
     throw new Error(`The 'tagResource' hook should only be used as a 'after' hook.`)
   }
-
   const tag = hook.result
   const resourcesService = hook.params.resourcesService
   let resource = hook.params.resource
