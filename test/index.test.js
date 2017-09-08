@@ -106,7 +106,7 @@ describe('kCore', () => {
     .then(users => {
       expect(users.data.length > 0).beTrue()
       expect(users.data[0].tags).toExist()
-      expect(users.data[0].tags.length > 0).beTrue()
+      expect(users.data[0].tags.length === 2).beTrue()
     })
   })
 
@@ -123,12 +123,12 @@ describe('kCore', () => {
       return tagService.find({ query: { value: 'developer' } })
     })
     .then(tags => {
-      expect(tags.data.length === 0).beTrue()
+      expect(tags.data.length === 1).beTrue()
       return userService.find({ query: { name: 'test-user' } })
     })
     .then(users => {
       expect(users.data.length > 0).beTrue()
-      expect(users.data[0].tags.length === 0).beTrue()
+      expect(users.data[0].tags.length === 1).beTrue()
     })
   })
 

@@ -1,4 +1,4 @@
-import { populateResource, addTag, removeTag, tagResource, untagResource } from '../../hooks'
+import { populateResource, addTagIfNew, removeTagIfUnused, tagResource, untagResource } from '../../hooks'
 import { disallow, iff } from 'feathers-hooks-common'
 const { authenticate } = require('feathers-authentication').hooks
 

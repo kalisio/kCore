@@ -32,14 +32,13 @@ export function addTagIfNew (hook) {
   if (hook.type !== 'before') {
     throw new Error(`The 'addTagIfNew' hook should only be used as a 'before' hook.`)
   }
-
   const tagService = hook.service
   if (!hook.data || !hook.data.value || !hook.data.scope) {
     throw new BadRequest('Scope and value should be provided to create a tag')
   }
   const value = hook.data.value
   const scope = hook.data.scope
-  return tagService.find({ value, scope })
+  return tagService.find({ query: { value, scope } })
   .then(result => {
     // If it already exist avoid creating it in DB,
     // simply update counter and return it
@@ -63,7 +62,6 @@ export function removeTagIfUnused (hook) {
     throw new Error(`The 'removeTagIfUnused' hook should only be used as a 'before' hook.`)
   }
 
-  console.log('ggf')
   const tagService = hook.service
   if (!hook.params || !hook.params.query || !hook.params.query.value || !hook.params.query.scope) {
     throw new BadRequest('Scope and value should be provided to create a tag')
@@ -102,12 +100,12 @@ export function tagResource (hook) {
   const resourcesService = hook.params.resourcesService
   let resource = hook.params.resource
   // If not already tagged
-  if (!_.find(resource.tags, resourceTag => resourceTag.value === tag.value && resourceTag.scope === tag.Scope)) {
+  if (!_.find(resource.tags, resourceTag => resourceTag.value === tag.value && resourceTag.scope === tag.scope)) {
     // Initialize on first tag
     if (!resource.tags) {
       resource.tags = []
     }
-    resource.tags.push({ value: tag.value, tag: tag.scope })
+    resource.tags.push({ value: tag.value, scope: tag.scope })
     return resourcesService.patch(resource._id, {
       tags: resource.tags
     }, {
@@ -130,7 +128,7 @@ export function untagResource (hook) {
   const resourcesService = hook.params.resourcesService
   let resource = hook.params.resource
   // If already tagged
-  const tagIndex = _.findIndex(resource.tags, resourceTag => resourceTag.value === tag.value && resourceTag.scope === tag.Scope)
+  const tagIndex = _.findIndex(resource.tags, resourceTag => resourceTag.value === tag.value && resourceTag.scope === tag.scope)
   if (tagIndex >= 0) {
     _.pullAt(resource.tags, tagIndex)
     return resourcesService.patch(resource._id, {
