@@ -42,7 +42,7 @@ let userActionsMixin = {
     }
   },
   created () {
-    this.registerAction('editUser', { label: 'Edit', icon: 'create' })
+    this.registerAction('editUser', { label: 'Edit', icon: 'description' })
     this.registerAction('addMember', { label: 'Add', icon: 'add' })
     this.registerAction('removeMember', { label: 'Remove', icon: 'delete' })
   }

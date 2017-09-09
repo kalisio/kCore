@@ -39,13 +39,17 @@ export default {
     }
   },
   methods: {
-    update () {
+    resolveSchemaName () {
       let schemaName = this.service
-      if (this.id) {
-        schemaName += '.update' 
-      } else {
-        schemaName += ".create"
+      schemaName += this.id ? '.update' : '.create'
+      if (this.perspective) {
+        schemaName += ('-' + this.perspective)
       }
+      return schemaName
+    },
+    update () {
+      let schemaName = this.resolveSchemaName()
+      console.log(schemaName)
       if (this.schemaName !== schemaName) {
         this.schema = null
         let loadSchema = this.$store.get('loadSchema')
@@ -104,7 +108,7 @@ export default {
       done()
     },
     onCanceled () {
-      // TODO
+      // FIXME: 
     },
     onFormReady () {
       this.updateObject()

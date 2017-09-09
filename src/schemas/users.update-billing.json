@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "http:/www.kalisio.xyz/schemas/users.update-billing#",
+  "title": "User Billing",
+  "description": "User billing perspective",
+  "type": "object",
+  "properties": {
+    "plan": {
+      "type": "string", 
+      "field": {
+        "component": "form/KOptionGroupField",
+        "type": "radio",
+        "label": "Plan",
+        "helper": "Choose your plan",
+        "options": [
+          { "label": "Gold Plan", "value": "gold", "color": "yellow" },
+          { "label": "Silver Plan", "value": "silver", "color": "grey" },
+          { "label": "Bronze Plan", "value": "bronze", "color": "amber" }
+        ]
+      }
+    }
+  },
+  "required": ["plan"],
+  "form": {
+    "type": "object",
+    "properties":  {
+      "icon": false,
+      "label": true,
+      "labelWidth": 3
+    }
+  }
+}
+

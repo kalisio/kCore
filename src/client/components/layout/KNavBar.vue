@@ -1,6 +1,6 @@
 <template>
   <div v-show="tabs.length > 0">
-    <q-tabs v-model="selected" align="justify" @select="onTabChanged" inverted>
+    <q-tabs v-model="currentTab" align="justify" @select="onTabChanged" inverted>
       <template v-for="tab in tabs">
         <q-tab slot="title" :name="tab.name" :label="tab.label" :icon="tab.icon" />
       </template>
@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import logger from 'loglevel'
 import lodash from 'lodash'
 import { QTabs, QTab } from 'quasar'
 
@@ -29,6 +28,11 @@ export default {
       default: ''
     }
   },
+  data () {
+    return {
+      currentTab: ''
+    }
+  },
   methods: {
     onTabChanged (newTab) {
       if (this.$route.name !== newTab) {
@@ -38,6 +42,9 @@ export default {
         }
       }
     }
+  },
+  created () {
+    this.currentTab = this.selected
   }
 }
 </script>

@@ -4,7 +4,6 @@
       Filter section 
     -->
     <div v-if="hasFilter">
-      <k-autocomplete />
       <k-pattern-filter @filter-changed="onFilterChanged" />
       <k-tag-filter @filter-changed="onFilterChanged" />
     </div>
@@ -24,14 +23,13 @@
 
 <script>
 import { QPagination } from 'quasar'
-import { KAutocomplete, KTagFilter, KPatternFilter } from '.'
+import { KTagFilter, KPatternFilter } from '.'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-grid',
   components: {
     QPagination,
-    KAutocomplete,
     KTagFilter,
     KPatternFilter
   },
