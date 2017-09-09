@@ -8,14 +8,14 @@
     "plan": {
       "type": "string", 
       "field": {
-        "component": "form/KOptionGroupField",
+        "component": "form/KOptionsField",
         "type": "radio",
         "label": "Plan",
         "helper": "Choose your plan",
         "options": [
-          { "label": "Gold Plan", "value": "gold", "color": "yellow" },
-          { "label": "Silver Plan", "value": "silver", "color": "grey" },
-          { "label": "Bronze Plan", "value": "bronze", "color": "amber" }
+          { "label": "Gold", "value": "gold", "color": "yellow" },
+          { "label": "Silver", "value": "silver", "color": "grey" },
+          { "label": "Bronze", "value": "bronze", "color": "amber" }
         ]
       }
     }

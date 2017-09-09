@@ -20,7 +20,7 @@ import { QField, QOptionGroup } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
-  name: 'k-option-group-field',
+  name: 'k-options-field',
   components: {
     QField,
     QOptionGroup

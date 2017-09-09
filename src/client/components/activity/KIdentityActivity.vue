@@ -1,5 +1,5 @@
 <template>
-  <div v-if="operation === 'edit'">
+  <div v-if="operation === 'manage'">
     <k-nav-bar :tabs="navBarTabs()" :selected="perspective" />
     <k-editor service="users" :id="id" :perspective="perspective" />
   </div>
@@ -31,13 +31,13 @@ export default {
     navBarTabs () {
       return [ 
         { name: 'profile', label: 'Profile', icon: 'description', route: { 
-          name: 'identity-activity', params: { operation: 'edit', id: this.id } } 
+          name: 'identity-activity', params: { operation: 'manage', id: this.id } } 
         },
         { name: 'billing', label: 'Billing', icon: 'credit_card', route: { 
-          name: 'identity-activity', params: { operation: 'edit', id: this.id, perspective: 'billing' } } 
+          name: 'identity-activity', params: { operation: 'manage', id: this.id, perspective: 'billing' } } 
         },
         { name: 'security', label: 'Security', icon: 'security', route: { 
-          name: 'identity-activity', params: { operation: 'edit', id: this.id, perspective: 'security' } } 
+          name: 'identity-activity', params: { operation: 'manage', id: this.id, perspective: 'security' } } 
         }
       ]
     }

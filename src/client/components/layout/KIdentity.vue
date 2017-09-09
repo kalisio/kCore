@@ -42,7 +42,7 @@ export default {
   methods: {
     route () {
       let userId = this.$store.get('user')._id
-      return { name: 'identity-activity', params: { operation: 'edit', id: userId } }
+      return { name: 'identity-activity', params: { operation: 'manage', id: userId } }
     }
   },
   created () {
