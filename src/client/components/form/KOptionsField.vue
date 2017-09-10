@@ -11,7 +11,8 @@
       :type="property.field.type"
       v-model="model"
       :options="property.field.options"
-      @change="onChanged" />
+      @change="onChanged"
+      @blur="onChanged" />
   </q-field>
 </template>
 

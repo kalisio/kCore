@@ -10,7 +10,7 @@
     <q-input
       type="tel"
       v-model="model"
-      @change="onChanged" />
+      @blur="onChanged" />
   </q-field>
 </template>
 

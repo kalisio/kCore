@@ -49,8 +49,20 @@ let baseFieldMixin = {
     defaultModel () {
       return ''
     },
+    isEmpty () {
+      return this.model === this.defaultModel()
+    },
+    value () {
+      return this.model
+    },
     fill (value) {
-      this.model = value
+      if (this.model !== value) this.model = value
+    },
+    clear () {
+      this.fill(this.defaultModel())
+    },
+    reset () {
+      this.fill(this.property.default ? this.property.default : this.defaultModel())
     },
     validate () {
       this.error = ''
@@ -66,11 +78,7 @@ let baseFieldMixin = {
     },
   },
   mounted () {
-    // Init the model with the default value if any
-    if (this.property.default) {
-      this.fill(this.property.default)
-      this.onChanged() 
-    }
+    this.reset()
     // Tell the form the field is ready
     this.$emit('field-ready')
   }

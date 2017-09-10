@@ -10,7 +10,7 @@
     <q-input
       type="email"
       v-model="model"
-      @change="onChanged" />
+      @blur="onChanged" />
   </q-field>
 </template>
 

@@ -10,7 +10,7 @@
     <q-input
       type="url"
       v-model="model"
-      @onChanged="onChanged" />
+      @blur="onChanged" />
   </q-field>
 </template>
 

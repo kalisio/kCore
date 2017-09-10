@@ -11,7 +11,7 @@
       <q-input
         type="password"
         v-model="model"
-        @change="onChanged" />
+        @blur="onChanged" />
     </q-field>
   </div>
 </template>

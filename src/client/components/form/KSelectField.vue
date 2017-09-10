@@ -14,7 +14,8 @@
       :chips="property.field.chips ? property.field.chips : false"
       v-model="model"
       :options="property.field.options"
-      @change="onChanged" />
+      @change="onChanged"
+      @blur="onChanged" />
   </q-field>
 </template>
 

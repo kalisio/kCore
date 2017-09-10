@@ -9,7 +9,8 @@
   >
     <q-chips-input 
       v-model="model" 
-      @change="onChanged" />
+      @change="onChanged"
+      @blur="onChanged" />
   </q-field>
 </template>
 
