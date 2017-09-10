@@ -1,6 +1,6 @@
 <template>
   <div v-show="tabs.length > 0">
-    <q-tabs v-model="currentTab" align="justify" @select="onTabChanged" inverted>
+    <q-tabs v-model="currentTab" align="justify" @select="onCurrentTabChanged" inverted>
       <template v-for="tab in tabs">
         <q-tab slot="title" :name="tab.name" :label="tab.label" :icon="tab.icon" />
       </template>
@@ -28,13 +28,21 @@ export default {
       default: ''
     }
   },
+  watch: {
+    selected: function () {
+      this.updateCurrentTab()
+    }
+  },
   data () {
     return {
       currentTab: ''
     }
   },
   methods: {
-    onTabChanged (newTab) {
+    updateCurrentTab () {
+      this.currentTab = this.selected
+    },
+    onCurrentTabChanged (newTab) {
       if (this.$route.name !== newTab) {
         let tab = lodash.find(this.tabs, function(t) { return t.name === newTab })
         if (tab) {
@@ -44,7 +52,7 @@ export default {
     }
   },
   created () {
-    this.currentTab = this.selected
+    this.updateCurrentTab()
   }
 }
 </script>
