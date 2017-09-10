@@ -6,10 +6,9 @@
   "type": "object",
   "properties": {
     "plan": {
-      "type": "string", 
+      "type": "string",
       "field": {
-        "component": "form/KOptionsField",
-        "type": "radio",
+        "component": "form/KSelectField",
         "label": "Plan",
         "helper": "Choose your plan",
         "options": [

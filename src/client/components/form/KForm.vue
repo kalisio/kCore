@@ -145,12 +145,14 @@ export default {
     fill (values) {
       this.values = {}
       Object.keys(this.schema.properties).forEach(property => {
-        let value = _.get(values, property, '')
-        if (!_.isEmpty(value)) {
-          this.values[property] = value
+        let value = _.get(values, property, this.schema.properties[property].default)
+        if (value) {
+          // override the default value
           _.set(this.schema.properties[property], 'default', value)
+          this.values[property] = value
+          this.$refs[property][0].fill(value)
         }
-        this.$refs[property][0].fill(value)
+        // FIXME: clear the form !!
       })
       this.validate()
     },

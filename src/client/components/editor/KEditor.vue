@@ -49,7 +49,6 @@ export default {
     },
     update () {
       let schemaName = this.resolveSchemaName()
-      console.log(schemaName)
       if (this.schemaName !== schemaName) {
         this.schema = null
         let loadSchema = this.$store.get('loadSchema')

@@ -23,6 +23,11 @@ export default {
     QField,
     QChipsInput
   },
-  mixins: [mixins.baseField]
+  mixins: [mixins.baseField],
+  methods: {
+    defaultModel () {
+      return []
+    }
+  }
 }
 </script>

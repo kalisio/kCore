@@ -44,6 +44,9 @@ export default {
     }
   },
   methods: {
+    defaultModel () {
+      return []
+    },
     onTagAdded (newTag) {
       if(_.findIndex(this.tags, function(tag) { return tag.label === newTag.label }) === -1) {
         this.tags.push(newTag)

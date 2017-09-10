@@ -40,14 +40,14 @@ let baseFieldMixin = {
   data () {
     return {
       // The model to used for data binding with the field
-      model: null,
+      model: this.defaultModel(),
       // The error message
       error: ''
     }
   },
   methods: {
-    onChanged () {
-      this.$emit('field-changed', this.property.name, this.model)
+    defaultModel () {
+      return ''
     },
     fill (value) {
       this.model = value
@@ -57,13 +57,18 @@ let baseFieldMixin = {
     },
     invalidate (error) {
       this.error = error
-    }
+    },
+    onChanged () {
+      // Tell the form that this field has a new value. 
+      // Consequently the form will validate or invalidate the field
+      // Warning: This method must be called once the form is mounted
+      this.$emit('field-changed', this.property.name, this.model)
+    },
   },
   mounted () {
     // Init the model with the default value if any
     if (this.property.default) {
       this.fill(this.property.default)
-      // The the form to validate this field
       this.onChanged() 
     }
     // Tell the form the field is ready

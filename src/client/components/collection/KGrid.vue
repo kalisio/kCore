@@ -112,7 +112,6 @@ export default {
     },
     onFilterChanged (filterQuery) {
       this.filterQuery = Object.assign({}, filterQuery)
-      console.log(filterQuery)
       this.updateItems()
     }
   },

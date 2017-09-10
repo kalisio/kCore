@@ -7,8 +7,11 @@
     :label-width="labelWidth"
     :error="hasError"
   >
-    <q-option-group
-      :type="property.field.type"
+    <q-select
+      :multiple="this.property.field.multiple ? this.property.field.multiple : false"
+      :toggle="property.field.toggle ? property.field.toggle : false"
+      :radio="property.field.radio ? property.field.radio : false"
+      :chips="property.field.chips ? property.field.chips : false"
       v-model="model"
       :options="property.field.options"
       @change="onChanged" />
@@ -16,20 +19,20 @@
 </template>
 
 <script>
-import { QField, QOptionGroup } from 'quasar'
+import { QField, QSelect } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
-  name: 'k-options-field',
+  name: 'k-select-field',
   components: {
     QField,
-    QOptionGroup
+    QSelect
   },
   mixins: [mixins.baseField],
   methods: {
     defaultModel () {
-      if (this.property.field.type === 'radio') return ''
-      return []
+      if (this.property.field.multiple) return []
+      return ''
     }
   }
 }
