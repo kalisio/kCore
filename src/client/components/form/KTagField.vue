@@ -56,7 +56,6 @@ export default {
       this.model = value
       // Update tags as well
       this.tags = this.model.slice()
-      console.log(this.tags)
     },
     processResults(pattern, results) {
       // We always add first an entry to create a new tag
