@@ -4,10 +4,10 @@
       Filter section 
     -->
     <div class="row justify-between gutter">
-      <q-icon class="col-1" name="label" />
-      <k-pattern-filter class="col-5" @filter-changed="onFilterChanged" />
       <q-icon class="col-1" name="flag" />
-      <k-tag-filter class="col-5" @filter-changed="onFilterChanged" />
+      <k-pattern-filter class="col-5" @filter-changed="onFilterChanged" />
+      <q-icon class="col-1" name="label" />
+      <k-tag-filter :scope="service" class="col-5" @filter-changed="onFilterChanged" />
     </div>
     <!-- 
       Items section 

@@ -3,7 +3,7 @@
     <k-autocomplete :services="services" @item-selected="onAddTag" />
     <div v-if="tags.length > 0">
       <q-chip v-for="tag in tags" :key="tag" icon="label" color="primary" @close="onRemoveTag(tag)" closable>
-        {{ tag.label }}
+        {{ tag.value }}
       </q-chip>
     </div>
   </div>
@@ -19,22 +19,31 @@ export default {
     QChip,
     KAutocomplete
   },
+  props: {
+    scope: {
+      type: String,
+      required: true
+    }
+  },
   data () {
     return {
-      services: [{
-        service: 'tags',
-        baseQuery: { scope: 'skill' },
+      tags: []
+    }
+  },
+  computed: {
+    services () {
+      return [{service: 'tags',
+        baseQuery: { scope: this.scope },
         field: 'value',
         icon: 'tag'
-      }],
-      tags: []
+      }]
     }
   },
   methods: {
     buildQuery () {
       let tagQuery = {}
       if (this.tags.length > 0) {
-        tagQuery['tags.value'] = { $in: this.tags.map(tag => tag.label) }
+        tagQuery['tags.value'] = { $in: this.tags.map(tag => tag.value) }
       }
       this.$emit('filter-changed', tagQuery)
     },
@@ -43,7 +52,7 @@ export default {
       this.buildQuery()
     },
     onRemoveTag (oldTag) {
-      this.tags = this.tags.filter(tag => tag.label === oldTag)
+      this.tags = this.tags.filter(tag => tag.value === oldTag)
       this.buildQuery()
     }
   }
