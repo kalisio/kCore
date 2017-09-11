@@ -18,6 +18,9 @@ export default {
     services: {
       type: Array,
       required: true
+    },
+    processResults: {
+      type: Function
     }
   },
   data () {
@@ -40,15 +43,20 @@ export default {
         let results = []
         for (let i = 0; i < responses.length; i++) {
           const response = responses[i]
-          const item = this.services[i]
+          const service = this.services[i]
           if (response.total > 0) {
             response.data.forEach(result => {
-              results.push({
-                label: _.get(result, item.field),
-                icon: item.icon
+              Object.assign(result, {
+                label: _.get(result, service.field),
+                icon: service.icon,
+                value: _.get(result, service.field)
               })
+              results.push(result)
             })
           }
+        }
+        if (this.processResults) {
+          this.processResults(pattern, results)
         }
         done(results)
       })

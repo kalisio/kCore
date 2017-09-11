@@ -50,13 +50,13 @@ let baseFieldMixin = {
       return ''
     },
     isEmpty () {
-      return this.model === this.defaultModel()
+      return _.isEqual(this.model, this.defaultModel())
     },
     value () {
       return this.model
     },
     fill (value) {
-      if (this.model !== value) this.model = value
+      this.model = value
     },
     clear () {
       this.fill(this.defaultModel())

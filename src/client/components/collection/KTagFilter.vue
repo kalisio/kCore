@@ -21,6 +21,12 @@ export default {
   },
   data () {
     return {
+      services: [{
+        service: 'tags',
+        baseQuery: { scope: 'skill' },
+        field: 'value',
+        icon: 'tag'
+      }],
       tags: []
     }
   },
@@ -40,14 +46,6 @@ export default {
       this.tags = this.tags.filter(tag => tag.label === oldTag)
       this.buildQuery()
     }
-  },
-  created () {
-    this.services = [{
-      service: 'tags',
-      baseQuery: { scope: 'skill' },
-      field: 'value',
-      icon: 'tag'
-    }]
   }
 }
 </script>

@@ -24,6 +24,7 @@ export function updateTags (hook) {
     return (hook.method === 'remove' ? tagsService.remove(null, { query: tag }) : tagsService.create(tag))
   }))
   .then(results => {
+    console.log(results)
     return hook
   })
 }
