@@ -7,12 +7,6 @@
       <k-app-bar @menu-clicked="onMenuToggled" />
     </div>
     <!--
-      The TabNav
-    -->
-    <div slot="navigation">
-      <k-tab-nav />
-    </div>
-    <!--
       The SideNav
     -->
     <div slot="left">
@@ -47,7 +41,6 @@ export default {
     // with a function that has previously been statically analyzed by the bundler (eg webpack)
     let loadComponent = this.$store.get('loadComponent')
     this.$options.components['k-app-bar'] = loadComponent(this.$store.get('config.layout.appBar', 'layout/KAppBar'))
-    this.$options.components['k-tab-nav'] = loadComponent(this.$store.get('config.layout.tabNav', 'layout/KTabNav'))
     this.$options.components['k-side-nav'] = loadComponent(this.$store.get('config.layout.sideNav', 'layout/KSideNav'))
   },
   mounted () {
