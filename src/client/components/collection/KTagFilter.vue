@@ -11,13 +11,13 @@
 
 <script>
 import { QChip } from 'quasar'
-import { KAutocomplete } from '.'
+import KAutocomplete from './KAutocomplete.vue'
 
 export default {
   name: 'k-tag-filter',
   components: {
-    KAutocomplete,
-    QChip
+    QChip,
+    KAutocomplete
   },
   computed: {
     autocompleteSize () { 
@@ -45,8 +45,6 @@ export default {
       this.tags = this.tags.filter(tag => tag.label === oldTag)
       this.buildQuery()
     }
-  },
-  mounted () {
   }
 }
 </script>
