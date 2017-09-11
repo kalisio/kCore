@@ -3,9 +3,11 @@
     <!-- 
       Filter section 
     -->
-    <div v-if="hasFilter">
-      <k-pattern-filter @filter-changed="onFilterChanged" />
-      <k-tag-filter @filter-changed="onFilterChanged" />
+    <div class="row justify-between gutter">
+      <q-icon class="col-1" name="label" />
+      <k-pattern-filter class="col-5" @filter-changed="onFilterChanged" />
+      <q-icon class="col-1" name="flag" />
+      <k-tag-filter class="col-5" @filter-changed="onFilterChanged" />
     </div>
     <!-- 
       Items section 
@@ -22,13 +24,14 @@
 </template>
 
 <script>
-import { QPagination } from 'quasar'
+import { QPagination, QIcon } from 'quasar'
 import { KTagFilter, KPatternFilter } from '.'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-grid',
   components: {
+    QIcon,
     QPagination,
     KTagFilter,
     KPatternFilter

@@ -1,6 +1,6 @@
 <template>
   <q-search v-model="selection">
-    <q-autocomplete @search="onSearch" @selected="onSelected" @close="onClose"/>
+    <q-autocomplete @search="onSearch" @selected="onSelected" />
   </q-search>
 </template>
 
@@ -13,6 +13,12 @@ export default {
   components: {
     QSearch,
     QAutocomplete
+  },
+  props: {
+    services: {
+      type: Array,
+      required: true
+    }
   },
   data () {
     return {
@@ -49,26 +55,7 @@ export default {
     },
     onSelected (item) {
       this.$emit('item-selected', item)
-    },
-    onClose () {
     }
-  },
-  mounted () {
-    // FIXME: to be read in config
-    this.services = [{
-      service: 'tags',
-      baseQuery: { scope: 'skill' },
-      field: 'value',
-      icon: 'label'
-    }, {
-      service: 'users',
-      field: 'name',
-      icon: 'perm_identity'
-    }, {
-      service: 'users',
-      field: 'email',
-      icon: 'email'
-    }]
   }
 }
 </script>

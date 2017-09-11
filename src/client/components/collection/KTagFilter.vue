@@ -1,7 +1,7 @@
 <template>
   <div>
-    <k-autocomplete :class="autocompleteSize" @item-selected="onAddTag" />
-    <div class="row col-8" v-if="tags.length > 0">
+    <k-autocomplete :services="services" @item-selected="onAddTag" />
+    <div v-if="tags.length > 0">
       <q-chip v-for="tag in tags" :key="tag" icon="label" color="primary" @close="onRemoveTag(tag)" closable>
         {{ tag.label }}
       </q-chip>
@@ -18,11 +18,6 @@ export default {
   components: {
     QChip,
     KAutocomplete
-  },
-  computed: {
-    autocompleteSize () { 
-      return this.tags.length > 0 ? 'col-4' : 'col-11'
-    }
   },
   data () {
     return {
@@ -45,6 +40,14 @@ export default {
       this.tags = this.tags.filter(tag => tag.label === oldTag)
       this.buildQuery()
     }
+  },
+  created () {
+    this.services = [{
+      service: 'tags',
+      baseQuery: { scope: 'skill' },
+      field: 'value',
+      icon: 'tag'
+    }]
   }
 }
 </script>

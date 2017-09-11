@@ -1,6 +1,6 @@
 <template>
-  <div class="column justify-center gutter">
-    <q-search ref="search" v-model="pattern" style="padding: 18px"/>
+  <div class="column">
+    <q-search ref="search" v-model="pattern" />
   </div>
 </template>
 
@@ -13,14 +13,20 @@ export default {
   components: {
     QSearch
   },
+  props: {
+    fields: {
+      type: Array,
+      default: function () {
+        return ['name']
+      }
+    }
+  },
   data () {
     return {
       pattern: ''
     }
   },
   mounted () {
-    // FIXME: to be read in config
-    this.fields = ['name', 'email']
     this.$refs.search.$on('input', () => {
       let fieldQueries = this.fields.map(field => {
         let fieldQuery = {}
