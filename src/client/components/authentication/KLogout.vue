@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { KScreen } from '../screen'
+import { KScreen } from '../frame'
 import mixins from '../../mixins'
 
 export default {

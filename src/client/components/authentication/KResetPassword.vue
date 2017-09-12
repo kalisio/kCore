@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { KScreen } from '../screen'
+import { KScreen } from '../frame'
 import { KForm } from '../form'
 
 export default {

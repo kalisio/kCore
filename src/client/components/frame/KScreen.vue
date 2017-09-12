@@ -15,12 +15,14 @@
           Title section 
         -->
         <q-card-title>
-          <slot name="title">
+          <slot name="screen-title">
             <h5>{{title}}</h5>
           </slot>
-          <div slot="subtitle">
-            {{subtitle}}
-          </div>
+          <slot name="screen-subtitle">
+            <div>
+              {{subtitle}}
+            </div>
+          </slot>
         </q-card-title>
         <!-- 
           Content section 
@@ -73,8 +75,8 @@ export default {
     // We need this so that we can dynamically load the component
     // with a function that has previously been statically analyzed by the bundler (eg webpack)
     let loadComponent = this.$store.get('loadComponent')
-    this.$options.components['k-screen-header'] = loadComponent(this.$store.get('screen.header', 'screen/KScreenHeader'))
-    this.$options.components['k-screen-footer'] = loadComponent(this.$store.get('screen.footer', 'screen/KScreenFooter'))
+    this.$options.components['k-screen-header'] = loadComponent(this.$store.get('screen.header', 'frame/KScreenHeader'))
+    this.$options.components['k-screen-footer'] = loadComponent(this.$store.get('screen.footer', 'frame/KScreenFooter'))
     // setup the color schema
     this.color = this.$store.get('screen.color', 'bg-white')
     this.textColor = this.$store.get('screen.textColor', 'text-dark')
