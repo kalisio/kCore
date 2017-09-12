@@ -33,9 +33,6 @@ export default {
         { name: 'profile', label: 'Profile', icon: 'description', route: { 
           name: 'identity-activity', params: { operation: 'manage', id: this.id } } 
         },
-        { name: 'billing', label: 'Billing', icon: 'credit_card', route: { 
-          name: 'identity-activity', params: { operation: 'manage', id: this.id, perspective: 'billing' } } 
-        },
         { name: 'security', label: 'Security', icon: 'security', route: { 
           name: 'identity-activity', params: { operation: 'manage', id: this.id, perspective: 'security' } } 
         }
