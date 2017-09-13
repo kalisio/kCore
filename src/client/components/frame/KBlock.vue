@@ -1,15 +1,21 @@
 <template>
   <q-card>
+    <!-- 
+      Title section
+     -->
     <q-card-title v-if="title !== ''" :class="titleColors">
       {{title}}
     </q-card-title>
+    <!-- 
+      Frame section
+      -->
     <q-card-main>
       <div id="k-card-main" class="row justify-between items-center">
-        <div>
-          {{text}}
-        </div>
+        <!-- Content -->
+        <div v-html="text" />
+        <!-- Action -->
         <div v-if="action !== ''">
-          <q-btn @click="$emit('action-triggered', action)" :color="color">{{action}}</q-btn>
+          <q-btn @click="$emit('action-triggered', action)" :color="color" :disable="disable">{{action}}</q-btn>
         </div>
       </div>
     </q-card-main>
@@ -43,6 +49,10 @@ export default {
     action: {
       type: String,
       default: ''
+    },
+    disable: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

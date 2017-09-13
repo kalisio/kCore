@@ -6,44 +6,39 @@
     <div v-if="name !== ''" class="row items-center justify-center full-width">
       <k-block class="col-10"
         color="red" 
-        title="Delete my account ?"
-        :text="`Please note that deleting \'${name}\' will delete any data attached to this account.`"
+        title="Delete your account ?"
+        :text="`Please note that deleting \'${name}\' will delete any data attached to this account.<br>
+                The deletion cannot be undone and you will be logged out of the application`"
         action="Delete"
         @action-triggered="deletionClicked" />
     </div>
     <!-- 
-      Modal section
+      Confim section
      -->
-     <k-modal ref="confirmModal" :title="`Are you sure you want to delete \'${name}\' ?`">
-      <div slot="modal-content" class="column">
-        <div>
-          <q-input v-model="confirmName" float-label="Enter this account's name to confim" />
-        </div>
-        <div class="self-end" style="padding: 8px">
-          <q-btn @click="deletionConfirmed" :disable="confirmName !== name" color="primary">Delete</q-btn>
-        </div>
-      </div>
-     </k-modal>
+     <k-confirm ref="confirm" 
+      :title="`Are you sure you want to delete \'${name}\' ?`"
+      action="Delete"
+      :prevent="{ capture: name, label: 'Please enter the name of this account to confim' }" 
+      @confirmed="deletionConfirmed" />
   </div>
 </template>
 
 <script>
-import { QInput, QBtn } from 'quasar'
+import { KBlock, KConfirm } from '../frame'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-identity-dz',
   components: {
-    QInput,
-    QBtn
+    KBlock,
+    KConfirm
   },
   mixins: [
     mixins.objectProxy
   ],
   data () {
     return {
-      name: '',
-      confirmName: ''
+      name: ''
     }
   },
   methods: {
@@ -51,17 +46,19 @@ export default {
       return this.$api.getService('users')
     },
     deletionClicked () {
-      this.$refs.confirmModal.open()
+      this.$refs.confirm.open()
     },
     deletionConfirmed () {
-      this.$refs.confirmModal.close()
+      // Close the modal
+      this.$refs.confirm.close()
+      // Delete tht user
+      this.getService().remove(this.id)
+      .then(_ => {
+        this.$router.push({name: 'logout'})
+      })
     }
   },
   created () {
-    // Load the components
-    let loadComponent = this.$store.get('loadComponent')
-    this.$options.components['k-block'] = loadComponent('frame/KBlock')
-    this.$options.components['k-modal'] = loadComponent('frame/KModal')
     // Install an object-changed callback
     this.$on('object-changed', _ =>  {
       if (this.getObject()) {

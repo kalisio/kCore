@@ -7,10 +7,18 @@
         </q-btn>
       </div>
       <div>
-        <h6>{{title}}</h6>
+        <h5>{{title}}</h5>
       </div>
       <div>
         <slot name="modal-content" /> 
+      </div>
+      <div class="self-end" style="padding: 8px">
+        <slot name="modal-actions">
+          <template v-for="action in actions">
+            <q-btn @click="$emit('action-triggered', action)" color="primary">{{action}}</q-btn>
+          </template>
+        </slot>
+      </div>
       </div>
     </div>
   </q-modal>
@@ -34,6 +42,12 @@ export default {
     closable: {
       type: Boolean,
       default: true
+    },
+    actions: {
+      type: Array,
+      default: function () {
+        return []
+      }
     }
   },
   methods: {
