@@ -1,4 +1,5 @@
 import logger from 'loglevel'
+import { Store } from './store'
 
 // We faced a bug in babel so that transform-runtime with export * from 'x' generates import statements in transpiled code
 // Tracked here : https://github.com/babel/babel/issues/2877
@@ -14,7 +15,16 @@ export * as mixins from './mixins'
 export * as hooks from './hooks'
 
 export default function init () {
-  // const app = this
+  const app = this
+
+  // Listen to the 'patched' event on the users
+  const users = app.getService('users')
+  users.on('patched', user => {
+    // Check whether we need to update the current logged user
+    if (user._id === this.Store.get('user._id')) {
+      Store.set('user', user)
+    }
+  })
 
   logger.debug('Initializing kalisio core')
 }
