@@ -62,6 +62,10 @@ function auth () {
 
 export function declareService (name, app, service) {
   const path = app.get('apiPath') + '/' + name
+  // Some internal Feathers service might internally declare the service
+  if (app.service(path)) {
+    return service
+  }
   // Initialize our service
   app.use(path, service)
 
@@ -167,12 +171,17 @@ export function createService (name, app, options) {
   service.options = options
 
   // Add some utility functions
-  service.getPath = function () {
+  service.getPath = function (withApiPrefix) {
+    let path = ''
     if (service.options) {
-      return service.options.path || service.name
+      path = service.options.path || service.name
     } else {
-      return service.name
+      path = service.name
     }
+    if (withApiPrefix) {
+      path = app.get('apiPath') + '/' + path
+    }
+    return path
   }
 
   debug(service.name + ' service registration completed')
