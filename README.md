@@ -17,7 +17,7 @@ yarn add kCore
 
 ## Documentation
 
-The [kDocs](https://kalisio.gitbooks.io/kalisio/) are loaded with awesome stuff and tell you everything you need to know about using and configuring Kalisio.
+The [kDocs](https://kalisio.gitbooks.io/kalisio/) are loaded with awesome stuff and tell you everything you need to know about using and configuring it.
 
 ## License
 
