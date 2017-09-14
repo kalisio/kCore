@@ -95,8 +95,14 @@ export default {
   },
   mixins: [mixins.authentication],
   methods: {
-    onSubmitted (data) {
+    onSubmitted (data, done) {
       this.login(data.email, data.password)
+      .then(_ => {
+        done()
+      })
+      .catch(_ => {
+        done()
+      })
     },
     onLogWith (provider) {
       location.href = '/auth/' + provider.toLowerCase()

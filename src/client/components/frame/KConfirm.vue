@@ -1,9 +1,9 @@
 <template>
-  <k-modal ref="modal" :title="title">
+  <k-dialog ref="dialog" :title="title">
     <!-- 
       Content section
      -->
-    <div slot="modal-content">
+    <div slot="dialog-content">
       <div v-html="content" />
       <div v-if="prevent">
         <q-input v-model="capturedText" :float-label="prevent.label" />
@@ -12,22 +12,22 @@
     <!--
       Actions section
      -->
-    <div slot="modal-actions">
+    <div slot="dialog-actions">
       <q-btn @click="$emit('confirmed')" :disable="capturedText !== prevent.capture" color="primary">{{action}}</q-btn>
     </div>
-  </k-modal>
+  </k-dialog>
 </template>
 
 <script>
 import { QInput, QBtn } from 'quasar'
-import KModal from './KModal.vue'
+import KDialog from './KDialog.vue'
 
 export default {
   name: 'k-confirm',
   components: {
     QInput,
     QBtn,
-    KModal
+    KDialog
   },
   props: {
     title: {
@@ -56,10 +56,10 @@ export default {
   },
   methods: {
     open () {
-      this.$refs.modal.open()
+      this.$refs.dialog.open()
     },
     close () {
-      this.$refs.modal.close()
+      this.$refs.dialog.close()
     }
   }
 }

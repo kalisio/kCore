@@ -1,12 +1,10 @@
 <template>
-  <div class="column justify-center" style="padding: 36px">
-    <k-form v-if="schema"
+  <div class="row justify-center full-width">
+    <k-form class="col-10"
       ref="form"
       :schema="schema"
       :submit-button="mode === 'Editing' ? 'Update':'Create'"
-      :cancel-button="cancelButton"
-      @submitted="onSubmitted" 
-      @canceled="onCanceled" 
+      @submitted="onSubmitted"
       @form-ready="onFormReady" />
   </div>
 </template>
@@ -34,8 +32,7 @@ export default {
   data () {
     return {
       mode: 'Edition',
-      cancelButton: '',
-      schema: null
+      schema: ''
     }
   },
   methods: {
@@ -49,15 +46,8 @@ export default {
     },
     update () {
       let schemaName = this.resolveSchemaName()
-      if (this.schemaName !== schemaName) {
-        this.schema = null
-        let loadSchema = this.$store.get('loadSchema')
-        loadSchema(schemaName)
-        .then(schema => {
-          // Assigns the schema to this editor
-          this.schemaName = schemaName
-          this.schema = schema
-        })
+      if (this.schema !== schemaName) {
+        this.schema = schemaName
       } else {
         this.updateObject()
       }
@@ -82,7 +72,6 @@ export default {
           }) 
         } else {
           this.mode = 'Creation'
-          this.cancelButton = 'Cancel'
         }
       }
     },
@@ -104,10 +93,8 @@ export default {
           this.serviceCreate(values)
         }
       }
+      this.$emit('applied')
       done()
-    },
-    onCanceled () {
-      // FIXME: 
     },
     onFormReady () {
       this.updateObject()

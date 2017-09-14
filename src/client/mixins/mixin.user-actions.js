@@ -5,7 +5,7 @@ let userActionsMixin = {
     editUser (user) {
       this.$router.push({ 
         name: 'users-activity', 
-        params: { context: this.context, operation: 'edit', id: user._id, perspective: 'profile' } 
+        params: { context: this.context, operation: 'manage', id: user._id, perspective: 'profile' } 
       })
     },
     addMember () {

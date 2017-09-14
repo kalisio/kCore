@@ -93,8 +93,14 @@ export default {
   },
   mixins: [mixins.authentication],
   methods: {
-    onSubmitted (data) {
+    onSubmitted (data, done) {
       this.register(data)
+      .then(_ => {
+        done()
+      })
+      .catch(_ => {
+        done()
+      })
     }
   }
 }

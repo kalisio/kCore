@@ -10,10 +10,10 @@
         <h5>{{title}}</h5>
       </div>
       <div>
-        <slot name="modal-content" /> 
+        <slot name="dialog-content" /> 
       </div>
       <div class="self-end" style="padding: 8px">
-        <slot name="modal-actions">
+        <slot name="dialog-actions">
           <template v-for="action in actions">
             <q-btn @click="$emit('action-triggered', action)" color="primary">{{action}}</q-btn>
           </template>
@@ -28,7 +28,7 @@
 import { QModal, QBtn, QIcon } from 'quasar'
 
 export default {
-  name: 'k-modal',
+  name: 'k-dialog',
   components: {
     QModal,
     QBtn,

@@ -41,7 +41,7 @@ export default {
     return {
       services: [{
         service: 'tags',
-        baseQuery: { scope: this.property.scope },
+        baseQuery: { scope: this.properties.scope },
         field: 'value',
         icon: 'label'
       }],
@@ -64,7 +64,7 @@ export default {
           label: 'Add "' + pattern + '" tag',
           icon: 'label',
           value: pattern,
-          scope: this.property.scope
+          scope: this.properties.scope
         })
       }
     },
