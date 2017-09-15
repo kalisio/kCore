@@ -48,6 +48,23 @@ export function kalisio () {
   api.getService = function (path, context) {
     return api.service(api.getServicePath(path, context))
   }
+  // change the base URL/domain to be used (useful for mobile apps)
+  api.setBaseUrl = function (baseUrl) {
+    if (config.transport === 'http') {
+      Object.keys(this.services).forEach(path => {
+        const service = this.service(path)
+        if (service.base) {
+          service.base = `${baseUrl}/${path}`;
+        }
+      })
+    } else {
+      let socket = io(baseUrl, {
+        transports: ['websocket'],
+        path: config.apiPath + 'ws'
+      })
+      this.configure(feathers.socketio(socket))
+    }
+  }
 
   api.users = api.getService('users')
 

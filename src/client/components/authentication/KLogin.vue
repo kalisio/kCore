@@ -34,6 +34,10 @@
           <a @click="$router.push({name: 'register'})">
             Don't have an account ?
           </a>
+          &nbsp;&nbsp;
+          <a v-if="isCordova" @click="$router.push({name: 'change-endpoint'})">
+            Change endpoint ?
+          </a>
         </div>
       </div>
     </div>
@@ -41,7 +45,7 @@
 </template>
 
 <script>
-import { QList, QItem, QItemMain, QBtn } from 'quasar'
+import { QList, QItem, QItemMain, QBtn, Platform } from 'quasar'
 import { KScreen } from '../frame'
 import { KForm } from '../form'
 import mixins from '../../mixins'
@@ -93,7 +97,8 @@ export default {
           }
         }
       },
-      providers: []
+      providers: [],
+      isCordova: DEV ? true : Platform.is.cordova
     }
   },
   mixins: [mixins.authentication],

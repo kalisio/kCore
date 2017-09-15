@@ -18,6 +18,10 @@
           <a @click="$router.push({name: 'login'})">
             Already have an account ?
           </a>
+          &nbsp;&nbsp;
+          <a v-if="isCordova" @click="$router.push({name: 'change-endpoint'})">
+            Change endpoint ?
+          </a>
         </div>
       </div>
     </div>
@@ -25,7 +29,7 @@
 </template>
 
 <script>
-import { QBtn } from 'quasar'
+import { QBtn, Platform } from 'quasar'
 import { KScreen } from '../frame'
 import { KForm } from '../form'
 import mixins from '../../mixins'
@@ -93,7 +97,8 @@ export default {
             "labelWidth": 3
           }
         }
-      }
+      },
+      isCordova: DEV ? true : Platform.is.cordova
     }
   },
   mixins: [mixins.authentication],
