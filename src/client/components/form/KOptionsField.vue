@@ -8,9 +8,9 @@
     :error="hasError"
   >
     <q-option-group
-      :type="property.field.type"
+      :type="properties.field.type"
       v-model="model"
-      :options="property.field.options"
+      :options="properties.field.options"
       @change="onChanged"
       @blur="onChanged" />
   </q-field>

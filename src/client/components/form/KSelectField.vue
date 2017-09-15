@@ -8,12 +8,12 @@
     :error="hasError"
   >
     <q-select
-      :multiple="this.property.field.multiple ? this.property.field.multiple : false"
-      :toggle="property.field.toggle ? property.field.toggle : false"
-      :radio="property.field.radio ? property.field.radio : false"
-      :chips="property.field.chips ? property.field.chips : false"
+      :multiple="this.properties.field.multiple ? this.properties.field.multiple : false"
+      :toggle="properties.field.toggle ? properties.field.toggle : false"
+      :radio="properties.field.radio ? properties.field.radio : false"
+      :chips="properties.field.chips ? properties.field.chips : false"
       v-model="model"
-      :options="property.field.options"
+      :options="properties.field.options"
       @change="onChanged"
       @blur="onChanged" />
   </q-field>
