@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { discard } from 'feathers-hooks-common'
+import { discard, disallow } from 'feathers-hooks-common'
 // import makeDebug from 'debug'
 
 // const debug = makeDebug('kalisio:kCore')
@@ -19,6 +19,19 @@ export function processPerspectives (hook) {
       discard(perspective)(hook)
     }
   })
+}
+
+// When perspectives are present we disallow update in order to avoid erase them.
+// Indeed when requesting an object they are not retrieved by default
+export function preventUpdatePerspectives (hook) {
+  let params = hook.params
+  let query = params.query
+  let service = hook.service
+
+  // Test if some perspectives are defined on the model
+  if (!service.options || !service.options.perspectives) return
+
+  disallow()(hook)
 }
 
 // The hook serialize allows to copy/move some properties within the objects holded by the hook
