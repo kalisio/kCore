@@ -34,14 +34,6 @@
       }
     }
   },
-  "required": ["name", "email", "phone"],
-  "form": {
-    "type": "object",
-    "properties":  {
-      "icon": false,
-      "label": true,
-      "labelWidth": 3
-    }
-  }
+  "required": ["name", "email", "phone"]
 }
 

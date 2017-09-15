@@ -95,7 +95,7 @@ let baseEditorMixin = {
             if (this.perspective !== '') {
               let data = {}
               data[this.perspective] = form.values
-              this.servicePatch(this.id, data)
+              this.servicePatch(this.id, data, { query: { $select: [this.perspective] } })
             } else {
               this.servicePatch(this.id, form.values)
             }

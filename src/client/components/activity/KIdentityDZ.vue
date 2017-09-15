@@ -1,16 +1,18 @@
 <template>
   <div>
-    <!-- 
-      Page section
-    -->
-    <div v-if="name !== ''" class="row items-center justify-center full-width">
-      <k-block class="col-10"
-        color="red" 
-        title="Delete your account ?"
-        :text="`Please note that deleting \'${name}\' will delete any data attached to this account.<br>
-                The deletion cannot be undone and you will be logged out of the application`"
-        action="Delete"
-        @action-triggered="deletionClicked" />
+    <div v-if="name !== ''" class="row items-center justify-center full-width sm-gutter">
+      <!-- 
+        Page section
+      -->
+      <div class="col-10">
+        <k-block
+          color="red" 
+          title="Delete your account ?"
+          :text="`Please note that deleting \'${name}\' will delete any data attached to this account.<br>
+                  The deletion cannot be undone and you will be logged out of the application`"
+          action="Delete"
+          @action-triggered="onDeletion" />
+      </div>
     </div>
     <!-- 
       Confim section
@@ -19,7 +21,7 @@
       :title="`Are you sure you want to delete \'${name}\' ?`"
       action="Delete"
       :prevent="{ capture: name, label: 'Please enter the name of this account to confim' }" 
-      @confirmed="deletionConfirmed" />
+      @confirmed="onDeletionConfirmed" />
   </div>
 </template>
 
@@ -45,10 +47,10 @@ export default {
     getService () {
       return this.$api.getService('users')
     },
-    deletionClicked () {
+    onDeletion () {
       this.$refs.confirm.open()
     },
-    deletionConfirmed () {
+    onDeletionConfirmed () {
       // Close the modal
       this.$refs.confirm.close()
       // Delete tht user
