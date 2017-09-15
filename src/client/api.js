@@ -5,6 +5,7 @@ import io from 'socket.io-client'
 import reactive from 'feathers-reactive'
 import rxjs from 'rxjs'
 import config from 'config'
+import { Platform } from 'quasar'
 
 export function kalisio () {
   let api = feathers()
@@ -15,10 +16,11 @@ export function kalisio () {
     logger.setLevel('info')
   }
   api.configure(feathersHooks())
+  const origin = Platform.is.cordova ? config.domain : window.location.origin
   if (config.transport === 'http') {
-    api.configure(feathers.rest(window.location.origin).fetch(window.fetch.bind(window)))
+    api.configure(feathers.rest(origin).fetch(window.fetch.bind(window)))
   } else {
-    let socket = io(window.location.origin, {
+    let socket = io(origin, {
       transports: ['websocket'],
       path: config.apiPath + 'ws'
     })

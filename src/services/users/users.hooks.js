@@ -1,4 +1,4 @@
-import { serialize, processPerspectives, updateTags } from '../../hooks'
+import { serialize, updateTags } from '../../hooks'
 const { authenticate } = require('feathers-authentication').hooks
 const { hashPassword } = require('feathers-authentication-local').hooks
 const commonHooks = require('feathers-hooks-common')
@@ -29,7 +29,7 @@ module.exports = {
   },
 
   after: {
-    all: [commonHooks.when(hook => hook.params.provider, commonHooks.discard('password')), processPerspectives],
+    all: [ commonHooks.when(hook => hook.params.provider, commonHooks.discard('password')) ],
     find: [],
     get: [],
     create: [],
