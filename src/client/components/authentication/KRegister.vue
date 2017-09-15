@@ -1,12 +1,15 @@
 <template>
   <k-screen title="Register">
     <div slot="screen-content">
-      <div class="column justify-center">
+      <div class="column justify-center sm-gutter">
         <!--
           Register form
         -->
         <div>
-          <k-form :schema="schema" submitButton="Register" @submitted="onSubmitted" />
+          <k-form ref="form" :schema="schema" />
+        </div>
+        <div class="self-center">
+          <q-btn color="primary" loader @click="onRegister">Register</q-btn>
         </div>
         <!--
           Additionnal links
@@ -22,6 +25,7 @@
 </template>
 
 <script>
+import { QBtn } from 'quasar'
 import { KScreen } from '../frame'
 import { KForm } from '../form'
 import mixins from '../../mixins'
@@ -29,6 +33,7 @@ import mixins from '../../mixins'
 export default {
   name: 'k-register',
   components: {
+    QBtn,
     KForm,
     KScreen
   },
@@ -93,14 +98,19 @@ export default {
   },
   mixins: [mixins.authentication],
   methods: {
-    onSubmitted (data, done) {
-      this.register(data)
-      .then(_ => {
+    onRegister (event, done) {
+      let result = this.$refs.form.validate()
+      if (result.isValid) {
+        this.register(result.values)
+        .then(_ => {
+          done()
+        })
+        .catch(_ => {
+          done()
+        })
+      } else {
         done()
-      })
-      .catch(_ => {
-        done()
-      })
+      }
     }
   }
 }

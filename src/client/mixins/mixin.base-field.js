@@ -79,8 +79,6 @@ let baseFieldMixin = {
   },
   created () {
     this.reset()
-    // Tell the form the field is ready
-    this.$emit('field-ready')
   }
 }
 

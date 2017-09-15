@@ -9,7 +9,7 @@ export function populateResource (hook) {
   if (hook.type !== 'before') {
     throw new Error(`The 'populateResource' hook should only be used as a 'before' hook.`)
   }
-  
+
   // Avoid populating any target resource when resource parameters are not present
   return populateObject({ serviceField: 'resourcesService', idField: 'resource', throwOnNotFound: false })(hook)
 }

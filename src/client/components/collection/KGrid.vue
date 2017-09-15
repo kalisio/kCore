@@ -25,7 +25,8 @@
 
 <script>
 import { QPagination, QIcon } from 'quasar'
-import { KTagFilter, KPatternFilter } from '.'
+import KTagFilter from './KTagFilter.vue'
+import KPatternFilter from './KPatternFilter.vue'
 import mixins from '../../mixins'
 
 export default {

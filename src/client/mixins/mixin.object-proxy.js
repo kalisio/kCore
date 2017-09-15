@@ -15,6 +15,9 @@ let objectProxyMixin = {
   watch: {
     id: function () {
       this.loadObject()
+    },
+    perspective: function () {
+      this.loadObject()
     }
   },
   methods: {
@@ -23,18 +26,20 @@ let objectProxyMixin = {
     },
     loadObject () {
       this._object = null
-      if (this.getService()) {
-        let params = {}
-        if (this.perspective) {
-          params = { query: { $select: [this.perspective] } }
+      if (!lodash.isEmpty(this.id)) {
+        if (this.getService()) {
+          let params = {}
+          if (this.perspective) {
+            params = { query: { $select: [this.perspective] } }
+          }
+          this.getService().get(this.id, params)
+          .then(values => {
+            this._object = values
+            this.$emit('object-changed')
+          })
+        } else {
+          logger.warn('Invalid service')
         }
-        this.getService().get(this.id, params)
-        .then(values => {
-          this._object = values
-          this.$emit('object-changed')
-        })
-      } else {
-        logger.warn('Invalid service')
       }
       this.$emit('object-changed')
     }

@@ -21,7 +21,7 @@ export default function init () {
   const users = app.getService('users')
   users.on('patched', user => {
     // Check whether we need to update the current logged user
-    if (user._id === this.Store.get('user._id')) {
+    if (user._id === Store.get('user._id')) {
       Store.set('user', user)
     }
   })

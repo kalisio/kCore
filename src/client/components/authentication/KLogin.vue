@@ -1,7 +1,7 @@
 <template>
   <k-screen title="Log in with">
     <div slot="screen-content">
-      <div class="column justify-center">
+      <div class="column justify-center sm-gutter">
         <!-- 
           Login providers
         -->
@@ -18,7 +18,10 @@
           Login form 
         -->
         <div>
-          <k-form :schema="schema" submitButton="Log In" @submitted="onSubmitted" />
+          <k-form ref="form" :schema="schema" />
+        </div>
+        <div class="self-center">
+          <q-btn color="primary" loader @click="onLogin">Log in</q-btn>
         </div>
         <!-- 
           Additionnal links
@@ -95,14 +98,19 @@ export default {
   },
   mixins: [mixins.authentication],
   methods: {
-    onSubmitted (data, done) {
-      this.login(data.email, data.password)
-      .then(_ => {
+    onLogin (event, done) {
+      let result = this.$refs.form.validate()
+      if (result.isValid) {
+        this.login(result.values.email, result.values.password)
+        .then(_ => {
+          done()
+        })
+        .catch(_ => {
+          done()
+        })
+      } else {
         done()
-      })
-      .catch(_ => {
-        done()
-      })
+      }
     },
     onLogWith (provider) {
       location.href = '/auth/' + provider.toLowerCase()

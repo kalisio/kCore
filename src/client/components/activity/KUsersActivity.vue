@@ -1,5 +1,5 @@
 <template>
-  <div v-if="operation === 'edit'">
+  <div v-if="operation === 'manage'">
     <k-editor :context="context" service="users" :id="id" :perspective="perspective" />
   </div>
   <div v-else>

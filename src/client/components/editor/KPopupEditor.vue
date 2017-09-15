@@ -1,49 +1,57 @@
 <template>
-  <k-dialog ref="dialog" :title="title">
+  <k-dialog ref="dialog" :title="title" :actions="actions" @action-triggered="onActionTriggered">
     <!-- 
       Content section
      -->
     <div slot="dialog-content">
-      <k-editor v-bind="$props" @applied="onApplied" />
+      <k-form ref="form" :schema="schema" @form-ready="onFormReady" />
     </div>
   </k-dialog>
 </template>
 
 <script>
-import KEditor from './KEditor.vue'
 import { KDialog } from '../frame'
+import { KForm } from '../form'
+import mixins from '../../mixins'
 
 export default {
   name: 'k-popup-editor',
   components: {
     KDialog,
-    KEditor
+    KForm
   },
+  mixins: [
+    mixins.service,
+    mixins.objectProxy,
+    mixins.baseEditor
+  ],
   props: {
     title: {
       type: String,
       default: ''
-    },
-    context: {
-      type: String,
-      default: ''
-    },
-    service: {
-      type: String,
-      required: true,
-    },
-    id: {
-      type: String,
-      default: ''
-    },
-    perspective: {
-      type: String,
-      default: ''
+    }
+  },
+  computed: {
+    actions () {
+      let actions = []
+      if (this.applyButton != '') actions.push(this.applyButton)
+      if (this.clearButton != '') actions.push(this.clearButton)
+      if (this.resetButton != '') actions.push(this.resetButton)
+      return actions
     }
   },
   methods: {
-    onApplied () {
-      this.close()
+    onActionTriggered (action) {
+      switch (action) {
+        case this.clearButton: 
+          this.clear()
+          return
+        case this.resetButton: 
+          this.reset()
+          return
+        default:
+          this.apply()
+      }
     },
     open () {
       this.$refs.dialog.open()

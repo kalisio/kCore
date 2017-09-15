@@ -1,23 +1,38 @@
 <template>
   <k-screen title="Reset password">
-   <div slot="screen-content" class="column justify-center">
-      <div>
-        We'll email you instructions on how to reset your password.
-      </div>
-      <div>
-        <k-form :schema="schema" submitButton="Submit" @submitted="onSubmitted" cancelButton="Cancel" @canceled="onCanceled"/>
+    <div slot="screen-content">
+      <div class="column justify-center sm-gutter">
+        <div>
+          <blockquote>
+            <p>
+              We'll email you instructions on how to reset your password.<br>
+              Please enter your email address.
+            </p>
+          </blockquote>
+        </div>
+        <div>
+          <k-form ref="form" :schema="schema" />
+        </div>
+        <div>
+          <div class="row justify-around">
+            <q-btn color="primary" @click="onCanceled">Cancel</q-btn>
+            <q-btn color="primary" loader @click="onApplied">Apply</q-btn>
+          </div>
+        </div>
       </div>
     </div>
   </k-screen>
 </template>
 
 <script>
+import { QBtn } from 'quasar'
 import { KScreen } from '../frame'
 import { KForm } from '../form'
 
 export default {
   name: 'k-reset-password',
   components: {
+    QBtn,
     KScreen,
     KForm
   },
@@ -36,7 +51,7 @@ export default {
             "field": {
               "component": "form/KPasswordField",
               "label": "Email",
-              "helper": "Type your email address",
+              "helper": "Enter your email address",
             }
           }
         },
@@ -53,7 +68,7 @@ export default {
     }
   },
   methods: {
-    onSubmitted (data) {
+    onApplied (data) {
       // TODO
     },
     onCanceled () {

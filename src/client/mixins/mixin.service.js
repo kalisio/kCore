@@ -16,6 +16,9 @@ let serviceMixin = {
     }
   },
   methods: {
+    getService () {
+      return this._service
+    },
     isServiceValid () {
       return this._service !== null
     },
