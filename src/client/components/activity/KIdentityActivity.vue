@@ -1,11 +1,14 @@
 <template>
   <div v-if="operation === 'manage'">
     <k-nav-bar :tabs="navBarTabs()" :selected="perspective" />
-    <div v-if="perspective !== 'danger-zone'">
-      <k-editor service="users" :id="id" :perspective="perspective" />
+    <div v-if="perspective === 'security'">
+      <k-identity-security :id="id" />
+    </div>
+    <div v-if="perspective === 'danger-zone'">
+      <k-identity-dz :id="id" />
     </div>
     <div v-else>
-      <k-identity-dz service="users" :id="id" />
+      <k-editor service="users" :id="id" :perspective="perspective" />
     </div>
   </div>
 </template>
@@ -52,6 +55,7 @@ export default {
     let loadComponent = this.$store.get('loadComponent')
     this.$options.components['k-editor'] = loadComponent('editor/KEditor')
     this.$options.components['k-nav-bar'] = loadComponent('layout/KNavBar')
+    this.$options.components['k-identity-security'] = loadComponent('activity/KIdentitySecurity')
     this.$options.components['k-identity-dz'] = loadComponent('activity/KIdentityDZ')
   }
 }

@@ -18,7 +18,7 @@ import { QField, QToggle } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
-  name: 'k-chips-field',
+  name: 'k-toggle-field',
   components: {
     QField,
     QToggle
