@@ -4,11 +4,11 @@
     <div v-if="perspective === 'security'">
       <k-identity-security :id="id" />
     </div>
-    <div v-if="perspective === 'danger-zone'">
+    <div v-else-if="perspective === 'danger-zone'">
       <k-identity-dz :id="id" />
     </div>
     <div v-else>
-      <k-editor service="users" :id="id" :perspective="perspective" />
+      <k-editor service="users" :id="id" :perspective="perspective"/>
     </div>
   </div>
 </template>
