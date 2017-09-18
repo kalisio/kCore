@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { QBtn, Platform } from 'quasar'
+import { QBtn, Platform, Toast } from 'quasar'
 import { KScreen } from '../frame'
 import { KForm } from '../form'
 import mixins from '../../mixins'
@@ -110,7 +110,14 @@ export default {
         .then(_ => {
           done()
         })
-        .catch(_ => {
+        .catch(error => {
+          const code = _.get(error, 'data.code')
+          if (code === 11000) {
+            Toast.create.negative({
+              html: 'Email already taken',
+              timeout: 10000
+            })
+          }
           done()
         })
       } else {
