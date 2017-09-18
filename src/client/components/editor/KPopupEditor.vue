@@ -53,7 +53,8 @@ export default {
           this.apply()
       }
     },
-    open () {
+    open (clear) {
+      if (clear) this.$refs.form.clear()
       this.$refs.dialog.open()
     },
     close () {
