@@ -49,10 +49,10 @@ export default {
       return this.$api.getService('users')
     },
     onChangePassword () {
-      // TODO
+      this.$router.push({name: 'change-password'})
     },
     onChangeEmail () {
-      // TODO
+      this.$router.push({name: 'send-change-identity'})
     }
   },
   created () {
