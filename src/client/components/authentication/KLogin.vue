@@ -27,7 +27,7 @@
           Additionnal links
         -->
         <div class="self-center">
-          <a @click="$router.push({name: 'reset-password'})">
+          <a @click="$router.push({name: 'send-reset-password'})">
             Forgot your password ?
           </a>
           &nbsp;&nbsp;
