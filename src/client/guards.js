@@ -1,4 +1,5 @@
 import logger from 'loglevel'
+import { Events } from 'quasar'
 import { Store } from './store'
 
 // Guards that can be added to customize route guards
@@ -9,37 +10,57 @@ let guards = []
 // a name to jump to a given route
 
 // Guard unauthenticated users
-export function authenticationGuard (user, to, from, next) {
+export function authenticationGuard (user, to, from) {
   // All routes under /home are assumed to be authenticated
-  if (to.path.startsWith('/home')) {
-    // If the user is here then he is authenticated
-    if (user) {
-      return true
-    } else {
-      return 'login'
-    }
+  if (to.path.startsWith('/home') || to.meta.authenticated) {
+    // If the user is here then he is authenticated so let it go
+    if (user) return true
+    // Otherwise redirect to home
+    else return 'login'
   } else {
-    return true
+    // If the user is here then he is authenticated so redirect to home
+    if (user) return 'home'
+    // Otherwise let it go
+    else return (to.path === '/' ? 'login' : true)
   }
 }
 
-// Guard routes for a given user
+// Guard routes for a given user, can be used as router navigation guard
+// or as standard function. In this case next will not be used and you get the
+// final result after running all registered guards: true, false or redirect route name
 export function beforeGuard (to, from, next) {
   const user = Store.get('user')
   // Run registered guards
-  guards.forEach(guard => {
-    let result = guard(user, to, from, next)
+  for (let guard of guards) {
+    let result = guard(user, to, from)
     if (typeof result === 'string') {
-      logger.debug('Navigation guard redirected to route ' + result)
-      next({ name: result })
+      console.log('have redirected to ', result)
+      logger.debug('Navigation guard would redirect to route ' + result)
+      if (typeof next === 'function') {
+        // Guard are used to check if a route is reachable when the user navigate
+        // but redirection should be handled at the app level to avoid concurrence
+        // between both mechanisms. For this you can call the function without passing from/next arguments.
+        // next({ name: result })
+        return next(false)
+      } else {
+        return result
+      }
     } else if (!result) {
       logger.debug('Navigation aborted by guard')
-      next(false)
+      if (typeof next === 'function') {
+        return next(false)
+      } else {
+        return false
+      }
     }
-  })
+  }
 
   logger.debug('Navigation guards passed')
-  next()
+  if (typeof next === 'function') {
+    return next()
+  } else {
+    return true
+  }
 }
 
 beforeGuard.registerGuard = function (guard) {

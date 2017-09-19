@@ -7,6 +7,7 @@ let authenticationMixin = {
       })
       .then(user => {
         this.$store.set('user', user)
+        return user
       })
     },
     register (user) {
@@ -35,7 +36,7 @@ let authenticationMixin = {
     },
     logout () {
       return this.$api.logout()
-      .then(_ => {
+      .then(response => {
         this.$store.set('user', null)
       })
     }
