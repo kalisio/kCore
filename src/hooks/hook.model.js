@@ -24,8 +24,6 @@ export function processPerspectives (hook) {
 // When perspectives are present we disallow update in order to avoid erase them.
 // Indeed when requesting an object they are not retrieved by default
 export function preventUpdatePerspectives (hook) {
-  let params = hook.params
-  let query = params.query
   let service = hook.service
 
   // Test if some perspectives are defined on the model

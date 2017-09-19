@@ -54,7 +54,7 @@ export function kalisio () {
       Object.keys(this.services).forEach(path => {
         const service = this.service(path)
         if (service.base) {
-          service.base = `${baseUrl}/${path}`;
+          service.base = `${baseUrl}/${path}`
         }
       })
     } else {

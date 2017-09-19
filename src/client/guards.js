@@ -1,5 +1,4 @@
 import logger from 'loglevel'
-import { Events } from 'quasar'
 import { Store } from './store'
 
 // Guards that can be added to customize route guards
@@ -21,9 +20,8 @@ export function authenticationGuard (user, to, from) {
     if (user) return true
     // Otherwise redirect to home
     else return 'login'
-  }
-  // Only when not authenticated, eg reset password
-  else if (to.meta.unauthenticated) {
+  } else if (to.meta.unauthenticated) {
+    // Only when not authenticated, eg reset password
     // If the user is here then he is authenticated so redirect to home
     if (user) return 'home'
     // Otherwise let it go handling the specific case of domain root
