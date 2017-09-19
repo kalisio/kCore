@@ -40,7 +40,6 @@ export function beforeGuard (to, from, next) {
   for (let guard of guards) {
     let result = guard(user, to, from)
     if (typeof result === 'string') {
-      console.log('have redirected to ', result)
       logger.debug('Navigation guard would redirect to route ' + result)
       if (typeof next === 'function') {
         // Guard are used to check if a route is reachable when the user navigate
