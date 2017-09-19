@@ -11,16 +11,22 @@ let guards = []
 
 // Guard unauthenticated users
 export function authenticationGuard (user, to, from) {
-  // All routes under /home are assumed to be authenticated
-  if (to.path.startsWith('/home') || to.meta.authenticated) {
+  // Routes accessible whatever the authentication state, eg public
+  if (to.meta.authenticated && to.meta.unauthenticated) {
+    return true
+  }
+  // Only when authenticated, eg private
+  if (to.meta.authenticated) {
     // If the user is here then he is authenticated so let it go
     if (user) return true
     // Otherwise redirect to home
     else return 'login'
-  } else {
+  }
+  // Only when not authenticated, eg reset password
+  else if (to.meta.unauthenticated) {
     // If the user is here then he is authenticated so redirect to home
     if (user) return 'home'
-    // Otherwise let it go
+    // Otherwise let it go handling the specific case of domain root
     else return (to.path === '/' ? 'login' : true)
   }
 }
