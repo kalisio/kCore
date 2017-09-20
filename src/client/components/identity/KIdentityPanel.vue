@@ -25,7 +25,7 @@ import { Events, QList, QSideLink, QItemSide, QItemMain } from 'quasar'
 import Avatar from 'vue-avatar/dist/Avatar'
 
 export default {
-  name: 'k-identity',
+  name: 'k-identity-panel',
   components: {
     QList, 
     QSideLink, 
@@ -40,23 +40,23 @@ export default {
     }
   },
   methods: {
-    updateUser () {
+    updateIdentity () {
       this.name = this.$store.get('user.name', '')
       this.id = this.$store.get('user._id', '')
     }
   },
   created () {
-    // Retrieve the the user info
-    this.updateUser()
     // Load the configuration
     let confPath = 'config.' + this.name
     this.bgColor = this.$store.get(confPath + '.bgColor', 'bg-dark')
     this.textColor = this.$store.get(confPath + '.textColor', 'text-white')
     this.iconColor = this.$store.get(confPath + '.iconColor', 'white')
+    // Update the panel
+    this.updateIdentity()
   },
   mounted () {
     Events.$on('user-changed', user => {
-      this.updateUser (user)
+      this.updateIdentity ()
     })
   }
 }

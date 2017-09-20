@@ -29,16 +29,12 @@
 
 <script>
 import { KBlock } from '../frame'
-import mixins from '../../mixins'
 
 export default {
   name: 'k-identity-security',
   components: {
     KBlock
   },
-  mixins: [
-    mixins.objectProxy
-  ],
   data () {
     return {
       name: ''
@@ -54,14 +50,6 @@ export default {
     onChangeEmail () {
       this.$router.push({name: 'send-change-identity'})
     }
-  },
-  created () {
-    // Install an object-changed callback
-    this.$on('object-changed', _ =>  {
-      if (this.getObject()) {
-        // TODO
-      }
-    })
   }
 }
 </script>

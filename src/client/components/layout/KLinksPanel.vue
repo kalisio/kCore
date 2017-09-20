@@ -1,0 +1,60 @@
+<template>
+  <!--q-list highlight no-border-->
+  <div>
+    <q-list link no-border>
+      <template v-for="link in links">
+        <q-item @click="onLinkClicked(link)" v-if="link.label" item>
+          <q-item-side :icon="link.icon" />
+          <q-item-main :label="link.label" />
+        </q-item>
+        <q-item-separator v-else />
+      </template>
+    </q-list>
+  </div>
+</template>
+
+<script>
+import logger from 'loglevel'
+import lodash from 'lodash'
+import { QList, QItem, QItemSide, QItemMain, QItemSeparator } from 'quasar'
+
+export default {
+  name: 'k-links-panel',
+  components: {
+    QList,
+    QItem,
+    QItemSide,
+    QItemMain,
+    QItemSeparator,
+  },
+  props: {
+    name: {
+      type: String,
+      default: ''
+    }
+  },
+  data () {
+    return {
+      links: []
+    }
+  },
+  methods: {
+    onLinkClicked (link) {
+      let resolvedParams = {}
+      if (link.route.params) {
+        Object.assign(resolvedParams, link.route.params)
+        if (resolvedParams.context) {
+          let context = this.$store.get(resolvedParams.context)
+          resolvedParams.context = context
+        }
+      }
+      this.$router.push({name: link.route.name, params: resolvedParams })
+    }
+  },
+  created () {
+    // Load the configuration
+    let confPath = 'config.' + this.name
+    this.links = this.$store.get(confPath + '.links')
+  }
+}
+</script>
