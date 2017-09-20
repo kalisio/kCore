@@ -55,8 +55,8 @@ export default {
     let loadComponent = this.$store.get('loadComponent')
     this.$options.components['k-editor'] = loadComponent('editor/KEditor')
     this.$options.components['k-nav-bar'] = loadComponent('layout/KNavBar')
-    this.$options.components['k-identity-security'] = loadComponent('activity/KIdentitySecurity')
-    this.$options.components['k-identity-dz'] = loadComponent('activity/KIdentityDZ')
+    this.$options.components['k-identity-security'] = loadComponent('identity/KIdentitySecurity')
+    this.$options.components['k-identity-dz'] = loadComponent('identity/KIdentityDZ')
   }
 }
 </script>

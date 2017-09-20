@@ -11,7 +11,7 @@
     -->
     <div>
       <q-list highlight no-border>
-        <q-side-link item :to="route()" exact>
+        <q-side-link item :to="{ name: 'identity-activity', params: { operation: 'manage', id: id }}">
           <q-item-main :label="name" />
           <q-item-side icon="perm_identity" :color="iconColor" right />
         </q-side-link>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { QList, QSideLink, QItemSide, QItemMain } from 'quasar'
+import { Events, QList, QSideLink, QItemSide, QItemMain } from 'quasar'
 import Avatar from 'vue-avatar/dist/Avatar'
 
 export default {
@@ -40,20 +40,24 @@ export default {
     }
   },
   methods: {
-    route () {
-      let userId = this.$store.get('user')._id
-      return { name: 'identity-activity', params: { operation: 'manage', id: userId } }
+    updateUser () {
+      this.name = this.$store.get('user.name', '')
+      this.id = this.$store.get('user._id', '')
     }
   },
   created () {
     // Retrieve the the user info
-    this.name = this.$store.get('user.name')
-    this.id = this.$store.get('user._id')
+    this.updateUser()
     // Load the configuration
     let confPath = 'config.' + this.name
     this.bgColor = this.$store.get(confPath + '.bgColor', 'bg-dark')
     this.textColor = this.$store.get(confPath + '.textColor', 'text-white')
     this.iconColor = this.$store.get(confPath + '.iconColor', 'white')
+  },
+  mounted () {
+    Events.$on('user-changed', user => {
+      this.updateUser (user)
+    })
   }
 }
 </script>
