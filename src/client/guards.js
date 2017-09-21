@@ -18,7 +18,7 @@ export function authenticationGuard (user, to, from) {
   if (to.meta.authenticated) {
     // If the user is here then he is authenticated so let it go
     if (user) return true
-    // Otherwise redirect to home
+    // Otherwise redirect to login
     else return 'login'
   } else if (to.meta.unauthenticated) {
     // Only when not authenticated, eg reset password
