@@ -58,6 +58,9 @@ export default {
     Events.$on('user-changed', user => {
       this.updateIdentity ()
     })
+    Events.$on('user-patched', user => {
+      this.updateIdentity ()
+    })
   }
 }
 </script>

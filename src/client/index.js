@@ -1,4 +1,5 @@
 import logger from 'loglevel'
+import lodash from 'lodash'
 import { Store } from './store'
 
 // We faced a bug in babel so that transform-runtime with export * from 'x' generates import statements in transpiled code
@@ -20,9 +21,9 @@ export default function init () {
   // Listen to the 'patched' event on the users
   const users = app.getService('users')
   users.on('patched', user => {
-    // Check whether we need to update the current logged user
+    // Check whether we need to update the current user
     if (user._id === Store.get('user._id')) {
-      Store.set('user', user)
+      Store.patch('user', user)
     }
   })
 
