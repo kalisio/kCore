@@ -92,9 +92,9 @@ export default {
       }
       // Clears the query
       this.filterQuery = {}
-      this.updateItems()
+      this.refresh()
     },
-    updateItems () {
+    refresh () {
       if (this.isServiceValid()) {
         let query = Object.assign({}, this.baseQuery, this.filterQuery)
         // Sets the number of items to be loaded
@@ -117,11 +117,11 @@ export default {
       }
     },
     onPageChanged () {
-      this.updateItems()
+      this.refresh()
     },
     onFilterChanged (filterQuery) {
       this.filterQuery = Object.assign({}, filterQuery)
-      this.updateItems()
+      this.refresh()
     }
   },
   created () {
