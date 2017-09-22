@@ -51,6 +51,7 @@ export default {
           return
         default:
           this.apply()
+          this.$refs.dialog.close()
       }
     },
     open (clear) {

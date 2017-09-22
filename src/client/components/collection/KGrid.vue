@@ -45,6 +45,12 @@ export default {
         return []
       }
     },
+    baseQuery: {
+      type: Object,
+      default: function () {
+        return {}
+      }
+    },
     layout: {
       type: String,
       default: 'col-xs-12 col-sm-6 col-lg-4 col-xl-3'
@@ -85,13 +91,12 @@ export default {
         this.filter = filter
       }
       // Clears the query
-      this.query = {}
       this.filterQuery = {}
       this.updateItems()
     },
     updateItems () {
       if (this.isServiceValid()) {
-        let query = Object.assign({}, this.filterQuery)
+        let query = Object.assign({}, this.baseQuery, this.filterQuery)
         // Sets the number of items to be loaded
         if (this.nbItemsPerPage > 0) {
           Object.assign(query, {
