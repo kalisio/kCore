@@ -12,14 +12,6 @@ let objectProxyMixin = {
       default: ''
     }
   },
-  watch: {
-    id: function () {
-      this.loadObject()
-    },
-    perspective: function () {
-      this.loadObject()
-    }
-  },
   methods: {
     getObject () {
       return this._object
