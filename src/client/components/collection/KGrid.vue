@@ -37,101 +37,25 @@ export default {
     KTagFilter,
     KPatternFilter
   },
-  mixins: [mixins.service],
+  mixins: [mixins.service, mixins.baseCollection],
   props: {
-    actions: {
-      type: Array,
-      default: function () {
-        return []
-      }
-    },
-    baseQuery: {
-      type: Object,
-      default: function () {
-        return {}
-      }
-    },
     layout: {
       type: String,
       default: 'col-xs-12 col-sm-6 col-lg-4 col-xl-3'
-    }
-  },
-  data () {
-    return {
-      items: [],
-      nbTotalItems: 0,
-      nbItemsPerPage: 12,
-      currentPage: 1
-    }
-  },
-  computed: {
-    nbPages () {
-      return Math.ceil(this.nbTotalItems / this.nbItemsPerPage)
     },
-    hasFilter () {
-      return this.filter !== ''
-    }
-  },
-  methods: {
-    update () {
-      // Setup the configuration path using the service as a prefix
-      let confPath = `config.${this.service}_grid`
-      // Retrieve the number of items per page
-      this.nbItemsPerPage = this.$store.get(confPath + '.nbItemsPerPage', 12)
-      // Retrieve the required components
-      let loadComponent = this.$store.get('loadComponent')
-      let renderer = this.$store.get(confPath + '.renderer', 'collection/KCard')
-      if (this.renderer !== renderer) {
-        this.$options.components['k-renderer'] = loadComponent(renderer)
-        this.renderer = renderer
-      }
-      let filter = this.$store.get(confPath + '.filter', 'collection/KFilter')
-      if (this.filter !== filter) {
-        this.$options.components['k-filter'] = loadComponent(filter)
-        this.filter = filter
-      }
-      // Clears the query
-      this.filterQuery = {}
-      this.refresh()
-    },
-    refresh () {
-      if (this.isServiceValid()) {
-        let query = Object.assign({}, this.baseQuery, this.filterQuery)
-        // Sets the number of items to be loaded
-        if (this.nbItemsPerPage > 0) {
-          Object.assign(query, {
-            $limit: this.nbItemsPerPage,
-            $skip: (this.currentPage - 1) * this.nbItemsPerPage
-          })
-        }
-        // find the desire items
-        this.serviceFind({
-          rx: {
-            listStrategy: 'always'
-          },
-          query
-        }).subscribe(response => {
-          this.items = response.data
-          this.nbTotalItems = response.total
-        })
-      }
-    },
-    onPageChanged () {
-      this.refresh()
-    },
-    onFilterChanged (filterQuery) {
-      this.filterQuery = Object.assign({}, filterQuery)
-      this.refresh()
+    renderer: {
+      type: String,
+      default: 'collection/KCard'
     }
   },
   created () {
-    this.renderer = ''
-    this.filter = ''
-    this.filterQuery = {}
-    this.update()
+    // Load the component
+    let loadComponent = this.$store.get('loadComponent')
+    this.$options.components['k-renderer'] = loadComponent(this.renderer)
+    this.refresh()
     // Subscribe to the service changed event
     this.$on('service-changed', _ =>  {
-      this.update()
+      this.refresh()
     })
   }
 }
