@@ -7,7 +7,6 @@ import objectProxy from './mixin.object-proxy'
 import service from './mixin.service'
 import userActions from './mixin.user-actions'
 
-
 export default {
   authentication,
   baseActivity,

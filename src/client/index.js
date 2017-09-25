@@ -1,5 +1,4 @@
 import logger from 'loglevel'
-import lodash from 'lodash'
 import { Store } from './store'
 
 // We faced a bug in babel so that transform-runtime with export * from 'x' generates import statements in transpiled code

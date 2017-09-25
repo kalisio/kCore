@@ -71,11 +71,11 @@ let baseFieldMixin = {
       this.error = error
     },
     onChanged () {
-      // Tell the form that this field has a new value. 
+      // Tell the form that this field has a new value.
       // Consequently the form will validate or invalidate the field
       // Warning: This method must be called once the form is mounted
       this.$emit('field-changed', this.properties.name, this.model)
-    },
+    }
   },
   created () {
     this.reset()
