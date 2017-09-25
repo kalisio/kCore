@@ -1,4 +1,3 @@
-import lodash from 'lodash'
 import logger from 'loglevel'
 
 let baseEditorMixin = {
@@ -87,9 +86,9 @@ let baseEditorMixin = {
         if (!form.isValid) {
           if (done) done()
           return
-        } 
+        }
         if (this.isServiceValid()) {
-          // Update the item 
+          // Update the item
           if (this.applyButton === 'Update') {
             // Edtng mode => patch the item
             if (this.perspective !== '') {
@@ -99,12 +98,10 @@ let baseEditorMixin = {
             } else {
               this.servicePatch(this.id, form.values)
             }
-          }
-          else if (this.applyButton === 'Create') {
+          } else if (this.applyButton === 'Create') {
             // Creation mode => create the item
             this.serviceCreate(form.values)
-          }
-          else {
+          } else {
             logger.warn('Invalid editor mode')
           }
         }
@@ -117,7 +114,7 @@ let baseEditorMixin = {
   },
   created () {
     this.onServiceChanged()
-    this.$on('service-changed', _=> this.onServiceChanged())
+    this.$on('service-changed', _ => this.onServiceChanged())
     this.$on('object-changed', _ => this.onObjectChanged())
   }
 }

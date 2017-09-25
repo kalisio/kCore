@@ -10,17 +10,17 @@ module.exports = {
     get: [ authenticate('jwt') ],
     create: [
       updateTags,
-      serialize( [
-        {source: 'github.profile.displayName', target: 'name'}, 
+      serialize([
+        {source: 'github.profile.displayName', target: 'name'},
         {source: 'github.profile.emails[0].value', target: 'email'},
-        {source: 'google.profile.displayName', target: 'name'}, 
-        {source: 'google.profile.emails[0].value', target: 'email'},
-      ] ),
-      serialize( [
-        {source: 'name', target: 'profile.name'}, 
+        {source: 'google.profile.displayName', target: 'name'},
+        {source: 'google.profile.emails[0].value', target: 'email'}
+      ]),
+      serialize([
+        {source: 'name', target: 'profile.name'},
         {source: 'email', target: 'description'},
         {source: 'email', target: 'profile.email'}
-      ] ),
+      ]),
       hashPassword()
     ],
     update: [ authenticate('jwt'), updateTags ],
