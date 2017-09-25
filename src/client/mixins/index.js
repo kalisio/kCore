@@ -5,7 +5,6 @@ import baseItem from './mixin.base-item'
 import baseField from './mixin.base-field'
 import objectProxy from './mixin.object-proxy'
 import service from './mixin.service'
-import userActions from './mixin.user-actions'
 
 export default {
   authentication,
@@ -14,6 +13,5 @@ export default {
   baseItem,
   baseField,
   objectProxy,
-  service,
-  userActions
+  service
 }
