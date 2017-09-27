@@ -78,7 +78,7 @@ export function configureService (name, service, servicesPath) {
   try {
     const hooks = require(path.join(servicesPath, name, name + '.hooks'))
     service.hooks(hooks)
-    debug(name + ' service hooks configured')
+    debug(name + ' service hooks configured on path ' + servicesPath)
   } catch (error) {
     // As this is optionnal this require has to fail silently
   }
@@ -87,7 +87,7 @@ export function configureService (name, service, servicesPath) {
     try {
       const filters = require(path.join(servicesPath, name, name + '.filters'))
       service.filter(filters)
-      debug(name + ' service filters configured')
+      debug(name + ' service filters configured on path ' + servicesPath)
     } catch (error) {
     // As this is optionnal this require has to fail silently
     }
