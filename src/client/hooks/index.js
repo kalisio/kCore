@@ -1,2 +1,2 @@
-export * from './hook.logger'
-export * from './hook.events'
+export * from './hooks.logger'
+export * from './hooks.events'

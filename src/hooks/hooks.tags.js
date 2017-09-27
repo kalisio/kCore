@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { BadRequest } from 'feathers-errors'
-import { populateObject } from './query'
+import { populateObject } from './hooks.query'
 import makeDebug from 'debug'
 
 const debug = makeDebug('kalisio:kCore:hooks:tags')
