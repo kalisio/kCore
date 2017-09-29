@@ -1,5 +1,6 @@
 import _ from 'lodash'
-import { discard, disallow } from 'feathers-hooks-common'
+import { objectifyIDs } from '../db'
+import { discard, disallow, getItems, replaceItems } from 'feathers-hooks-common'
 // import makeDebug from 'debug'
 
 // const debug = makeDebug('kalisio:kCore')
@@ -39,14 +40,28 @@ export function preventUpdatePerspectives (hook) {
 // - delete: a flag to define whether the hook has to delete the source property
 export function serialize (rules) {
   return function (hook) {
-    rules.forEach(rule => {
-      const source = _.get(hook.data, rule.source)
-      if (!_.isNil(source)) {
-        _.set(hook.data, rule.target, source)
-        if (rule.delete) {
-          _.unset(hook.data, rule.source)
+    // Retrieve the items from the hook
+    let items = getItems(hook)
+    const isArray = Array.isArray(items)
+    items = (isArray ? items : [items])
+    // Apply the rules for each item
+    items.forEach(item => {
+      rules.forEach(rule => {
+        const source = _.get(item, rule.source)
+        if (!_.isNil(source)) {
+          _.set(item, rule.target, source)
+          if (rule.delete) {
+            _.unset(item, rule.source)
+          }
         }
-      }
+      })
     })
+    // Replace the items within the hook
+    replaceItems(hook, isArray ? items : items[0])
   }
+}
+
+// The hook objectify allows to transform the value bound to an '_id' key into mongo ObjectId
+export function processObjectIDs (hook) {
+  if (hook.params.query) objectifyIDs(hook.params.query)
 }

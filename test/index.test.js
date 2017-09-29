@@ -48,7 +48,7 @@ describe('kCore', () => {
       profile: { phone: '0623256968' } })
     .then(user => {
       userObject = user
-      return userService.find({ query: { name: 'test-user' } })
+      return userService.find({ query: { 'profile.name': 'test-user' } })
     })
     .then(users => {
       expect(users.data.length > 0).beTrue()
@@ -80,7 +80,7 @@ describe('kCore', () => {
     return userService.find({ query: { $select: ['profile'] } })
     .then(users => {
       expect(users.data[0].profile.name).toExist()
-      expect(users.data[0].profile.email).toExist()
+      expect(users.data[0].profile.description).toExist()
       expect(users.data[0].profile.phone).toExist()
     })
   })
@@ -103,7 +103,7 @@ describe('kCore', () => {
     .then(tags => {
       expect(tags.data.length > 0).beTrue()
       expect(tags.data[0].scope).to.equal('skills')
-      return userService.find({ query: { name: 'test-user' } })
+      return userService.find({ query: { 'profile.name': 'test-user' } })
     })
     .then(users => {
       expect(users.data.length > 0).beTrue()
@@ -126,7 +126,7 @@ describe('kCore', () => {
     })
     .then(tags => {
       expect(tags.data.length === 1).beTrue()
-      return userService.find({ query: { name: 'test-user' } })
+      return userService.find({ query: { 'profile.name': 'test-user' } })
     })
     .then(users => {
       expect(users.data.length > 0).beTrue()

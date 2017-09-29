@@ -14,12 +14,9 @@ module.exports = {
         {source: 'github.profile.displayName', target: 'name'},
         {source: 'github.profile.emails[0].value', target: 'email'},
         {source: 'google.profile.displayName', target: 'name'},
-        {source: 'google.profile.emails[0].value', target: 'email'}
-      ]),
-      serialize([
-        {source: 'name', target: 'profile.name'},
-        {source: 'email', target: 'description'},
-        {source: 'email', target: 'profile.email'}
+        {source: 'google.profile.emails[0].value', target: 'email'},
+        {source: 'name', target: 'profile.name', delete: true},
+        {source: 'email', target: 'profile.description'}
       ]),
       hashPassword()
     ],
@@ -29,7 +26,13 @@ module.exports = {
   },
 
   after: {
-    all: [ commonHooks.when(hook => hook.params.provider, commonHooks.discard('password')) ],
+    all: [ 
+      commonHooks.when(hook => hook.params.provider, commonHooks.discard('password')),
+      serialize([
+        {source: 'profile.name', target: 'name'},
+        {source: 'profile.description', target: 'description'}
+      ])
+    ],
     find: [],
     get: [],
     create: [],

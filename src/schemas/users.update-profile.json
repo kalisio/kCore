@@ -15,16 +15,6 @@
         "helper": "Type your name"
       }
     },
-    "email": { 
-      "type": "string", 
-      "format": "email",
-      "default": "nom@domaine.xyz",
-      "field": {
-        "component": "form/KEmailField",
-        "label": "Email",
-        "helper": "Type your email address"
-      }
-    },
     "phone": { 
       "type": "string",
       "field": {
@@ -34,6 +24,6 @@
       }
     }
   },
-  "required": ["name", "email", "phone"]
+  "required": ["name", "phone"]
 }
 

@@ -1,6 +1,24 @@
-import mongodb from 'mongodb'
+import lodash from 'lodash'
 import logger from 'winston'
+import mongodb from 'mongodb'
+import { ObjectID } from 'mongodb'
 import errors from 'feathers-errors'
+
+// Utility function used to convert from string to MongoDB IDs as required by queries
+export function objectifyIDs (query) {
+  lodash.forOwn(query, (value, key) => {
+    // Process current attributes or  recurse
+    if (key === '_id') {
+      if (typeof value === 'string') query[key] = new ObjectID(value)
+      else if (Array.isArray(value)) query[key] = value.map(id => new ObjectID(id))
+      else if (typeof value === 'object') objectifyIDs(value)
+    } else if (['$in', '$nin'].includes(key)) {
+      query[key] = value.map(id => new ObjectID(id))
+    } else if (typeof value === 'object') {
+      objectifyIDs(value)
+    }
+  })
+}
 
 export class Database {
   constructor (app) {
