@@ -1,4 +1,5 @@
 import logger from 'loglevel'
+import { Platform, Toast } from 'quasar'
 import { Store } from './store'
 
 // We faced a bug in babel so that transform-runtime with export * from 'x' generates import statements in transpiled code
@@ -27,4 +28,36 @@ export default function init () {
   })
 
   logger.debug('Initializing kalisio core')
+
+  // -----------------------------------------------------------------------
+  // | After this we should only have specific cordova initialisation code |
+  // -----------------------------------------------------------------------
+  if (!Platform.is.cordova) return
+
+  document.addEventListener("deviceready", _ => {
+    let notifier = PushNotification.init({
+      android: { vibrate: true, sound: true, forceShow: true },
+      ios: { alert: true, badge: true, sound: true },
+      windows: { }
+    })
+    notifier.on('registration', (data) => {
+      logger.debug('Registered device with ID ' + data.registrationId)
+      window.device.registrationId = data.registrationId
+    })
+    notifier.on('notification', (data) => {
+      // data.message,
+      // data.title,
+      // data.count,
+      // data.sound,
+      // data.image,
+      // data.additionalData
+    })
+    notifier.on('error', (error) => {
+      logger.error(error)
+      Toast.create.negative({
+        html: error.message,
+        timeout: 10000
+      })
+    })
+  }, false)
 }
