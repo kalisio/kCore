@@ -34,7 +34,7 @@ let authenticationMixin = {
       }
       // On mobile device we add the device information so that when authenticating
       // on a new device we can register it
-      if (Platform.is.cordova) {
+      if (Platform.is.cordova && window.device) {
         payload.device = window.device
       }
       return this.$api.authenticate(payload)
