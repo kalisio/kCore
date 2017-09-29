@@ -24,7 +24,7 @@ export function kalisio () {
       transports: ['websocket'],
       path: config.apiPath + 'ws'
     })
-    api.configure(feathers.socketio(socket))
+    api.configure(feathers.socketio(socket, { timeout: 10000 }))
   }
   api.configure(feathers.authentication({
     storage: window.localStorage,
