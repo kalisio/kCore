@@ -185,6 +185,7 @@ export function createService (name, app, options) {
   }
 
   debug(service.name + ' service registration completed')
+  app.emit('service', service)
 
   return service
 }
