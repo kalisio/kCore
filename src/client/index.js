@@ -34,7 +34,7 @@ export default function init () {
   // -----------------------------------------------------------------------
   if (!Platform.is.cordova) return
 
-  document.addEventListener("deviceready", _ => {
+  document.addEventListener('deviceready', _ => {
     let notifier = PushNotification.init({
       android: { vibrate: true, sound: true, forceShow: true },
       ios: { alert: true, badge: true, sound: true },

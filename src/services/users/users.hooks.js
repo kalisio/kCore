@@ -26,7 +26,7 @@ module.exports = {
   },
 
   after: {
-    all: [ 
+    all: [
       commonHooks.when(hook => hook.params.provider, commonHooks.discard('password')),
       serialize([
         {source: 'profile.name', target: 'name'},

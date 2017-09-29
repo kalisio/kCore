@@ -16,7 +16,7 @@ let baseCollectionMixin = {
   computed: {
     nbPages () {
       return Math.ceil(this.nbTotalItems / this.nbItemsPerPage)
-    },
+    }
   },
   data () {
     return {
