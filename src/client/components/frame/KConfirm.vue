@@ -13,7 +13,7 @@
       Actions section
      -->
     <div slot="dialog-actions">
-      <q-btn @click="$emit('confirmed')" :disable="capturedText !== prevent.capture" color="primary">{{action}}</q-btn>
+      <q-btn @click="$emit('confirmed')" :disable="actionDisabled" color="primary">{{action}}</q-btn>
     </div>
   </k-dialog>
 </template>
@@ -47,6 +47,12 @@ export default {
       default: function () {
         return null
       }
+    }
+  },
+  computed: {
+    actionDisabled () {
+      if (this.prevent) return this.capturedText !== this.prevent.textToMatch
+      return false
     }
   },
   data () {
