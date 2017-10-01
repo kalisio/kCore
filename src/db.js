@@ -1,7 +1,6 @@
 import lodash from 'lodash'
 import logger from 'winston'
-import mongodb from 'mongodb'
-import { ObjectID } from 'mongodb'
+import mongodb, { ObjectID } from 'mongodb'
 import errors from 'feathers-errors'
 
 // Utility function used to convert from string to MongoDB IDs as required by queries
