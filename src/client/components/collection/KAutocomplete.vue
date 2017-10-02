@@ -36,7 +36,10 @@ export default {
         // build the query using given templet if any
         let query = Object.assign({}, item.baseQuery)
         // Then add partial match
-        _.set(query, item.field, { $search: pattern })
+        // We don't use set by dot here because Mongo queries on nested fields
+        // require the key to contain the path and not nested objects
+        //_.set(query, item.field, { $search: pattern })
+        query[item.field] = { $search: pattern }
         return service.find({ query })
       })
       Promise.all(requests).then(responses => {
