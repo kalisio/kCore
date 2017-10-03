@@ -93,7 +93,7 @@
     "vue-avatar": "^2.0.0",
     "vue-router": "^2.7.0",
     "winston": "^2.3.1",
-    "winston-daily-rotate-file": "^1.4.6"
+    "winston-daily-rotate-file": "^1.7.2"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
