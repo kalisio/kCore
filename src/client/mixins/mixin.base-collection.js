@@ -27,7 +27,7 @@ let baseCollectionMixin = {
     }
   },
   methods: {
-    refresh () {
+    refreshCollection () {
       if (this.getService()) {
         let fullQuery = Object.assign({}, this.baseQuery, this.filterQuery)
         // Sets the number of items to be loaded
@@ -51,11 +51,11 @@ let baseCollectionMixin = {
       }
     },
     onPageChanged () {
-      this.refresh()
+      this.refreshCollection()
     },
     onFilterChanged (filterQuery) {
       this.filterQuery = Object.assign({}, filterQuery)
-      this.refresh()
+      this.refreshCollection()
     }
   },
   created () {

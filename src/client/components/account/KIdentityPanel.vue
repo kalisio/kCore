@@ -40,7 +40,7 @@ export default {
     }
   },
   methods: {
-    updateIdentity () {
+    refreshIdentity () {
       this.name = this.$store.get('user.name', '')
       this.id = this.$store.get('user._id', '')
     }
@@ -52,14 +52,14 @@ export default {
     this.textColor = this.$store.get(confPath + '.textColor', 'text-white')
     this.iconColor = this.$store.get(confPath + '.iconColor', 'white')
     // Update the panel
-    this.updateIdentity()
+    this.refreshIdentity()
   },
   mounted () {
     Events.$on('user-changed', user => {
-      this.updateIdentity ()
+      this.refreshIdentity ()
     })
     Events.$on('user-patched', user => {
-      this.updateIdentity ()
+      this.refreshIdentity ()
     })
   }
 }
