@@ -1,6 +1,9 @@
 <template>
   <div v-if="id !== ''">
     <k-nav-bar :tabs="navBarTabs()" :selected="perspective" />
+    <div v-if="perspective === 'profile'">
+      <k-editor service="users" :id="id" perspective="profile"/>
+    </div>
     <div v-if="perspective === 'security'">
       <k-account-security :id="id" />
     </div>
@@ -8,7 +11,7 @@
       <k-account-dz :id="id" />
     </div>
     <div v-else>
-      <k-editor service="users" :id="id" :perspective="perspective"/>
+      <!-- Error -->  
     </div>
   </div>
 </template>
