@@ -46,6 +46,7 @@ let baseCollectionMixin = {
         }).subscribe(response => {
           this.items = response.data
           this.nbTotalItems = response.total
+          this.$emit('collection-refreshed')
         })
       }
     },

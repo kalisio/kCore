@@ -1,11 +1,11 @@
 <template>
-  <div v-if="operation === 'manage'">
+  <div v-if="id !== ''">
     <k-nav-bar :tabs="navBarTabs()" :selected="perspective" />
     <div v-if="perspective === 'security'">
-      <k-identity-security :id="id" />
+      <k-account-security :id="id" />
     </div>
     <div v-else-if="perspective === 'danger-zone'">
-      <k-identity-dz :id="id" />
+      <k-account-dz :id="id" />
     </div>
     <div v-else>
       <k-editor service="users" :id="id" :perspective="perspective"/>
@@ -15,39 +15,40 @@
 
 <script>
 import mixins from '../../mixins'
+import { Events } from 'quasar'
 
 export default {
-  name: 'k-identity-activity',
+  name: 'k-account-activity',
   mixins: [
     mixins.baseActivity,
   ],
   props: {
-    operation: {
-      type: String,
-      required: true
-    },
-    id : {
-      type: String,
-      required: true
-    },
     perspective: {
       type: String,
-      default: 'profile'
+      required: true
+    }
+  },
+  data () {
+    return {
+      id: ''
     }
   },
   methods: {
     navBarTabs () {
       return [ 
         { name: 'profile', label: 'Profile', icon: 'description', route: { 
-          name: 'identity-activity', params: { operation: 'manage', id: this.id } } 
+          name: 'account-activity', params: { perspective: 'profile' } } 
         },
         { name: 'security', label: 'Security', icon: 'security', route: { 
-          name: 'identity-activity', params: { operation: 'manage', id: this.id, perspective: 'security' } } 
+          name: 'account-activity', params: { perspective: 'security' } } 
         },
         { name: 'danger-zone', label: 'Danger Zone', icon: 'warning', route: { 
-          name: 'identity-activity', params: { operation: 'manage', id: this.id, perspective: 'danger-zone' } } 
+          name: 'account-activity', params: { perspective: 'danger-zone' } } 
         }
       ]
+    },
+    refresh () {
+      this.id = this.$store.get('user._id', '')
     }
   },
   created () {
@@ -55,8 +56,15 @@ export default {
     let loadComponent = this.$store.get('loadComponent')
     this.$options.components['k-editor'] = loadComponent('editor/KEditor')
     this.$options.components['k-nav-bar'] = loadComponent('layout/KNavBar')
-    this.$options.components['k-identity-security'] = loadComponent('identity/KIdentitySecurity')
-    this.$options.components['k-identity-dz'] = loadComponent('identity/KIdentityDZ')
+    this.$options.components['k-account-security'] = loadComponent('account/KAccountSecurity')
+    this.$options.components['k-account-dz'] = loadComponent('account/KAccountDZ')
+    // Refresh this component
+    this.refresh()
+  },
+  mounted () {
+    Events.$on('user-changed', user => {
+      this.refresh ()
+    })
   }
 }
 </script>

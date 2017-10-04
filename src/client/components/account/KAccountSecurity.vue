@@ -31,7 +31,7 @@
 import { KBlock } from '../frame'
 
 export default {
-  name: 'k-identity-security',
+  name: 'k-account-security',
   components: {
     KBlock
   },

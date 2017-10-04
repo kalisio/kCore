@@ -30,7 +30,7 @@ import { KBlock, KConfirm } from '../frame'
 import mixins from '../../mixins'
 
 export default {
-  name: 'k-identity-dz',
+  name: 'k-account-dz',
   components: {
     KBlock,
     KConfirm
