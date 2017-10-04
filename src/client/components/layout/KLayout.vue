@@ -27,9 +27,6 @@ export default {
   components: {
     QLayout
   },
-  data () {
-    return {}
-  },
   methods: {
     onMenuToggled () {
       this.$refs.layout.toggleLeft()
