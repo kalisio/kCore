@@ -13,7 +13,7 @@
       Items section 
     -->
     <div class="row">
-      <div v-for="item in items" :key="item" :class="layout">
+      <div v-for="item in items" :key="item._id" :class="layout">
         <k-renderer :item="item" :actions="actions" />
       </div>
     </div>
