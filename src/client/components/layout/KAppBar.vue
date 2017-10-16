@@ -57,7 +57,7 @@ export default {
   },
   created () {
     // Apply the configuration
-    this.content = this.$store.get('config.appBar')
+    this.content = this.$store.get('appBar', this.$store.get('config.appBar', null))
     this.voiceEnabled = this.$store.get('config.appBar.speech', false)
   },
   mounted () {
