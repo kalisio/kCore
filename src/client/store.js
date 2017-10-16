@@ -16,7 +16,7 @@ let Store = {
     if (previousValue) {
       Object.assign(previousValue, value)
       let eventName = _.kebabCase(`${path}-patched`)
-      Events.$emit(eventName, previousValue)
+      Events.$emit(eventName, value)
     }
   },
   has (path) {

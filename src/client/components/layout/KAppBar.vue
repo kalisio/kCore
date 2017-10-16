@@ -1,18 +1,33 @@
 <template>
   <q-toolbar>
+    <!--
+      SideNav menu
+     -->
     <q-btn flat icon="menu" @click="$emit('menu-clicked')" />
+    <!-- 
+      Title/subtitle section
+     -->
     <q-toolbar-title>
       {{ title }}
       <span slot="subtitle">
-        {{ subtitle }}
+        {{ subTitle }}
       </span>
     </q-toolbar-title>
+    <!--
+      Actions section
+     -->
+    <template v-for="(action,index) in actions">
+      <q-btn flat :key="index" :icon="action.icon" @click="$router.push(action.route)" />
+    </template>
+    <!-- 
+      Voice ?
+     -->
     <k-voice v-if="voiceEnabled"/>
   </q-toolbar>
 </template>
 
 <script>
-import { QToolbar, QToolbarTitle, QBtn } from 'quasar'
+import { Events, QToolbar, QToolbarTitle, QBtn } from 'quasar'
 import KVoice from './KVoice.vue'
 
 export default {
@@ -23,18 +38,33 @@ export default {
     QBtn,
     KVoice
   },
+  computed: {
+    title () {
+      return this.content ? this.content.title : 'kApp'
+    },
+    subTitle () {
+      return this.content ? this.content.subTitle : 'Powered by Kalisio'
+    },
+    actions () {
+      return this.content ? this.content.actions : []
+    }
+  },
   data () {
     return {
-      title: '',
-      subtitle: '',
+      content: null,
       voiceEnabled: false
     }
   },
   created () {
     // Apply the configuration
-    this.title = this.$store.get('config.appBar.title', 'kApp')
-    this.subtitle = this.$store.get('config.appBar.subtitle', 'Powered by Kalisio')
+    this.content = this.$store.get('config.appBar')
     this.voiceEnabled = this.$store.get('config.appBar.speech', false)
+  },
+  mounted () {
+    // subscribe to the app-bar-changed event
+    Events.$on('app-bar-changed', appBar => {
+      this.content = appBar
+    })
   }
 }
 </script>

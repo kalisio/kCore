@@ -27,8 +27,7 @@ export default {
     this.user = this.$store.get('user')
   },
   mounted () {
-    // let user = this.$store.get('user')
-    // if (user) this.isAuthenticated = true
+    // subscribe to the user-changed event
     Events.$on('user-changed', user => {
       this.user = user
     })
