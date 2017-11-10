@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { QList, QItem, QItemMain, QBtn, Platform } from 'quasar'
+import { QList, QItem, QItemMain, QBtn, Toast, Platform } from 'quasar'
 import { KScreen } from '../frame'
 import { KForm } from '../form'
 import mixins from '../../mixins'
@@ -111,6 +111,10 @@ export default {
           done()
         })
         .catch(_ => {
+          Toast.create.negative({
+            html: 'Wrong credentials, please try again.',
+            timeout: 5000
+          })
           done()
         })
       } else {
