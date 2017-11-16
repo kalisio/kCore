@@ -51,7 +51,6 @@ export default {
           return
         default:
           this.apply()
-          this.$refs.dialog.close()
       }
     },
     open (clear) {
@@ -61,6 +60,9 @@ export default {
     close () {
       this.$refs.dialog.close()
     }
+  },
+  created () {
+    this.$on('applied', _ => this.$refs.dialog.close())
   }
 }
 </script>
