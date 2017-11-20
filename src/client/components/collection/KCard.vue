@@ -5,11 +5,14 @@
     -->
     <q-card-main class="bg-light">
       <q-item>
-        <q-item-side><avatar :username="item.name" :size="36" /></q-item-side>
+        <q-item-side><avatar v-if="item.name" :username="item.name" :size="36" /></q-item-side>
         <q-item-main>
           <q-item-tile label>{{ item.name }}</q-item-tile>
           <q-item-tile sublabel>{{ item.description }}</q-item-tile>
         </q-item-main>
+        <q-item-side right v-if="item.tags">
+          <q-item-tile v-if="tag.icon" v-for="tag in item.tags" :icon="tag.icon" color="primary" />
+        </q-item-side>
       </q-item>
     </q-card-main>
     <!--

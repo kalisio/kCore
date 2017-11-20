@@ -1,26 +1,30 @@
 <template>
-  <q-field
-    :icon="icon"
-    :label="label"
-    :helper="helper"
-    :error-label="errorLabel"
-    :label-width="labelWidth"
-    :error="hasError"
-  >
-    <div class="row justify-between">
-      <k-autocomplete class="col" ref="search" :services="services" :process-results="processResults" @item-selected="onTagAdded" />
-      <div class="row col-7" v-if="tags.length > 0">
-        <q-chip v-for="tag in tags" :key="tag" icon="label" color="primary" @close="onTagRemoved(tag)" closable>
-          {{ tag.value }}
-        </q-chip>
+  <div>
+    <q-field
+      :icon="icon"
+      :label="label"
+      :helper="helper"
+      :error-label="errorLabel"
+      :label-width="labelWidth"
+      :error="hasError"
+    >
+      <div class="row justify-between">
+        <k-autocomplete class="col" ref="search" :services="services" :process-results="processResults" @item-selected="onTagAdded" />
+        <div class="row col-7" v-if="tags.length > 0">
+          <q-chip v-for="tag in tags" :icon="tag.icon || 'label'" color="primary" @close="onTagRemoved(tag)" @click="onSelectIcon(tag)" closable>
+            {{ tag.value }}
+          </q-chip>
+        </div>
       </div>
-    </div>
-  </q-field>
+    </q-field>
+    <k-icon-chooser ref="iconDialog" icon-set="fontawesome" @icon-selected="onIconSelected" />
+  </div>
 </template>
 
 <script>
 import { QField, QChip, QIcon } from 'quasar'
 import { KAutocomplete } from '../collection'
+import KIconChooser from './KIconChooser'
 import mixins from '../../mixins'
 
 export default {
@@ -29,7 +33,8 @@ export default {
     QField,
     QChip,
     QIcon,
-    KAutocomplete
+    KAutocomplete,
+    KIconChooser
   },
   mixins: [mixins.baseField],
   computed: {
@@ -43,6 +48,7 @@ export default {
         service: 'tags',
         baseQuery: { scope: this.properties.scope },
         field: 'value',
+        iconField: 'icon',
         icon: 'label'
       }],
       tags: []
@@ -80,8 +86,17 @@ export default {
     },
     updateModel () {
       // filter rendering properties only
-      this.model = this.tags.map(function (tag) { return { value: tag.value, scope: tag.scope } })
+      this.model = this.tags.map(function (tag) { return _.pick(tag, ['value', 'scope', 'icon']) })
       this.onChanged()
+    },
+    onSelectIcon (tag) {
+      this.selectedTag = tag
+      this.$refs.iconDialog.open(this.selectedTag.icon)
+    },
+    onIconSelected (icon) {
+      this.selectedTag.icon = icon
+      this.updateModel()
+      this.$refs.iconDialog.close()
     }
   }
 }

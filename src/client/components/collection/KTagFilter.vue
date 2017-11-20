@@ -2,7 +2,7 @@
   <div>
     <k-autocomplete :services="services" @item-selected="onAddTag" />
     <div v-if="tags.length > 0">
-      <q-chip v-for="tag in tags" :key="tag" icon="label" color="primary" @close="onRemoveTag(tag)" closable>
+      <q-chip v-for="tag in tags" :key="tag" :icon="tag.icon || 'label'" color="primary" @close="onRemoveTag(tag)" closable>
         {{ tag.value }}
       </q-chip>
     </div>
@@ -35,7 +35,8 @@ export default {
       return [{service: 'tags',
         baseQuery: { scope: this.scope },
         field: 'value',
-        icon: 'tag'
+        iconField: 'icon',
+        icon: 'label'
       }]
     }
   },

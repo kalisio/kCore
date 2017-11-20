@@ -19,11 +19,11 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    // Let the tagging of the resource object occur only when resource has been found are present
+    // Let the tagging of the resource object occur only when resource has been found
     create: [ iff(hook => hook.params.resource, tagResource) ],
     update: [],
     patch: [],
-    // Let the untagging of the resource object occur only when resource has been found are present
+    // Let the untagging of the resource object occur only when resource has been found
     remove: [ iff(hook => hook.params.resource, untagResource) ]
   },
 

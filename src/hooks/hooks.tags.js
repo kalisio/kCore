@@ -105,7 +105,7 @@ export function tagResource (hook) {
     if (!resource.tags) {
       resource.tags = []
     }
-    resource.tags.push({ value: tag.value, scope: tag.scope })
+    resource.tags.push(_.omit(tag, '_id'))
     return resourcesService.patch(resource._id, {
       tags: resource.tags
     }, {

@@ -51,7 +51,8 @@ export default {
             response.data.forEach(result => {
               Object.assign(result, {
                 label: _.get(result, service.field),
-                icon: service.icon,
+                // Use object icon if provided, otherwise service-level icon
+                icon: _.get(result, service.iconField) || service.icon,
                 value: _.get(result, service.field)
               })
               results.push(result)
