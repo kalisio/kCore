@@ -5,7 +5,7 @@ let authenticationMixin = {
     restoreUser (accessToken) {
       return this.$api.passport.verifyJWT(accessToken)
       .then(payload => {
-        return this.$api.users.get(payload.userId)
+        return this.$api.getService('users').get(payload.userId)
       })
       .then(user => {
         this.$store.set('user', user)
@@ -15,7 +15,7 @@ let authenticationMixin = {
     register (user) {
       delete user.confirmPassword
       // TODO: delete user.policiesAccepted
-      return this.$api.users.create(user)
+      return this.$api.getService('users').create(user)
       .then(_ => {
         return this.login(user.email, user.password)
       })

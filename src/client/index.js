@@ -15,16 +15,19 @@ export * as mixins from './mixins'
 export * as hooks from './hooks'
 
 export default function init () {
-  const app = this
+  const api = this
+
+  logger.debug('Initializing kalisio core')
+  
+  api.declareService('users')
+  api.declareService('tags')
 
   // Listen to the 'patched' event on the users
-  const users = app.getService('users')
+  const users = api.getService('users')
   users.on('patched', user => {
     // Check whether we need to update the current user
     if (user._id === Store.get('user._id')) {
       Store.patch('user', user)
     }
   })
-
-  logger.debug('Initializing kalisio core')
 }

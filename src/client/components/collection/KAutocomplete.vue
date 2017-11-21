@@ -51,10 +51,17 @@ export default {
             response.data.forEach(result => {
               Object.assign(result, {
                 label: _.get(result, service.field),
-                // Use object icon if provided, otherwise service-level icon
-                icon: _.get(result, service.iconField) || service.icon,
                 value: _.get(result, service.field)
               })
+              // If this type of item has an icon
+              if (service.iconField) {
+                // Use object icon if provided, otherwise service-level icon
+                result.icon = _.get(result, service.iconField) || service.icon
+              } else {
+                // Use service-level icon
+                result.icon = service.icon
+              }
+              console.log(result)
               results.push(result)
             })
           }

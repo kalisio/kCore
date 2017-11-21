@@ -95,21 +95,25 @@ let baseEditorMixin = {
               let data = {}
               data[this.perspective] = form.values
               this.servicePatch(this.id, data, { query: { $select: [this.perspective] } })
+              .then(_ => { if (done) done() })
             } else {
               this.servicePatch(this.id, form.values)
+              .then(_ => { if (done) done() })
             }
           } else if (this.applyButton === 'Create') {
             // Creation mode => create the item
             this.serviceCreate(form.values)
+            .then(_ => { if (done) done() })
           } else {
             logger.warn('Invalid editor mode')
+            if (done) done()
           }
         }
         this.$emit('applied')
       } else {
         logger.warn('Trying to apply the editor with a non-ready form')
+        if (done) done()
       }
-      if (done) done()
     }
   },
   created () {

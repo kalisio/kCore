@@ -28,7 +28,7 @@ let serviceMixin = {
       } else {
         this._service = this.$api.getService(this.service, this.context)
       }
-      this.$emit('service-changed')
+      this.$emit('service-changed', this._service)
     },
     serviceFind (params) {
       return this._service.find(params)

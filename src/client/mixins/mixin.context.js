@@ -19,7 +19,7 @@ let contextMixin = {
         if (this.contextId !== '') {
           this.$api.getService(this.$store.get('context.service')).get(this.contextId)
           .then(context => {
-            this.$store.set('context.subject', context)
+            this.$store.set('context.object', context)
             Events.$emit('context-changed', context)
           })
         } else {

@@ -1,10 +1,12 @@
 import logger from 'loglevel'
+import _ from 'lodash'
 import feathers from 'feathers-client'
 import feathersHooks from 'feathers-hooks'
 import io from 'socket.io-client'
 import reactive from 'feathers-reactive'
 import rxjs from 'rxjs'
 import config from 'config'
+import { Store } from './store'
 import { Platform } from 'quasar'
 
 export function kalisio () {
@@ -33,20 +35,32 @@ export function kalisio () {
   api.configure(reactive(rxjs, {
     idField: '_id'
   }))
+  // Object used to store configuration options for services
+  api.serviceOptions = {}
 
   // This avoid managing the API path before each service name
   api.getServicePath = function (path, context) {
-    // Context is given as string ID
+    // Context is given as string ID or object ?
     if (typeof context === 'string') {
       return config.apiPath + '/' + context + '/' + path
     } else if (typeof context === 'object' && context !== null) {
       return config.apiPath + '/' + context._id + '/' + path
     } else {
-      return config.apiPath + '/' + path
+      const options = _.get(api.serviceOptions, path, {})
+      // Service might also be registered as contextual
+      if (options.context) {
+        return api.getServicePath(path, Store.get('context'))
+      } else {
+        return config.apiPath + '/' + path
+      }
     }
   }
   api.getService = function (path, context) {
     return api.service(api.getServicePath(path, context))
+  }
+  // Used to register a service with its options
+  api.declareService = function (path, options = {}) {
+    _.set(api.serviceOptions, path, options)
   }
   // change the base URL/domain to be used (useful for mobile apps)
   api.setBaseUrl = function (baseUrl) {
@@ -65,8 +79,6 @@ export function kalisio () {
       this.configure(feathers.socketio(socket))
     }
   }
-
-  api.users = api.getService('users')
 
   return api
 }
