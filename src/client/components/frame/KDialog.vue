@@ -1,5 +1,5 @@
 <template>
-  <q-modal ref="modal" position="bottom" :content-css="{padding: '16px', minWidth: '40vw'}">
+  <q-modal ref="modal" position="bottom" :no-backdrop-dismiss="closable" :no-esc-dismiss="closable" :content-css="{padding: '16px', minWidth: '40vw'}">
     <div class="column">
       <!-- 
         Title section
@@ -25,11 +25,11 @@
       <!--
         Actions section
        -->
-      <div class="self-end" style="padding: 8px">
+      <div style="padding: 8px">
         <slot name="dialog-actions">
-          <template v-for="action in actions">
-            <q-btn @click="$emit('action-triggered', action)" color="primary">{{action}}</q-btn>
-          </template>
+          <div class="row justify-end">
+            <q-btn v-for="action in actions" @click="$emit('action-triggered', action)" color="primary">{{action}}</q-btn>
+          </div>
         </slot>
       </div>
       </div>

@@ -12,7 +12,7 @@
     <!--
       Actions section
      -->
-    <div slot="dialog-actions">
+    <div slot="dialog-actions" class="row justify-end">
       <q-btn @click="$emit('confirmed')" :disable="actionDisabled" color="primary">{{action}}</q-btn>
     </div>
   </k-dialog>
