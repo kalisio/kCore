@@ -22,23 +22,6 @@
         "label": "Phone",
         "helper": "Enter your phone number"
       }
-    },
-    "bio": { 
-      "type": "string",
-      "field": {
-        "component": "form/KTextareaField",
-        "label": "Bio",
-        "helper": "Enter few words about yourself"
-      }
-    },
-    "tags": { 
-      "type": "array",
-      "scope": "users",
-      "field": {
-        "component": "form/KTagField",
-        "label": "Tags",
-        "helper": "Enter some tags to qualify yourself"
-      }
     }
   },
   "required": ["name", "phone"]
