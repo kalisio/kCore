@@ -27,13 +27,13 @@ let objectProxyMixin = {
           this.getService().get(this.id, params)
           .then(values => {
             this._object = values
-            this.$emit('object-changed')
+            this.$emit('object-changed', this._object)
           })
         } else {
           logger.warn('Invalid service')
         }
       }
-      this.$emit('object-changed')
+      this.$emit('object-changed', this._object)
     }
   },
   created () {
