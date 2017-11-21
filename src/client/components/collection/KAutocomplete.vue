@@ -61,7 +61,6 @@ export default {
                 // Use service-level icon
                 result.icon = service.icon
               }
-              console.log(result)
               results.push(result)
             })
           }
