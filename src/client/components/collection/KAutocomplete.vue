@@ -46,20 +46,21 @@ export default {
         let results = []
         for (let i = 0; i < responses.length; i++) {
           const response = responses[i]
-          const service = this.services[i]
+          const item = this.services[i]
           if (response.total > 0) {
             response.data.forEach(result => {
               Object.assign(result, {
-                label: _.get(result, service.field),
-                value: _.get(result, service.field)
+                label: _.get(result, item.field),
+                value: _.get(result, item.field),
+                service: item.service
               })
               // If this type of item has an icon
-              if (service.iconField) {
+              if (item.iconField) {
                 // Use object icon if provided, otherwise service-level icon
-                result.icon = _.get(result, service.iconField) || service.icon
+                result.icon = _.get(result, item.iconField) || item.icon
               } else {
                 // Use service-level icon
-                result.icon = service.icon
+                result.icon = item.icon
               }
               results.push(result)
             })
