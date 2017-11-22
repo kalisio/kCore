@@ -30,7 +30,7 @@ export default {
     }
   },
   props: {
-    items: {
+    defaultItems: {
       type: Array,
       required: true
     },
@@ -41,6 +41,11 @@ export default {
     multiselect: {
       type: Boolean,
       default: false
+    }
+  },
+  data () {
+    return {
+      items: this.defaultItems
     }
   },
   methods: {
