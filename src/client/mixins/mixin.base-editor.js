@@ -29,13 +29,9 @@ let baseEditorMixin = {
       if (this.schema !== schemaName) {
         this.updateForm(schemaName)
       }
-      if (this.isFormReady) {
+      if (this.$refs.form.isReady) {
         this.fillEditor()
       }
-    },
-    onFormReady () {
-      this.isFormReady = true
-      this.fillEditor()
     },
     resolveSchemaName () {
       let schemaName = this.service
@@ -47,11 +43,10 @@ let baseEditorMixin = {
     },
     updateForm (schemaName) {
       this.schema = schemaName
-      this.isFormReady = false
       this.applyButton = ''
     },
     fillEditor () {
-      if (this.isFormReady) {
+      if (this.$refs.form.isReady) {
         if (this.getObject()) {
           if (this.perspective !== '') {
             this.$refs.form.fill(this.getObject()[this.perspective])
@@ -67,21 +62,21 @@ let baseEditorMixin = {
       }
     },
     clear () {
-      if (this.isFormReady) {
+      if (this.$refs.form.isReady) {
         this.$refs.form.clear()
       } else {
         logger.warn('Trying to clear the editor with a non-ready form')
       }
     },
     reset () {
-      if (this.isFormReady) {
+      if (this.$refs.form.isReady) {
         this.$refs.form.reset()
       } else {
         logger.warn('Trying to reset the editor with a non-ready form')
       }
     },
     apply (event, done) {
-      if (this.isFormReady) {
+      if (this.$refs.form.isReady) {
         let form = this.$refs.form.validate()
         if (!form.isValid) {
           if (done) done()

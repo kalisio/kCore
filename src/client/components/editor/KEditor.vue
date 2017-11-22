@@ -6,7 +6,7 @@
     <k-form class="col-10"
       ref="form"
       :schema="schema"
-      @form-ready="onFormReady" />
+      @form-ready="fillEditor" />
     <!--
       Buttons section
     -->

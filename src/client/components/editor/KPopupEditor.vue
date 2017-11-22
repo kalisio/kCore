@@ -4,7 +4,7 @@
       Content section
      -->
     <div slot="dialog-content">
-      <k-form ref="form" :schema="schema" @form-ready="onFormReady" />
+      <k-form ref="form" :schema="schema" @form-ready="fillEditor" />
     </div>
   </k-dialog>
 </template>

@@ -93,6 +93,7 @@ export default {
     build () {
       // Clears the fields
       this.fields = []
+      this.isReady = false
       // If the schema value is empty there is nothing todo
       if (lodash.isEmpty(this.schema)) return
       // Handle the schema and build the fields
@@ -116,6 +117,8 @@ export default {
       }
     },
     fill (values) {
+      if (!this.isReady) throw Error('Cannot fill the form while not ready')
+
       this.fields.forEach(field => {
         let value = lodash.get(values, field.name)
         if (value) {
@@ -139,17 +142,23 @@ export default {
       return values
     },
     clear () {
+      if (!this.isReady) throw Error('Cannot clear the form while not ready')
+
       this.fields.forEach(field => {
         this.$refs[field.name][0].clear()
       })
     },
     reset () {
+      if (!this.isReady) throw Error('Cannot reset the form while not ready')
+      
       this.fields.forEach(field => {
         this.$refs[field.name][0].reset()
       })
       this.validate()
     },
     validate () {
+      if (!this.isReady) throw Error('Cannot validate the form while not ready')
+      
       let result = { 
         isValid: false, 
         values: this.values() 
@@ -175,6 +184,8 @@ export default {
     }
   },
   updated () {
+    // Already checked ?
+    if (this.isReady) return
     // Because the fields are dynamically loaded and we check whether 
     // the references are created before signaling the form is ready
     let missingField = false
@@ -184,7 +195,8 @@ export default {
         return
       }
     })
-    if (! missingField) {
+    if (!missingField) {
+      this.isReady = true
       this.$emit('form-ready')
     }
   },
