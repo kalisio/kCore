@@ -26,12 +26,6 @@ let baseCollectionMixin = {
       currentPage: 1
     }
   },
-  watch: {
-    '$route' (to, from) {
-      // React to route changes but reusing the same component
-      this.refreshCollection()
-    }
-  },
   methods: {
     refreshCollection () {
       let fullQuery = Object.assign({}, this.baseQuery, this.filterQuery)
@@ -43,7 +37,7 @@ let baseCollectionMixin = {
         })
       }
       // find the desire items
-      this.loadService().find({
+      return this.loadService().find({
         rx: {
           listStrategy: 'always'
         },
@@ -63,7 +57,6 @@ let baseCollectionMixin = {
     }
   },
   created () {
-    this.refreshCollection()
     this.filterQuery = {}
   }
 }

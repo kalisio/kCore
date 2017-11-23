@@ -13,7 +13,6 @@ export default function refsResolverMixin(refs) {
             this.refsResolver = resolve
           })
         }
-        this.resolveRefs()
       },
       resolveRefs () {
         // If already resolved stop

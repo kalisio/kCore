@@ -23,7 +23,8 @@ export default {
   mixins: [
     mixins.service,
     mixins.objectProxy,
-    mixins.baseEditor,
+    mixins.schemaProxy,
+    mixins.baseEditor(['form']),
     mixins.refsResolver(['form'])
   ],
   props: {
@@ -39,6 +40,12 @@ export default {
       if (this.clearButton != '') actions.push(this.clearButton)
       if (this.resetButton != '') actions.push(this.resetButton)
       return actions
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      // React to route changes but reusing the same component as this one is generic
+      this.refresh()
     }
   },
   methods: {
@@ -63,6 +70,7 @@ export default {
     }
   },
   created () {
+    this.refresh()
     this.$on('applied', _ => this.$refs.dialog.close())
   }
 }

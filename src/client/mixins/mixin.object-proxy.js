@@ -20,7 +20,7 @@ let objectProxyMixin = {
     },
     loadObject () {
       // Create a new mixin promise if required
-      const objectChanged = this.getObjectId() !== this.id
+      const objectChanged = this.id && (this.getObjectId() !== this.id)
       if (!this.objectPromise || objectChanged) {
         this.objectPromise = createQuerablePromise((resolve, reject) => {
           if (!this.id) {

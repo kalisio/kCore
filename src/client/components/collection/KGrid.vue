@@ -48,10 +48,17 @@ export default {
       default: 'collection/KCard'
     }
   },
+  watch: {
+    '$route' (to, from) {
+      // React to route changes but reusing the same component as this one is generic
+      this.refreshCollection()
+    }
+  },
   created () {
     // Load the component
     let loadComponent = this.$store.get('loadComponent')
     this.$options.components['k-renderer'] = loadComponent(this.renderer)
+    this.refreshCollection()
   }
 }
 </script>

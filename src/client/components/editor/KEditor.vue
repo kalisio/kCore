@@ -33,8 +33,18 @@ export default {
   mixins: [
     mixins.service,
     mixins.objectProxy,
-    mixins.baseEditor,
+    mixins.schemaProxy,
+    mixins.baseEditor(['form']),
     mixins.refsResolver(['form'])
-  ]
+  ],
+  watch: {
+    '$route' (to, from) {
+      // React to route changes but reusing the same component as this one is generic
+      this.refresh()
+    }
+  },
+  created () {
+    this.refresh()
+  }
 }
 </script>
