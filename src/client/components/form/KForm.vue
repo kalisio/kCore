@@ -16,25 +16,30 @@
 import logger from 'loglevel'
 import lodash from 'lodash'
 import Ajv from 'ajv'
+import mixins from '../../mixins'
+
+// Create the AJV instance
+let ajv = new Ajv({ 
+  allErrors: true,
+  coerceTypes: true,
+  $data: true
+})
 
 export default {
   name: 'k-form',
+  mixins: [
+    mixins.refsResolver()
+  ],
   props: {
     schema: {
-      type: [String, Object],
-      default: () => ({})
+      type: Object,
+      default: null
     }
   },
   data () {
     return {
       fields: [],
       display: { icon: false, label: true, labelWidth: 3 }
-    }
-  },
-  watch: {
-    // Watch the schema because the form has to be rebuilt if the prop changes
-    schema: function () {
-      this.build()
     }
   },
   methods: {
@@ -66,17 +71,18 @@ export default {
       }
       return null
     },
-    buildFields  (schema) {
+    buildFields  () {
       // Clear the fields states
-      this.nbExpectedFields = Object.keys(schema.properties).length
+      this.fields = []
+      this.nbExpectedFields = Object.keys(this.schema.properties).length
       this.nbReadyFields = 0
       // Build the fields
       // 1- assign a name corresponding to the key to enable a binding between properties and fields
       // 2- assign a component key corresponding to the component path 
       // 3- load the component if not previously loaded
       let loadComponent = this.$store.get('loadComponent')
-      Object.keys(schema.properties).forEach(property => {
-        let field = schema.properties[property]
+      Object.keys(this.schema.properties).forEach(property => {
+        let field = this.schema.properties[property]
         // 1- assign a name corresponding to the key to enable a binding between properties and fields
         field['name'] = property
         // 2- assign a component key corresponding to the component path
@@ -89,35 +95,22 @@ export default {
           this.$options.components[componentKey] = loadComponent(field.field.component)
         } 
       })
+      // Set the refs to be resolved
+      this.setRefs(this.fields.map(field => field.name))
+      return this.loadRefs()
     },
     build () {
-      // Clears the fields
-      this.fields = []
-      this.isReady = false
-      // If the schema value is empty there is nothing todo
-      if (lodash.isEmpty(this.schema)) return
-      // Handle the schema and build the fields
-      if (typeof this.schema === "string") {
-        // We need to load the schema
-        let loadSchema = this.$store.get('loadSchema')
-        loadSchema(this.schema)
-        .then(schema => {
-          this.validator = this.ajv.getSchema(this.schema)
-          if (!this.validator) {
-            this.ajv.addSchema(schema, this.schema)
-            this.validator = this.ajv.compile(schema)
-          }
-          this.buildFields(schema)
-        })
-      } else if (typeof this.schema === "object") {
+      // Test in cache first
+      this.validator = this.ajv.getSchema(this.schema.$id)
+      if (!this.validator) {
+        // Otherwise add it
+        this.ajv.addSchema(this.schema, this.schema.$id)
         this.validator = this.ajv.compile(this.schema)
-        this.buildFields(this.schema)
-      } else {
-        logger.warn("Invalid schema value")
       }
+      return this.buildFields()
     },
     fill (values) {
-      if (!this.isReady) throw Error('Cannot fill the form while not ready')
+      if (!this.loadRefs().isFulfilled()) throw Error('Cannot fill the form while not ready')
 
       this.fields.forEach(field => {
         let value = lodash.get(values, field.name)
@@ -142,14 +135,14 @@ export default {
       return values
     },
     clear () {
-      if (!this.isReady) throw Error('Cannot clear the form while not ready')
+      if (!this.loadRefs().isFulfilled()) throw Error('Cannot clear the form while not ready')
 
       this.fields.forEach(field => {
         this.$refs[field.name][0].clear()
       })
     },
     reset () {
-      if (!this.isReady) throw Error('Cannot reset the form while not ready')
+      if (!this.loadRefs().isFulfilled()) throw Error('Cannot reset the form while not ready')
       
       this.fields.forEach(field => {
         this.$refs[field.name][0].reset()
@@ -157,7 +150,7 @@ export default {
       this.validate()
     },
     validate () {
-      if (!this.isReady) throw Error('Cannot validate the form while not ready')
+      if (!this.loadRefs().isFulfilled()) throw Error('Cannot validate the form while not ready')
       
       let result = { 
         isValid: false, 
@@ -183,31 +176,14 @@ export default {
       return result
     }
   },
-  updated () {
-    // Already checked ?
-    if (this.isReady) return
-    // Because the fields are dynamically loaded and we check whether 
-    // the references are created before signaling the form is ready
-    let missingField = false
-    this.fields.forEach(field => {
-      if (!this.$refs[field.name]) {
-        missingField = true
-        return
-      }
-    })
-    if (!missingField) {
-      this.isReady = true
-      this.$emit('form-ready')
-    }
-  },
   created () {
-    // Create the AJV instance
-    this.ajv = new Ajv({ 
-      allErrors: true,
-      coerceTypes: true,
-      $data: true
-    })
-    this.build()
+    // Store the AJV instance
+    this.ajv = ajv
+    // If a schema is already registered automatially build the form
+    // otherwise the parent component would have to manually
+    if (this.schema) {
+      this.build()
+    }
   }
 }
 </script>

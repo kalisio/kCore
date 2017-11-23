@@ -6,29 +6,27 @@ let serviceMixin = {
     },
     service: {
       type: String,
-      required: true
-    }
-  },
-  watch: {
-    '$route' (to, from) {
-      // react to route changes with the same component
-      this.configureService()
+      default: ''
     }
   },
   methods: {
     getService () {
       return this._service
     },
-    isServiceValid () {
-      return this._service !== null
+    getServicePath () {
+      return this._service ? this._service.path : ''
     },
-    configureService () {
-      if (this.context === '') {
-        this._service = this.$api.getService(this.service)
-      } else {
-        this._service = this.$api.getService(this.service, this.context)
+    loadService () {
+      // Create a new mixin promise if required
+      const path = this.$api.getServicePath(this.service, this.context)
+      const serviceChanged = this.getServicePath() !== path
+      if (serviceChanged) {
+        this._service = this.$api.service(path)
+        if (!this._service) {
+          throw new Error('Cannot retrieve target service ' + this.service)
+        }
       }
-      this.$emit('service-changed', this._service)
+      return this.getService()
     },
     serviceFind (params) {
       return this._service.find(params)
@@ -48,9 +46,6 @@ let serviceMixin = {
     serviceRemove (id, params) {
       return this._service.remove(id, params)
     }
-  },
-  created () {
-    this.configureService()
   }
 }
 

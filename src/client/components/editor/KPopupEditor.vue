@@ -23,7 +23,8 @@ export default {
   mixins: [
     mixins.service,
     mixins.objectProxy,
-    mixins.baseEditor
+    mixins.baseEditor,
+    mixins.refsResolver(['form'])
   ],
   props: {
     title: {

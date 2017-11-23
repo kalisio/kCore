@@ -8,7 +8,7 @@
         <k-block
           color="red" 
           title="Delete your account ?"
-          :text="`Please note that deleting \'${name}\' will delete any data attached to this account.<br>
+          :text="`Please note that deleting '${name}' will delete any data attached to this account.<br>
                   The deletion cannot be undone and you will be logged out of the application`"
           action="Delete"
           @action-triggered="onDeletion" />
@@ -18,7 +18,7 @@
       Confim section
      -->
      <k-confirm ref="confirm" 
-      :title="`Are you sure you want to delete \'${name}\' ?`"
+      :title="`Are you sure you want to delete '${name}' ?`"
       action="Delete"
       :prevent="{ textToMatch: name, label: 'Please enter the name of this account to confim' }" 
       @confirmed="onDeletionConfirmed" />
@@ -36,6 +36,7 @@ export default {
     KConfirm
   },
   mixins: [
+    mixins.service,
     mixins.objectProxy
   ],
   data () {
@@ -44,8 +45,8 @@ export default {
     }
   },
   methods: {
-    getService () {
-      return this.$api.getService('users')
+    loadService () {
+      return this._service = this.$api.getService('users')
     },
     onDeletion () {
       this.$refs.confirm.open()
@@ -61,14 +62,9 @@ export default {
     }
   },
   created () {
-    // Install an object-changed callback
-    this.$on('object-changed', _ =>  {
-      if (this.getObject()) {
-        this.name = this.getObject().name
-      } else {
-        this.name = ''
-      }
-    })
+    // Update underlying object
+    this.loadObject()
+    .then(object => this.name = object.name)
   }
 }
 </script>

@@ -52,11 +52,6 @@ export default {
     // Load the component
     let loadComponent = this.$store.get('loadComponent')
     this.$options.components['k-renderer'] = loadComponent(this.renderer)
-    this.refreshCollection()
-    // Subscribe to the service changed event
-    this.$on('service-changed', _ =>  {
-      this.refreshCollection()
-    })
   }
 }
 </script>

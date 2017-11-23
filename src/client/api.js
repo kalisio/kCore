@@ -39,28 +39,32 @@ export function kalisio () {
   api.serviceOptions = {}
 
   // This avoid managing the API path before each service name
-  api.getServicePath = function (path, context) {
+  api.getServicePath = function (name, context) {
     // Context is given as string ID or object ?
-    if (typeof context === 'string') {
-      return config.apiPath + '/' + context + '/' + path
-    } else if (typeof context === 'object' && context !== null) {
-      return config.apiPath + '/' + context._id + '/' + path
+    if (context && typeof context === 'string') {
+      return config.apiPath + '/' + context + '/' + name
+    } else if (context && typeof context === 'object') {
+      return config.apiPath + '/' + context._id + '/' + name
     } else {
-      const options = _.get(api.serviceOptions, path, {})
+      const options = _.get(api.serviceOptions, name, {})
       // Service might also be registered as contextual
       if (options.context) {
-        return api.getServicePath(path, Store.get('context'))
+        return api.getServicePath(name, Store.get('context'))
       } else {
-        return config.apiPath + '/' + path
+        return config.apiPath + '/' + name
       }
     }
   }
-  api.getService = function (path, context) {
-    return api.service(api.getServicePath(path, context))
+  api.getService = function (name, context) {
+    const path = api.getServicePath(name, context)
+    let service = api.service(path)
+    // Store the path on first call
+    if (!service.path) service.path = path
+    return service
   }
   // Used to register a service with its options
-  api.declareService = function (path, options = {}) {
-    _.set(api.serviceOptions, path, options)
+  api.declareService = function (name, options = {}) {
+    _.set(api.serviceOptions, name, options)
   }
   // change the base URL/domain to be used (useful for mobile apps)
   api.setBaseUrl = function (baseUrl) {

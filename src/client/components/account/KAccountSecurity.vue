@@ -43,9 +43,6 @@ export default {
     }
   },
   methods: {
-    getService () {
-      return this.$api.getService('users')
-    },
     onChangePassword () {
       this.$router.push({name: 'change-password'})
     },

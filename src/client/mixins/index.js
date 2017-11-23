@@ -7,6 +7,7 @@ import baseField from './mixin.base-field'
 import context from './mixin.context'
 import objectProxy from './mixin.object-proxy'
 import service from './mixin.service'
+import refsResolver from './mixin.refs-resolver'
 
 export default {
   authentication,
@@ -17,5 +18,6 @@ export default {
   baseField,
   context,
   objectProxy,
-  service
+  service,
+  refsResolver
 }

@@ -26,29 +26,33 @@ let baseCollectionMixin = {
       currentPage: 1
     }
   },
+  watch: {
+    '$route' (to, from) {
+      // React to route changes but reusing the same component
+      this.refreshCollection()
+    }
+  },
   methods: {
     refreshCollection () {
-      if (this.getService()) {
-        let fullQuery = Object.assign({}, this.baseQuery, this.filterQuery)
-        // Sets the number of items to be loaded
-        if (this.nbItemsPerPage > 0) {
-          Object.assign(fullQuery, {
-            $limit: this.nbItemsPerPage,
-            $skip: (this.currentPage - 1) * this.nbItemsPerPage
-          })
-        }
-        // find the desire items
-        this.getService().find({
-          rx: {
-            listStrategy: 'always'
-          },
-          query: fullQuery
-        }).subscribe(response => {
-          this.items = response.data
-          this.nbTotalItems = response.total
-          this.$emit('collection-refreshed')
+      let fullQuery = Object.assign({}, this.baseQuery, this.filterQuery)
+      // Sets the number of items to be loaded
+      if (this.nbItemsPerPage > 0) {
+        Object.assign(fullQuery, {
+          $limit: this.nbItemsPerPage,
+          $skip: (this.currentPage - 1) * this.nbItemsPerPage
         })
       }
+      // find the desire items
+      this.loadService().find({
+        rx: {
+          listStrategy: 'always'
+        },
+        query: fullQuery
+      }).subscribe(response => {
+        this.items = response.data
+        this.nbTotalItems = response.total
+        this.$emit('collection-refreshed')
+      })
     },
     onPageChanged () {
       this.refreshCollection()
@@ -59,6 +63,7 @@ let baseCollectionMixin = {
     }
   },
   created () {
+    this.refreshCollection()
     this.filterQuery = {}
   }
 }

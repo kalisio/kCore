@@ -5,8 +5,7 @@
     -->
     <k-form class="col-10"
       ref="form"
-      :schema="schema"
-      @form-ready="fillEditor" />
+      :schema="schema" />
     <!--
       Buttons section
     -->
@@ -34,7 +33,8 @@ export default {
   mixins: [
     mixins.service,
     mixins.objectProxy,
-    mixins.baseEditor
+    mixins.baseEditor,
+    mixins.refsResolver(['form'])
   ]
 }
 </script>

@@ -11,6 +11,7 @@ import { Store } from './store'
 export * from './api'
 export * from './store'
 export * from './guards'
+export * as utils from './utils'
 export * as mixins from './mixins'
 export * as hooks from './hooks'
 
