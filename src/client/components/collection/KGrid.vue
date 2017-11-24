@@ -14,7 +14,7 @@
     -->
     <div class="row">
       <div v-for="item in items" :key="item._id" :class="layout">
-        <k-renderer :item="item" :actions="actions" />
+        <k-renderer :item="item" :options="rendererOptions" :actions="actions" />
       </div>
     </div>
     <div class="self-center" v-if="nbPages > 1">
@@ -46,6 +46,10 @@ export default {
     renderer: {
       type: String,
       default: 'collection/KCard'
+    },
+    rendererOptions: {
+      type: Object,
+      default: {}
     }
   },
   watch: {

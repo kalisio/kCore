@@ -4,6 +4,10 @@ let baseItemMixin = {
       type: Object,
       required: true
     },
+    options: {
+      type: Object,
+      default: {}
+    },
     actions: {
       type: Array,
       default: function () {
