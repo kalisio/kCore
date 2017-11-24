@@ -16,7 +16,20 @@ export function processPerspectives (hook) {
   // Iterate through known perspectives of the model
   service.options.perspectives.forEach(perspective => {
     // Only discard if not explicitely asked by $select
-    if (_.isNil(query) || _.isNil(query.$select) || !query.$select.includes(perspective)) {
+    let filterPerspective = true
+    if (!_.isNil(query) && !_.isNil(query.$select)) {
+      // Transform to array to unify processing
+      let selectedFields = (typeof query.$select === 'string' ? [query.$select] : query.$select)
+      if (Array.isArray(selectedFields)) {
+        selectedFields.forEach(field => {
+          // Take care that we might only ask for a subset of perspective fields like ['perspective.fieldName']
+          if ( (field === perspective) || field.startsWith(perspective + '.') ) {
+            filterPerspective = false
+          }
+        })
+      }
+    }
+    if (filterPerspective) {
       discard(perspective)(hook)
     }
   })
