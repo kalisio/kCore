@@ -26,7 +26,7 @@ export default {
       return this.items.length > 0 ? 'col-5' : 'col-12'
     },
     isCompleted () {
-      return !this.multiselect ? this.items.length > 0 : false
+      return this.multiselect ? false : (this.items.length > 0)
     }
   },
   props: {
