@@ -49,7 +49,7 @@ export default {
     },
     rendererOptions: {
       type: Object,
-      default: {}
+      default: () => {}
     }
   },
   watch: {
