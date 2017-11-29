@@ -6,17 +6,21 @@ import errors from 'feathers-errors'
 // Utility function used to convert from string to MongoDB IDs as required by queries
 export function objectifyIDs (query) {
   lodash.forOwn(query, (value, key) => {
-    // Process current attributes or  recurse
-    if (key === '_id') {
+    // Process current attributes or recurse
+    // Take care to nested fields like 'field._id'
+    if (key === '_id' || key.endsWith('._id')) {
       if (typeof value === 'string') query[key] = new ObjectID(value)
       else if (Array.isArray(value)) query[key] = value.map(id => new ObjectID(id))
       else if (typeof value === 'object') objectifyIDs(value)
     } else if (['$in', '$nin'].includes(key)) {
       query[key] = value.map(id => new ObjectID(id))
+    } else if (key === '$or') {
+      value.forEach(entry => objectifyIDs(entry))
     } else if (typeof value === 'object') {
       objectifyIDs(value)
     }
   })
+  return query
 }
 
 export class Database {
