@@ -6,7 +6,9 @@ let baseItemMixin = {
     },
     options: {
       type: Object,
-      default: {}
+      default: function () {
+        return {}
+      }
     },
     actions: {
       type: Array,
