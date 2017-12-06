@@ -112,7 +112,7 @@ export default {
         })
         .catch(_ => {
           Toast.create.negative({
-            html: 'Wrong credentials, please try again.',
+            html: 'Wrong credentials or service unavailable, please try again.',
             timeout: 5000
           })
           done()
