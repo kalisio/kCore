@@ -22,7 +22,7 @@ let baseItemMixin = {
   methods: {
     onActionTriggered (action, item) {
       // If a handler is given call it
-      if (action.handler) handler.call(this, item)
+      if (action.handler) action.handler.call(this, item)
       // If a route is given activate it with item ID
       else if (action.route) {
         let route = _.merge({ params: { id: item._id } }, action.route)
