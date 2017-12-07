@@ -21,7 +21,7 @@
     <q-card-separator />
     <q-card-actions align="end">
       <template v-for="action in actions">   
-        <q-btn flat round small color="primary" :icon="action.icon" @click="onActionTriggered(action.handler, item)" />
+        <q-btn flat round small color="primary" :icon="action.icon" @click="onActionTriggered(action, item)" />
       </template>
     </q-card-actions>
   </q-card>

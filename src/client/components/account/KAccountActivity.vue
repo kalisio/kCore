@@ -1,6 +1,6 @@
 <template>
   <div v-if="id !== ''">
-    <k-nav-bar :tabs="navBarTabs()" :selected="perspective" />
+    <k-nav-bar :tabs="actions.tab" :selected="perspective" />
     <div v-if="perspective === 'profile'">
       <k-editor service="users" :id="id" perspective="profile"/>
     </div>
@@ -37,18 +37,17 @@ export default {
     }
   },
   methods: {
-    navBarTabs () {
-      return [ 
-        { name: 'profile', label: 'Profile', icon: 'description', route: { 
-          name: 'account-activity', params: { perspective: 'profile' } } 
-        },
-        { name: 'security', label: 'Security', icon: 'security', route: { 
-          name: 'account-activity', params: { perspective: 'security' } } 
-        },
-        { name: 'danger-zone', label: 'Danger Zone', icon: 'warning', route: { 
-          name: 'account-activity', params: { perspective: 'danger-zone' } } 
-        }
-      ]
+    refreshActions () {
+      this.clearActions()
+      this.registerAction('tab', { name: 'profile', label: 'Profile', icon: 'description', route: { 
+        name: 'account-activity', params: { perspective: 'profile' } } 
+      })
+      this.registerAction('tab', { name: 'security', label: 'Security', icon: 'security', route: { 
+        name: 'account-activity', params: { perspective: 'security' } } 
+      })
+      this.registerAction('tab', { name: 'danger-zone', label: 'Danger Zone', icon: 'warning', route: { 
+        name: 'account-activity', params: { perspective: 'danger-zone' } } 
+      })
     },
     refresh () {
       this.id = this.$store.get('user._id', '')
@@ -63,6 +62,8 @@ export default {
     this.$options.components['k-account-dz'] = loadComponent('account/KAccountDZ')
     // Refresh this component
     this.refresh()
+    // Register the actions
+    this.refreshActions()
   },
   mounted () {
     Events.$on('user-changed', user => {

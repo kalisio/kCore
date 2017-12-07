@@ -21,7 +21,7 @@ export default {
   props: {
     tabs: {
       type: Array,
-      required: true
+      default: () => []
     },
     selected: {
       type: String,
@@ -44,9 +44,12 @@ export default {
     },
     onCurrentTabChanged (newTab) {
       if (this.$route.name !== newTab) {
-        let tab = lodash.find(this.tabs, function(t) { return t.name === newTab })
+        let tab = lodash.find(this.tabs, tab => tab.name === newTab)
         if (tab) {
-          this.$router.push(tab.route)
+          // If a handler is given call it
+          if (tab.handler) tab.handler.call(this)
+          // If a route is given activate it
+          if (tab.route) this.$router.push(tab.route)
         }
       }
     }

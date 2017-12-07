@@ -1,19 +1,34 @@
 let baseActivityMixin = {
-  methods: {
-    registerAction (handler, decoration) {
-      if (!this.actions) this.actions = new Map()
-      decoration['handler'] = this[handler].bind(this)
-      this.actions.set(handler, decoration)
-    },
-    filterActions (keys) {
-      let result = []
-      if (this.actions) {
-        keys.forEach(key => {
-          let action = this.actions.get(key)
-          if (action) result.push(action)
-        })
+  data () {
+    return {
+      actions: {
+        type: Object,
+        default: function () {
+          return {}
+        }
       }
-      return result
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      // React to route changes but reusing the same component as this one is generic
+      this.refreshActions()
+    }
+  },
+  methods: {
+    registerAction (type, action) {
+      if (!this.actions[type]) this.actions[type] = []
+      this.actions[type].push(action)
+    },
+    getActions (type) {
+      return this.actions[type] || []
+    },
+    clearActions () {
+      this.actions = {}
+    },
+    //This method should be overriden in activities
+    refreshActions () {
+      this.clearActions()
     }
   }
 }

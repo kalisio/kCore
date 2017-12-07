@@ -1,6 +1,6 @@
 let serviceMixin = {
   props: {
-    context: {
+    contextId: {
       type: String,
       default: ''
     },
@@ -18,7 +18,7 @@ let serviceMixin = {
     },
     loadService () {
       // Create a new mixin promise if required
-      const path = this.$api.getServicePath(this.service, this.context)
+      const path = this.$api.getServicePath(this.service, this.contextId)
       const serviceChanged = this.getServicePath() !== path
       if (serviceChanged) {
         this._service = this.$api.service(path)
