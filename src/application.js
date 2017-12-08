@@ -119,14 +119,14 @@ export function createProxyService (options) {
   }
 }
 
-export function createService (name, app, options) {
+export function createService (name, app, options = {}) {
   const createFeathersService = require('feathers-' + app.db.adapter)
 
   const paginate = app.get('paginate')
   const serviceOptions = Object.assign({
     name: name,
     paginate
-  }, options || {})
+  }, options)
   // For DB services a model has to be provided
   let dbService = true
   try {
@@ -169,15 +169,14 @@ export function createService (name, app, options) {
   service.name = name
   service.app = app
   service.options = options
+  service.path = options.path || name
+  // By convention we have contextual service paths like this 'context_id/service_name'
+  let paths = service.path.split('/')
+  service.context = (paths.length > 1 ? paths[0] : '')
 
   // Add some utility functions
   service.getPath = function (withApiPrefix) {
-    let path = ''
-    if (service.options) {
-      path = service.options.path || service.name
-    } else {
-      path = service.name
-    }
+    let path = service.path
     if (withApiPrefix) {
       path = app.get('apiPath') + '/' + path
     }
