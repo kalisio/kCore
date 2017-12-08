@@ -4,6 +4,8 @@
 [![Code Climate](https://codeclimate.com/github/kalisio/kCore/badges/gpa.svg)](https://codeclimate.com/github/kalisio/kCore)
 [![Test Coverage](https://codeclimate.com/github/kalisio/kCore/badges/coverage.svg)](https://codeclimate.com/github/kalisio/kCore/coverage)
 [![Dependency Status](https://img.shields.io/david/kalisio/kCore.svg?style=flat-square)](https://david-dm.org/kalisio/kCore)
+[![Documentation](https://img.shields.io/badge/documentation-available-brightgreen.svg)](https://kalisio.gitbooks.io/kalisio/api)
+[![Known Vulnerabilities](https://snyk.io/test/github/kalisio/kCore/badge.svg)](https://snyk.io/test/github/kalisio/kCore)
 
 > Basic utils to support Kalisio applications and services
 
