@@ -11,7 +11,7 @@
           v-for="action in actions" 
           :key="action.id"
           color="secondary"
-          @click="onActionTriggered(action.handler)"
+          @click="onActionTriggered(action)"
           :icon="action.icon">
         </q-fab-action>
     </q-fab>
@@ -21,7 +21,7 @@
     <q-btn v-else-if="actions.length === 1" round 
       color="primary"
       class="fixed"
-      @click="onActionTriggered(actions[0].handler)"
+      @click="onActionTriggered(actions[0])"
       style="right: 18px; bottom: 18px">
       <q-icon :name="actions[0].icon" />
     </q-btn>
@@ -48,8 +48,11 @@ export default {
     }
   },
   methods: {
-    onActionTriggered (handler) {
-      handler.call(this)
+    onActionTriggered (action) {
+      // If a handler is given call it
+      if (action.handler) action.handler.call(this)
+      // If a route is given activate it
+      else if (action.route) this.$router.push(action.route)
     }
   }
 }

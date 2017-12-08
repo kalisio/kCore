@@ -26,7 +26,6 @@ let baseItemMixin = {
       // If a route is given activate it with item ID
       else if (action.route) {
         let route = _.merge({ params: { id: item._id } }, action.route)
-        console.log(route)
         this.$router.push(route)
       }
     }
