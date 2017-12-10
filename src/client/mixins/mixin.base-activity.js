@@ -1,3 +1,5 @@
+import { Events } from 'quasar'
+
 let baseActivityMixin = {
   data () {
     return {
@@ -30,6 +32,12 @@ let baseActivityMixin = {
     refreshActions () {
       this.clearActions()
     }
+  },
+  created () {
+    // Register the actions
+    this.refreshActions()
+    // Whenever the user is updated, update abilities as well
+    Events.$on('user-abilities-changed', _ => this.refreshActions())
   }
 }
 

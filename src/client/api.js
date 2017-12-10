@@ -39,21 +39,27 @@ export function kalisio () {
   api.serviceOptions = {}
 
   // This avoid managing the API path before each service name
-  api.getServicePath = function (name, context) {
+  api.getServicePath = function (name, context, withApiPrefix = true) {
+    let path
     // Context is given as string ID or object ?
     if (context && typeof context === 'string') {
-      return config.apiPath + '/' + context + '/' + name
+      path = context + '/' + name
     } else if (context && typeof context === 'object') {
-      return config.apiPath + '/' + context._id + '/' + name
+      path = context._id + '/' + name
     } else {
       const options = _.get(api.serviceOptions, name, {})
       // Service might also be registered as contextual
       if (options.context) {
-        return api.getServicePath(name, Store.get('context'))
+        path = api.getServicePath(name, Store.get('context'), false)
       } else {
-        return config.apiPath + '/' + name
+        path = name
       }
     }
+
+    if (withApiPrefix) {
+      path = config.apiPath + '/' + path
+    }
+    return path
   }
   api.getService = function (name, context) {
     const path = api.getServicePath(name, context)
