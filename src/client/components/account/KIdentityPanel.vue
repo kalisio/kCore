@@ -53,14 +53,10 @@ export default {
     this.iconColor = this.$store.get(confPath + '.iconColor', 'white')
     // Update the panel
     this.refreshIdentity()
+    Events.$on('user-changed', this.refreshIdentity)
   },
-  mounted () {
-    Events.$on('user-changed', user => {
-      this.refreshIdentity ()
-    })
-    Events.$on('user-patched', user => {
-      this.refreshIdentity ()
-    })
+  beforeDestroy() {
+    Events.$off('user-changed', this.refreshIdentity)
   }
 }
 </script>

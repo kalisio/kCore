@@ -49,7 +49,7 @@ export default {
         name: 'account-activity', params: { perspective: 'danger-zone' } } 
       })
     },
-    refresh () {
+    refreshAccount () {
       this.id = this.$store.get('user._id', '')
     }
   },
@@ -61,14 +61,11 @@ export default {
     this.$options.components['k-account-security'] = loadComponent('account/KAccountSecurity')
     this.$options.components['k-account-dz'] = loadComponent('account/KAccountDZ')
     // Refresh this component
-    this.refresh()
-    // Register the actions
-    this.refreshActions()
+    this.refreshAccount()
+    Events.$on('user-changed', this.refreshAccount)
   },
-  mounted () {
-    Events.$on('user-changed', user => {
-      this.refresh ()
-    })
+  beforeDestroy() {
+    Events.$off('user-changed', this.refreshAccount)
   }
 }
 </script>

@@ -37,7 +37,10 @@ let baseActivityMixin = {
     // Register the actions
     this.refreshActions()
     // Whenever the user is updated, update abilities as well
-    Events.$on('user-abilities-changed', _ => this.refreshActions())
+    Events.$on('user-abilities-changed', this.refreshActions)
+  },
+  beforeDestroy() {
+    Events.$off('user-abilities-changed', this.refreshActions)
   }
 }
 

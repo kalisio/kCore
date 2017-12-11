@@ -1,3 +1,5 @@
+import { Events } from 'quasar'
+
 let baseCollectionMixin = {
   props: {
     actions: {
@@ -37,15 +39,18 @@ let baseCollectionMixin = {
         })
       }
       // find the desire items
-      return this.loadService().find({
+      this.loadService().find({
         rx: {
           listStrategy: 'always'
         },
         query: fullQuery
-      }).subscribe(response => {
+      })
+      .subscribe(response => {
         this.items = response.data
         this.nbTotalItems = response.total
         this.$emit('collection-refreshed')
+      }, error => {
+        Events.$emit('error', error)
       })
     },
     onPageChanged () {

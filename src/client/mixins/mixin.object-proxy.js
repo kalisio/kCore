@@ -1,3 +1,4 @@
+import { Events } from 'quasar'
 import { createQuerablePromise } from '../utils'
 
 let objectProxyMixin = {
@@ -31,14 +32,16 @@ let objectProxyMixin = {
           if (this.perspective) {
             params = { query: { $select: [this.perspective] } }
           }
-          resolve(
-            this.loadService()
-            .get(this.id, params)
-            .then(object => {
-              this._object = object
-              return object
-            })
-          )
+          this.loadService()
+          .get(this.id, params)
+          .then(object => {
+            this._object = object
+            resolve(object)
+          })
+          .catch(error => {
+            Events.$emit('error', error)
+            reject(error)
+          })
         })
       }
       return this.objectPromise

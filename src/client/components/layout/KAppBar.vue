@@ -22,7 +22,7 @@
     <!-- 
       Voice ?
      -->
-    <k-voice v-if="voiceEnabled"/>
+    <k-voice v-if="isVoiceEnabled"/>
   </q-toolbar>
 </template>
 
@@ -47,24 +47,27 @@ export default {
     },
     actions () {
       return this.content ? this.content.actions : []
+    },
+    isVoiceEnabled () {
+      return this.content ? this.content.speech : false
     }
   },
   data () {
     return {
-      content: null,
-      voiceEnabled: false
+      content: null
+    }
+  },
+  methods: {
+    refresh (content) {
+      this.content = content
     }
   },
   created () {
-    // Apply the configuration
-    this.content = this.$store.get('appBar', this.$store.get('config.appBar', null))
-    this.voiceEnabled = this.$store.get('config.appBar.speech', false)
+    this.refresh(this.$store.get('appBar', this.$store.get('config.appBar')))
+    Events.$on('app-bar-changed', this.refresh)
   },
-  mounted () {
-    // subscribe to the app-bar-changed event
-    Events.$on('app-bar-changed', appBar => {
-      this.content = appBar
-    })
+  beforeDestroy() {
+    Events.$off('app-bar-changed', this.refresh)
   }
 }
 </script>

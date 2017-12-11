@@ -1,3 +1,4 @@
+import { Events } from 'quasar'
 import { createQuerablePromise } from '../utils'
 
 let schemaProxyMixin = {
@@ -29,8 +30,14 @@ let schemaProxyMixin = {
       if (!this.schemaPromise || schemaChanged) {
         // We need to load the schema now
         let loader = this.$store.get('loadSchema')
-        this.schemaPromise = createQuerablePromise(loader(schemaName)
-        .then(schema => this.schema = schema))
+        this.schemaPromise = createQuerablePromise(
+          loader(schemaName)
+          .then(schema => this.schema = schema)
+          .catch(error => {
+            Events.$emit('error', error)
+            throw error
+          })
+        )
       }
       return this.schemaPromise
     }
