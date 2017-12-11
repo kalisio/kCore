@@ -40,19 +40,20 @@ export function kalisio () {
 
   // This avoid managing the API path before each service name
   api.getServicePath = function (name, context, withApiPrefix = true) {
+    const options = _.get(api.serviceOptions, name, {})
     let path
-    // Context is given as string ID or object ?
-    if (context && typeof context === 'string') {
-      path = context + '/' + name
-    } else if (context && typeof context === 'object') {
-      path = context._id + '/' + name
+    // For non-contextual services path is always the name
+    if (!options.context) {
+      path = name
     } else {
-      const options = _.get(api.serviceOptions, name, {})
-      // Service might also be registered as contextual
-      if (options.context) {
-        path = api.getServicePath(name, Store.get('context'), false)
+      // Context is given as string ID or object ?
+      if (context && typeof context === 'string') {
+        path = context + '/' + name
+      } else if (context && typeof context === 'object') {
+        path = context._id + '/' + name
       } else {
-        path = name
+        // Service is registered as contextual
+        path = api.getServicePath(name, Store.get('context'), false)
       }
     }
 
