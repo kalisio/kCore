@@ -53,7 +53,12 @@ export function kalisio () {
         path = context._id + '/' + name
       } else {
         // Service is registered as contextual
-        path = api.getServicePath(name, Store.get('context'), false)
+        const context = Store.get('context')
+        if (context) {
+          path = api.getServicePath(name, context, false)
+        } else {
+          throw new Error('Cannot retrieve context for contextual service ' + name)
+        }
       }
     }
 
