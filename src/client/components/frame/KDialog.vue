@@ -1,5 +1,5 @@
 <template>
-  <q-modal ref="modal" position="bottom" :no-backdrop-dismiss="closable" :no-esc-dismiss="closable" :content-css="{padding: '16px', minWidth: '40vw'}">
+  <q-modal ref="modal" minimized :no-backdrop-dismiss="closable" :no-esc-dismiss="closable" :content-css="{padding: '32px', minWidth: '50vw'}">
     <div class="column">
       <!-- 
         Title section

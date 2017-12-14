@@ -23,7 +23,7 @@ export default {
   created () {
     // load the layout component
     let loadComponent = this.$store.get('loadComponent')
-    this.$options.components['k-layout'] = loadComponent('layout/KLayout')
+    this.$options.components['k-layout'] = loadComponent(this.$store.get('config.home.layout', 'layout/KLayout'))
     // Initialize the user if any
     this.refresh()
     Events.$on('user-changed', this.refresh)
