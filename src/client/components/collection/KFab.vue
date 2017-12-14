@@ -4,7 +4,9 @@
       Render an expandable fab if multiple actions are provided
      -->
     <q-fab v-if="actions.length > 1" 
-      icon="keyboard_arrow_up" 
+      icon="keyboard_arrow_up"
+      class="fixed"
+      style="right: 18px; bottom: 18px" 
       direction ="up" 
       color="primary">
         <q-fab-action 
@@ -21,8 +23,8 @@
     <q-btn v-else-if="actions.length === 1" round 
       color="primary"
       class="fixed"
-      @click="onActionTriggered(actions[0])"
-      style="right: 18px; bottom: 18px">
+      style="right: 18px; bottom: 18px"
+      @click="onActionTriggered(actions[0])">
       <q-icon :name="actions[0].icon" />
     </q-btn>
   </div>
