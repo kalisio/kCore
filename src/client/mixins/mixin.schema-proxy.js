@@ -32,7 +32,9 @@ let schemaProxyMixin = {
         let loader = this.$store.get('loadSchema')
         this.schemaPromise = createQuerablePromise(
           loader(schemaName)
-          .then(schema => this.schema = schema)
+          .then(schema => {
+            this.schema = schema
+          })
           .catch(error => {
             Events.$emit('error', error)
             throw error

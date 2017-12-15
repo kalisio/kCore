@@ -19,7 +19,7 @@ export default function init () {
   const api = this
 
   logger.debug('Initializing kalisio core')
-  
+
   api.declareService('users')
   api.declareService('tags')
 

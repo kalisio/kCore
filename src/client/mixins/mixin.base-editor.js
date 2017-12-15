@@ -1,7 +1,6 @@
 import logger from 'loglevel'
-import { createQuerablePromise } from '../utils'
 
-export default function baseEditorMixin(formRefs) {
+export default function baseEditorMixin (formRefs) {
   return {
     props: {
       clearButton: {
@@ -90,7 +89,7 @@ export default function baseEditorMixin(formRefs) {
 
         if (this.getService()) {
           // Small helper to avoid repeating too much similar code
-          let onServiceResponse = function() {
+          let onServiceResponse = function () {
             if (done) done()
             this.$emit('applied')
           }.bind(this)

@@ -3,7 +3,7 @@
  * Based on: http://stackoverflow.com/questions/21485545/is-there-a-way-to-tell-if-an-es6-promise-is-fulfilled-rejected-resolved
  * But modified according to the specs of promises : https://promisesaplus.com/
  */
-export function createQuerablePromise(promiseOrExecutor) {
+export function createQuerablePromise (promiseOrExecutor) {
   let promise = promiseOrExecutor
   if (typeof promiseOrExecutor === 'function') {
     promise = new Promise(promiseOrExecutor)
@@ -22,13 +22,13 @@ export function createQuerablePromise(promiseOrExecutor) {
       isFulfilled = true
       isPending = false
       return value
-    }, 
+    },
     (error) => {
       isRejected = true
       isPending = false
       throw error
     }
-  );
+  )
 
   result.isFulfilled = () => { return isFulfilled }
   result.isPending = () => { return isPending }

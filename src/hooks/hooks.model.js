@@ -23,7 +23,7 @@ export function processPerspectives (hook) {
       if (Array.isArray(selectedFields)) {
         selectedFields.forEach(field => {
           // Take care that we might only ask for a subset of perspective fields like ['perspective.fieldName']
-          if ( (field === perspective) || field.startsWith(perspective + '.') ) {
+          if ((field === perspective) || field.startsWith(perspective + '.')) {
             filterPerspective = false
           }
         })

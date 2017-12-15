@@ -28,7 +28,7 @@ let baseActivityMixin = {
     clearActions () {
       this.actions = {}
     },
-    //This method should be overriden in activities
+    // This method should be overriden in activities
     refreshActions () {
       this.clearActions()
     }
@@ -39,7 +39,7 @@ let baseActivityMixin = {
     // Whenever the user is updated, update abilities as well
     Events.$on('user-abilities-changed', this.refreshActions)
   },
-  beforeDestroy() {
+  beforeDestroy () {
     Events.$off('user-abilities-changed', this.refreshActions)
   }
 }

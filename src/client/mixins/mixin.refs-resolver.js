@@ -1,7 +1,6 @@
-import _ from 'lodash'
 import { createQuerablePromise } from '../utils'
 
-export default function refsResolverMixin(refs) {
+export default function refsResolverMixin (refs) {
   return {
     methods: {
       setRefs (refs) {
