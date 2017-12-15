@@ -19,13 +19,17 @@ let objectProxyMixin = {
     getObjectId () {
       return this._object ? this._object._id : ''
     },
+    hasPerspective (perspective) {
+      return this._object ? this._object.hasOwnProperty(perspective) : false
+    },
     loadObject () {
       // Create a new mixin promise if required
-      const objectChanged = this.id && (this.getObjectId() !== this.id)
+      const objectChanged = (this.getObjectId() !== this.id) || !this.hasPerspective(this.perspective)
       if (!this.objectPromise || objectChanged) {
         this.objectPromise = createQuerablePromise((resolve, reject) => {
           if (!this.id) {
-            resolve()
+            this._object = null
+            resolve(null)
             return
           }
           let params = {}

@@ -24,9 +24,9 @@ let schemaProxyMixin = {
     },
     loadSchema () {
       // Create a new mixin promise if required
-      // In the JSON schema file we use a $id like 'http:/www.kalisio.xyz/schemas/schema-name#'
+      // In the JSON schema file we use a $id like 'http:/www.kalisio.xyz/schemas/service.operation-perspective.json#'
       const schemaName = this.getSchemaName()
-      const schemaChanged = schemaName && !this.getSchemaId().includes(schemaName)
+      const schemaChanged = schemaName && !this.getSchemaId().includes(schemaName + '.json')
       if (!this.schemaPromise || schemaChanged) {
         // We need to load the schema now
         let loader = this.$store.get('loadSchema')
