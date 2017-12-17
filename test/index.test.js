@@ -29,6 +29,8 @@ describe('kCore', () => {
     app.configure(core)
     userService = app.getService('users')
     expect(userService).toExist()
+    // Register tag hooks
+    userService.hooks({ after: { create: hooks.updateTags, remove: hooks.updateTags } })
     tagService = app.getService('tags')
     expect(tagService).toExist()
     // Now app is configured launch the server
@@ -60,6 +62,7 @@ describe('kCore', () => {
       return tagService.find({ query: { value: 'developer' } })
     })
     .then(tags => {
+      console.log(tags.data)
       expect(tags.data.length > 0).beTrue()
       expect(tags.data[0].value).to.equal('developer')
       expect(tags.data[0].scope).to.equal('skills')
@@ -98,7 +101,7 @@ describe('kCore', () => {
     .then(tag => {
       expect(tag).toExist()
       expect(tag.count).to.equal(1)
-      return tagService.find({ query: { value: 'developer' } })
+      return tagService.find({ query: { value: 'manager' } })
     })
     .then(tags => {
       expect(tags.data.length > 0).beTrue()
@@ -122,7 +125,7 @@ describe('kCore', () => {
     })
     .then(tag => {
       expect(tag).toExist()
-      return tagService.find({ query: { value: 'developer' } })
+      return tagService.find({ query: { value: 'manager' } })
     })
     .then(tags => {
       expect(tags.data.length === 1).beTrue()

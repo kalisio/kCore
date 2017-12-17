@@ -11,6 +11,7 @@ import { Store } from './store'
 export * from './api'
 export * from './store'
 export * from './guards'
+export * from '../common'
 export * as utils from './utils'
 export * as mixins from './mixins'
 export * as hooks from './hooks'
@@ -21,7 +22,8 @@ export default function init () {
   logger.debug('Initializing kalisio core')
 
   api.declareService('users')
-  api.declareService('tags')
+  api.declareService('authorisations')
+  api.declareService('tags', { context: true })
 
   // Listen to the 'patched' event on the users
   const users = api.getService('users')

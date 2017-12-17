@@ -5,7 +5,7 @@ import makeDebug from 'debug'
 
 const debug = makeDebug('kalisio:kCore:hooks:tags')
 
-export function populateResource (hook) {
+export function populateTagResource (hook) {
   if (hook.type !== 'before') {
     throw new Error(`The 'populateResource' hook should only be used as a 'before' hook.`)
   }
@@ -19,7 +19,10 @@ export function updateTags (hook) {
   if (!tags) {
     return Promise.resolve(hook)
   }
-  let tagsService = hook.app.getService('tags')
+  // Tag service is contextual, look for context on initiator service
+  let tagsService = hook.app.getService('tags', hook.service.context)
+  if (!tagsService) return Promise.reject(new Error('No context found to retrieve tag service for initiator service ' + hook.service.name))
+
   return Promise.all(tags.map(tag => {
     return (hook.method === 'remove' ? tagsService.remove(null, { query: tag }) : tagsService.create(tag))
   }))
@@ -45,7 +48,9 @@ export function addTagIfNew (hook) {
     if (result.total > 0) {
       const tag = result.data[0]
       hook.result = tag
-      return tagService.patch(tag._id, { count: tag.count + 1 })
+      const count = tag.count + 1
+      debug('Increasing tag ' + tag.value + ' count (' + count + ') with scope ' + tag.scope)
+      return tagService.patch(tag._id, { count })
     } else {
       // Otherwise initialize tag counter
       hook.data.count = 1
@@ -77,8 +82,10 @@ export function removeTagIfUnused (hook) {
       tag.count = tag.count - 1
       hook.result = tag
       if (tag.count <= 0) {
+        debug('Removing unused tag ' + tag.value + ' with scope ' + tag.scope)
         return tagService.remove(tag._id)
       } else {
+        debug('Decreasing tag ' + tag.value + ' count (' + tag.count + ') with scope ' + tag.scope)
         return tagService.patch(tag._id, { count: tag.count })
       }
     } else {

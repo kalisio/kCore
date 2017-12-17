@@ -2,7 +2,22 @@ import path from 'path'
 const modelsPath = path.join(__dirname, '..', 'models')
 const servicesPath = path.join(__dirname, '..', 'services')
 
-module.exports = async function () {
+export function createTagService (context, db) {
+  const app = this
+
+  app.createService('tags', {
+    servicesPath,
+    modelsPath,
+    path: context._id.toString() + '/tags',
+    db
+  })
+}
+
+export function removeTagService (context) {
+  // TODO
+}
+
+export default async function () {
   const app = this
 
   app.createService('users', {
@@ -10,5 +25,7 @@ module.exports = async function () {
     servicesPath,
     perspectives: ['profile', 'github', 'google']
   })
+  app.createService('authorisations', { servicesPath })
+  // We have a global tag service and one by context if app requires it
   app.createService('tags', { modelsPath, servicesPath })
 }

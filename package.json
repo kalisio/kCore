@@ -58,6 +58,7 @@
     "ajv": "^5.2.2",
     "annyang": "^2.6.0",
     "body-parser": "^1.17.1",
+    "casl": "^1.0.3",
     "compression": "^1.6.2",
     "cors": "^2.8.1",
     "debug": "^2.6.4",

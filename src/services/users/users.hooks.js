@@ -1,4 +1,4 @@
-import { serialize, updateTags } from '../../hooks'
+import { serialize, updateAbilities } from '../../hooks'
 const { authenticate } = require('feathers-authentication').hooks
 const { hashPassword } = require('feathers-authentication-local').hooks
 const commonHooks = require('feathers-hooks-common')
@@ -9,7 +9,6 @@ module.exports = {
     find: [ authenticate('jwt') ],
     get: [ authenticate('jwt') ],
     create: [
-      updateTags,
       serialize([
         {source: 'github.profile.displayName', target: 'name'},
         {source: 'github.profile.emails[0].value', target: 'email'},
@@ -20,8 +19,8 @@ module.exports = {
       ]),
       hashPassword()
     ],
-    update: [ authenticate('jwt'), updateTags ],
-    patch: [ authenticate('jwt'), updateTags ],
+    update: [ authenticate('jwt') ],
+    patch: [ authenticate('jwt') ],
     remove: [ authenticate('jwt') ]
   },
 
@@ -35,10 +34,10 @@ module.exports = {
     ],
     find: [],
     get: [],
-    create: [],
+    create: [ updateAbilities ],
     update: [],
     patch: [],
-    remove: [ updateTags ]
+    remove: []
   },
 
   error: {
