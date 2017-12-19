@@ -21,7 +21,7 @@ import GoogleStrategy from 'passport-google-oauth20'
 import OAuth2Verifier from './verifier'
 import { Database } from './db'
 
-const debug = makeDebug('kalisio:kCore')
+const debug = makeDebug('kalisio:kCore:application')
 
 function auth () {
   const app = this
@@ -60,18 +60,18 @@ function auth () {
   })
 }
 
-export function declareService (name, app, service) {
-  const path = app.get('apiPath') + '/' + name
+export function declareService (path, app, service) {
+  const feathersPath = app.get('apiPath') + '/' + path
+  let feathersService = app.service(feathersPath)
   // Some internal Feathers service might internally declare the service
-  if (app.service(path)) {
-    return service
+  if (feathersService) {
+    return feathersService
   }
   // Initialize our service
-  app.use(path, service)
-
-  debug(name + ' service declared on path ' + path)
-
-  return app.getService(name)
+  app.use(feathersPath, service)
+  debug('Service declared on path ' + feathersPath)
+  // Return the Feathers service, ie base service + Feathers' internals
+  return app.service(feathersPath)
 }
 
 export function configureService (name, service, servicesPath) {

@@ -1,7 +1,10 @@
 import lodash from 'lodash'
 import logger from 'winston'
+import makeDebug from 'debug'
 import mongodb, { ObjectID } from 'mongodb'
 import errors from 'feathers-errors'
+
+const debug = makeDebug('kalisio:kCore:db')
 
 // Utility function used to convert from string to MongoDB IDs as required by queries
 export function objectifyIDs (query) {
@@ -65,6 +68,7 @@ export class MongoDatabase extends Database {
   async connect () {
     try {
       this._db = await mongodb.connect(this._dbUrl)
+      debug('Connected to DB ' + this.app.get('db').adapter)
       return this._db
     } catch (error) {
       logger.error('Could not connect to ' + this.app.get('db').adapter + ' database, please check your configuration')
