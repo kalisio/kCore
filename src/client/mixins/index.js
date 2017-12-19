@@ -1,5 +1,6 @@
 import authentication from './mixin.authentication'
 import authorisation from './mixin.authorisation'
+import baseContext from './mixin.base-context'
 import baseActivity from './mixin.base-activity'
 import baseCollection from './mixin.base-collection'
 import baseEditor from './mixin.base-editor'
@@ -13,6 +14,7 @@ import refsResolver from './mixin.refs-resolver'
 export default {
   authentication,
   authorisation,
+  baseContext,
   baseActivity,
   baseCollection,
   baseEditor,
