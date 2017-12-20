@@ -21,7 +21,7 @@ import { QField, QInput } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
-  name: 'k-email-field',
+  name: 'k-password-field',
   components: {
     QField,
     QInput
