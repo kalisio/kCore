@@ -20,7 +20,7 @@
     -->
     <q-card-separator />
     <q-card-actions align="end">
-      <template v-for="action in actions">   
+      <template v-for="action in itemActions">   
         <q-btn flat round small color="primary" :icon="action.icon" @click="onActionTriggered(action, item)" />
       </template>
     </q-card-actions>
@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import { QCard, QCardTitle, QCardActions, QCardSeparator, QCardMain, QItem, QItemMain, QItemTile, QItemSide, QBtn } from 'quasar'
 import Avatar from 'vue-avatar/dist/Avatar'
 import mixins from '../../mixins'
@@ -36,20 +35,6 @@ import mixins from '../../mixins'
 export default {
   name: 'k-card',
   mixins: [mixins.baseItem],
-  computed: {
-    name () {
-      // Check for custom name field
-      return (this.options.nameField ? _.get(this.item, this.options.nameField, '') : this.item.name)
-    },
-    description () {
-      // Check for custom name field
-      return (this.options.descriptionField ? _.get(this.item, this.options.descriptionField, '') : this.item.description)
-    },
-    tags () {
-      // Check for custom name field
-      return (this.options.tagsField ? _.get(this.item, this.options.tagsField, '') : this.item.tags)
-    }
-  },
   components: {
     QCard,
     QCardTitle,
