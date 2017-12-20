@@ -19,6 +19,29 @@ let baseItemMixin = {
       }
     }
   },
+  computed: {
+    itemActions () {
+      return this.actions.filter(action => {
+        let { operation, service, context, id } = action.permissions
+        // Filter actions according to permissions when required
+        return action.permissions ?
+          // The operation might directly target the item object or its id when used as a linked object in a relation
+          this.$can(operation, service, context, id ? { [id]: this.item._id } : this.item) : true
+      })
+    },
+    name () {
+      // Check for custom name field
+      return (this.options.nameField ? _.get(this.item, this.options.nameField, '') : this.item.name)
+    },
+    description () {
+      // Check for custom name field
+      return (this.options.descriptionField ? _.get(this.item, this.options.descriptionField, '') : this.item.description)
+    },
+    tags () {
+      // Check for custom name field
+      return (this.options.tagsField ? _.get(this.item, this.options.tagsField, '') : this.item.tags)
+    }
+  },
   methods: {
     onActionTriggered (action, item) {
       // If a handler is given call it

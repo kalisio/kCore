@@ -90,7 +90,7 @@ export function hasResourceAbilities (abilities, operation, resourceType, contex
   // Create a shallow copy adding context and type
   let object = Object.assign({}, resource)
   object[RESOURCE_TYPE_KEY] = resourceType
-  // Add a virtual context to take it into account
+  // Add a virtual context to take it into account for object having no link to it
   if (context) object.context = context
 
   const result = abilities.can(operation, object)

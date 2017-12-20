@@ -10,10 +10,10 @@
     -->
     <q-item-main>
       <slot name="label">
-        <q-item-tile label>{{ item.name }}</q-item-tile>
+        <q-item-tile label>{{ name }}</q-item-tile>
       </slot>
       <slot name="sublabel">
-        <q-item-tile sublabel>{{ item.description }}</q-item-tile>
+        <q-item-tile sublabel>{{ description }}</q-item-tile>
       </slot>
     </q-item-main>
     <!--
@@ -23,8 +23,8 @@
       <q-item-side v-if="actions.length > 1" right icon="more_vert">
         <q-popover>
           <q-list link>
-            <q-item v-for="action in actions" :key="action">
-              <q-item-main :label="action.label" @click="onActionTriggered(action.handler, item)" />
+            <q-item v-for="action in itemActions" :key="action">
+              <q-item-main :label="action.label" @click="onActionTriggered(action, item)" />
             </q-item>
           </q-list>
         </q-popover>
