@@ -110,8 +110,7 @@ export function kalisio () {
     if (!result) {
       logger.debug('Access to service path ' + path + ' denied')
       return false
-    }
-    else if (operation === 'service') {
+    } else if (operation === 'service') {
       // When we only check for service-level access return
       return true
     }
@@ -119,8 +118,7 @@ export function kalisio () {
     result = permissions.hasResourceAbilities(abilities, operation, service, context, resource)
     if (!result) {
       logger.debug('Access to resource denied')
-    }
-    else {
+    } else {
       logger.debug('Access to resource granted')
     }
     return result

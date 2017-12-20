@@ -31,7 +31,7 @@ let baseActivityMixin = {
       return this.actions[type] || []
     },
     clearTabActions () {
-      this.$store.patch('tabBar', { tabs: [], currentTab: ''})
+      this.$store.patch('tabBar', { tabs: [], currentTab: '' })
     },
     clearActions () {
       this.clearTabActions()
