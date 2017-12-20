@@ -62,7 +62,6 @@ describe('kCore', () => {
       return tagService.find({ query: { value: 'developer' } })
     })
     .then(tags => {
-      console.log(tags.data)
       expect(tags.data.length > 0).beTrue()
       expect(tags.data[0].value).to.equal('developer')
       expect(tags.data[0].scope).to.equal('skills')
