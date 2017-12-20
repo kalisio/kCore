@@ -80,7 +80,6 @@ export default {
       // 1- assign a name corresponding to the key to enable a binding between properties and fields
       // 2- assign a component key corresponding to the component path 
       // 3- load the component if not previously loaded
-      let loadComponent = this.$store.get('loadComponent')
       Object.keys(this.schema.properties).forEach(property => {
         let field = this.schema.properties[property]
         // 1- assign a name corresponding to the key to enable a binding between properties and fields
@@ -92,7 +91,7 @@ export default {
         this.fields.push(field)
         // 3- load the component if not previously loaded
         if (!this.$options.components[componentKey]) {
-          this.$options.components[componentKey] = loadComponent(field.field.component)
+          this.$options.components[componentKey] = this.$load(field.field.component)
         } 
       })
       // Set the refs to be resolved

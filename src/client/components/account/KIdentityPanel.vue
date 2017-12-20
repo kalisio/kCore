@@ -47,10 +47,9 @@ export default {
   },
   created () {
     // Load the configuration
-    let confPath = 'config.' + this.name
-    this.bgColor = this.$store.get(confPath + '.bgColor', 'bg-dark')
-    this.textColor = this.$store.get(confPath + '.textColor', 'text-white')
-    this.iconColor = this.$store.get(confPath + '.iconColor', 'white')
+    this.bgColor = this.$config(this.name + '.bgColor', 'bg-dark')
+    this.textColor = this.$config(this.name + '.textColor', 'text-white')
+    this.iconColor = this.$config(this.name + '.iconColor', 'white')
     // Update the panel
     this.refreshIdentity()
     Events.$on('user-changed', this.refreshIdentity)

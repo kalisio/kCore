@@ -31,7 +31,7 @@ export default {
     }
   },
   created () {
-    this.links = this.$store.get('config.screen.footer', [])
+    this.links = this.$config('screen.footer', [])
   }
 }
 </script>

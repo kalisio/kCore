@@ -52,7 +52,7 @@ let baseContextMixin = {
     }
   },
   created () {
-    this.service = this.$api.getService(this.$store.get('config.context.service'))
+    this.service = this.$api.getService(this.$config('context.service'))
     // Register the context
     this.refreshContext()
   },

@@ -74,14 +74,13 @@ export default {
     // Retrieve the loadComponent function and load the components
     // We need this so that we can dynamically load the component
     // with a function that has previously been statically analyzed by the bundler (eg webpack)
-    let loadComponent = this.$store.get('loadComponent')
-    this.$options.components['k-screen-header'] = loadComponent(this.$store.get('screen.header', 'frame/KScreenHeader'))
-    this.$options.components['k-screen-footer'] = loadComponent(this.$store.get('screen.footer', 'frame/KScreenFooter'))
+    this.$options.components['k-screen-header'] = this.$load(this.$config('screen.header', 'frame/KScreenHeader'))
+    this.$options.components['k-screen-footer'] = this.$load(this.$config('screen.footer', 'frame/KScreenFooter'))
     // setup the color schema
-    this.color = this.$store.get('screen.color', 'bg-white')
-    this.textColor = this.$store.get('screen.textColor', 'text-dark')
-    this.bgColor = this.$store.get('screen.bgColor', 'bg-light')
-    this.bgTextColor = this.$store.get('screen.bgTextColor', 'text-dark')
+    this.color = this.$config('screen.color', 'bg-white')
+    this.textColor = this.$config('screen.textColor', 'text-dark')
+    this.bgColor = this.$config('screen.bgColor', 'bg-light')
+    this.bgTextColor = this.$config('screen.bgTextColor', 'text-dark')
   }
 }
 </script>

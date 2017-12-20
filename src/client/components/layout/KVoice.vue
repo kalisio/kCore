@@ -45,7 +45,7 @@ export default {
     // For a full list of language codes, see the documentation:
     // https://github.com/TalAter/annyang/blob/master/docs/FAQ.md#what-languages-are-supported
     // FIXME: need to add an auto-configuration according to the browser language
-    annyang.setLanguage(this.$store.get('config.appBar.speech.language', 'en'))
+    annyang.setLanguage(this.$config('appBar.speech.language', 'en'))
   },
   mounted () {
     if (annyang.isListening()) {

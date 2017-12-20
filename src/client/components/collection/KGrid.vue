@@ -60,8 +60,7 @@ export default {
   },
   created () {
     // Load the component
-    let loadComponent = this.$store.get('loadComponent')
-    this.$options.components['k-renderer'] = loadComponent(this.renderer)
+    this.$options.components['k-renderer'] = this.$load(this.renderer)
     this.refreshCollection()
   }
 }

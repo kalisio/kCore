@@ -55,11 +55,10 @@ export default {
   },
   created () {
     // Load the required components
-    let loadComponent = this.$store.get('loadComponent')
-    this.$options.components['k-editor'] = loadComponent('editor/KEditor')
-    this.$options.components['k-nav-bar'] = loadComponent('layout/KNavBar')
-    this.$options.components['k-account-security'] = loadComponent('account/KAccountSecurity')
-    this.$options.components['k-account-dz'] = loadComponent('account/KAccountDZ')
+    this.$options.components['k-editor'] = this.$load('editor/KEditor')
+    this.$options.components['k-nav-bar'] = this.$load('layout/KNavBar')
+    this.$options.components['k-account-security'] = this.$load('account/KAccountSecurity')
+    this.$options.components['k-account-dz'] = this.$load('account/KAccountDZ')
     // Refresh this component
     this.refreshAccount()
     Events.$on('user-changed', this.refreshAccount)

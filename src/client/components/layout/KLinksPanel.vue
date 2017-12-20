@@ -53,8 +53,7 @@ export default {
   },
   created () {
     // Load the configuration
-    let confPath = 'config.' + this.name
-    this.links = this.$store.get(confPath + '.links')
+    this.links = this.$config(this.name + '.links')
   }
 }
 </script>

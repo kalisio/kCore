@@ -127,7 +127,7 @@ export default {
   },
   created () {
     // Retrieve the availalbe providers
-    this.providers = this.$store.get('config.login.providers', [])
+    this.providers = this.$config('login.providers', [])
   }
 }
 </script>

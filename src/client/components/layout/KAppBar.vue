@@ -63,7 +63,7 @@ export default {
     }
   },
   created () {
-    this.refresh(this.$store.get('appBar', this.$store.get('config.appBar')))
+    this.refresh(this.$store.get('appBar', this.$config('config.appBar')))
     Events.$on('app-bar-changed', this.refresh)
   },
   beforeDestroy() {

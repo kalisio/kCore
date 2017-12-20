@@ -13,8 +13,7 @@ export default {
     }
   },
   created () {
-    let resolveAsset = this.$store.get('resolveAsset')
-    this.banner = resolveAsset(this.$store.get('config.screen.header', 'kalisio-banner.png'))
+    this.banner = this.$load(this.$config('screen.header', 'kalisio-banner.png'), 'asset')
   }
 }
 </script>

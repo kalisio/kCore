@@ -29,9 +29,8 @@ let schemaProxyMixin = {
       const schemaChanged = schemaName && !this.getSchemaId().includes(schemaName + '.json')
       if (!this.schemaPromise || schemaChanged) {
         // We need to load the schema now
-        let loader = this.$store.get('loadSchema')
         this.schemaPromise = createQuerablePromise(
-          loader(schemaName)
+          this.$load(schemaName, 'schema')
           .then(schema => {
             this.schema = schema
           })
