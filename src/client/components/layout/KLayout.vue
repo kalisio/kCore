@@ -13,6 +13,12 @@
       <k-side-nav />
     </div>
     <!--
+      The navbar
+     -->
+    <div slot="navigation">
+      <k-tab-bar />
+    </div>
+    <!--
       The Content area
     -->
     <router-view />
@@ -38,6 +44,7 @@ export default {
     // with a function that has previously been statically analyzed by the bundler (eg webpack)
     let loadComponent = this.$store.get('loadComponent')
     this.$options.components['k-app-bar'] = loadComponent(this.$store.get('config.layout.appBar', 'layout/KAppBar'))
+    this.$options.components['k-tab-bar'] = loadComponent(this.$store.get('config.layout.navBar', 'layout/KTabBar'))
     this.$options.components['k-side-nav'] = loadComponent(this.$store.get('config.layout.sideNav', 'layout/KSideNav'))
   },
   mounted () {

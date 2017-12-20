@@ -25,7 +25,7 @@ let baseContextMixin = {
     getActionsForContext (context) {
       let actions = this.$store.get('config.context.actions', [])
       // Update actions to use current context
-      actions.forEach(action => action.route.params['contextId'] = this.contextId)
+      actions.forEach(action => { action.route.params['contextId'] = this.contextId })
       return actions
     },
     clearContext () {

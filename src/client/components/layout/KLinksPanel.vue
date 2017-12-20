@@ -45,7 +45,6 @@ export default {
         Object.assign(resolvedParams, link.route.params)
         if (resolvedParams.context) {
           let context = this.$store.get(resolvedParams.context)
-          console.log(context)
           resolvedParams.context = context
         }
       }
