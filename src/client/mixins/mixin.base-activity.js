@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { Events } from 'quasar'
 
 let baseActivityMixin = {
@@ -18,6 +19,10 @@ let baseActivityMixin = {
     }
   },
   methods: {
+    registerTabAction (action) {
+      this.registerAction('tab', action)
+      this.$store.patch('tabBar', { tabs: _.concat(this.$store.get('tabBar.tabs'), action) })
+    },
     registerAction (type, action) {
       if (!this.actions[type]) this.actions[type] = []
       this.actions[type].push(action)
@@ -25,7 +30,11 @@ let baseActivityMixin = {
     getActions (type) {
       return this.actions[type] || []
     },
+    clearTabActions () {
+      this.$store.patch('tabBar', { tabs: [], currentTab: ''})
+    },
     clearActions () {
+      this.clearTabActions()
       this.actions = {}
     },
     // This method should be overriden in activities
