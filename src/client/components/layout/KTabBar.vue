@@ -23,11 +23,6 @@ export default {
       tabBar: { tabs: [], currentTab: '' }
     }
   },
-  watch: {
-    tabBar () {
-      console.log(this.tabBar)
-    }
-  },
   methods: {
     onCurrentTabChanged (newTab) {
       if (this.$route.name !== newTab) {
