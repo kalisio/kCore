@@ -1,6 +1,6 @@
 <template>
   <div v-show="tabBar.tabs.length > 0">
-    <q-tabs align="justify" @select="onCurrentTabChanged" color="secondary">
+    <q-tabs align="justify" @select="onCurrentTabChanged" inverted>
       <template v-for="tab in tabBar.tabs">
         <q-route-tab slot="title" 
           v-bind:key="tab.name"
