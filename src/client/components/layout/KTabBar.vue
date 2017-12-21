@@ -1,8 +1,14 @@
 <template>
   <div v-show="tabBar.tabs.length > 0">
-    <q-tabs v-model="tabBar.currentTab" align="justify" @select="onCurrentTabChanged" inverted>
+    <q-tabs align="justify" @select="onCurrentTabChanged" color="secondary">
       <template v-for="tab in tabBar.tabs">
-        <q-route-tab slot="title" :name="tab.name" :label="tab.label" :icon="tab.icon" :to="tab.route"/>
+        <q-route-tab slot="title" 
+          v-bind:key="tab.name"
+          :default="tab.default" 
+          :name="tab.name" 
+          :label="tab.label" 
+          :icon="tab.icon" 
+          :to="tab.route"/>
       </template>
     </q-tabs>
   </div>
@@ -20,7 +26,7 @@ export default {
   },
   data () {
     return {
-      tabBar: { tabs: [], currentTab: '' }
+      tabBar: { tabs: [] }
     }
   },
   methods: {
