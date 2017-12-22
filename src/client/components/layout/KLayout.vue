@@ -4,19 +4,19 @@
       The AppBar
     -->
     <div slot="header">
-      <k-app-bar @menu-clicked="onMenuToggled" />
+      <k-app-bar id="app-bar" @menu-clicked="onMenuToggled" />
     </div>
     <!--
       The SideNav
     -->
     <div slot="left">
-      <k-side-nav />
+      <k-side-nav id="side-nav" />
     </div>
     <!--
       The navbar
      -->
     <div slot="navigation">
-      <k-tab-bar />
+      <k-tab-bar id="tab-bar" />
     </div>
     <!--
       The Content area
@@ -39,9 +39,6 @@ export default {
     }
   },
   created () {
-    // Retrieve the loadComponent function and load the components
-    // We need this so that we can dynamically load the component
-    // with a function that has previously been statically analyzed by the bundler (eg webpack)
     this.$options.components['k-app-bar'] = this.$load(this.$config('layout.appBar', 'layout/KAppBar'))
     this.$options.components['k-tab-bar'] = this.$load(this.$config('layout.navBar', 'layout/KTabBar'))
     this.$options.components['k-side-nav'] = this.$load(this.$config('layout.sideNav', 'layout/KSideNav'))

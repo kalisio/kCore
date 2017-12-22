@@ -7,7 +7,7 @@
         -->
         <div v-if="providers.length > 0">
           <div class="row justify-around" style="padding: 18px">
-            <q-btn v-for="provider in providers" :icon="'fa-' + provider" @click="onLogWith(provider)" :key="provider">{{provider}}</q-btn>
+            <q-btn v-for="provider in providers" :icon="'fa-' + provider" :id="provider" @click="onLogWith(provider)" :key="provider">{{provider}}</q-btn>
           </div>
           <div class="row items-center"> 
             <div class="col-1"><h6>Or</h6></div>
@@ -21,7 +21,7 @@
           <k-form ref="form" :schema="schema" />
         </div>
         <div class="self-center">
-          <q-btn color="primary" loader @click="onLogin">Log in</q-btn>
+          <q-btn color="primary" loader id="local" @click="onLogin">Log in</q-btn>
         </div>
         <!-- 
           Additionnal links

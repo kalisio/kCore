@@ -3,7 +3,7 @@
     <!--
       SideNav menu
      -->
-    <q-btn flat icon="menu" @click="$emit('menu-clicked')" />
+    <q-btn flat id="menu" icon="menu" @click="$emit('menu-clicked')" />
     <!-- 
       Title/subtitle section
      -->

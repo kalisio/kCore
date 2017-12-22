@@ -22,11 +22,14 @@ let baseItemMixin = {
   computed: {
     itemActions () {
       return this.actions.filter(action => {
-        let { operation, service, context, id } = action.permissions
-        // Filter actions according to permissions when required
-        return action.permissions
+        // Filter actions according to item-specific permissions when required
+        if (action.permissions) {
+          let { operation, service, context, id } = action.permissions
           // The operation might directly target the item object or its id when used as a linked object in a relation
-          ? this.$can(operation, service, context, id ? { [id]: this.item._id } : this.item) : true
+          return this.$can(operation, service, context, id ? { [id]: this.item._id } : this.item)
+        } else {
+          return true
+        }
       })
     },
     name () {

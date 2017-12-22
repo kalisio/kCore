@@ -11,7 +11,7 @@
     -->
     <div>
       <q-list highlight no-border>
-        <q-side-link item :to="{ name: 'account-activity', params: { perspective: 'profile' }}">
+        <q-side-link id="account" item :to="{ name: 'account-activity', params: { perspective: 'profile' }}">
           <q-item-main :label="name" />
           <q-item-side icon="perm_identity" :color="iconColor" right />
         </q-side-link>
