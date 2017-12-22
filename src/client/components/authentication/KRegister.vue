@@ -9,7 +9,7 @@
           <k-form ref="form" :schema="schema" />
         </div>
         <div class="self-center">
-          <q-btn color="primary" loader @click="onRegister">Register</q-btn>
+          <q-btn id="register" color="primary" loader @click="onRegister">Register</q-btn>
         </div>
         <!--
           Additionnal links
