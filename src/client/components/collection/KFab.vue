@@ -15,7 +15,7 @@
           color="secondary"
           @click="onActionTriggered(action)"
           :icon="action.icon">
-          <q-tooltip anchor="center left" self="center right" :offset="[20, 0]">
+          <q-tooltip v-if="action.label" anchor="center left" self="center right" :offset="[20, 0]">
             {{action.label}}
           </q-tooltip>
         </q-fab-action>
@@ -29,6 +29,9 @@
       style="right: 18px; bottom: 18px"
       @click="onActionTriggered(actions[0])">
       <q-icon :name="actions[0].icon" />
+      <q-tooltip v-if="actions[0].label" anchor="center left" self="center right" :offset="[20, 20]">
+        {{actions[0].label}}
+      </q-tooltip>
     </q-btn>
   </div>
 </template>
