@@ -15,6 +15,9 @@
           color="secondary"
           @click="onActionTriggered(action)"
           :icon="action.icon">
+          <q-tooltip anchor="center left" self="center right" :offset="[20, 0]">
+            {{action.label}}
+          </q-tooltip>
         </q-fab-action>
     </q-fab>
     <!-- 
@@ -31,7 +34,7 @@
 </template>
 
 <script>
-import { QBtn, QIcon, QFab, QFabAction } from 'quasar'
+import { QBtn, QIcon, QFab, QFabAction, QTooltip } from 'quasar'
 
 export default {
   name: 'k-fab',
@@ -39,7 +42,8 @@ export default {
     QBtn,
     QIcon,
     QFab,
-    QFabAction
+    QFabAction,
+    QTooltip
   },
   props: {
     actions: {

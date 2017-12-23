@@ -1,6 +1,6 @@
 <template>
   <div v-show="tabBar.tabs.length > 0">
-    <q-tabs align="justify" @select="onCurrentTabChanged" inverted>
+    <q-tabs align="justify" @select="onCurrentTabChanged" color="faded">
       <template v-for="tab in tabBar.tabs">
         <q-route-tab slot="title" 
           v-bind:key="tab.name"
@@ -26,7 +26,7 @@ export default {
   },
   data () {
     return {
-      tabBar: { tabs: [] }
+      tabBar: {}
     }
   },
   methods: {
@@ -43,7 +43,7 @@ export default {
     }
   },
   created () {
-    this.$store.set('tabBar', this.tabBar)
+    this.tabBar = this.$store.get('tabBar')
   }
 }
 </script>

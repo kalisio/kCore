@@ -13,7 +13,7 @@
       <k-side-nav id="side-nav" />
     </div>
     <!--
-      The navbar
+      The TabBar
      -->
     <div slot="navigation">
       <k-tab-bar id="tab-bar" />
@@ -40,7 +40,7 @@ export default {
   },
   created () {
     this.$options.components['k-app-bar'] = this.$load(this.$config('layout.appBar', 'layout/KAppBar'))
-    this.$options.components['k-tab-bar'] = this.$load(this.$config('layout.navBar', 'layout/KTabBar'))
+    this.$options.components['k-tab-bar'] = this.$load(this.$config('layout.tabBar', 'layout/KTabBar'))
     this.$options.components['k-side-nav'] = this.$load(this.$config('layout.sideNav', 'layout/KSideNav'))
   },
   mounted () {

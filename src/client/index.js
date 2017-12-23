@@ -25,6 +25,10 @@ export default function init () {
   api.declareService('authorisations')
   api.declareService('tags', { context: true })
 
+  // Create the reactive object tabBar to be used by the TabBar component
+  let tabBar = { tabs: [] }
+  Store.set('tabBar', tabBar)
+
   // Listen to the 'patched' event on the users
   const users = api.getService('users')
   users.on('patched', user => {
