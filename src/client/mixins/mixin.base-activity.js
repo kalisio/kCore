@@ -4,12 +4,7 @@ import { Events } from 'quasar'
 let baseActivityMixin = {
   data () {
     return {
-      actions: {
-        type: Object,
-        default: function () {
-          return {}
-        }
-      }
+      actions: {},
     }
   },
   watch: {

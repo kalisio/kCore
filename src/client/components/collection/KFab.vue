@@ -11,8 +11,8 @@
       color="primary">
         <q-fab-action 
           v-for="action in actions" 
-          :key="action.id"
-          color="secondary"
+          :key="action.name"
+          color="primary"
           @click="onActionTriggered(action)"
           :icon="action.icon">
           <q-tooltip v-if="action.label" anchor="center left" self="center right" :offset="[20, 0]">
