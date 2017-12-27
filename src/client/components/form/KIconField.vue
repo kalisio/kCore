@@ -16,7 +16,6 @@
 
 <script>
 import { QField, QChip, QIcon } from 'quasar'
-import { KDialog } from '../frame'
 import { KIconChooser } from '.'
 import mixins from '../../mixins'
 
@@ -26,7 +25,6 @@ export default {
     QField,
     QChip,
     QIcon,
-    KDialog,
     KIconChooser
   },
   mixins: [mixins.baseField],
