@@ -1,25 +1,25 @@
 <template>
-  <k-dialog ref="dialog" title="Select your icon">
-    <!-- Content section -->
-    <div slot="dialog-content" class="row justify-center sm-gutter" style="max-width: 50vw">
-      <div v-for="icon in icons" class="col-1">
-        <q-icon v-if="icon !== selectedIcon" :name="icon" size="2rem" @click="onIconSelected(icon)"/>
-        <q-icon v-if="icon === selectedIcon" :name="selectedIcon" size="2rem" color="primary"/>
-      </div>
+  <q-modal ref="dialog">
+    <div class="row justify-center sm-gutter" style="max-width: 60vw; padding:24px">
+      <template v-for="(icon, index) in icons">
+        <div :key="index" class="col-1">
+          <q-icon :key="index" v-if="icon !== selectedIcon" :name="icon" size="2rem" @click="onIconSelected(icon)"/>
+          <q-icon :key="index" v-if="icon === selectedIcon" :name="selectedIcon" size="2rem" color="primary"/>
+        </div>
+      </template>
     </div>
-  </k-dialog>
+  </q-modal>
 </template>
 
 <script>
-import { QIcon } from 'quasar'
+import { QIcon, QModal } from 'quasar'
 import yaml from 'js-yaml'
-import { KDialog } from '../frame'
 
 export default {
   name: 'k-icon-chooser',
   components: {
     QIcon,
-    KDialog
+    QModal
   },
   props: {
     iconSet: {
