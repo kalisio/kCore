@@ -10,13 +10,17 @@
       Frame section
       -->
     <q-card-main>
-      <div id="k-card-main" class="row justify-between items-center">
+      <div id="k-block-main" class="row justify-between items-center">
         <!-- Content -->
-        <div v-html="text" />
+        <div :class="textWidth" v-html="text" />
         <!-- Action -->
-        <div v-if="action !== ''">
-          <q-btn @click="$emit('action-triggered', action)" :color="color" :disable="disable">{{action}}</q-btn>
-        </div>
+        <template v-if="action !== ''">
+          <div :class="buttonWidth">
+            <div class="row justify-center">
+              <q-btn @click="$emit('action-triggered', action)" :color="color" :disable="disable">{{action}}</q-btn>
+            </div>
+          </div>
+        </template>
       </div>
     </q-card-main>
   </q-card>
@@ -58,13 +62,19 @@ export default {
   computed: {
     titleColors () {
       return ['text-' + this.color, 'bg-' + this.color + '-2']
+    },
+    textWidth () {
+      return this.action === '' ? 'col-12' : 'col-9'
+    },
+    buttonWidth () {
+      return 'col-2'
     }
   }
 }
 </script>
 
 <style>
-#k-card-main {
+#k-block-main {
   padding: 16px;
 }
 </style>

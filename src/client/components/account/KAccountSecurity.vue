@@ -8,7 +8,7 @@
         <k-block
           color="grey" 
           title="Change your password ?"
-          :text="`Your password protect your account, change it carefully.
+          :text="`Your password protect your account, change it carefully.<br>
           You will be asked to type your current password.`"
           action="Change password"
           @action-triggered="onChangePassword" />
@@ -20,7 +20,7 @@
         <k-block
           color="orange" 
           title="Change your email ?"
-          :text="`Your email secures changes to your account credentials, change it carefully.
+          :text="`Your email secures changes to your account credentials, change it carefully.<br>
           You will be asked to type your current password.`"
           action="Change email"
           @action-triggered="onChangeEmail" />

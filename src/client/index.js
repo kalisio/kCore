@@ -28,7 +28,7 @@ export default function init () {
   // Create the models listened by the main layout components
   // You must use the patch method on the store to update those models
   // It is generally done using the registerAction on an Activity based component
-  let appBar = { toolbar: [], menu: [] }
+  let appBar = { title: '', subtitle: '', toolbar: [], menu: [] }
   Store.set('appBar', appBar)
   let tabBar = { tabs: [] }
   Store.set('tabBar', tabBar)
