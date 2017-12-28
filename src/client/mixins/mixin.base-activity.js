@@ -15,8 +15,12 @@ let baseActivityMixin = {
   },
   methods: {
     registerTabAction (action) {
-      this.registerAction('tab', action)
+      this.registerAction('tabBar', action)
       this.$store.patch('tabBar', { tabs: _.concat(this.$store.get('tabBar.tabs'), action) })
+    },
+    registerFabAction (action) {
+      this.registerAction('fab', action)
+      this.$store.patch('fab', { actions: _.concat(this.$store.get('fab.actions'), action) })
     },
     registerAction (type, action) {
       if (!this.actions[type]) this.actions[type] = []
@@ -28,8 +32,12 @@ let baseActivityMixin = {
     clearTabActions () {
       this.$store.patch('tabBar', { tabs: [] })
     },
+    clearFabActions () {
+      this.$store.patch('fab', { actions: [] })
+    },
     clearActions () {
       this.clearTabActions()
+      this.clearFabActions()
       this.actions = {}
     },
     // This method should be overriden in activities

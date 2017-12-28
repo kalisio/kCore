@@ -25,9 +25,15 @@ export default function init () {
   api.declareService('authorisations')
   api.declareService('tags', { context: true })
 
-  // Create the reactive object tabBar to be used by the TabBar component
+  // Create the models listened by the main layout components
+  // You must use the patch method on the store to update those models
+  // It is generally done using the registerAction on an Activity based component
+  let appBar = { toolbar: [], menu: [] }
+  Store.set('appBar', appBar)
   let tabBar = { tabs: [] }
   Store.set('tabBar', tabBar)
+  let fab = { actions: [] }
+  Store.set('fab', fab)
 
   // Listen to the 'patched' event on the users
   const users = api.getService('users')
