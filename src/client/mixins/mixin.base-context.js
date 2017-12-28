@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 let baseContextMixin = {
   props: {
     contextId: {
@@ -38,7 +40,7 @@ let baseContextMixin = {
       this.$store.set('context', context)
       this.contextLoaded = true
       let actions = this.getActionsForContext(context)
-      this.$store.set('appBar', { title: context.name, subtitle: context.description, actions })
+      this.$store.patch('appBar', { title: context.name, subtitle: context.description, toolbar: actions.toolbar, menu: actions.menu })
     },
     refreshContext () {
       if (this.contextId) {

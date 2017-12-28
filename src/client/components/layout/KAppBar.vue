@@ -3,31 +3,56 @@
     <!--
       SideNav menu
      -->
-    <q-btn flat id="menu" icon="menu" @click="$emit('menu-clicked')" />
+    <q-btn flat id="menu" @click="$emit('menu-clicked')">
+      <q-icon name="menu" />
+    </q-btn>
     <!-- 
       Title/subtitle section
      -->
     <q-toolbar-title>
       {{ title }}
       <span slot="subtitle">
-        {{ subTitle }}
+        {{ subtitle }}
       </span>
     </q-toolbar-title>
     <!--
-      Actions section
+      Toolbar section
      -->
-    <template v-for="(action,index) in actions">
-      <q-btn flat :key="index" :icon="action.icon" @click="$router.push(action.route)" />
+    <template v-for="(action,index) in appBar.toolbar">
+      <q-btn flat :key="index" @click="$router.push(action.route)">
+        <q-icon :name="action.icon" />
+      </q-btn>
+    </template>
+    <!--
+      Menu section
+     -->
+    <template v-if="appBar.menu && appBar.menu.length > 0">
+      <q-btn flat>
+        <q-icon name="more_vert">
+          <q-popover ref="menu">
+            <q-list>
+              <template v-for="(action,index) in appBar.menu">
+                <q-item link :key="index" @click="$router.push(action.route), $refs.menu.close()">
+                  <q-item-side :icon="action.icon" />
+                  <q-item-main>
+                    {{action.label}}
+                  </q-item-main>
+                </q-item>
+              </template>
+            </q-list>
+          </q-popover>
+        </q-icon>
+      </q-btn>
     </template>
     <!-- 
       Voice ?
      -->
-    <k-voice v-if="isVoiceEnabled"/>
+    <k-voice v-if="appBar.isVoiceEnabled"/>
   </q-toolbar>
 </template>
 
 <script>
-import { Events, QToolbar, QToolbarTitle, QBtn } from 'quasar'
+import { Events, QToolbar, QToolbarTitle, QBtn, QIcon, QList, QItem, QItemSide, QItemMain, QPopover } from 'quasar'
 import KVoice from './KVoice.vue'
 
 export default {
@@ -36,38 +61,31 @@ export default {
     QToolbar,
     QToolbarTitle,
     QBtn,
+    QIcon,
+    QList,
+    QItem,
+    QItemSide,
+    QItemMain,
+    QPopover,
     KVoice
   },
   computed: {
     title () {
-      return this.content ? this.content.title : 'kApp'
+      return this.appBar.title ? this.appBar.title : this.defaultTitle
     },
-    subTitle () {
-      return this.content ? this.content.subTitle : 'Powered by Kalisio'
-    },
-    actions () {
-      return this.content ? this.content.actions : []
-    },
-    isVoiceEnabled () {
-      return this.content ? this.content.speech : false
+    subtitle () {
+      return this.appBar.subtitle ? this.appBar.subtitle : this.defaultSubtitle
     }
   },
   data () {
     return {
-      content: null
-    }
-  },
-  methods: {
-    refresh (content) {
-      this.content = content
+      appBar: {}
     }
   },
   created () {
-    this.refresh(this.$store.get('appBar', this.$config('config.appBar')))
-    Events.$on('app-bar-changed', this.refresh)
-  },
-  beforeDestroy() {
-    Events.$off('app-bar-changed', this.refresh)
+    this.defaultTitle = this.$config('config.appBar.title', 'kApp')
+    this.defaultSubtitle = this.$config('config.appBar.subtitle', 'powered by Kalisio')
+    this.appBar = this.$store.get('appBar')
   }
 }
 </script>
