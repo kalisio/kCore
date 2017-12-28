@@ -1,5 +1,3 @@
-import _ from 'lodash'
-
 let baseContextMixin = {
   props: {
     contextId: {
