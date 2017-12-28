@@ -18,7 +18,7 @@ let baseContextMixin = {
   },
   methods: {
     clearActions () {
-      this.$store.patch('appBar', { toolbar: [], menu:[] })
+      this.$store.patch('appBar', { toolbar: [], menu: [] })
     },
     // This method could be overriden in app for more dynamic behaviour
     // default one is to get the action list from the configuration and set it in app bar
