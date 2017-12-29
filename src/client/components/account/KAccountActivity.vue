@@ -38,6 +38,7 @@ export default {
   methods: {
     refreshActions () {
       this.clearActions()
+      this.$store.patch('appBar', { title: this.$store.get('user.name'), subtitle: '', toolbar: [], actions: [] })
       this.registerTabAction({ 
         name: 'profile', label: 'Profile', icon: 'description', 
         route: { name: 'account-activity', params: { perspective: 'profile' } },

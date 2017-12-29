@@ -30,7 +30,6 @@ let baseContextMixin = {
     },
     clearContext () {
       this.clearActions()
-      this.$store.patch('appBar', { title: '', subtitle: '' })
       this.$store.set('context', null)
       this.contextLoaded = false
     },

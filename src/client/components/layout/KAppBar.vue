@@ -10,9 +10,9 @@
       Title/subtitle section
      -->
     <q-toolbar-title>
-      {{ title }}
+      {{ appBar.title }}
       <span slot="subtitle">
-        {{ subtitle }}
+        {{ appBar.subtitle }}
       </span>
     </q-toolbar-title>
     <!--
@@ -69,22 +69,12 @@ export default {
     QPopover,
     KVoice
   },
-  computed: {
-    title () {
-      return this.appBar.title ? this.appBar.title : this.defaultTitle
-    },
-    subtitle () {
-      return this.appBar.subtitle ? this.appBar.subtitle : this.defaultSubtitle
-    }
-  },
   data () {
     return {
       appBar: {}
     }
   },
   created () {
-    this.defaultTitle = this.$config('config.appBar.title', 'kApp')
-    this.defaultSubtitle = this.$config('config.appBar.subtitle', 'powered by Kalisio')
     this.appBar = this.$store.get('appBar')
   }
 }
