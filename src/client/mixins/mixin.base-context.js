@@ -42,6 +42,7 @@ let baseContextMixin = {
       this.$store.patch('appBar', { title: context.name, subtitle: context.description, toolbar: actions.toolbar, menu: actions.menu })
     },
     refreshContext () {
+      this.contextLoaded = false
       if (this.contextId) {
         // Context already set ?
         if (this.context && this.context._id === this.contextId) return
