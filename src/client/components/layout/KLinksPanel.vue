@@ -2,12 +2,12 @@
   <!--q-list highlight no-border-->
   <div>
     <q-list link no-border>
-      <template v-for="link in links">
-        <q-item @click="onLinkClicked(link)" v-if="link.label" item>
+      <template v-for="(link,index) in links">
+        <q-item v-if="link.label" :key="index" @click="onLinkClicked(link)" item>
           <q-item-side :icon="link.icon" />
           <q-item-main :label="link.label" />
         </q-item>
-        <q-item-separator v-else />
+        <q-item-separator v-else :key="index" />
       </template>
     </q-list>
   </div>
@@ -54,6 +54,7 @@ export default {
   created () {
     // Load the configuration
     this.links = this.$config(this.name + '.links')
+    console.log(this.links)
   }
 }
 </script>
