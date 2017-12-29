@@ -54,7 +54,6 @@ export default {
   created () {
     // Load the configuration
     this.links = this.$config(this.name + '.links')
-    console.log(this.links)
   }
 }
 </script>

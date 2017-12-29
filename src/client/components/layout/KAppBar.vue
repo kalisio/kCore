@@ -86,7 +86,6 @@ export default {
     this.defaultTitle = this.$config('config.appBar.title', 'kApp')
     this.defaultSubtitle = this.$config('config.appBar.subtitle', 'powered by Kalisio')
     this.appBar = this.$store.get('appBar')
-    console.log(this.appBar)
   }
 }
 </script>
