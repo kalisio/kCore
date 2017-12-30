@@ -26,7 +26,7 @@ export default {
   },
   data () {
     return {
-      tabBar: {}
+      tabBar: this.$store.get('tabBar')
     }
   },
   methods: {
@@ -41,9 +41,6 @@ export default {
         }
       }
     }
-  },
-  created () {
-    this.tabBar = this.$store.get('tabBar')
   }
 }
 </script>

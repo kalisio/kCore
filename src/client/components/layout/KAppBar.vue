@@ -71,11 +71,8 @@ export default {
   },
   data () {
     return {
-      appBar: {}
+      appBar: this.$store.get('appBar')
     }
-  },
-  created () {
-    this.appBar = this.$store.get('appBar')
   }
 }
 </script>

@@ -50,7 +50,7 @@ export default {
   },
   data () {
     return {
-      fab: {}
+      fab: this.fab = this.$store.get('fab')
     }
   },
   methods: {
@@ -60,9 +60,6 @@ export default {
       // If a route is given activate it
       else if (action.route) this.$router.push(action.route)
     }
-  },
-  created () {
-    this.fab = this.$store.get('fab')
   }
 }
 </script>
