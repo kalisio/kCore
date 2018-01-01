@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { Events } from 'quasar'
+import { uid, Events } from 'quasar'
 
 let baseActivityMixin = {
   data () {
@@ -16,6 +16,7 @@ let baseActivityMixin = {
   methods: {
     registerTabAction (action) {
       this.registerAction('tabBar', action)
+      action.uid=uid()
       this.$store.patch('tabBar', { tabs: _.concat(this.$store.get('tabBar.tabs'), action) })
     },
     registerFabAction (action) {

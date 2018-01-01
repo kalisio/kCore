@@ -3,9 +3,9 @@
     <q-tabs align="justify" @select="onCurrentTabChanged" color="faded">
       <template v-for="tab in tabBar.tabs">
         <q-route-tab slot="title" 
-          v-bind:key="tab.name"
-          :default="tab.default" 
-          :name="tab.name" 
+          :key="tab.uid"
+          :default="tab.default"
+          :name="tab.name"
           :label="tab.label" 
           :icon="tab.icon" 
           :to="tab.route"/>
