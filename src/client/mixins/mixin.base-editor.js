@@ -89,10 +89,10 @@ export default function baseEditorMixin (formRefs) {
 
         if (this.getService()) {
           // Small helper to avoid repeating too much similar code
-          let onServiceResponse = function () {
+          let onServiceResponse = (response => {
             if (done) done()
-            this.$emit('applied')
-          }.bind(this)
+            this.$emit('applied', response.data)
+          }).bind(this)
 
           // Update the item
           if (this.applyButton === 'Update') {
