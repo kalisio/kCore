@@ -4,7 +4,7 @@
       Content section
     -->
     <q-card-main class="bg-light">
-      <slot name="card-content">
+      <slot name="card-title">
         <q-item>
           <q-item-side><avatar v-if="name" :username="name" :size="36" /></q-item-side>
           <q-item-main>
@@ -12,22 +12,26 @@
             <q-item-tile sublabel>{{ description }}</q-item-tile>
           </q-item-main>
           <q-item-side right v-if="tags">
-            <q-item-tile v-if="tag.icon" v-for="tag in tags" :icon="tag.icon" color="primary" />
+            <template v-for="(tag, index) in tags">
+              <q-item-tile v-if="tag.icon" :key="index" :icon="tag.icon" color="primary" />
+            </template>
           </q-item-side>
         </q-item>
+      </slot>
+      <slot name="card-content">
       </slot>
     </q-card-main>
     <!--
       Actions section
     -->
     <q-card-separator />
-    <q-card-actions align="end">
-      <slot name="card-actions"> 
-        <template v-for="action in itemActions">   
-          <q-btn flat round small color="primary" :icon="action.icon" @click="onActionTriggered(action, item)" />
+    <slot name="card-actions">
+      <q-card-actions align="end">
+        <template v-for="(action, index) in itemActions">   
+          <q-btn flat round small color="primary" :key="index" :icon="action.icon" @click="onActionTriggered(action, item)" />
         </template>
-      </slot>
-    </q-card-actions>
+      </q-card-actions>
+    </slot>
   </q-card>
 </template>
 
