@@ -19,11 +19,15 @@ export function removeTagService (context) {
 
 export default async function () {
   const app = this
-
+  const config = app.get('authentication')
+  let perspectives = ['profile']
+  // Add OAuth2 provider perspectives only when required
+  if (config.google) perspectives.push('google')
+  if (config.github) perspectives.push('github')
   app.createService('users', {
     modelsPath,
     servicesPath,
-    perspectives: ['profile', 'github', 'google']
+    perspectives: perspectives
   })
   app.createService('authorisations', { servicesPath })
   // We have a global tag service and one by context if app requires it

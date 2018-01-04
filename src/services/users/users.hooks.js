@@ -9,14 +9,18 @@ module.exports = {
     find: [ authenticate('jwt') ],
     get: [ authenticate('jwt') ],
     create: [
-      serialize([
-        {source: 'github.profile.displayName', target: 'name'},
-        {source: 'github.profile.emails[0].value', target: 'email'},
+      commonHooks.when(hook => hook.data.googleId, serialize([
         {source: 'google.profile.displayName', target: 'name'},
-        {source: 'google.profile.emails[0].value', target: 'email'},
+        {source: 'google.profile.emails[0].value', target: 'email'}
+      ], { throwOnNotFound: true })),
+      commonHooks.when(hook => hook.data.githubId, serialize([
+        {source: 'github.profile.displayName', target: 'name'},
+        {source: 'github.profile.emails[0].value', target: 'email'}
+      ], { throwOnNotFound: true })),
+      serialize([
         {source: 'name', target: 'profile.name', delete: true},
         {source: 'email', target: 'profile.description'}
-      ]),
+      ], { throwOnNotFound: true }),
       hashPassword()
     ],
     update: [ authenticate('jwt') ],
