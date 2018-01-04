@@ -16,7 +16,7 @@ let baseActivityMixin = {
   methods: {
     registerTabAction (action) {
       this.registerAction('tabBar', action)
-      action.uid=uid()
+      action.uid = uid()
       this.$store.patch('tabBar', { tabs: _.concat(this.$store.get('tabBar.tabs'), action) })
     },
     registerFabAction (action) {

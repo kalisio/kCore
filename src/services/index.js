@@ -19,11 +19,11 @@ export function removeTagService (context) {
 
 export default async function () {
   const app = this
-  
+
   app.createService('users', {
     modelsPath,
     servicesPath,
-    // Add required OAuth2 provider perspectives 
+    // Add required OAuth2 provider perspectives
     perspectives: ['profile'].concat(app.authenticationProviders)
   })
   app.createService('authorisations', { servicesPath })
