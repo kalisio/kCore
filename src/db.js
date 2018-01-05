@@ -6,20 +6,39 @@ import errors from 'feathers-errors'
 
 const debug = makeDebug('kalisio:kCore:db')
 
+function isObjectID(id) {
+  return (typeof id.toHexString === 'function') && (typeof id.getTimestamp === 'function')
+}
+
+function createObjectID(id) {
+  // This ensure it works even if id is already an ObjectID
+  if (isObjectID(id)) return id
+  else return new ObjectID(id)
+}
+
 // Utility function used to convert from string to MongoDB IDs as required by queries
 export function objectifyIDs (query) {
   lodash.forOwn(query, (value, key) => {
     // Process current attributes or recurse
     // Take care to nested fields like 'field._id'
     if (key === '_id' || key.endsWith('._id')) {
-      if (typeof value === 'string') query[key] = new ObjectID(value)
-      else if (Array.isArray(value)) query[key] = value.map(id => new ObjectID(id))
-      else if (typeof value === 'object') objectifyIDs(value)
+      if (typeof value === 'string') {
+        debug('Objectify ID ' + key)
+        query[key] = createObjectID(value)
+      }
+      else if (Array.isArray(value)) {
+        debug('Objectify ID array ' + key)
+        query[key] = value.map(id => createObjectID(id))
+      }
+      // Avoid jumping inside an already transformed ObjectID
+      else if ((typeof value === 'object') && !isObjectID(value)) objectifyIDs(value)
     } else if (['$in', '$nin'].includes(key)) {
-      query[key] = value.map(id => new ObjectID(id))
+      debug('Objectify ID array ' + key)
+      query[key] = value.map(id => createObjectID(id))
     } else if (key === '$or') {
       value.forEach(entry => objectifyIDs(entry))
-    } else if (typeof value === 'object') {
+      // Avoid jumping inside an already transformed ObjectID
+    } else if ((typeof value === 'object') && !isObjectID(value)) {
       objectifyIDs(value)
     }
   })

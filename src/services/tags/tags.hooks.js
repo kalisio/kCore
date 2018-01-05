@@ -1,10 +1,9 @@
 import { populateTagResource, addTagIfNew, removeTagIfUnused, tagResource, untagResource } from '../../hooks'
 import { disallow, iff } from 'feathers-hooks-common'
-const { authenticate } = require('feathers-authentication').hooks
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [],
     find: [],
     get: [ disallow() ],
     create: [ populateTagResource, addTagIfNew ],

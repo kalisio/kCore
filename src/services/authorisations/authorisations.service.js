@@ -27,11 +27,11 @@ export default {
       // Then retrieve the right scope on the subject
       let scope = _.get(subject, scopeName, [])
       // Then the target resource
-      let resource = findResource(scope, { _id: params.resource._id.toString() })
+      let resource = findResource(scope, { _id: params.resource._id })
       // On first authorisation create the resource in scope
       if (!resource) {
         resource = {
-          _id: params.resource._id.toString()
+          _id: params.resource._id
         }
         scope.push(resource)
       }
