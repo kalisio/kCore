@@ -24,7 +24,7 @@ export default {
   props: {
     layout: {
       type: String,
-      default: 'col-xs-6 col-sm-4 col-lg-4 col-xl-6'
+      default: 'col-xs-6 col-sm-4 col-lg-4 col-xl-3'
     },
     renderer: {
       type: Object,
