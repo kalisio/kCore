@@ -23,7 +23,8 @@ export default async function () {
   app.createService('users', {
     modelsPath,
     servicesPath,
-    perspectives: ['profile', 'github', 'google']
+    // Add required OAuth2 provider perspectives
+    perspectives: ['profile'].concat(app.authenticationProviders)
   })
   app.createService('authorisations', { servicesPath })
   // We have a global tag service and one by context if app requires it

@@ -26,7 +26,8 @@ const debug = makeDebug('kalisio:kCore:application')
 function auth () {
   const app = this
   const config = app.get('authentication')
-
+  // Store availalbe OAuth2 providers
+  app.authenticationProviders = []
   // Set up authentication with the secret
   app.configure(authentication(config))
   app.configure(jwt())
@@ -37,6 +38,7 @@ function auth () {
       Strategy: GithubStrategy,
       Verifier: OAuth2Verifier
     }))
+    app.authenticationProviders.push('github')
   }
   if (config.google) {
     app.configure(oauth2({
@@ -44,6 +46,7 @@ function auth () {
       Strategy: GoogleStrategy,
       Verifier: OAuth2Verifier
     }))
+    app.authenticationProviders.push('google')
   }
   // The `authentication` service is used to create a JWT.
   // The before `create` hook registers strategies that can be used

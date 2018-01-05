@@ -15,7 +15,7 @@ export default function refsResolverMixin (refs) {
       },
       resolveRefs () {
         // If already resolved stop
-        if (this.refsPromise.isFulfilled()) return
+        if (!this.refsPromise || this.refsPromise.isFulfilled()) return
         // While we don't have anything to resolve stop as well
         if (!this._refs || this._refs.length === 0) return
 
@@ -30,10 +30,12 @@ export default function refsResolverMixin (refs) {
       }
     },
     created () {
-      // If the ref list is known at startup this will setup it,
-      // otherwise it will at least create the promise so that it is accessible to component's created()
-      // and the list should be filled dynamically by the component using setRefs()
-      this.setRefs(refs)
+      // If the ref list is known at startup this will setup it
+      if (refs) this.setRefs(refs)
+    },
+    mounted () {
+      // Initiate a resolution on mount
+      this.resolveRefs()
     },
     updated () {
       // Because refs are only availalbe once the underlying component has been updated

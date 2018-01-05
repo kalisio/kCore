@@ -51,7 +51,7 @@ export function preventUpdatePerspectives (hook) {
 // - source: the path to the property to be copied
 // - target: the path where to copy the property
 // - delete: a flag to define whether the hook has to delete the source property
-export function serialize (rules) {
+export function serialize (rules, options = {}) {
   return function (hook) {
     // Retrieve the items from the hook
     let items = getItems(hook)
@@ -66,6 +66,8 @@ export function serialize (rules) {
           if (rule.delete) {
             _.unset(item, rule.source)
           }
+        } else if (options.throwOnNotFound || rule.throwOnNotFound) {
+          throw new Error('Cannot find valid input value for property ' + rule.target)
         }
       })
     })
