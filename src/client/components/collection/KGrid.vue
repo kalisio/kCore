@@ -2,7 +2,7 @@
   <div class="column justify-center"> 
     <div class="row">
       <div v-for="item in items" :key="item._id" :class="layout">
-        <k-renderer :item="item" :options="rendererOptions" :actions="actions" v-bind="renderer.props" />
+        <k-renderer :item="item" :actions="actions" v-bind="renderer.props" />
       </div>
     </div>
     <div class="self-center" v-if="nbPages > 1">

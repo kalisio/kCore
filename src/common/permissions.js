@@ -13,6 +13,12 @@ export const Roles = {
   owner: 2
 }
 
+export const RoleNames = [
+  'member',
+  'manager',
+  'owner'
+]
+
 // Hooks that can be added to customize abilities computation
 let hooks = []
 
@@ -121,4 +127,14 @@ export function getQueryForAbilities (abilities, operation, resourceType) {
   let query = toMongoQuery(rules) || {}
   // Remove any context to avoid taking it into account because it is not really stored on objects
   return removeContext(query)
+}
+
+export function getSubjectsForResource (app, context, subjectService, resourceScope, resourceId, role) {
+  // Build the query
+  let query = {}
+  query[resourceScope + '._id'] = resourceId
+  if (role) query[resourceScope + '.permissions'] = this.RoleNames[role]
+  // Execute the query
+  const service = app.getService(subjectService, context)
+  return service.find({ query: query })
 }
