@@ -4,13 +4,14 @@ import { uid, Events } from 'quasar'
 let baseActivityMixin = {
   data () {
     return {
+      title: '',
       actions: {}
     }
   },
   watch: {
     '$route' (to, from) {
       // React to route changes but reusing the same component as this one is generic
-      this.refreshActions()
+      this.refreshActivity()
     }
   },
   methods: {
@@ -30,30 +31,37 @@ let baseActivityMixin = {
     getActions (type) {
       return this.actions[type] || []
     },
-    clearTabActions () {
-      this.$store.patch('tabBar', { tabs: [] })
-    },
-    clearFabActions () {
-      this.$store.patch('fab', { actions: [] })
-    },
     clearActions () {
-      this.clearTabActions()
-      this.clearFabActions()
+      // Clear tabBar actions
+      this.$store.patch('tabBar', { tabs: [] })
+      // Clear Fab actions
+      this.$store.patch('fab', { actions: [] })
+      // Cleat the actions
       this.actions = {}
     },
-    // This method should be overriden in activities
-    refreshActions () {
+    setTitle (title) {
+      this.$store.patch('appBar', { subtitle: title })
+    },
+    clearTitle () {
+      this.$store.patch('appBar', { subtitle: '' })
+    },
+    clearActivity () {
+      this.clearTitle()
       this.clearActions()
+    },
+    // This method should be overriden in activities
+    refreshActivity () {
+      this.clearActivity()
     }
   },
   created () {
     // Register the actions
-    this.refreshActions()
+    this.refreshActivity()
     // Whenever the user is updated, update abilities as well
-    Events.$on('user-abilities-changed', this.refreshActions)
+    Events.$on('user-abilities-changed', this.refreshActivity)
   },
   beforeDestroy () {
-    Events.$off('user-abilities-changed', this.refreshActions)
+    Events.$off('user-abilities-changed', this.refreshActivity)
   }
 }
 

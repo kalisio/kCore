@@ -73,6 +73,9 @@ export default {
     return {
       appBar: this.$store.get('appBar')
     }
+  },
+  created () {
+    this.appBar.title = this.$config('appName')
   }
 }
 </script>

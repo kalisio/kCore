@@ -38,7 +38,7 @@ let baseContextMixin = {
       this.$store.set('context', context)
       this.contextLoaded = true
       let actions = this.getActionsForContext(context)
-      this.$store.patch('appBar', { title: context.name, subtitle: context.description, toolbar: actions.toolbar, menu: actions.menu })
+      this.$store.patch('appBar', { toolbar: actions.toolbar, menu: actions.menu })
     },
     refreshContext () {
       this.contextLoaded = false
