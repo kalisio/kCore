@@ -6,7 +6,7 @@ import { objectifyIDs } from '../db'
 import { hasServiceAbilities, hasResourceAbilities, getQueryForAbilities } from '../common/permissions'
 import makeDebug from 'debug'
 
-const debug = makeDebug('kalisio:kCore:authorisations:hooks')
+const debug = makeDebug('kalisio:kCore:hooks:authorisations')
 
 export function populateSubjects (hook) {
   if (hook.type !== 'before') {
