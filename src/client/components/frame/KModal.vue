@@ -15,7 +15,7 @@
       <!-- 
         Title section
       -->
-      <div class="row justify-between items-center" style="padding: 16px">
+      <div class="row justify-between items-center" style="margin-left: 24px">
         <div>
           <h5>{{title}}</h5>
         </div>
