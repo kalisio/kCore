@@ -6,11 +6,11 @@ import errors from 'feathers-errors'
 
 const debug = makeDebug('kalisio:kCore:db')
 
-function isObjectID(id) {
+function isObjectID (id) {
   return (typeof id.toHexString === 'function') && (typeof id.getTimestamp === 'function')
 }
 
-function createObjectID(id) {
+function createObjectID (id) {
   // This ensure it works even if id is already an ObjectID
   if (isObjectID(id)) return id
   else return new ObjectID(id)
@@ -25,8 +25,7 @@ export function objectifyIDs (query) {
       if (typeof value === 'string') {
         debug('Objectify ID ' + key)
         query[key] = createObjectID(value)
-      }
-      else if (Array.isArray(value)) {
+      } else if (Array.isArray(value)) {
         debug('Objectify ID array ' + key)
         query[key] = value.map(id => createObjectID(id))
       }

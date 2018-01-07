@@ -1,5 +1,5 @@
 <template>
-  <q-modal ref="modal" no-esc-dismiss no-backdrop-dismiss :content-css="{padding: '4px', minWidth: '50vw'}">
+  <q-modal ref="modal" no-esc-dismiss no-backdrop-dismiss :content-css="options">
     <div class="column">
       <!-- 
          Toolbar section
@@ -69,6 +69,12 @@ export default {
     buttons: {
       type: Array,
       default: () => []
+    },
+    options: {
+      type: Object,
+      default: () => {
+        return { padding: '4px', minWidth: '50vw' }
+      }
     }
   },
   mounted () {
