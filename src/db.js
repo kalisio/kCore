@@ -28,9 +28,7 @@ export function objectifyIDs (query) {
       } else if (Array.isArray(value)) {
         debug('Objectify ID array ' + key)
         query[key] = value.map(id => createObjectID(id))
-      }
-      // Avoid jumping inside an already transformed ObjectID
-      else if ((typeof value === 'object') && !isObjectID(value)) objectifyIDs(value)
+      } else if ((typeof value === 'object') && !isObjectID(value)) objectifyIDs(value) // Avoid jumping inside an already transformed ObjectID
     } else if (['$in', '$nin'].includes(key)) {
       debug('Objectify ID array ' + key)
       query[key] = value.map(id => createObjectID(id))
