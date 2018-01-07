@@ -129,12 +129,11 @@ export function getQueryForAbilities (abilities, operation, resourceType) {
   return removeContext(query)
 }
 
-export function getSubjectsForResource (app, context, subjectService, resourceScope, resourceId, role) {
+export function findSubjectsForResource (subjectService, resourceScope, resourceId, role) {
   // Build the query
   let query = {}
   query[resourceScope + '._id'] = resourceId
   if (role) query[resourceScope + '.permissions'] = this.RoleNames[role]
   // Execute the query
-  const service = app.getService(subjectService, context)
-  return service.find({ query: query })
+  return subjectService.find({ query: query })
 }
