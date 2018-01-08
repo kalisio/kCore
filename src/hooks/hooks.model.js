@@ -76,7 +76,9 @@ export function serialize (rules, options = {}) {
   }
 }
 
-// The hook objectify allows to transform the value bound to an '_id' key into mongo ObjectId
+// The hook objectify allows to transform the value bound to an '_id' key as a string
+// into a Mongo ObjectId on client queries
 export function processObjectIDs (hook) {
   if (hook.params.query) objectifyIDs(hook.params.query)
+  if (hook.data) objectifyIDs(hook.data)
 }
