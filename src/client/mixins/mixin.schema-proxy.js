@@ -2,6 +2,12 @@ import { Events } from 'quasar'
 import { createQuerablePromise } from '../utils'
 
 let schemaProxyMixin = {
+  props: {
+    schemaName: {
+      type: String,
+      default: ''
+    }
+  },
   data () {
     return {
       schema: null
@@ -15,7 +21,8 @@ let schemaProxyMixin = {
       return this.schema ? this.schema.$id : ''
     },
     getSchemaName () {
-      let schemaName = this.service
+      // When used with a service by default use the same name for schema as for service
+      let schemaName = this.schemaName || this.service
       schemaName += this.id ? '.update' : '.create'
       if (this.perspective) {
         schemaName += ('-' + this.perspective)
