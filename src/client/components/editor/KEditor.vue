@@ -1,18 +1,18 @@
 <template>
-  <div class="row justify-center full-width">
+  <div class="column justify-center full-width">
     <!--
       Form section
     -->
-    <k-form class="col-10"
-      ref="form"
-      :schema="schema" />
+    <div>
+      <k-form ref="form" :schema="schema" />
+    </div>
     <!--
       Buttons section
     -->
-    <div class="col-10">
-      <div class="row justify-around" style="padding: 18px">
-        <q-btn v-if="clearButton !== ''" id="clear-button" color="primary" @click="clear">{{ clearButton }}</q-btn>
-        <q-btn v-if="resetButton !== ''" id="reset-button" color="primary" @click="reset">{{ resetButton }}</q-btn>
+    <div>
+      <div class="row justify-end" style="padding: 12px">
+        <q-btn v-if="clearButton !== ''" id="clear-button" color="primary" @click="clear" loader>{{ clearButton }}</q-btn>
+        <q-btn v-if="resetButton !== ''" id="reset-button" color="primary" @click="reset" loader>{{ resetButton }}</q-btn>
         <q-btn v-if="applyButton !== ''" id="apply-button" color="primary" @click="apply" loader>{{ applyButton }}</q-btn>
       </div>
     </div>

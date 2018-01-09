@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="row items-center justify-center full-width sm-gutter">
+    <div class="row items-center justify-center full-width xs-gutter">
       <!-- 
         Change password 
       -->
-      <div class="col-10">
+      <div class="col-12">
         <k-block
           color="grey" 
           title="Change your password ?"
@@ -16,7 +16,7 @@
        <!-- 
         Change email 
       -->
-      <div class="col-10">
+      <div class="col-12">
         <k-block
           color="orange" 
           title="Change your email ?"

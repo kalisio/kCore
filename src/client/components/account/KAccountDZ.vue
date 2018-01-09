@@ -1,12 +1,13 @@
 <template>
-  <div v-if="name !== ''" class="row items-center justify-center full-width sm-gutter">
-    <k-block 
-      class="col-10"
-      color="red" 
-      title="Delete your account ?"
-      :text="blockText()"
-      action="Delete"
-      @action-triggered="onDeleteClicked" />
+  <div v-if="name !== ''" class="row justify-center full-width">
+    <div class="col-12">
+      <k-block 
+        color="red" 
+        title="Delete your account ?"
+        :text="blockText()"
+        action="Delete"
+        @action-triggered="onDeleteClicked" />
+    </div>
   </div>
 </template>
 

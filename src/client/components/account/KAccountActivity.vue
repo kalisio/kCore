@@ -1,12 +1,12 @@
 <template>
-  <div v-if="id !== ''">
-    <div v-if="perspective === 'profile'">
+  <div v-if="id !== ''" class="row justify-center full-width">
+    <div v-if="perspective === 'profile'" class="col-11">
       <k-editor service="users" :id="id" perspective="profile"/>
     </div>
-    <div v-if="perspective === 'security'">
+    <div v-if="perspective === 'security'"  class="col-11">
       <k-account-security :id="id" />
     </div>
-    <div v-else-if="perspective === 'danger-zone'">
+    <div v-else-if="perspective === 'danger-zone'" class="col-11">
       <k-account-dz :id="id" />
     </div>
     <div v-else>

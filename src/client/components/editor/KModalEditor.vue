@@ -1,5 +1,5 @@
 <template>
-  <k-modal :title="title" :toolbar="toolbar" :buttons="buttons" >
+  <k-modal ref="modal" :title="title" :toolbar="toolbar" :buttons="buttons" :route="router ? true : false" >
     <div slot="modal-content">
       <k-form ref="form" :schema="schema" />
     </div>
@@ -29,9 +29,9 @@ export default {
       type: String,
       default: ''
     },
-    backRoute: {
-      type: String,
-      required: true
+    router: {
+      type: Object,
+      default: () => null
     }
   },
   computed: {
@@ -49,19 +49,26 @@ export default {
   },
   data () {
     return {
-      toolbar: [
-        { name: 'Close', icon: 'close', handler: () => this.doClose() }
-      ]
+      toolbar: [{ 
+        name: 'close', 
+        icon: 'close', 
+        handler: () => this.close(this.router ? _ => this.$router.push(this.route.onDismiss) : null) 
+      }]
     }
   },
   methods: {
-    doClose () {
-      this.$router.push({name: this.backRoute})
+    open () {
+      this.$refs.modal.open()
+    },
+    close (onClose) {
+      this.$refs.modal.close(onClose)
     }
   },
   created () {
     this.refresh()
-    this.$on('applied', _ => this.doClose())
+    this.$on('applied', _ => {
+      if (this.router) this.close(_ => this.$router.push(this.route.onApply))
+    })
   }
 }
 </script>

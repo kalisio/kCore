@@ -75,10 +75,22 @@ export default {
       default: () => {
         return { padding: '4px', minWidth: '50vw' }
       }
+    },
+    route: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    open () {
+      this.$refs.modal.open()
+    },
+    close (onClose) {
+      this.$refs.modal.close(onClose)
     }
   },
   mounted () {
-    this.$refs.modal.open()
+    if (this.route) this.open()
   }
 }
 </script>

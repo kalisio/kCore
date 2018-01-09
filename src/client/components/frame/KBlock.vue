@@ -75,6 +75,6 @@ export default {
 
 <style>
 #k-block-main {
-  padding: 16px;
+  padding: 8px;
 }
 </style>
