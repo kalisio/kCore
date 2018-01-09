@@ -52,6 +52,8 @@ export function defineUserAbilities (subject, can, cannot) {
     can('read', 'users')
     // Update user profile and destroy it
     can(['update', 'remove'], 'users', { _id: subject._id })
+    // Access authorisation service, then rights will be granted on a per-resource basis
+    can('service', 'authorisations')
   }
 }
 
@@ -97,7 +99,7 @@ export function hasResourceAbilities (abilities, operation, resourceType, contex
   let object = Object.assign({}, resource)
   object[RESOURCE_TYPE_KEY] = resourceType
   // Add a virtual context to take it into account for object having no link to it
-  if (context) object.context = context
+  if (context) object.context = (typeof context === 'object' ? context._id.toString() : context)
 
   const result = abilities.can(operation, object)
 

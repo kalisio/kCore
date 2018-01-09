@@ -8,7 +8,7 @@ export function createTagService (context, db) {
   app.createService('tags', {
     servicesPath,
     modelsPath,
-    path: context._id.toString() + '/tags',
+    context,
     db
   })
 }

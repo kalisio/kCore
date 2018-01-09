@@ -21,6 +21,7 @@ export default {
   // The params object should be already filled by populate hooks
   create (data, params) {
     let query = params.query
+    let context = params.resourcesService.context
     // Make hook usable with query params as well
     let scopeName = data.scope || query.scope // Get scope name first
     return Promise.all(params.subjects.map(subject => {
@@ -32,6 +33,9 @@ export default {
       if (!resource) {
         resource = {
           _id: params.resource._id
+        }
+        if (context) {
+          resource.context = (typeof context === 'object' ? context._id : context)
         }
         scope.push(resource)
       }

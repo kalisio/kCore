@@ -156,7 +156,12 @@ export function createService (name, app, options = {}) {
   }
 
   // Get our initialized service so that we can register hooks and filters
-  service = declareService(options.path || name, app, service)
+  let servicePath = options.path || name
+  if (options.context) {
+    if (typeof options.context === 'object') servicePath = options.context._id.toString() + '/' + servicePath 
+    else servicePath = options.context + '/' + servicePath
+  }
+  service = declareService(servicePath, app, service)
   // Register hooks and filters
   service = configureService(name, service, options.servicesPath)
   // Optionnally a specific service mixin can be provided, apply it
@@ -172,10 +177,8 @@ export function createService (name, app, options = {}) {
   service.name = name
   service.app = app
   service.options = options
-  service.path = options.path || name
-  // By convention we have contextual service paths like this 'context_id/service_name'
-  let paths = service.path.split('/')
-  service.context = (paths.length > 1 ? paths[0] : '')
+  service.path = servicePath
+  service.context = options.context
 
   // Add some utility functions
   service.getPath = function (withApiPrefix) {
@@ -229,7 +232,7 @@ export function kalisio () {
     if (context && typeof context === 'string') {
       return app.service(app.get('apiPath') + '/' + context + '/' + path)
     } else if (context && typeof context === 'object') {
-      return app.service(app.get('apiPath') + '/' + context._id + '/' + path)
+      return app.service(app.get('apiPath') + '/' + context._id.toString() + '/' + path)
     } else {
       return app.service(app.get('apiPath') + '/' + path)
     }
