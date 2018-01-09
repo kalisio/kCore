@@ -12,6 +12,9 @@
           <q-card-title slot="overlay">
             {{name}}
             <span slot="subtitle">{{description}}</span>
+            <div slot="right">
+              <slot name="card-icon"></slot>
+            </div>
           </q-card-title>
         </q-card-media>
       </div>
@@ -19,6 +22,9 @@
         <q-card-title slot="overlay">
           {{name}}
           <span slot="subtitle">{{description}}</span>
+          <div slot="right">
+            <slot name="card-icon"></slot>
+          </div>
         </q-card-title>
       </div>
     </slot>
@@ -26,8 +32,7 @@
       Content section
     -->
     <q-card-main>
-      <slot name="card-content"> 
-      </slot>
+      <slot name="card-content"></slot>
     </q-card-main>
     <!--
       Actions section
