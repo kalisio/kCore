@@ -31,7 +31,7 @@ export default {
     },
     router: {
       type: Object,
-      default: () => null
+      default: () => { return null }
     }
   },
   computed: {
@@ -52,7 +52,7 @@ export default {
       toolbar: [{ 
         name: 'close', 
         icon: 'close', 
-        handler: () => this.close(this.router ? _ => this.$router.push(this.route.onDismiss) : null) 
+        handler: () => this.close(this.router ? _ => this.$router.push(this.router.onDismiss) : null) 
       }]
     }
   },
@@ -65,6 +65,7 @@ export default {
     }
   },
   created () {
+    console.log(this.router)
     this.refresh()
     this.$on('applied', _ => {
       if (this.router) this.close(_ => this.$router.push(this.route.onApply))
