@@ -1,9 +1,9 @@
 <template>
   <div class="column justify-center"> 
     <div class="row">
-      <div v-for="item in items" :key="item._id" :class="layout">
-        <k-renderer :item="item" :actions="actions" v-bind="renderer.props" />
-      </div>
+      <template v-for="item in items">
+        <component :is="renderer.component" :key="item._id" :item="item" :actions="actions" v-bind="renderer.props" />
+      </template>
     </div>
     <div class="self-center" v-if="nbPages > 1">
       <q-pagination v-model="currentPage" :max="nbPages" style="padding: 18px" @input="onPageChanged" />
@@ -22,17 +22,13 @@ export default {
   },
   mixins: [mixins.service, mixins.baseCollection],
   props: {
-    layout: {
-      type: String,
-      default: 'col-xs-6 col-sm-4 col-lg-4 col-xl-3'
-    },
     renderer: {
       type: Object,
-      default: () => { return { component: 'collection/KCard', props: {} } }
-    },
-    rendererOptions: {
-      type: Object,
-      default: () => {}
+      default: () => { return { 
+        component: 'collection/KCard',
+        options: { layout: 'col-xs-6 col-sm-4 col-lg-4 col-xl-3' },
+        props: { } } 
+      }
     }
   },
   watch: {
@@ -43,7 +39,7 @@ export default {
   },
   created () {
     // Load the component
-    this.$options.components['k-renderer'] = this.$load(this.renderer.component)
+    this.$options.components[this.renderer.component] = this.$load(this.renderer.component)
     this.refreshCollection()
   }
 }

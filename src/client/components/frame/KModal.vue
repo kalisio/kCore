@@ -15,7 +15,7 @@
       <!-- 
         Title section
       -->
-      <div class="row justify-between items-center" style="margin-left: 24px">
+      <div class="row justify-start" style="margin-left: 18px">
         <div>
           <h5>{{title}}</h5>
         </div>
@@ -64,11 +64,11 @@ export default {
     },
     toolbar: {
       type: Array,
-      default: () => []
+      default: () => { return [] }
     },
     buttons: {
       type: Array,
-      default: () => []
+      default: () => { return [] }
     },
     options: {
       type: Object,
@@ -91,6 +91,7 @@ export default {
   },
   mounted () {
     if (this.route) this.open()
+    console.log(this.title)
   }
 }
 </script>

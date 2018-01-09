@@ -158,7 +158,7 @@ export function createService (name, app, options = {}) {
   // Get our initialized service so that we can register hooks and filters
   let servicePath = options.path || name
   if (options.context) {
-    if (typeof options.context === 'object') servicePath = options.context._id.toString() + '/' + servicePath 
+    if (typeof options.context === 'object') servicePath = options.context._id.toString() + '/' + servicePath
     else servicePath = options.context + '/' + servicePath
   }
   service = declareService(servicePath, app, service)
