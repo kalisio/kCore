@@ -24,10 +24,12 @@ export default {
   props: {
     renderer: {
       type: Object,
-      default: () => { return { 
-        component: 'collection/KCard',
-        options: { layout: 'col-xs-6 col-sm-4 col-lg-4 col-xl-3' },
-        props: { } } 
+      default: () => { 
+        return { 
+          component: 'collection/KCard',
+          options: {},
+          props: {} 
+        } 
       }
     }
   },
