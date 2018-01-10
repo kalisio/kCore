@@ -91,7 +91,6 @@ export default {
   },
   mounted () {
     if (this.route) this.open()
-    console.log(this.title)
   }
 }
 </script>
