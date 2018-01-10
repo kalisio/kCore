@@ -33,6 +33,7 @@ export default {
       default: ''
     }
   },
+  inject: ['sideNav'],
   data () {
     return {
       links: []
@@ -48,7 +49,7 @@ export default {
           resolvedParams.context = context
         }
       }
-      this.$router.push({name: link.route.name, params: resolvedParams })
+      this.sideNav.navigate({name: link.route.name, params: resolvedParams })
     }
   },
   created () {

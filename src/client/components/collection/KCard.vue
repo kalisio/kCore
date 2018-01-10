@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     layout () {
-      return _.get(this.options, 'layout', 'col-xs-6 col-sm-4 col-lg-4 col-xl-3')
+      return _.get(this.options, 'layout', 'col-xs-6 col-sm-4 col-md-4 col-lg-3 col-xl-2')
     },
     key (action) {
       return this.item._id + '-' + action.name

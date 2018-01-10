@@ -43,10 +43,10 @@ export default {
     }
   },
   created () {
+    this.$options.components['k-side-nav'] = this.$load(this.$config('layout.sideNav', 'layout/KSideNav'))
     this.$options.components['k-app-bar'] = this.$load(this.$config('layout.appBar', 'layout/KAppBar'))
     this.$options.components['k-tab-bar'] = this.$load(this.$config('layout.tabBar', 'layout/KTabBar'))
     this.$options.components['k-fab'] = this.$load(this.$config('layout.fab', 'layout/KFab'))
-    this.$options.components['k-side-nav'] = this.$load(this.$config('layout.sideNav', 'layout/KSideNav'))
   },
   mounted () {
     Events.$on('speech-recognition', phrases => {

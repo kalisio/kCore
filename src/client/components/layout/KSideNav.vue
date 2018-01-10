@@ -11,9 +11,20 @@ import _ from 'lodash'
 
 export default {
   name: 'k-side-nav',
+  inject: ['layout'],
+  provide () {
+    return {
+      sideNav: this
+    }
+  },
   data () {
     return {
       components: []
+    }
+  },
+  methods: {
+    navigate (route) {
+      this.layout.hideCurrentSide(() => this.$router.push(route))
     }
   },
   created () {
