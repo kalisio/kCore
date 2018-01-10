@@ -40,10 +40,10 @@ let baseActivityMixin = {
       this.actions = {}
     },
     setTitle (title) {
-      this.$store.patch('appBar', { subtitle: title })
+      this.$store.patch('appBar', { title: title })
     },
     clearTitle () {
-      this.$store.patch('appBar', { subtitle: '' })
+      this.$store.patch('appBar', { title: '' })
     },
     clearActivity () {
       this.clearTitle()
