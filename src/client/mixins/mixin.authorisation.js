@@ -18,7 +18,7 @@ let authorisationMixin = {
       return abilities
     }
   },
-  mounted () {
+  created () {
     // Check if abilities are already computed
     let abilities = Store.get('user.abilities')
     if (!abilities) {
@@ -26,7 +26,10 @@ let authorisationMixin = {
       this.updateAbilities()
     }
     // Whenever the user is updated, update abilities as well
-    Events.$on('user-changed', user => this.updateAbilities())
+    Events.$on('user-changed', this.updateAbilities)
+  },
+  beforeDestroy() {
+    Events.$off('user-changed', this.updateAbilities)
   }
 }
 
