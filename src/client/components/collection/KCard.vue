@@ -8,7 +8,7 @@
         <div v-if="options.avatar">
           <q-card-media>
             <div class="row justify-center" style="padding:8px">
-              <avatar v-if="name" :username="name" :size="options.avatar.size" />
+              <avatar v-if="name && options.avatar" :username="name" :size="options.avatar.size" />
             </div>
             <q-card-title slot="overlay">
               {{name}}
