@@ -1,7 +1,10 @@
 <template>
   <div>
+    <div v-if="banner != ''" class="row justify-center items-center">
+      <img :src="banner">
+    </div>
     <template v-for="component in components">
-      <component :is="component.renderer" :name="component.name" />
+      <component :key="component.name" :is="component.renderer" :name="component.name" />
     </template>
   </div>
 </template>
@@ -19,6 +22,7 @@ export default {
   },
   data () {
     return {
+      banner: '',
       components: []
     }
   },
@@ -28,12 +32,14 @@ export default {
     }
   },
   created () {
+    this.banner = this.$load(this.$config('sideNav.banner', 'kalisio-banner.png'), 'asset')
     // Setup the components structure
     // We build an array of components using the SideNav properties
     // A component is defined with 
     //   - the renderer: the Vue component to be used for the rendering
     //   - the name: the key to retrieve the configuration
-    let content = this.$config('sideNav', {})
+    
+    let content = this.$config('sideNav.components', {})
     Object.entries(content).forEach(element => {
       // Setup the component
       let component = {}
