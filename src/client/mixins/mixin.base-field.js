@@ -40,17 +40,17 @@ let baseFieldMixin = {
   data () {
     return {
       // The model to used for data binding with the field
-      model: this.defaultModel(),
+      model: this.emptyModel(),
       // The error message
       error: ''
     }
   },
   methods: {
-    defaultModel () {
+    emptyModel () {
       return ''
     },
     isEmpty () {
-      return lodash.isEqual(this.model, this.defaultModel())
+      return lodash.isEqual(this.model, this.emptyModel())
     },
     value () {
       return this.model
@@ -59,10 +59,10 @@ let baseFieldMixin = {
       this.model = value
     },
     clear () {
-      this.fill(this.defaultModel())
+      this.fill(this.emptyModel())
     },
     reset () {
-      this.fill(lodash.get(this.properties, 'default', this.defaultModel()))
+      this.fill(lodash.get(this.properties, 'default', this.emptyModel()))
     },
     validate () {
       this.error = ''

@@ -55,7 +55,7 @@ export default {
     }
   },
   methods: {
-    defaultModel () {
+    emptyModel () {
       return []
     },
     fill (value) {

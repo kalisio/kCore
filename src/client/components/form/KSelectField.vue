@@ -32,7 +32,7 @@ export default {
   },
   mixins: [mixins.baseField],
   methods: {
-    defaultModel () {
+    emptyModel () {
       let multiple = lodash.get(this.properties.field.multiple, false)
       if (multiple) return []
       return ''

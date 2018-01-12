@@ -25,7 +25,7 @@ export default {
   },
   mixins: [mixins.baseField],
   methods: {
-    defaultModel () {
+    emptyModel () {
       return []
     },
     fill (value) {

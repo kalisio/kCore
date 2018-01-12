@@ -67,7 +67,7 @@ export default {
   created () {
     this.refresh()
     this.$on('applied', _ => {
-      if (this.router) this.close(_ => this.$router.push(this.route.onApply))
+      if (this.router) this.close(_ => this.$router.push(this.router.onApply))
     })
   }
 }

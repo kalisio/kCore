@@ -29,8 +29,8 @@ export default {
   },
   mixins: [mixins.baseField],
   methods: {
-    defaultModel () {
-      return 'mode_edit'
+    emptyModel () {
+      return ''
     },
     onSelectIcon () {
       this.$refs.iconDialog.open(this.model)
