@@ -110,7 +110,6 @@ export default {
     },
     fill (values) {
       if (!this.loadRefs().isFulfilled()) throw Error('Cannot fill the form while not ready')
-
       this.fields.forEach(field => {
         let value = lodash.get(values, field.name)
         if (value) {
@@ -125,32 +124,19 @@ export default {
       this.validate()
     },
     values () {
-      let values = {}
-      this.fields.forEach(field => {
-        if (!this.$refs[field.name][0].isEmpty()) {
-          values[field.name] = this.$refs[field.name][0].value()
-        }
-      })
-      return values
+      return this.fields.reduce((values, field) => Object.assign(values, { [field.name]: this.$refs[field.name][0].value() }), {})
     },
     clear () {
       if (!this.loadRefs().isFulfilled()) throw Error('Cannot clear the form while not ready')
-
-      this.fields.forEach(field => {
-        this.$refs[field.name][0].clear()
-      })
+      this.fields.forEach(field => this.$refs[field.name][0].clear())
     },
     reset () {
       if (!this.loadRefs().isFulfilled()) throw Error('Cannot reset the form while not ready')
-      
-      this.fields.forEach(field => {
-        this.$refs[field.name][0].reset()
-      })
+      this.fields.forEach(field => this.$refs[field.name][0].reset())
       this.validate()
     },
     validate () {
       if (!this.loadRefs().isFulfilled()) throw Error('Cannot validate the form while not ready')
-      
       let result = { 
         isValid: false, 
         values: this.values() 

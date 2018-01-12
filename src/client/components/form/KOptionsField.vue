@@ -29,7 +29,7 @@ export default {
   },
   mixins: [mixins.baseField],
   methods: {
-    defaultModel () {
+    emptyModel () {
       let type = lodash.get(this.properties.field.type, 'radio')
       if (type === 'radio') return ''
       return []
