@@ -20,18 +20,6 @@ let baseItemMixin = {
     }
   },
   computed: {
-    itemActions () {
-      return this.actions.filter(action => {
-        // Filter actions according to item-specific permissions when required
-        if (action.permissions) {
-          let { operation, service, context, id } = action.permissions
-          // The operation might directly target the item object or its id when used as a linked object in a relation
-          return this.$can(operation, service, context, id ? { [id]: this.item._id } : this.item)
-        } else {
-          return true
-        }
-      })
-    },
     name () {
       // Check for custom name field
       return (this.options.nameField ? _.get(this.item, this.options.nameField, '') : this.item.name)
@@ -45,7 +33,29 @@ let baseItemMixin = {
       return (this.options.tagsField ? _.get(this.item, this.options.tagsField, '') : this.item.tags)
     }
   },
+  watch: {
+    actions: () => {
+      this.refreshActions()
+    }
+  },
+  data () {
+    return {
+      permittedActions: []
+    }
+  },
   methods: {
+    refreshActions () {
+      this.permittedActions = this.actions.filter(action => {
+        // Filter actions according to item-specific permissions when required
+        if (action.permissions) {
+          let { operation, service, context, id } = action.permissions
+          // The operation might directly target the item object or its id when used as a linked object in a relation
+          return this.$can(operation, service, context, id ? { [id]: this.item._id } : this.item)
+        } else {
+          return true
+        }
+      })
+    },
     onActionTriggered (action, item) {
       // If a handler is given call it
       if (action.handler) action.handler.call(this, item)
@@ -55,6 +65,9 @@ let baseItemMixin = {
         this.$router.push(route)
       }
     }
+  },
+  created () {
+    this.refreshActions()
   }
 }
 

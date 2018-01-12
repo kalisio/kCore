@@ -31,8 +31,8 @@
         <q-icon name="more_vert">
           <q-popover ref="menu">
             <q-list>
-              <template v-for="(action,index) in appBar.menu">
-                <q-item link :key="index" @click="$router.push(action.route), $refs.menu.close()">
+              <template v-for="action in appBar.menu">
+                <q-item link :key="action.name" @click="$router.push(action.route), $refs.menu.close()">
                   <q-item-side :icon="action.icon" />
                   <q-item-main>
                     {{action.label}}
