@@ -28,7 +28,7 @@ let authorisationMixin = {
     // Whenever the user is updated, update abilities as well
     Events.$on('user-changed', this.updateAbilities)
   },
-  beforeDestroy() {
+  beforeDestroy () {
     Events.$off('user-changed', this.updateAbilities)
   }
 }
