@@ -2,6 +2,7 @@
   <div class="column">
     <template v-for="field in fields">
       <component
+        :key="field.name"
         :is="field.componentKey"
         :ref="field.name"
         :properties="field"
@@ -34,12 +35,19 @@ export default {
     schema: {
       type: Object,
       default: null
+    },
+    display: {
+      type: Object,
+      default: () => { return {
+        icon: false,
+        label: false,
+        labelWidth: 3
+      }}
     }
   },
   data () {
     return {
-      fields: [],
-      display: { icon: false, label: true, labelWidth: 3 }
+      fields: []
     }
   },
   methods: {
