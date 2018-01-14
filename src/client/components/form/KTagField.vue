@@ -8,23 +8,34 @@
       :label-width="labelWidth"
       :error="hasError"
     >
-      <div class="row justify-between">
-        <k-autocomplete class="col" ref="search" :services="services" :process-results="processResults" @item-selected="onTagAdded" />
-        <div class="row col-7" v-if="tags.length > 0">
-          <q-chip v-for="tag in tags" :icon="tag.icon || 'label'" color="primary" @close="onTagRemoved(tag)" @click="onSelectIcon(tag)" closable>
-            {{ tag.value }}
-          </q-chip>
+      <div class="row justify-between items-center">
+        <div class="col-4">
+          <k-autocomplete ref="search" :services="services" :process-results="processResults" @item-selected="onTagAdded" />
+        </div>
+        <div class="col-7" v-if="tags.length > 0">
+          <template v-for="(tag, index) in tags">
+            <q-chip
+              class="tag-chip"
+              :key="tag.value + '-' + index " 
+              :icon="tag.icon || 'label'" 
+              :color="tag.color || 'faded'" 
+              @close="onTagRemoved(tag)" 
+              @click="onTagClicked(tag)" 
+              closable>
+              {{tag.value}}
+            </q-chip>
+          </template>
         </div>
       </div>
     </q-field>
-    <k-icon-chooser ref="iconDialog" icon-set="fontawesome" @icon-selected="onIconSelected" />
+    <k-icon-chooser ref="iconChooser" icon-set="fontawesome" @choosed="onIconChoosed" />
   </div>
 </template>
 
 <script>
 import { QField, QChip, QIcon } from 'quasar'
 import { KAutocomplete } from '../collection'
-import KIconChooser from './KIconChooser'
+import { KIconChooser } from '../input'
 import mixins from '../../mixins'
 
 export default {
@@ -37,11 +48,6 @@ export default {
     KIconChooser
   },
   mixins: [mixins.baseField],
-  computed: {
-    autocompleteSize () { 
-      return this.tags.length > 0 ? 'col-5' : 'col-12'
-    }
-  },
   data () {
     return {
       services: [{
@@ -49,7 +55,8 @@ export default {
         baseQuery: { scope: this.properties.scope },
         field: 'value',
         iconField: 'icon',
-        icon: 'label'
+        icon: 'label',
+        color: 'dark'
       }],
       tags: []
     }
@@ -69,6 +76,7 @@ export default {
         results.unshift({
           label: 'Add "' + pattern + '" tag',
           icon: 'label',
+          color: 'dark',
           value: pattern,
           scope: this.properties.scope
         })
@@ -86,26 +94,25 @@ export default {
     },
     updateModel () {
       // filter rendering properties only
-      this.model = this.tags.map(function (tag) { return _.pick(tag, ['value', 'scope', 'icon']) })
+      this.model = this.tags.map(function (tag) { return _.pick(tag, ['value', 'scope', 'icon', 'color']) })
       this.onChanged()
     },
-    onSelectIcon (tag) {
+    onTagClicked (tag) {
       this.selectedTag = tag
-      this.$refs.iconDialog.open(this.selectedTag.icon)
+      this.$refs.iconChooser.open(tag.icon, tag.color)
     },
-    onIconSelected (icon) {
-      this.selectedTag.icon = icon
+    onIconChoosed (icon) {
+      this.selectedTag.icon = icon.name
+      this.selectedTag.color = icon.color      
       this.updateModel()
-      this.$refs.iconDialog.close()
     }
   }
 }
 </script>
 
 <style>
-.icon {
+.tag-chip {
   cursor: pointer;
-  font-size: 24px;
-  color: rgba(0, 0, 0, .54);
+  margin: 4px;
 }
 </style>

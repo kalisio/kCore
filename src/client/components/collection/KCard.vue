@@ -37,16 +37,13 @@
           <div v-if="tags && tags.length > 0">
             <div class="row justify-start items-center">
               <template v-for="tag in tags">
-                <q-chip v-if="options.tags && options.tags === 'chip'" :key="key(tag, 'value')" small color="tertiary" :icon="tag.icon" class="tag">
+                <q-chip v-if="options.tags && options.tags === 'chip'" :key="key(tag, 'value')" small :color="tag.color" :icon="tag.icon" class="tag">
                   {{tag.value}}
                 </q-chip>
-                <q-icon v-else :key="key(tag, 'value')" size="24px" color="tertiary" class="tag" :name="tag.icon">
+                <q-icon v-else :key="key(tag, 'value')" size="24px" :color="tag.color" class="tag" :name="tag.icon">
                   <q-tooltip>{{tag.value}}</q-tooltip>
                 </q-icon>
               </template>
-              <q-btn v-if="hasTagsAction" flat small round @click="onActionTriggered(tagsAction(), item)">
-                <q-icon name="local_offer" color="primary" />
-              </q-btn>
             </div>
             <q-card-separator />
           </div>
@@ -136,9 +133,6 @@ export default {
   },
   
   methods: {
-    tagsAction () {
-      return _.find(this.actions, {name: 'tags'})
-    },
     layout () {
       return _.get(this.options, 'layout', 'col-xs-6 col-sm-4 col-md-4 col-lg-4 col-xl-3')
     },

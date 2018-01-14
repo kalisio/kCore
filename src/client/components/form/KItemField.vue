@@ -14,7 +14,7 @@
 <script>
 import _ from 'lodash'
 import { QField } from 'quasar'
-import { KItemChooser } from '.'
+import { KItemChooser } from '../input'
 import mixins from '../../mixins'
 
 export default {

@@ -73,7 +73,7 @@ export default {
     options: {
       type: Object,
       default: () => {
-        return { padding: '4px', minWidth: '50vw' }
+        return { padding: '4px', minWidth: '50vw', maxWidth: '80vw' }
       }
     },
     route: {
