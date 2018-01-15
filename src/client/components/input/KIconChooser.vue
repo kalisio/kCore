@@ -67,7 +67,7 @@ export default {
       this.$refs.modal.open()
     },
     doDone (event, done) {
-      this.$emit('choosed', { name: this.selectedIcon, color: this.selectedColor })
+      this.$emit('icon-choosed', { name: this.selectedIcon, color: this.selectedColor })
       done()
       this.doClose()
     },

@@ -6,6 +6,10 @@ let baseFieldMixin = {
       type: Object,
       required: true
     },
+    required: {
+      type: Boolean,
+      required: true
+    },
     display: {
       type: Object,
       required: true

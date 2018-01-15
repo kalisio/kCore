@@ -5,6 +5,7 @@
         :key="field.name"
         :is="field.componentKey"
         :ref="field.name"
+        :required="field.required"
         :properties="field"
         :display="display"
         @field-changed="onFieldChanged"
@@ -100,7 +101,9 @@ export default {
         // 3- load the component if not previously loaded
         if (!this.$options.components[componentKey]) {
           this.$options.components[componentKey] = this.$load(field.field.component)
-        } 
+        }
+        // 4- Assign whether the field is required or not
+        field['required'] = lodash.includes(this.schema.required, property)
       })
       // Set the refs to be resolved
       this.setRefs(this.fields.map(field => field.name))

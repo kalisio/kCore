@@ -28,7 +28,7 @@
         </div>
       </div>
     </q-field>
-    <k-icon-chooser ref="iconChooser" icon-set="fontawesome" @choosed="onIconChoosed" />
+    <k-icon-chooser ref="iconChooser" icon-set="fontawesome" @icon-choosed="onIconChoosed" />
   </div>
 </template>
 
