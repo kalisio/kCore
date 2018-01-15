@@ -1,6 +1,6 @@
 <template>
   <k-modal ref="modal" :toolbar="toolbar" :buttons="buttons" :options="{ padding: '4px', minWidth: '50vw', maxWidth: '55vw' }">
-    <div slot="modal-content" class="column">
+    <div slot="modal-content" class="column sm-gutter"">
       <div class="row justify-center items-center sm-gutter">
         <template v-for="icon in iconsPage">
           <q-icon class="col-1" style="margin:4px" :key="icon" v-if="icon !== selectedIcon" :name="icon" size="2rem" color="faded" @click="onIconSelected(icon)" />
