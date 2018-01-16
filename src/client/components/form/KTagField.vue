@@ -34,8 +34,7 @@
 
 <script>
 import { QField, QChip, QIcon } from 'quasar'
-import { KAutocomplete } from '../collection'
-import { KIconChooser } from '../input'
+import { KAutocomplete, KIconChooser } from '../input'
 import mixins from '../../mixins'
 
 export default {
@@ -76,7 +75,11 @@ export default {
           label: 'Add "' + pattern + '" tag',
           icon: 'label',
           value: pattern,
-          scope: this.properties.scope
+          data: { 
+            value: pattern, 
+            scope: this.properties.scope, 
+            icon: { name: 'label', color: 'dark' }
+          }
         })
       }
     },
@@ -84,11 +87,6 @@ export default {
       if(_.findIndex(this.tags, tag => tag.value === newTag.value) === -1) {
         // Filter the tag data and transform the icon provided by the autocomplete into an icon object
         let tag = _.pick(newTag, ['value', 'scope', 'icon'])
-        // FIXME: For now the autocomplete override the icon object. The following code takes into account this issue
-        if (typeof tag.icon === 'string') {
-          let icon = { name: tag.icon, color: 'faded' }
-          Object.assign(tag, { icon: icon })
-        }
         this.tags.push(tag)
         this.updateModel()
       }

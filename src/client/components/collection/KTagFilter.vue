@@ -11,7 +11,7 @@
 
 <script>
 import { QChip } from 'quasar'
-import KAutocomplete from './KAutocomplete.vue'
+import { KAutocomplete } from '../input'
 
 export default {
   name: 'k-tag-filter',

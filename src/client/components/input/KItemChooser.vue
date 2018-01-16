@@ -2,8 +2,8 @@
   <div class="row justify-between">
     <k-autocomplete v-if="!isCompleted" class="col" ref="search" :services="services" @item-selected="onItemSelected" />
     <div class="row col-7" v-if="items.length > 0">
-      <q-chip v-for="item in items" :key="item._id" :icon="item.icon || 'label'" color="primary" @close="onItemRemoved(item)" closable>
-        {{ item.value }}
+      <q-chip v-for="item in items" :key="item._id" :icon="item.icon" color="primary" @close="onItemRemoved(item)" closable>
+        {{item.name}}
       </q-chip>
     </div>
   </div>
@@ -12,7 +12,7 @@
 <script>
 import _ from 'lodash'
 import { QChip, QIcon } from 'quasar'
-import { KAutocomplete } from '../collection'
+import { KAutocomplete } from './'
 
 export default {
   name: 'k-item-chooser',
