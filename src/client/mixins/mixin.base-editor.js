@@ -3,6 +3,12 @@ import logger from 'loglevel'
 export default function baseEditorMixin (formRefs) {
   return {
     props: {
+      baseObject: {
+        type: Object,
+        default: function () {
+          return {}
+        }
+      },
       clearButton: {
         type: String,
         default: ''
@@ -66,7 +72,10 @@ export default function baseEditorMixin (formRefs) {
       apply (event, done) {
         // Iterate over forms for validation
         let isValid = true
-        let object = {}
+        // Start from default object or input base object
+        // This is used to keep track of existing or additional properties
+        // in addition to the ones edited throught the form
+        let object = Object.assign({}, this.getObject() || this.baseObject)
         formRefs.forEach(name => {
           let form = this.$refs[name]
           if (form.loadRefs().isFulfilled()) {
