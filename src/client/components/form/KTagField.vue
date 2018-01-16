@@ -17,8 +17,8 @@
             <q-chip
               class="tag-chip"
               :key="tag.value + '-' + index " 
-              :icon="tag.icon || 'label'" 
-              :color="tag.color || 'faded'" 
+              :icon="tag.icon.name" 
+              :color="tag.icon.color" 
               @close="onTagRemoved(tag)" 
               @click="onTagClicked(tag)" 
               closable>
@@ -28,7 +28,7 @@
         </div>
       </div>
     </q-field>
-    <k-icon-chooser ref="iconChooser" icon-set="fontawesome" @icon-choosed="onIconChoosed" />
+    <k-icon-chooser ref="iconChooser" @icon-choosed="onIconChoosed" />
   </div>
 </template>
 
@@ -54,9 +54,8 @@ export default {
         service: 'tags',
         baseQuery: { scope: this.properties.scope },
         field: 'value',
-        iconField: 'icon',
-        icon: 'label',
-        color: 'dark'
+        iconField: 'icon.name',
+        icon: { name: 'label', color: 'faded' }
       }],
       tags: []
     }
@@ -76,7 +75,6 @@ export default {
         results.unshift({
           label: 'Add "' + pattern + '" tag',
           icon: 'label',
-          color: 'dark',
           value: pattern,
           scope: this.properties.scope
         })
@@ -84,7 +82,14 @@ export default {
     },
     onTagAdded (newTag) {
       if(_.findIndex(this.tags, tag => tag.value === newTag.value) === -1) {
-        this.tags.push(newTag)
+        // Filter the tag data and transform the icon provided by the autocomplete into an icon object
+        let tag = _.pick(newTag, ['value', 'scope', 'icon'])
+        // FIXME: For now the autocomplete override the icon object. The following code takes into account this issue
+        if (typeof tag.icon === 'string') {
+          let icon = { name: tag.icon, color: 'faded' }
+          Object.assign(tag, { icon: icon })
+        }
+        this.tags.push(tag)
         this.updateModel()
       }
     },
@@ -94,16 +99,15 @@ export default {
     },
     updateModel () {
       // filter rendering properties only
-      this.model = this.tags.map(function (tag) { return _.pick(tag, ['value', 'scope', 'icon', 'color']) })
+      this.model = this.tags
       this.onChanged()
     },
     onTagClicked (tag) {
       this.selectedTag = tag
-      this.$refs.iconChooser.open(tag.icon, tag.color)
+      this.$refs.iconChooser.open(tag.icon)
     },
     onIconChoosed (icon) {
-      this.selectedTag.icon = icon.name
-      this.selectedTag.color = icon.color      
+      this.selectedTag.icon = icon
       this.updateModel()
     }
   }

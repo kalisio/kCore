@@ -9,13 +9,13 @@
       :error="hasError"
     >
       <div v-if="model.icon !== ''">
-        <q-chip :icon="model.icon" :color="model.color" :closable="closable" @close="onCloseClicked" @click="onIconClicked"/>
+        <q-chip :icon="model.name" :color="model.color" :closable="closable" @close="onCloseClicked" @click="onIconClicked"/>
       </div>
       <div v-else>
         <q-input @click="onIconClicked" />
       </div>
     </q-field>
-    <k-icon-chooser ref="iconChooser" icon-set="fontawesome" @icon-choosed="onIconChoosed" />
+    <k-icon-chooser ref="iconChooser" @icon-choosed="onIconChoosed" />
   </div>
 </template>
 
@@ -41,17 +41,16 @@ export default {
   },
   methods: {
     emptyModel () {
-      return { icon: '', color: '' }
+      return { name: '', color: '' }
     },
     onCloseClicked () {
-      this.model = { icon: '', color: '' }
+      this.model = { name: '', color: '' }
     },
     onIconClicked () {
       this.$refs.iconChooser.open(this.model.icon, this.model.color)
     },
     onIconChoosed (icon) {
-      this.model['icon'] = icon.name
-      this.model['color'] = icon.color
+      this.model = Object.assign({}, icon)
     }
   }
 }

@@ -37,10 +37,10 @@
           <div v-if="tags && tags.length > 0">
             <div class="row justify-start items-center">
               <template v-for="tag in tags">
-                <q-chip v-if="options.tags && options.tags === 'chip'" :key="key(tag, 'value')" small :color="tag.color" :icon="tag.icon" class="tag">
+                <q-chip v-if="options.tags && options.tags === 'chip'" :key="key(tag, 'value')" small :color="tag.icon.color" :icon="tag.icon.name" class="tag">
                   {{tag.value}}
                 </q-chip>
-                <q-icon v-else :key="key(tag, 'value')" size="24px" :color="tag.color" class="tag" :name="tag.icon">
+                <q-icon v-else :key="key(tag, 'value')" size="24px" :color="tag.icon.color" class="tag" :name="tag.icon.name">
                   <q-tooltip>{{tag.value}}</q-tooltip>
                 </q-icon>
               </template>

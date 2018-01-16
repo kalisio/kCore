@@ -3,15 +3,15 @@
     <div slot="modal-content" class="column sm-gutter"">
       <div class="row justify-center items-center sm-gutter">
         <template v-for="icon in iconsPage">
-          <q-icon class="col-1" style="margin:4px" :key="icon" v-if="icon !== selectedIcon" :name="icon" size="2rem" color="faded" @click="onIconSelected(icon)" />
-          <q-icon class="col-1" style="margin:4px" :key="icon" v-else :name="icon" size="2rem" :color="selectedColor" />
+          <q-icon class="col-1" style="margin:4px" :key="icon" v-if="icon !== selectedIcon.name" :name="icon" size="2rem" color="faded" @click="onIconSelected(icon)" />
+          <q-icon class="col-1" style="margin:4px" :key="icon" v-else :name="icon" size="2rem" :color="selectedIcon.color" />
         </template>
       </div>
       <div class="row justify-center items-center">
         <q-pagination v-model="currentPage" :max="maxPage" />
       </div>
       <div class="row justify-between items-center">
-        <k-palette shape="round" v-model="selectedColor" />
+        <k-palette shape="round" v-model="selectedIcon.color" />
       </div>
     </div>
   </k-modal>
@@ -31,7 +31,7 @@ export default {
   props: {
     iconSet: {
       type: String,
-      default: 'material-icons'
+      default: 'fontawesome'
     }
   },
   computed: {
@@ -47,8 +47,10 @@ export default {
       iconsPerPage: 72,
       maxPage: 1,
       icons: [],
-      selectedIcon: '',
-      selectedColor: 'dark',
+      selectedIcon: {
+        name: '',
+        color: 'dark'
+      },
       toolbar: [
         { name: 'Close', icon: 'close', handler: () => this.doClose() }
       ],
@@ -58,16 +60,18 @@ export default {
     }
   },
   methods: {
-    open (name, color) {
-      this.selectedIcon = name
-      this.selectedColor = color
-      let index = _.findIndex(this.icons,(icon) => { return icon === name })
+    open (defaultIcon) {
+      // Assign the selected icon to the default one if any
+      if (defaultIcon) Object.assign(this.selectedIcon, defaultIcon)
+      // Find the page that contains the current selected icon
+      let index = _.findIndex(this.icons, (i) => { return i === this.selectedIcon.name })
       if (index === -1) this.currentPage = 1
       else this.currentPage = Math.ceil(index / this.iconsPerPage)
+      // Open the modal
       this.$refs.modal.open()
     },
     doDone (event, done) {
-      this.$emit('icon-choosed', { name: this.selectedIcon, color: this.selectedColor })
+      this.$emit('icon-choosed', this.selectedIcon)
       done()
       this.doClose()
     },
@@ -75,7 +79,7 @@ export default {
       this.$refs.modal.close()
     },
     onIconSelected (icon) {
-      this.selectedIcon = icon
+      this.selectedIcon.name = icon
     }
   },
   created () {
