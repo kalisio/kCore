@@ -102,7 +102,7 @@ export default {
   // or get it from cache if found
   getAbilities (subject) {
     if (this.cache) {
-      if (subject) {
+      if (subject && subject._id) {
         if (this.cache.has(subject._id.toString())) return this.cache.get(subject._id.toString())
       } else {
         if (this.cache.has(ANONYMOUS_USER)) return this.cache.get(ANONYMOUS_USER)
@@ -112,7 +112,7 @@ export default {
     let abilities = defineAbilities(subject)
 
     if (this.cache) {
-      if (subject) {
+      if (subject && subject._id) {
         this.cache.set(subject._id.toString(), abilities)
       } else {
         this.cache.set(ANONYMOUS_USER, abilities)
