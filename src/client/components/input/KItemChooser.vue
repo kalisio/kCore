@@ -12,7 +12,7 @@
 <script>
 import _ from 'lodash'
 import { QChip, QIcon } from 'quasar'
-import { KAutocomplete } from './'
+import KAutocomplete from './KAutocomplete.vue'
 
 export default {
   name: 'k-item-chooser',
