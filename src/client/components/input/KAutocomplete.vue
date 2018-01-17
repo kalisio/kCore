@@ -56,20 +56,6 @@ export default {
               }
               data.service = item.service
               Object.assign(result, { data: data })
-              /*
-              Object.assign(result, {
-                label: _.get(result, item.field),
-                value: _.get(result, item.field),
-                service: item.service
-              })
-              // If this type of item has an icon
-              if (item.iconField) {
-                // Use object icon if provided, otherwise service-level icon
-                result.icon = _.get(result, item.iconField) || item.icon
-              } else {
-                // Use service-level icon
-                result.icon = item.icon
-              }*/
               results.push(result)
             })
           }
