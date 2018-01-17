@@ -64,6 +64,9 @@ let baseItemMixin = {
         let route = _.merge({ params: { id: item._id } }, action.route)
         this.$router.push(route)
       }
+    },
+    getAction (name) {
+      return this.permittedActions.find(action => action.name === name)
     }
   },
   created () {

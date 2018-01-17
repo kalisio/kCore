@@ -58,9 +58,9 @@
         <q-card-actions align="end">
           <!-- Pane -->
           <template v-for="action in paneActions">
-            <q-btn :key="key(action, 'name')" flat round small color="faded" @click="onActionTriggered(action, item)">
-              <q-icon :name="action.icon" />
-              <q-tooltip>{{action.label}}</q-tooltip>
+            <q-btn :key="key(action, 'name')" flat round small :color="action.warning ? 'red' : 'faded'" @click="onActionTriggered(action, item)">
+              <q-icon :name="action.icon"/>
+              <q-tooltip>{{action.warning ? action.warning : action.label}}</q-tooltip>
             </q-btn>
           </template>
           <!-- Menu -->

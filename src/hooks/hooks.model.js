@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { objectifyIDs } from '../db'
+import { objectifyIDs, toObjectIDs } from '../db'
 import { discard, disallow, getItems, replaceItems } from 'feathers-hooks-common'
 // import makeDebug from 'debug'
 
@@ -76,9 +76,18 @@ export function serialize (rules, options = {}) {
   }
 }
 
-// The hook objectify allows to transform the value bound to an '_id' key as a string
+// The hook objectify allows to transform the value bound to an '_id' like key as a string
 // into a Mongo ObjectId on client queries
 export function processObjectIDs (hook) {
   if (hook.params.query) objectifyIDs(hook.params.query)
   if (hook.data) objectifyIDs(hook.data)
+}
+
+// The hook convert allows to transform a set of input properties as a string
+// into a Mongo ObjectId on client queries
+export function convertObjectIDs (properties) {
+  return function (hook) {
+    if (hook.params.query) toObjectIDs(hook.params.query, properties)
+    if (hook.data) toObjectIDs(hook.data, properties)
+  }
 }

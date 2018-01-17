@@ -110,6 +110,7 @@ export default {
       return this.loadRefs()
     },
     build () {
+      if (!this.schema) throw Error('Cannot build the form without schema')
       // Test in cache first
       this.validator = this.ajv.getSchema(this.schema.$id)
       if (!this.validator) {
