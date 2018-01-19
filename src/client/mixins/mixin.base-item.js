@@ -44,17 +44,18 @@ let baseItemMixin = {
     }
   },
   methods: {
+    isActionPermitted(action) {
+      // Filter actions according to item-specific permissions when required
+      if (action.permissions) {
+        let { operation, service, context, id } = action.permissions
+        // The operation might directly target the item object or its id when used as a linked object in a relation
+        return this.$can(operation, service, context, id ? { [id]: this.item._id } : this.item)
+      } else {
+        return true
+      }
+    },
     refreshActions () {
-      this.permittedActions = this.actions.filter(action => {
-        // Filter actions according to item-specific permissions when required
-        if (action.permissions) {
-          let { operation, service, context, id } = action.permissions
-          // The operation might directly target the item object or its id when used as a linked object in a relation
-          return this.$can(operation, service, context, id ? { [id]: this.item._id } : this.item)
-        } else {
-          return true
-        }
-      })
+      this.permittedActions = this.actions.filter(this.isActionPermitted)
     },
     onActionTriggered (action, item) {
       // If a handler is given call it
@@ -66,7 +67,8 @@ let baseItemMixin = {
       }
     },
     getAction (name) {
-      return this.permittedActions.find(action => action.name === name)
+      const action = this.actions.find(action => action.name === name)
+      return this.isActionPermitted(action) ? action : null
     }
   },
   created () {
