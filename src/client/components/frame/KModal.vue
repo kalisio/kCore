@@ -1,5 +1,5 @@
 <template>
-  <q-modal ref="modal" no-esc-dismiss no-backdrop-dismiss :content-css="options">
+  <q-modal ref="modal" no-esc-dismiss no-backdrop-dismiss :content-css="options" @open="$emit('opened')" @close="$emit('closed')">
     <div class="column">
       <!-- 
          Toolbar section
@@ -16,8 +16,8 @@
         Title section
       -->
       <div class="row justify-start" style="margin-left: 18px">
-        <div>
-          <h5>{{title}}</h5>
+        <div class="modal-title">
+          {{title}}
         </div>
       </div>
       <!-- 
@@ -99,3 +99,12 @@ export default {
   }
 }
 </script>
+
+<style>
+.modal-title {
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 2rem
+}
+</style>
