@@ -29,6 +29,29 @@ let baseCollectionMixin = {
     }
   },
   methods: {
+    subscribe(query) {
+      // Remove previous listener if any
+      this.unsubscribe()
+      this.itemListener = this.loadService().find({
+        rx: {
+          listStrategy: 'always'
+        },
+        query
+      })
+      .subscribe(response => {
+        this.items = response.data
+        this.nbTotalItems = response.total
+        this.$emit('collection-refreshed')
+      }, error => {
+        Events.$emit('error', error)
+      })
+    },
+    unsubscribe() {
+      if (this.itemListener) {
+        this.itemListener.unsubscribe()
+        this.itemListener = null
+      }
+    },
     refreshCollection () {
       let fullQuery = Object.assign({}, this.baseQuery, this.filterQuery)
       // Sets the number of items to be loaded
@@ -39,19 +62,7 @@ let baseCollectionMixin = {
         })
       }
       // find the desire items
-      this.loadService().find({
-        rx: {
-          listStrategy: 'always'
-        },
-        query: fullQuery
-      })
-      .subscribe(response => {
-        this.items = response.data
-        this.nbTotalItems = response.total
-        this.$emit('collection-refreshed')
-      }, error => {
-        Events.$emit('error', error)
-      })
+      this.subscribe(fullQuery)
     },
     onPageChanged () {
       this.refreshCollection()
@@ -63,6 +74,9 @@ let baseCollectionMixin = {
   },
   created () {
     this.filterQuery = {}
+  },
+  beforeDestroy() {
+    this.unsubscribe()
   }
 }
 
