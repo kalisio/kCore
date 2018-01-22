@@ -24,6 +24,10 @@ export default function baseEditorMixin (formRefs) {
       }
     },
     methods: {
+      getMode () {
+        if (this.id) return 'update'
+        return 'create'
+      },
       fillEditor () {
         // Iterate over forms
         formRefs.forEach(name => {
@@ -41,7 +45,7 @@ export default function baseEditorMixin (formRefs) {
           }
         })
         // Update button accordingly
-        if (this.id) {
+        if (this.getMode() === 'update') {
           this.applyButton = 'Update'
         } else {
           this.applyButton = 'Create'

@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { KModal } from '../frame'
 import { KForm } from '../form'
 import mixins from '../../mixins'
@@ -25,16 +26,21 @@ export default {
     mixins.refsResolver(['form'])
   ],
   props: {
-    title: {
-      type: String,
-      default: ''
-    },
     router: {
       type: Object,
       default: () => { return null }
     }
   },
   computed: {
+    title () {
+      // Retuns the schema title
+      if (this.getSchema()) {
+        let schemaTitle = this.getSchema().title
+        if (this.getMode() === 'create') return schemaTitle
+        if (this.getObject()) return _.template(schemaTitle)({ object: this.getObject()})
+      }
+      return ''
+    },
     buttons () {
       return [
         { name: this.applyButton, color: 'primary', handler: (event, done) => this.apply(event, done) },
