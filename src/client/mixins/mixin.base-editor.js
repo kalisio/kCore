@@ -28,6 +28,20 @@ export default function baseEditorMixin (formRefs) {
         if (this.id) return 'update'
         return 'create'
       },
+      // Disabled forms will not be applied
+      setFormDisabled(formName, disabled) {
+        // Iterate over forms
+        formRefs.forEach(name => {
+          let form = this.$refs[name]
+          if (name === formName) {
+            if (form.loadRefs().isFulfilled()) {
+              form.isDisabled = disabled
+            } else {
+              logger.warn(`Trying to disable in the editor a non-ready form named ${name}`)
+            }
+          }
+        })
+      },
       fillEditor () {
         // Iterate over forms
         formRefs.forEach(name => {
@@ -41,7 +55,7 @@ export default function baseEditorMixin (formRefs) {
               }
             }
           } else {
-            logger.warn(`Trying to fill the editor with a non-ready form named ${form}`)
+            logger.warn(`Trying to fill the editor with a non-ready form named ${name}`)
           }
         })
         // Update button accordingly
@@ -58,7 +72,7 @@ export default function baseEditorMixin (formRefs) {
           if (form.loadRefs().isFulfilled()) {
             form.clear()
           } else {
-            logger.warn(`Trying to clear the editor with a non-ready form named ${form}`)
+            logger.warn(`Trying to clear the editor with a non-ready form named ${name}`)
           }
         })
       },
@@ -69,7 +83,7 @@ export default function baseEditorMixin (formRefs) {
           if (form.loadRefs().isFulfilled()) {
             form.reset()
           } else {
-            logger.warn(`Trying to reset the editor with a non-ready form named ${form}`)
+            logger.warn(`Trying to reset the editor with a non-ready form named ${name}`)
           }
         })
       },
@@ -83,14 +97,16 @@ export default function baseEditorMixin (formRefs) {
         formRefs.forEach(name => {
           let form = this.$refs[name]
           if (form.loadRefs().isFulfilled()) {
-            let result = form.validate()
-            if (!result.isValid) {
-              isValid = false
-            } else {
-              Object.assign(object, result.values)
+            if (!form.isDisabled) {
+              let result = form.validate()
+              if (!result.isValid) {
+                isValid = false
+              } else {
+                Object.assign(object, result.values)
+              }
             }
           } else {
-            logger.warn(`Trying to apply the editor with a non-ready form named ${form}`)
+            logger.warn(`Trying to apply the editor with a non-ready form named ${name}`)
             isValid = false
           }
         })
