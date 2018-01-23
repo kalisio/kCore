@@ -23,7 +23,7 @@ let baseCollectionMixin = {
     }
   },
   methods: {
-    subscribe(query) {
+    subscribe (query) {
       // Remove previous listener if any
       this.unsubscribe()
       this.itemListener = this.loadService().find({
@@ -40,7 +40,7 @@ let baseCollectionMixin = {
         Events.$emit('error', error)
       })
     },
-    unsubscribe() {
+    unsubscribe () {
       if (this.itemListener) {
         this.itemListener.unsubscribe()
         this.itemListener = null
@@ -69,7 +69,7 @@ let baseCollectionMixin = {
   created () {
     this.filterQuery = {}
   },
-  beforeDestroy() {
+  beforeDestroy () {
     this.unsubscribe()
   }
 }
