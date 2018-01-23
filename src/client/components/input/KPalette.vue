@@ -11,6 +11,7 @@
 
 <script>
 import { QBtn } from 'quasar'
+import { Colors } from '../../utils'
 
 export default {
   name: 'k-palette',
@@ -32,7 +33,7 @@ export default {
   },
   data () {
     return {
-      colors: ['dark', 'red', 'pink', 'purple', 'deep-purple', 'indigo', 'blue', 'light-blue', 'cyan', 'teal', 'green', 'light-green', 'lime', 'yellow', 'amber', 'orange', 'deep-orange', 'brown', 'grey', 'blue-grey']
+      colors: Object.keys(Colors)
     }
   }
 }
