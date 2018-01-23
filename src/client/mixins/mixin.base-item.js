@@ -54,16 +54,6 @@ let baseItemMixin = {
     // This method should be overriden in items
     refreshActions () {
       this.clearActions()
-    },
-    isActionPermitted(action) {
-      // Filter actions according to item-specific permissions when required
-      if (action.permissions) {
-        let { operation, service, context, id } = action.permissions
-        // The operation might directly target the item object or its id when used as a linked object in a relation
-        return this.$can(operation, service, context, id ? { [id]: this.item._id } : this.item)
-      } else {
-        return true
-      }
     }
   },
   created () {
