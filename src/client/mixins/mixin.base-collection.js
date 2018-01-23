@@ -2,12 +2,6 @@ import { Events } from 'quasar'
 
 let baseCollectionMixin = {
   props: {
-    actions: {
-      type: Array,
-      default: function () {
-        return []
-      }
-    },
     baseQuery: {
       type: Object,
       default: function () {

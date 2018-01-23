@@ -57,19 +57,19 @@
       <slot name="card-actions">
         <q-card-actions align="end">
           <!-- Pane -->
-          <template v-for="action in paneActions">
+          <template v-for="action in itemActions.pane">
             <q-btn :key="key(action, 'name')" flat round small :color="action.warning ? 'red' : 'faded'" @click="onActionTriggered(action, item)">
               <q-icon :name="action.icon"/>
               <q-tooltip>{{action.warning ? action.warning : action.label}}</q-tooltip>
             </q-btn>
           </template>
           <!-- Menu -->
-          <q-btn v-if="menuActions.length > 0" flat small round>
+          <q-btn v-if="itemActions.menu && itemActions.menu.length > 0" flat small round>
             <q-icon color="faded" name="more_vert">
               <q-popover ref="menu">
                 <q-list>
-                  <template v-for="action in menuActions">
-                    <q-item link :key="key(action, 'name')" @click="onActionTriggered(action, item);">
+                  <template v-for="action in itemActions.menu">
+                    <q-item link :key="key(action, 'name')" @click="onActionTriggered(action, item)">
                       <q-item-side :icon="action.icon" />
                       <q-item-main>
                         {{action.label}}
@@ -90,11 +90,9 @@
 import _ from 'lodash'
 import { QCard, QCardTitle, QCardActions, QCardSeparator, QCardMain, QCardMedia, QBtn, QIcon, QPopover, QList, QItem, QItemSide, QItemMain, QTooltip, QChip } from 'quasar'
 import Avatar from 'vue-avatar/dist/Avatar'
-import mixins from '../../mixins'
 
 export default {
   name: 'k-card',
-  mixins: [mixins.baseItem],
   components: {
     QCard,
     QCardTitle,
@@ -113,31 +111,51 @@ export default {
     QChip,
     Avatar
   },
+  props: {
+    item: {
+      type: Object,
+      required: true
+    },
+    itemActions: {
+      type: Object,
+      required: true
+    },
+    options: {
+      type: Object,
+      default: function () {
+        return {}
+      }
+    }
+  },
   computed: {
-    hasTagsAction () {
-      return ! _.isUndefined(this.tagsAction())
+    name () {
+      // Check for custom name field
+      return (this.options.nameField ? _.get(this.item, this.options.nameField, '') : this.item.name)
     },
-    paneActions () {
-      return this.permittedActions.filter(action => {
-        return action.scope && action.scope === 'pane'
-      })
+    description () {
+      // Check for custom name field
+      return (this.options.descriptionField ? _.get(this.item, this.options.descriptionField, '') : this.item.description)
     },
-    menuActions () {
-      return this.permittedActions.filter(action => {
-        return action.scope && action.scope === 'menu'
-      })
-    },
+    tags () {
+      // Check for custom name field
+      return (this.options.tagsField ? _.get(this.item, this.options.tagsField, '') : this.item.tags)
+    }
   },
-  watch: {
-
-  },
-  
   methods: {
     layout () {
       return _.get(this.options, 'layout', 'col-xs-6 col-sm-4 col-md-4 col-lg-4 col-xl-3')
     },
     key (object, property) {
       return this.item._id + '-' + object[property]
+    },
+    onActionTriggered (action, item) {
+      // If a handler is given call it
+      if (action.handler) action.handler.call(this, item)
+      // If a route is given activate it with item ID
+      else if (action.route) {
+        let route = _.merge({ params: { id: item._id } }, action.route)
+        this.$router.push(route)
+      }
     }
   }
 }

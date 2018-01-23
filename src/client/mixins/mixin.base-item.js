@@ -1,7 +1,12 @@
 import _ from 'lodash'
+import { Events } from 'quasar'
 
 let baseItemMixin = {
   props: {
+    contextId: {
+      type: String,
+      default: ''
+    },
     item: {
       type: Object,
       required: true
@@ -11,39 +16,45 @@ let baseItemMixin = {
       default: function () {
         return {}
       }
-    },
-    actions: {
-      type: Array,
-      default: function () {
-        return []
-      }
-    }
-  },
-  computed: {
-    name () {
-      // Check for custom name field
-      return (this.options.nameField ? _.get(this.item, this.options.nameField, '') : this.item.name)
-    },
-    description () {
-      // Check for custom name field
-      return (this.options.descriptionField ? _.get(this.item, this.options.descriptionField, '') : this.item.description)
-    },
-    tags () {
-      // Check for custom name field
-      return (this.options.tagsField ? _.get(this.item, this.options.tagsField, '') : this.item.tags)
-    }
-  },
-  watch: {
-    actions: () => {
-      this.refreshActions()
     }
   },
   data () {
     return {
-      permittedActions: []
+      actions: {
+        pane: [],
+        menu: []
+      }
     }
   },
   methods: {
+    registerPaneAction (action) {
+      this.registerAction('pane', action)
+    },
+    registerMenuAction (action) {
+      this.registerAction('menu', action)
+    },
+    registerAction (type, action) {
+      if (!this.actions[type]) this.actions[type] = []
+      this.actions[type].push(action)
+    },
+    getActions (type) {
+      return this.actions[type] || []
+    },
+    getAction (name) {
+      let action = null
+      _.forOwn(this.actions, (value, key) => {
+        let actionForType = value.find(action => action.name === name)
+        if (actionForType) action = actionForType
+      })
+      return action
+    },
+    clearActions () {
+      this.actions = {}
+    },
+    // This method should be overriden in items
+    refreshActions () {
+      this.clearActions()
+    },
     isActionPermitted(action) {
       // Filter actions according to item-specific permissions when required
       if (action.permissions) {
@@ -53,26 +64,16 @@ let baseItemMixin = {
       } else {
         return true
       }
-    },
-    refreshActions () {
-      this.permittedActions = this.actions.filter(this.isActionPermitted)
-    },
-    onActionTriggered (action, item) {
-      // If a handler is given call it
-      if (action.handler) action.handler.call(this, item)
-      // If a route is given activate it with item ID
-      else if (action.route) {
-        let route = _.merge({ params: { id: item._id } }, action.route)
-        this.$router.push(route)
-      }
-    },
-    getAction (name) {
-      const action = this.actions.find(action => action.name === name)
-      return this.isActionPermitted(action) ? action : null
     }
   },
   created () {
+    // Register the actions
     this.refreshActions()
+    // Whenever the user is updated, update abilities as well
+    Events.$on('user-abilities-changed', this.refreshActions)
+  },
+  beforeDestroy () {
+    Events.$off('user-abilities-changed', this.refreshActions)
   }
 }
 

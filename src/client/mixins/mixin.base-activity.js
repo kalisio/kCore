@@ -36,7 +36,7 @@ let baseActivityMixin = {
       this.$store.patch('tabBar', { tabs: [] })
       // Clear Fab actions
       this.$store.patch('fab', { actions: [] })
-      // Cleat the actions
+      // Clear the actions
       this.actions = {}
     },
     setTitle (title) {

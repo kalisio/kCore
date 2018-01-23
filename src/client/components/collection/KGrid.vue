@@ -2,7 +2,7 @@
   <div class="column justify-center"> 
     <div class="row">
       <template v-for="item in items">
-        <component :is="renderer.component" :key="item._id" :item="item" :actions="actions" v-bind="renderer.props" />
+        <component :is="renderer.component" :key="item._id" :item="item" :contextId="contextId" v-bind="renderer.props" />
       </template>
     </div>
     <div class="self-center" v-if="nbPages > 1">
