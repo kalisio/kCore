@@ -29,7 +29,7 @@ export default function baseEditorMixin (formRefs) {
         return 'create'
       },
       // Disabled forms will not be applied
-      setFormDisabled(formName, disabled) {
+      setFormDisabled (formName, disabled) {
         // Iterate over forms
         formRefs.forEach(name => {
           let form = this.$refs[name]
