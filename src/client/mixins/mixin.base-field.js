@@ -78,7 +78,8 @@ let baseFieldMixin = {
       // Tell the form that this field has a new value.
       // Consequently the form will validate or invalidate the field
       // Warning: This method must be called once the form is mounted
-      this.$emit('field-changed', this.properties.name, this.model)
+      // We need to force a refresh so that the model is correctly updated by Vuejs
+      this.$nextTick().then(_ => this.$emit('field-changed', this.properties.name, this.model))
     }
   },
   created () {

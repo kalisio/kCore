@@ -65,6 +65,7 @@ export default {
       } 
       // Validate the field
       this.$refs[field][0].validate()
+      this.$emit('field-changed', field, value)
     },
     hasFieldError (field) {
       for (let i = 0; i < this.validator.errors.length; i++) {
