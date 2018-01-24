@@ -1,5 +1,5 @@
 <template>
-  <k-modal ref="modal" :title="title" :toolbar="toolbar" :buttons="buttons" :route="router ? true : false" >
+  <k-modal ref="modal" :title="editorTitle" :toolbar="toolbar" :buttons="buttons" :route="router ? true : false" >
     <div slot="modal-content">
       <k-form ref="form" :schema="schema" />
     </div>
@@ -32,25 +32,17 @@ export default {
     }
   },
   computed: {
-    title () {
-      // Retuns the schema title
-      if (this.getSchema()) {
-        let schemaTitle = this.getSchema().title
-        if (this.getMode() === 'create') return schemaTitle
-        if (this.getObject()) return _.template(schemaTitle)({ object: this.getObject()})
-      }
-      return ''
-    },
     buttons () {
-      return [
-        { name: this.applyButton, color: 'primary', handler: (event, done) => this.apply(event, done) },
+      let buttons = [
+        { name: this.applyButton, color: 'primary', handler: (event, done) => this.apply(event, done) }
       ]
-      if (this.clearButton != '') actions.push({
+      if (this.clearButton != '') buttons.push({
         name: this.clearButton, color: 'primary', handler: (event, done) => this.clear(event, done)
       })
-      if (this.resetButton != '') actions.push({
+      if (this.resetButton != '') buttons.push({
         name: this.resetButton, color: 'primary', handler: (event, done) => this.reset(event, done)
       })
+      return buttons
     }
   },
   data () {

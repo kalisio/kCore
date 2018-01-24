@@ -18,6 +18,17 @@ export default function baseEditorMixin (formRefs) {
         default: ''
       }
     },
+    computed: {
+      editorTitle () {
+        // Retuns the schema title
+        if (this.getSchema()) {
+          let schemaTitle = this.getSchema().title
+          if (this.getMode() === 'create') return schemaTitle
+          if (this.getObject()) return _.template(schemaTitle)({ object: this.getObject()})
+        }
+        return ''
+      }
+    },
     data () {
       return {
         applyButton: ''
