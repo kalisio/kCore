@@ -9,6 +9,7 @@
   >
     <q-toggle
       v-model="model" 
+      v-bind="properties.field"
       @blur="onChanged" />
   </q-field>
 </template>
