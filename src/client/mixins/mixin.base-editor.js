@@ -1,4 +1,5 @@
 import logger from 'loglevel'
+import _ from 'lodash'
 
 export default function baseEditorMixin (formRefs) {
   return {
@@ -24,7 +25,7 @@ export default function baseEditorMixin (formRefs) {
         if (this.getSchema()) {
           let schemaTitle = this.getSchema().title
           if (this.getMode() === 'create') return schemaTitle
-          if (this.getObject()) return _.template(schemaTitle)({ object: this.getObject()})
+          if (this.getObject()) return _.template(schemaTitle)({ object: this.getObject() })
         }
         return ''
       }
