@@ -35,7 +35,7 @@ export default {
     emptyModel () {
       let multiple = lodash.get(this.properties.field.multiple, false)
       if (multiple) return []
-      return ''
+      return (this.properties.type === 'object' ? {} : '')
     }
   }
 }
