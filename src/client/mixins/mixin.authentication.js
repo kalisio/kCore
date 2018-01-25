@@ -25,6 +25,12 @@ let authenticationMixin = {
       .then(response => {
         return this.restoreUser(response.accessToken)
       })
+      .catch(error => {
+        // This ensure an old token cannot be kept
+        this.logout()
+        // Rethrow for caller to handle
+        throw error
+      })
     },
     login (email, password) {
       let payload = {
