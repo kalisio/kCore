@@ -69,7 +69,7 @@
               <q-popover ref="menu">
                 <q-list>
                   <template v-for="action in itemActions.menu">
-                    <q-item link :key="key(action, 'name')" @click="onActionTriggered(action, item)">
+                    <q-item link :key="key(action, 'name')" @click="$refs.menu.close(); onActionTriggered(action, item)">
                       <q-item-side :icon="action.icon" />
                       <q-item-main>
                         {{action.label}}
