@@ -1,10 +1,16 @@
 import lodash from 'lodash'
 import logger from 'winston'
+import moment from 'moment'
 import makeDebug from 'debug'
 import mongodb, { ObjectID } from 'mongodb'
 import errors from 'feathers-errors'
 
 const debug = makeDebug('kalisio:kCore:db')
+
+// This ensure moment objects are correctly serialized in MongoDB
+Object.getPrototypeOf(moment()).toBSON = function () {
+  return this.toDate()
+}
 
 export function isObjectID (id) {
   return id && (typeof id.toHexString === 'function') && (typeof id.getTimestamp === 'function')

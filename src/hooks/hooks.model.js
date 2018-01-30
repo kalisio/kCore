@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import moment from 'moment'
 import { objectifyIDs, toObjectIDs } from '../db'
 import { discard, disallow, getItems, replaceItems } from 'feathers-hooks-common'
 // import makeDebug from 'debug'
@@ -89,5 +90,24 @@ export function convertObjectIDs (properties) {
   return function (hook) {
     if (hook.params.query) toObjectIDs(hook.params.query, properties)
     if (hook.data) toObjectIDs(hook.data, properties)
+  }
+}
+
+// Utility function used to convert from string to Dates a fixed set of properties on a given object
+export function toDates (object, properties) {
+  properties.forEach(property => {
+    const date = moment.utc(_.get(object, property))
+    if (date.isValid()) {
+      _.set(object, property, date)
+    }
+  })
+}
+
+// The hook convert allows to transform a set of input properties as a string
+// into a Date object on client queries
+export function convertDates (properties) {
+  return function (hook) {
+    if (hook.params.query) toDates(hook.params.query, properties)
+    if (hook.data) toDates(hook.data, properties)
   }
 }

@@ -21,7 +21,7 @@ export function updateTags (hook) {
   }
   // Tag service is contextual, look for context on initiator service
   const tagService = hook.app.getService('tags', hook.service.context)
-  if (!tagService) return Promise.reject(new Error('No context found to retrieve tag service for initiator service ' + hook.service.name))
+  if (!tagService) return Promise.reject(new Error('No valid context found to retrieve tag service for initiator service ' + hook.service.name))
 
   return Promise.all(tags.map(tag => {
     return (hook.method === 'remove' ? tagService.remove(null, { query: tag }) : tagService.create(tag))
