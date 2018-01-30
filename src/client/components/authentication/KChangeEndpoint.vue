@@ -6,6 +6,7 @@
           <blockquote>
             <p>
               Please enter the URL of the remote service to be used.
+              <a @click="onReset">Click this link</a> if you want to reset it to the default value.
             </p>
           </blockquote>
         </div>
@@ -27,14 +28,18 @@
 import { QBtn } from 'quasar'
 import { KScreen } from '../frame'
 import { KForm } from '../form'
+import mixins from '../../mixins'
 
 export default {
-  name: 'k-reset-password',
+  name: 'k-change-endpoint',
   components: {
     QBtn,
     KScreen,
     KForm
   },
+  mixins: [
+    mixins.refsResolver(['form'])
+  ],
   data () {
     return {
       schema: {
@@ -44,7 +49,7 @@ export default {
         "description": "Change remote service URL form",
         "type": "object",
         "properties": {
-          "url": { 
+          "baseUrl": { 
             "type": "string", 
             "format": "uri",
             "field": {
@@ -54,7 +59,7 @@ export default {
             }
           }
         },
-        "required": ["url"],
+        "required": ["baseUrl"],
         "form": {
           "type": "object",
           "properties":  {
@@ -67,16 +72,29 @@ export default {
     }
   },
   methods: {
+    onReset () {
+      this.$api.setBaseUrl('')
+      this.$router.push({name: 'login'})
+      window.location.reload()
+    },
     onApplied (data) {
       let result = this.$refs.form.validate()
       if (result.isValid) {
-        this.$api.setBaseUrl(result.values.url)
+        this.$api.setBaseUrl(result.values.baseUrl)
         this.$router.push({name: 'login'})
+        window.location.reload()
       }
     },
     onCanceled () {
       this.$router.push({name: 'login'})
     }
+  },
+  async created () {
+    await this.loadRefs()
+    await this.$refs.form.build()
+    this.$refs.form.fill({
+      baseUrl: this.$api.getBaseUrl()
+    })
   }
 }
 </script>

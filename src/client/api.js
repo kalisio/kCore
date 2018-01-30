@@ -10,35 +10,14 @@ import { permissions } from '../common'
 import { Store } from './store'
 import { Platform } from 'quasar'
 
+function getBaseUrlStorageKey() {
+ return config.appName + '-baseUrl'
+}
+
 export function kalisio () {
   let api = feathers()
-  // Setup log level
-  if (config.logs && config.logs.level) {
-    logger.setLevel(config.logs.level, false)
-  } else {
-    logger.setLevel('info')
-  }
-  api.configure(feathersHooks())
-  const origin = Platform.is.cordova ? config.domain : window.location.origin
-  if (config.transport === 'http') {
-    api.configure(feathers.rest(origin).fetch(window.fetch.bind(window)))
-  } else {
-    let socket = io(origin, {
-      transports: ['websocket'],
-      path: config.apiPath + 'ws'
-    })
-    api.configure(feathers.socketio(socket, { timeout: 10000 }))
-  }
-  api.configure(feathers.authentication({
-    storage: window.localStorage,
-    path: config.apiPath + '/authentication'
-  }))
-  api.configure(reactive(rxjs, {
-    idField: '_id'
-  }))
-  // Object used to store configuration options for services
-  api.serviceOptions = {}
 
+  // Setup our interface
   // This avoid managing the API path before each service name
   api.getServicePath = function (name, context, withApiPrefix = true) {
     const options = _.get(api.serviceOptions, name, {})
@@ -79,8 +58,12 @@ export function kalisio () {
   api.declareService = function (name, options = {}) {
     _.set(api.serviceOptions, name, options)
   }
-  // change the base URL/domain to be used (useful for mobile apps)
+  // Change the base URL/domain to be used (useful for mobile apps)
   api.setBaseUrl = function (baseUrl) {
+    window.localStorage.setItem(getBaseUrlStorageKey(), baseUrl)
+    // Updating this setting live does not seem to work well in Feathers
+    // For now the caller should simply "reload" the app 
+    /*
     if (config.transport === 'http') {
       Object.keys(this.services).forEach(path => {
         const service = this.service(path)
@@ -95,6 +78,16 @@ export function kalisio () {
       })
       this.configure(feathers.socketio(socket))
     }
+    */
+  }
+
+  api.getBaseUrl = function () {
+    let origin = Platform.is.cordova ? config.domain : window.location.origin
+    // Check for registered custom base Url if any
+    if (window.localStorage.getItem(getBaseUrlStorageKey())) {
+      origin = window.localStorage.getItem(getBaseUrlStorageKey())
+    }
+    return origin
   }
 
   api.can = function (operation, service, context, resource) {
@@ -123,6 +116,33 @@ export function kalisio () {
     }
     return result
   }
+
+  // Setup log level
+  if (config.logs && config.logs.level) {
+    logger.setLevel(config.logs.level, false)
+  } else {
+    logger.setLevel('info')
+  }
+  api.configure(feathersHooks())
+  let origin = api.getBaseUrl()
+  if (config.transport === 'http') {
+    api.configure(feathers.rest(origin).fetch(window.fetch.bind(window)))
+  } else {
+    let socket = io(origin, {
+      transports: ['websocket'],
+      path: config.apiPath + 'ws'
+    })
+    api.configure(feathers.socketio(socket, { timeout: 10000 }))
+  }
+  api.configure(feathers.authentication({
+    storage: window.localStorage,
+    path: config.apiPath + '/authentication'
+  }))
+  api.configure(reactive(rxjs, {
+    idField: '_id'
+  }))
+  // Object used to store configuration options for services
+  api.serviceOptions = {}
 
   return api
 }
