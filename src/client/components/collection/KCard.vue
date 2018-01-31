@@ -146,7 +146,7 @@ export default {
   },
   methods: {
     layout () {
-      return _.get(this.options, 'layout', 'col-xs-6 col-sm-4 col-md-4 col-lg-4 col-xl-3')
+      return _.get(this.options, 'layout', 'col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-3')
     },
     key (object, property) {
       return this.item._id + '-' + object[property]
