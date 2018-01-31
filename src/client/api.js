@@ -10,8 +10,8 @@ import { permissions } from '../common'
 import { Store } from './store'
 import { Platform } from 'quasar'
 
-function getBaseUrlStorageKey() {
- return config.appName + '-baseUrl'
+function getBaseUrlStorageKey () {
+  return config.appName + '-baseUrl'
 }
 
 export function kalisio () {
@@ -62,7 +62,7 @@ export function kalisio () {
   api.setBaseUrl = function (baseUrl) {
     window.localStorage.setItem(getBaseUrlStorageKey(), baseUrl)
     // Updating this setting live does not seem to work well in Feathers
-    // For now the caller should simply "reload" the app 
+    // For now the caller should simply "reload" the app
     /*
     if (config.transport === 'http') {
       Object.keys(this.services).forEach(path => {
