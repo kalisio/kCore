@@ -24,6 +24,21 @@ export default {
     QField,
     QDatetime
   },
-  mixins: [mixins.baseField]
+  mixins: [mixins.baseField],
+  methods: {
+    emptyModel () {
+      let now = Date.now()
+      // ADD given offset in seconds if any
+      if (this.properties.field.defaultOffset) {
+        now += this.properties.field.defaultOffset * 1000
+      }
+      return new Date(now).toISOString()
+    },
+    updateModel (date) {
+      // Convert from date object to string
+      this.model = date.toISOString()
+      this.onChanged()
+    }
+  }
 }
 </script>
