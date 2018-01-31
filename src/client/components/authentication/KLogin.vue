@@ -98,7 +98,7 @@ export default {
         }
       },
       providers: [],
-      isCordova: DEV ? true : Platform.is.cordova
+      isCordova: Platform.is.cordova
     }
   },
   mixins: [mixins.authentication],
@@ -122,7 +122,37 @@ export default {
       }
     },
     onLogWith (provider) {
-      location.href = '/auth/' + provider.toLowerCase()
+      const authUrl = this.$api.getBaseUrl() + '/auth/' + provider.toLowerCase()
+      const callbackUrl = authUrl + '/callback'
+      if (this.isCordova) {
+        // Use in app browser so that we can intercept the redirect on the callback URL
+        let authBrowser = window.cordova.InAppBrowser.open(authUrl, '_blank', 'location=no,clearsessioncache=yes,clearcache=yes')
+        // Detect when the login has finished and the feathers cookie is ready
+        authBrowser.addEventListener('loadstop', event => {
+          // Detect the callback URL from backend, take care it is also used in the OAuth2 login screen as query parameter
+          if (event.url.includes('/callback') && !event.url.includes('redirect_uri')) {
+            let callbackBrowser = window.cordova.InAppBrowser.open(callbackUrl, '_blank', 'location=no,clearsessioncache=yes,clearcache=yes')
+            callbackBrowser.addEventListener('loadstop', event => {
+              // Detect when the login has finished and the feathers cookie is ready
+              if (event.url.includes(this.$api.getBaseUrl())) {
+                // FIXME: customize cookie name
+                callbackBrowser.executeScript(
+                  // Code to extract JWT from cookie
+                  { code: 'document.cookie.valueOf("feathers-jwt")' }, token => {
+                    window.localStorage.setItem('feathers-jwt', token)
+                    callbackBrowser.close()
+                    authBrowser.close()
+                    // Restore session
+                    this.$router.push({ name: 'home' })
+                  }
+                )
+              }
+            })
+          }
+        })
+      } else {
+        location.href = authUrl
+      }
     }
   },
   created () {
