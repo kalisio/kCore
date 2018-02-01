@@ -83,6 +83,11 @@ export function configureService (name, service, servicesPath) {
     service.hooks(hooks)
     debug(name + ' service hooks configured on path ' + servicesPath)
   } catch (error) {
+    debug('No ' + name + ' service hooks configured on path ' + servicesPath)
+    if (error.code !== 'MODULE_NOT_FOUND') {
+      // Log error in this case as this might be linked to a syntax error in required file
+      debug(error)
+    }
     // As this is optionnal this require has to fail silently
   }
 
@@ -92,7 +97,12 @@ export function configureService (name, service, servicesPath) {
       service.filter(filters)
       debug(name + ' service filters configured on path ' + servicesPath)
     } catch (error) {
-    // As this is optionnal this require has to fail silently
+      debug('No ' + name + ' service filters configured on path ' + servicesPath)
+      if (error.code !== 'MODULE_NOT_FOUND') {
+        // Log error in this case as this might be linked to a syntax error in required file
+        debug(error)
+      }
+      // As this is optionnal this require has to fail silently
     }
   }
 
@@ -131,13 +141,20 @@ export function createService (name, app, options = {}) {
     paginate
   }, options)
   // For DB services a model has to be provided
-  let dbService = true
+  let dbService = false
   try {
-    const configureModel = require(path.join(options.modelsPath, name + '.model.' + app.db.adapter))
-    configureModel(app, serviceOptions)
+    if (options.modelsPath) {
+      const configureModel = require(path.join(options.modelsPath, name + '.model.' + app.db.adapter))
+      configureModel(app, serviceOptions)
+      dbService = true
+    }
   } catch (error) {
+    debug('No ' + name + ' service model configured on path ' + options.modelsPath)
+    if (error.code !== 'MODULE_NOT_FOUND') {
+      // Log error in this case as this might be linked to a syntax error in required file
+      debug(error)
+    }
     // As this is optionnal this require has to fail silently
-    dbService = false
   }
 
   // Initialize our service with any options it requires
@@ -165,11 +182,16 @@ export function createService (name, app, options = {}) {
   // Register hooks and filters
   service = configureService(name, service, options.servicesPath)
   // Optionnally a specific service mixin can be provided, apply it
-  if (dbService) {
+  if (dbService && options.servicesPath) {
     try {
       const serviceMixin = require(path.join(options.servicesPath, name, name + '.service'))
       service.mixin(serviceMixin)
     } catch (error) {
+      debug('No ' + name + ' service mixin configured on path ' + options.servicesPath)
+      if (error.code !== 'MODULE_NOT_FOUND') {
+        // Log error in this case as this might be linked to a syntax error in required file
+        debug(error)
+      }
       // As this is optionnal this require has to fail silently
     }
   }
@@ -200,7 +222,8 @@ function setupLogger (logsConfig) {
   try {
     logger.remove(logger.transports.Console)
   } catch (error) {
-
+    // Logger might be down, use console
+    console.error('Could not remove default logger transport')
   }
   // We have one entry per log type
   let logsTypes = logsConfig ? Object.getOwnPropertyNames(logsConfig) : []
@@ -214,7 +237,8 @@ function setupLogger (logsConfig) {
     try {
       logger.add(logger.transports[logType], options)
     } catch (error) {
-
+      // Logger might be down, use console
+      console.error('Could not setup default log levels')
     }
   })
 }
