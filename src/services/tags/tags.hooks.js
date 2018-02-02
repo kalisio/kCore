@@ -5,7 +5,7 @@ module.exports = {
   before: {
     all: [],
     find: [],
-    get: [ disallow() ],
+    get: [ disallow('external') ],
     create: [ populateTagResource, addTagIfNew ],
     update: [ disallow() ],
     patch: [ disallow('external') ],

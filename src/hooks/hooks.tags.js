@@ -1,9 +1,14 @@
 import _ from 'lodash'
 import { BadRequest } from 'feathers-errors'
+import { getItems } from 'feathers-hooks-common'
 import { populateObject } from './hooks.query'
 import makeDebug from 'debug'
 
 const debug = makeDebug('kalisio:kCore:hooks:tags')
+
+function isTagEqual(tag1, tag2) {
+  return tag1.value === tag2.value && tag1.scope === tag2.scope
+}
 
 export function populateTagResource (hook) {
   if (hook.type !== 'before') {
@@ -14,21 +19,50 @@ export function populateTagResource (hook) {
   return populateObject({ serviceField: 'resourcesService', idField: 'resource', throwOnNotFound: false })(hook)
 }
 
-export function updateTags (hook) {
-  const tags = (hook.method === 'remove' ? hook.result.tags : hook.data.tags)
-  if (!tags) {
+export async function updateTags (hook) {
+  let item = getItems(hook)
+  if (!item.tags) {
     return Promise.resolve(hook)
   }
   // Tag service is contextual, look for context on initiator service
   const tagService = hook.app.getService('tags', hook.service.context)
   if (!tagService) return Promise.reject(new Error('No valid context found to retrieve tag service for initiator service ' + hook.service.name))
-
-  return Promise.all(tags.map(tag => {
-    return (hook.method === 'remove' ? tagService.remove(null, { query: tag }) : tagService.create(tag))
-  }))
-  .then(results => {
-    return hook
-  })
+  // Retrieve previous version of the item
+  let previousTags = _.get(hook.params, 'previousItem.tags')
+  if (previousTags) {
+    // Find common tags
+    const commonTags = _.intersectionWith(item.tags, previousTags, isTagEqual)
+    // Clear removed tags
+    const removedTags = _.pullAllWith(previousTags, commonTags, isTagEqual)
+    debug('Removing tags for object ' + item._id.toString(), removedTags)
+    const removePromises = removedTags.map(tag => tagService.remove(null, { query: tag }))
+    // And add new ones
+    const addedTags = _.pullAllWith(item.tags, commonTags, isTagEqual)
+    debug('Adding tags for object ' + item._id.toString(), addedTags)
+    const addedPromises = addedTags.map(tag => tagService.create(tag))
+    let [ oldTags, newTags ] = await Promise.all([
+      Promise.all(removePromises),
+      Promise.all(addedPromises)
+    ])
+    // Update tags to include information added when they are created (eg _id)
+    item.tags = newTags
+  } else {
+    if (hook.method !== 'remove') {
+      // Add new tags
+      debug('Adding tags for object ' + item._id.toString(), item.tags)
+      const addPromises = item.tags.map(tag => tagService.create(tag))
+      // Update tags to include information added when they are created (eg _id)
+      item.tags = await Promise.all(addPromises)
+    } else {
+      debug('Removing tags for object ' + item._id.toString(), item.tags)
+      const removePromises = item.tags.map(tag => tagService.remove(null, { query: tag }))
+      await Promise.all(removePromises)
+    }
+  }
+  // Avoid transferring some internal data
+  //item.tags = item.tags.map(tag => _.omit(tag, ['count']))
+  
+  return hook
 }
 
 export function addTagIfNew (hook) {
@@ -46,11 +80,11 @@ export function addTagIfNew (hook) {
     // If it already exist avoid creating it in DB,
     // simply update counter and return it
     if (result.total > 0) {
-      const tag = result.data[0]
+      let tag = result.data[0]
       hook.result = tag
-      const count = tag.count + 1
-      debug('Increasing tag ' + tag.value + ' count (' + count + ') with scope ' + tag.scope)
-      return tagService.patch(tag._id, { count })
+      tag.count += 1
+      debug('Increasing tag ' + tag.value + ' count (' + tag.count + ') with scope ' + tag.scope)
+      return tagService.patch(tag._id, { count: tag.count })
     } else {
       // Otherwise initialize tag counter
       hook.data.count = 1
@@ -79,8 +113,8 @@ export function removeTagIfUnused (hook) {
     // If it already exist decrease counter and erase it if not used anymore
     if (result.total > 0) {
       let tag = result.data[0]
-      tag.count = tag.count - 1
       hook.result = tag
+      tag.count -= 1
       if (tag.count <= 0) {
         debug('Removing unused tag ' + tag.value + ' with scope ' + tag.scope)
         return tagService.remove(tag._id)
@@ -107,7 +141,7 @@ export function tagResource (hook) {
   const resourcesService = hook.params.resourcesService
   let resource = hook.params.resource
   // If not already tagged
-  if (!_.find(resource.tags, resourceTag => resourceTag.value === tag.value && resourceTag.scope === tag.scope)) {
+  if (!_.find(resource.tags, resourceTag => isTagEqual(resourceTag, tag))) {
     // Initialize on first tag
     if (!resource.tags) {
       resource.tags = []
@@ -135,7 +169,7 @@ export function untagResource (hook) {
   const resourcesService = hook.params.resourcesService
   let resource = hook.params.resource
   // If already tagged
-  const tagIndex = _.findIndex(resource.tags, resourceTag => resourceTag.value === tag.value && resourceTag.scope === tag.scope)
+  const tagIndex = _.findIndex(resource.tags, resourceTag => isTagEqual(resourceTag, tag))
   if (tagIndex >= 0) {
     _.pullAt(resource.tags, tagIndex)
     return resourcesService.patch(resource._id, {
