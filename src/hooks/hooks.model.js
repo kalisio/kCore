@@ -111,3 +111,14 @@ export function convertDates (properties) {
     if (hook.data) toDates(hook.data, properties)
   }
 }
+
+export async function populatePreviousObject (hook) {
+  if (hook.type !== 'before') {
+    throw new Error(`The 'populatePreviousObject' hook should only be used as a 'before' hook.`)
+  }
+  let item = getItems(hook)
+  // Retrieve previous version of the item and make it availalbe to next hooks
+  hook.params.previousItem = await hook.service.get(item._id.toString())
+  
+  return hook
+}
