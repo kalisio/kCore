@@ -1,4 +1,4 @@
-import { Platform } from 'quasar'
+// import { Platform } from 'quasar'
 
 let authenticationMixin = {
   methods: {
@@ -37,11 +37,6 @@ let authenticationMixin = {
         strategy: 'local',
         email: email,
         password: password
-      }
-      // On mobile device we add the device information so that when authenticating
-      // on a new device we can register it
-      if (Platform.is.cordova && window.device) {
-        payload.device = window.device
       }
       return this.$api.authenticate(payload)
       .then(response => {
