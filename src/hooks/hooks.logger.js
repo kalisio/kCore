@@ -9,7 +9,7 @@ export function log (hook) {
   }
 
   if (hook.error) {
-    logger.error(message)
+    logger.error(message, hook.error.stack)
   } else {
     logger.debug(message)
   }
