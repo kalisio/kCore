@@ -117,8 +117,9 @@ export async function populatePreviousObject (hook) {
     throw new Error(`The 'populatePreviousObject' hook should only be used as a 'before' hook.`)
   }
   let item = getItems(hook)
-  // Retrieve previous version of the item and make it availalbe to next hooks
-  hook.params.previousItem = await hook.service.get(item._id.toString())
-  
+  // Retrieve previous version of the item and make it available to next hooks
+  if (item._id) {
+    hook.params.previousItem = await hook.service.get(item._id.toString())
+  }
   return hook
 }
