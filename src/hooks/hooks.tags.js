@@ -70,11 +70,12 @@ export function addTagIfNew (hook) {
     throw new Error(`The 'addTagIfNew' hook should only be used as a 'before' hook.`)
   }
   const tagService = hook.service
-  if (!hook.data || !hook.data.value || !hook.data.scope) {
+  const value = _.get(hook, 'data.value')
+  const scope = _.get(hook, 'data.scope')
+  if (!value || !scope) {
     throw new BadRequest('Scope and value should be provided to create a tag')
   }
-  const value = hook.data.value
-  const scope = hook.data.scope
+  
   return tagService.find({ query: { value, scope } })
   .then(result => {
     // If it already exist avoid creating it in DB,
@@ -84,11 +85,11 @@ export function addTagIfNew (hook) {
       hook.result = tag
       tag.count += 1
       debug('Increasing tag ' + tag.value + ' count (' + tag.count + ') with scope ' + tag.scope)
-      return tagService.patch(tag._id, { count: tag.count })
+      return tagService.patch(tag._id.toString(), { count: tag.count })
     } else {
       // Otherwise initialize tag counter
       hook.data.count = 1
-      return hook
+      return Promise.resolve(hook)
     }
   })
   .then(_ => {
@@ -102,12 +103,12 @@ export function removeTagIfUnused (hook) {
   }
 
   const tagService = hook.service
-  if (!hook.params || !hook.params.query || !hook.params.query.value || !hook.params.query.scope) {
-    throw new BadRequest('Scope and value should be provided to create a tag')
+  const value = _.get(hook.params, 'query.value')
+  const scope = _.get(hook.params, 'query.scope')
+  if (!value || !scope) {
+    throw new BadRequest('Scope and value should be provided to remove a tag')
   }
-  const value = hook.params.query.value
-  const scope = hook.params.query.scope
-
+  
   return tagService.find({ value, scope })
   .then(result => {
     // If it already exist decrease counter and erase it if not used anymore
@@ -117,15 +118,15 @@ export function removeTagIfUnused (hook) {
       tag.count -= 1
       if (tag.count <= 0) {
         debug('Removing unused tag ' + tag.value + ' with scope ' + tag.scope)
-        return tagService.remove(tag._id)
+        return tagService.remove(tag._id.toString())
       } else {
         debug('Decreasing tag ' + tag.value + ' count (' + tag.count + ') with scope ' + tag.scope)
-        return tagService.patch(tag._id, { count: tag.count })
+        return tagService.patch(tag._id.toString(), { count: tag.count })
       }
     } else {
       // Should not be possible, this will skip DB call
       hook.result = null
-      return hook
+      return Promise.resolve(hook)
     }
   })
   .then(_ => {
@@ -146,14 +147,15 @@ export function tagResource (hook) {
     if (!resource.tags) {
       resource.tags = []
     }
-    resource.tags.push(_.omit(tag, '_id'))
-    return resourcesService.patch(resource._id, {
+    resource.tags.push(tag)
+    return resourcesService.patch(resource._id.toString(), {
       tags: resource.tags
     }, {
       user: hook.params.user
     })
     .then(subject => {
-      debug('Tag ' + tag.value + ' set on resource ' + resource._id + ' with scope ' + tag.scope)
+      debug('Tag ' + tag.value + ' set on resource ' + resource._id.toString() + ' with scope ' + tag.scope)
+      return hook
     })
   } else {
     return Promise.resolve(hook)
@@ -172,13 +174,14 @@ export function untagResource (hook) {
   const tagIndex = _.findIndex(resource.tags, resourceTag => isTagEqual(resourceTag, tag))
   if (tagIndex >= 0) {
     _.pullAt(resource.tags, tagIndex)
-    return resourcesService.patch(resource._id, {
+    return resourcesService.patch(resource._id.toString(), {
       tags: resource.tags
     }, {
       user: hook.params.user
     })
     .then(subject => {
-      debug('Tag ' + tag.value + ' unset on resource ' + resource._id + ' with scope ' + tag.scope)
+      debug('Tag ' + tag.value + ' unset on resource ' + resource._id.toString() + ' with scope ' + tag.scope)
+      return hook
     })
   } else {
     return Promise.resolve(hook)

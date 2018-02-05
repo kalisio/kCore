@@ -125,7 +125,7 @@ export default {
   // Compute abilities for a given user and update it in cache
   updateAbilities (subject) {
     if (this.cache) {
-      if (subject) {
+      if (subject && subject._id) {
         this.cache.del(subject._id.toString())
       } else {
         this.cache.del(ANONYMOUS_USER)
