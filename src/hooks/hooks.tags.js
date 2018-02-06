@@ -6,7 +6,7 @@ import makeDebug from 'debug'
 
 const debug = makeDebug('kalisio:kCore:hooks:tags')
 
-function isTagEqual(tag1, tag2) {
+function isTagEqual (tag1, tag2) {
   return tag1.value === tag2.value && tag1.scope === tag2.scope
 }
 
@@ -44,6 +44,7 @@ export async function updateTags (hook) {
       Promise.all(removePromises),
       Promise.all(addedPromises)
     ])
+    debug('Tags removed/added', oldTags, newTags)
     // Update tags to include information added when they are created (eg _id)
     item.tags = commonTags.concat(newTags)
   } else {
@@ -60,8 +61,8 @@ export async function updateTags (hook) {
     }
   }
   // Avoid transferring some internal data
-  //item.tags = item.tags.map(tag => _.omit(tag, ['count']))
-  
+  // item.tags = item.tags.map(tag => _.omit(tag, ['count']))
+
   return hook
 }
 
@@ -75,7 +76,7 @@ export function addTagIfNew (hook) {
   if (!value || !scope) {
     throw new BadRequest('Scope and value should be provided to create a tag')
   }
-  
+
   return tagService.find({ query: { value, scope } })
   .then(result => {
     // If it already exist avoid creating it in DB,
@@ -108,7 +109,7 @@ export function removeTagIfUnused (hook) {
   if (!value || !scope) {
     throw new BadRequest('Scope and value should be provided to remove a tag')
   }
-  
+
   return tagService.find({ value, scope })
   .then(result => {
     // If it already exist decrease counter and erase it if not used anymore
