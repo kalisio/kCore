@@ -45,7 +45,7 @@ export async function updateTags (hook) {
       Promise.all(addedPromises)
     ])
     // Update tags to include information added when they are created (eg _id)
-    item.tags = newTags
+    item.tags = commonTags.concat(newTags)
   } else {
     if (hook.method !== 'remove') {
       // Add new tags
