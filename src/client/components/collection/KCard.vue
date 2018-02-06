@@ -136,7 +136,7 @@ export default {
       // Check for custom description field
       let description = (this.options.descriptionField ? _.get(this.item, this.options.descriptionField, '') : this.item.description)
       // Convert from JS formatted strings to HTML formatted strings as we usually allow multilines in this one
-      description = description.replace(/[\n\r]/g, '<br/>')
+      if (description) description = description.replace(/[\n\r]/g, '<br/>')
       return description
     },
     tags () {

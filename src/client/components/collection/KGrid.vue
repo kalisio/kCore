@@ -31,12 +31,23 @@ export default {
           props: {} 
         } 
       }
+    },
+    baseQuery: {
+      type: Object,
+      default: function () {
+        return {}
+      }
     }
   },
   watch: {
     '$route' (to, from) {
       // React to route changes but reusing the same component as this one is generic
       this.refreshCollection()
+    }
+  },
+  methods: {
+    getCollectionBaseQuery () {
+      return this.baseQuery
     }
   },
   created () {

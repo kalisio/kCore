@@ -1,14 +1,6 @@
 import { Events } from 'quasar'
 
 let baseCollectionMixin = {
-  props: {
-    baseQuery: {
-      type: Object,
-      default: function () {
-        return {}
-      }
-    }
-  },
   computed: {
     nbPages () {
       return Math.ceil(this.nbTotalItems / this.nbItemsPerPage)
@@ -47,7 +39,7 @@ let baseCollectionMixin = {
       }
     },
     refreshCollection () {
-      let fullQuery = Object.assign({}, this.baseQuery, this.filterQuery)
+      let fullQuery = Object.assign({}, this.getCollectionBaseQuery(), this.filterQuery)
       // Sets the number of items to be loaded
       if (this.nbItemsPerPage > 0) {
         Object.assign(fullQuery, {
