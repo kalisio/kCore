@@ -2,8 +2,8 @@
   <div class="row justify-between">
     <k-autocomplete v-if="!isCompleted" class="col" ref="search" :services="services" @item-selected="onItemSelected" />
     <div class="row col-7" v-if="items.length > 0">
-      <q-chip v-for="item in items" :key="item._id" :icon="item.icon" color="primary" @close="onItemRemoved(item)" closable>
-        {{item.name}}
+      <q-chip v-for="item in items" :key="item._id" :icon="itemIcon(item)" color="primary" @close="onItemRemoved(item)" closable>
+        {{itemName(item)}}
       </q-chip>
     </div>
   </div>
@@ -49,6 +49,14 @@ export default {
     }
   },
   methods: {
+    itemIcon (item) {
+      if (item.icon && item.icon.name) return item.icon.name
+      return item.icon
+    },
+    itemName (item) {
+      if (item.value) return item.value
+      return item.name
+    },
     onItemSelected (newItem) {
       if(_.findIndex(this.items, item => item._id === newItem._id) === -1) {
         this.items.push(newItem)
