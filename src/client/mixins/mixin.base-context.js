@@ -41,10 +41,13 @@ let baseContextMixin = {
       this.$store.patch('appBar', { toolbar: actions.toolbar, menu: actions.menu })
     },
     refreshContext () {
-      this.contextLoaded = false
       if (this.contextId) {
         // Context already set ?
-        if (this.context && this.context._id === this.contextId) return
+        const context = this.$store.get('context')
+        if (context && context._id === this.contextId) return
+        // Otherwise clear so that underlying components will be destroyed
+        this.clearContext()
+        // Then update the context
         this.service.get(this.contextId)
         .then(context => this.setContext(context))
       } else {
