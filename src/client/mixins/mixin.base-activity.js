@@ -11,7 +11,10 @@ let baseActivityMixin = {
   watch: {
     '$route' (to, from) {
       // React to route changes but reusing the same component as this one is generic
-      this.refreshActivity()
+      // However we don't have to for child routes (forward and back) as the parent remains the same
+      if (!to.path.startsWith(from.path) && !from.path.startsWith(to.path)) {
+        this.refreshActivity()
+      }
     }
   },
   methods: {
