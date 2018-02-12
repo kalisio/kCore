@@ -8,7 +8,7 @@ import core, { kalisio, hooks } from '../src'
 
 describe('kCore', () => {
   let app, server, port, baseUrl, accessToken,
-    userService, userObject, tagService
+    userService, userObject, authorisationService, tagService, tagObject
 
   before(() => {
     chailint(chai, util)
@@ -33,6 +33,8 @@ describe('kCore', () => {
     userService.hooks({ after: { create: hooks.updateTags, remove: hooks.updateTags } })
     tagService = app.getService('tags')
     expect(tagService).toExist()
+    authorisationService = app.getService('authorisations')
+    expect(authorisationService).toExist()
     // Now app is configured launch the server
     server = app.listen(port)
     server.once('listening', _ => done())
@@ -98,6 +100,7 @@ describe('kCore', () => {
       }
     })
     .then(tag => {
+      tagObject = tag
       expect(tag).toExist()
       expect(tag.count).to.equal(1)
       return tagService.find({ query: { value: 'manager' } })
@@ -111,6 +114,47 @@ describe('kCore', () => {
       expect(users.data.length > 0).beTrue()
       expect(users.data[0].tags).toExist()
       expect(users.data[0].tags.length === 2).beTrue()
+    })
+  })
+
+  it('creates an authorization', () => {
+    return authorisationService.create({
+      scope: 'authorizations',
+      permissions: 'update',
+      subjects: userObject._id.toString(),
+      subjectsService: 'users',
+      resource: tagObject._id.toString(),
+      resourcesService: 'tags'
+    }, {
+      user: userObject
+    })
+    .then(authorisation => {
+      expect(authorisation).toExist()
+      return userService.get(userObject._id.toString())
+    })
+    .then(user => {
+      expect(user.authorizations).toExist()
+      expect(user.authorizations.length > 0).beTrue()
+      expect(user.authorizations[0].permissions).to.deep.equal('update')
+    })
+  })
+
+  it('removes an authorization', () => {
+    return authorisationService.remove(tagObject._id, {
+      query: {
+        scope: 'authorizations',
+        subjects: userObject._id.toString(),
+        subjectsService: 'users',
+        resourcesService: 'tags'
+      }
+    })
+    .then(authorisation => {
+      expect(authorisation).toExist()
+      return userService.get(userObject._id.toString())
+    })
+    .then(user => {
+      expect(user.authorizations).toExist()
+      expect(user.authorizations.length === 0).beTrue()
     })
   })
 
