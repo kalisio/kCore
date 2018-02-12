@@ -2,6 +2,7 @@ import _ from 'lodash'
 import sift from 'sift'
 import LruCache from 'lru-cache'
 import makeDebug from 'debug'
+import { createObjectID } from '../../db'
 import { defineAbilities } from '../../common/permissions'
 
 const debug = makeDebug('kalisio:kCore:authorisations')
@@ -69,7 +70,8 @@ export default {
       // Then retrieve the right scope on the subject
       let scope = _.get(subject, scopeName, [])
       // Then the target resource
-      scope = scope.filter(sift({ _id: { $ne: id } }))
+      // BUG: The previous code was based on the $ne operator but it did not work probably due to MongoDB IDs
+      scope = scope.filter(sift({ $not: { _id: createObjectID(id) } }))
       // This cover the case when we create the scope on the first auth,
       // so that if the caller want to get back the update subject he can have it
       _.set(subject, scopeName, scope)

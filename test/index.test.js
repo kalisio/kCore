@@ -147,6 +147,8 @@ describe('kCore', () => {
         subjectsService: 'users',
         resourcesService: 'tags'
       }
+    }, {
+      user: userObject
     })
     .then(authorisation => {
       expect(authorisation).toExist()
