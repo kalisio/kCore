@@ -4,7 +4,7 @@ import fs from 'fs-extra'
 import request from 'superagent'
 import chai, { util, expect } from 'chai'
 import chailint from 'chai-lint'
-import core, { kalisio, hooks } from '../src'
+import core, { kalisio, hooks, permissions } from '../src'
 
 describe('kCore', () => {
   let app, server, port, baseUrl, accessToken,
@@ -12,6 +12,9 @@ describe('kCore', () => {
 
   before(() => {
     chailint(chai, util)
+
+    // Register default rules for all users
+    permissions.defineAbilities.registerHook(permissions.defineUserAbilities)
 
     app = kalisio()
     // Register perspective hook
@@ -49,7 +52,7 @@ describe('kCore', () => {
         scope: 'skills',
         value: 'developer'
       }],
-      profile: { phone: '0623256968' } })
+      profile: { phone: '0623256968' } }, { checkAuthorisation: true })
     .then(user => {
       userObject = user
       return userService.find({ query: { 'profile.name': 'test-user' } })
@@ -193,7 +196,10 @@ describe('kCore', () => {
   })
 
   it('removes a user', () => {
-    return userService.remove(userObject._id)
+    return userService.remove(userObject._id, {
+      user: userObject,
+      checkAuthorisation: true
+    })
     .then(user => {
       return userService.find({ query: { name: 'test-user' } })
     })
