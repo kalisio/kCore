@@ -32,9 +32,7 @@ export default {
       let resource = _.find(scope, resource => resource._id.toString() === params.resource._id.toString())
       // On first authorisation create the resource in scope
       if (!resource) {
-        resource = {
-          _id: params.resource._id
-        }
+        resource = Object.assign({}, params.resource)
         if (context) {
           resource.context = (typeof context === 'object' ? context._id : context)
         }
