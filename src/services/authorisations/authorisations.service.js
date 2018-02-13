@@ -1,20 +1,12 @@
 import _ from 'lodash'
-import sift from 'sift'
 import LruCache from 'lru-cache'
 import makeDebug from 'debug'
-import { createObjectID } from '../../db'
 import { defineAbilities } from '../../common/permissions'
 
 const debug = makeDebug('kalisio:kCore:authorisations')
 
 // Global key to store abilities in cache for anonymous users
 const ANONYMOUS_USER = 'anonymous'
-
-// Util function to look for a given resource in a scope
-function findResource (scope, query) {
-  let results = sift(query, scope)
-  return results.length > 0 ? results[0] : null
-}
 
 export default {
   // Used to change permissions for a subject on a resource
