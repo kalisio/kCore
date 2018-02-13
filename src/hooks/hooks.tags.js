@@ -34,11 +34,11 @@ export async function updateTags (hook) {
     const commonTags = _.intersectionWith(item.tags, previousTags, isTagEqual)
     // Clear removed tags
     const removedTags = _.pullAllWith(previousTags, commonTags, isTagEqual)
-    debug('Removing tags for object ' + item._id.toString(), removedTags)
+    debug('Removing tags for object ' + item, removedTags)
     const removePromises = removedTags.map(tag => tagService.remove(null, { query: tag }))
     // And add new ones
     const addedTags = _.pullAllWith(item.tags, commonTags, isTagEqual)
-    debug('Adding tags for object ' + item._id.toString(), addedTags)
+    debug('Adding tags for object ' + item, addedTags)
     const addedPromises = addedTags.map(tag => tagService.create(tag))
     let [ oldTags, newTags ] = await Promise.all([
       Promise.all(removePromises),
@@ -50,12 +50,12 @@ export async function updateTags (hook) {
   } else {
     if (hook.method !== 'remove') {
       // Add new tags
-      debug('Adding tags for object ' + item._id.toString(), item.tags)
+      debug('Adding tags for object ' + item)
       const addPromises = item.tags.map(tag => tagService.create(tag))
       // Update tags to include information added when they are created (eg _id)
       item.tags = await Promise.all(addPromises)
     } else {
-      debug('Removing tags for object ' + item._id.toString(), item.tags)
+      debug('Removing tags for object ' + item)
       const removePromises = item.tags.map(tag => tagService.remove(null, { query: tag }))
       await Promise.all(removePromises)
     }
