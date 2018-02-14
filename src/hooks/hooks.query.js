@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { ObjectID } from 'mongodb'
 import makeDebug from 'debug'
 
-const debug = makeDebug('kalisio:kCore:hooks:query')
+const debug = makeDebug('kalisio:kCore:query:hooks')
 
 function marshallComparisonFieldsInQuery (queryObject) {
   _.forOwn(queryObject, (value, key) => {
@@ -161,8 +161,9 @@ export function populateObjects (options) {
     // If no ID given we perform a find, no pagination to be sure we get all objects
     if (!id) {
       debug(`Populating ${idProperty}`)
-      return service.find({ paginate: false }, { user: hook.params.user }).then(objects => {
+      return service.find({ query: {}, paginate: false, user: hook.params.user }).then(objects => {
         // Set the retrieved objects on the same field or given one in hook params
+        debug(`Populated ${objects.length} ${idProperty}`)
         _.set(params, idProperty, objects)
         return hook
       })
