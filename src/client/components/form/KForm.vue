@@ -52,6 +52,9 @@ export default {
     }
   },
   methods: {
+    getField (field) {
+      return this.$refs[field][0]
+    },
     onFieldChanged (field, value) {
       this.$emit('field-changed', field, value)
       // Checks whether the form is valid
@@ -60,12 +63,12 @@ export default {
         let error = this.hasFieldError(field)
         if (error) {
           // Invalidate the field
-          this.$refs[field][0].invalidate(error.message)
+          this.getField(field).invalidate(error.message)
           return
         }
       } 
       // Validate the field
-      this.$refs[field][0].validate()
+      this.getField(field).validate()
     },
     hasFieldError (field) {
       for (let i = 0; i < this.validator.errors.length; i++) {
@@ -128,24 +131,24 @@ export default {
         if (value) {
           // Override the default value in order to use this value when reseting the form
           lodash.set(field, 'default', value)
-          this.$refs[field.name][0].fill(value)
+          this.getField(field.name).fill(value)
         } else {
           // The field has no value, then assign a default one
-          this.$refs[field.name][0].reset()
+          this.getField(field.name).reset()
         }
       })
       this.validate()
     },
     values () {
-      return this.fields.reduce((values, field) => Object.assign(values, { [field.name]: this.$refs[field.name][0].value() }), {})
+      return this.fields.reduce((values, field) => Object.assign(values, { [field.name]: this.getField(field.name).value() }), {})
     },
     clear () {
       if (!this.loadRefs().isFulfilled()) throw Error('Cannot clear the form while not ready')
-      this.fields.forEach(field => this.$refs[field.name][0].clear())
+      this.fields.forEach(field => this.getField(field.name).clear())
     },
     reset () {
       if (!this.loadRefs().isFulfilled()) throw Error('Cannot reset the form while not ready')
-      this.fields.forEach(field => this.$refs[field.name][0].reset())
+      this.fields.forEach(field => this.getField(field.name).reset())
       this.validate()
     },
     validate () {
@@ -160,15 +163,15 @@ export default {
         this.fields.forEach(field => {
           let error = this.hasFieldError(field.name)
           if (error) {
-            this.$refs[field.name][0].invalidate(error.message)
+            this.getField(field.name).invalidate(error.message)
           } else {
-            this.$refs[field.name][0].validate()
+            this.getField(field.name).validate()
           }
         })
         return result
       }
       this.fields.forEach(field => {
-        this.$refs[field.name][0].validate()
+        this.getField(field.name).validate()
       })
       result.isValid = true
       return result
