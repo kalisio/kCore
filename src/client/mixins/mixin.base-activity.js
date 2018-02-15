@@ -34,6 +34,15 @@ let baseActivityMixin = {
     getActions (type) {
       return this.actions[type] || []
     },
+    getAction (name, type) {
+      let action = null
+      _.forOwn(this.actions, (value, key) => {
+        if (type && key !== type) return
+        let actionForType = value.find(action => action.name === name)
+        if (actionForType) action = actionForType
+      })
+      return action
+    },
     clearActions () {
       // Clear tabBar actions
       this.$store.patch('tabBar', { tabs: [] })
