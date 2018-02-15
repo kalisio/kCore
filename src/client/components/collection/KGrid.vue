@@ -4,6 +4,7 @@
       <template v-for="item in items">
         <component :is="renderer.component" :key="item._id" :item="item" :contextId="contextId" v-bind="renderer.props" />
       </template>
+      <h5 v-if="items.length === 0">No elements to be displayed</h5>
     </div>
     <div class="self-center" v-if="nbPages > 1">
       <q-pagination v-model="currentPage" :max="nbPages" style="padding: 18px" @input="onPageChanged" />
