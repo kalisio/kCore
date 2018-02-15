@@ -50,7 +50,7 @@ export default {
   },
   data () {
     return {
-      fab: this.fab = this.$store.get('fab')
+      fab: this.$store.get('fab')
     }
   },
   methods: {
