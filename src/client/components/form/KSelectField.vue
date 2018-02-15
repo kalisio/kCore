@@ -8,7 +8,7 @@
     :error="hasError"
   >
     <q-select
-      :multiple="this.properties.field.multiple ? this.properties.field.multiple : false"
+      :multiple="properties.field.multiple ? properties.field.multiple : false"
       :toggle="properties.field.toggle ? properties.field.toggle : false"
       :radio="properties.field.radio ? properties.field.radio : false"
       :chips="properties.field.chips ? properties.field.chips : false"
@@ -33,7 +33,7 @@ export default {
   mixins: [mixins.baseField],
   methods: {
     emptyModel () {
-      let multiple = lodash.get(this.properties.field.multiple, false)
+      let multiple = lodash.get(this.properties, 'field.multiple', false)
       if (multiple) return []
       return (this.properties.type === 'object' ? {} : '')
     }
