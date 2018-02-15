@@ -38,8 +38,16 @@ let baseCollectionMixin = {
         this.itemListener = null
       }
     },
+    getCollectionBaseQuery () {
+      // This method should be overriden in activities
+      return {}
+    },
+    getCollectionFilterQuery () {
+      // This method should be overriden in activities
+      return {}
+    },
     refreshCollection () {
-      let fullQuery = Object.assign({}, this.getCollectionBaseQuery(), this.filterQuery)
+      let fullQuery = Object.assign({}, this.getCollectionBaseQuery(), this.getCollectionFilterQuery())
       // Sets the number of items to be loaded
       if (this.nbItemsPerPage > 0) {
         Object.assign(fullQuery, {
@@ -52,14 +60,7 @@ let baseCollectionMixin = {
     },
     onPageChanged () {
       this.refreshCollection()
-    },
-    onFilterChanged (filterQuery) {
-      this.filterQuery = Object.assign({}, filterQuery)
-      this.refreshCollection()
     }
-  },
-  created () {
-    this.filterQuery = {}
   },
   beforeDestroy () {
     this.unsubscribe()

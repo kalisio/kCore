@@ -48,13 +48,23 @@ let baseActivityMixin = {
     clearTitle () {
       this.$store.patch('appBar', { title: '' })
     },
+    setSearch (requests) {
+      this.$store.patch('search', { requests: requests })
+    },
+    clearSearch () {
+      this.$store.patch('search', { requests: [], results: [] })
+    },
     clearActivity () {
       this.clearTitle()
+      this.clearSearch()
       this.clearActions()
     },
-    // This method should be overriden in activities
     refreshActivity () {
+      // This method should be overriden in activities
       this.clearActivity()
+    },
+    handleSearch () {
+      // This method should be overriden in activities
     }
   },
   created () {
@@ -62,9 +72,11 @@ let baseActivityMixin = {
     this.refreshActivity()
     // Whenever the user is updated, update abilities as well
     Events.$on('user-abilities-changed', this.refreshActivity)
+    Events.$on('search-changed', this.handleSearch)
   },
   beforeDestroy () {
     Events.$off('user-abilities-changed', this.refreshActivity)
+    Events.$off('search-changed', this.handleSearch)
   }
 }
 
