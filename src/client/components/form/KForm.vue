@@ -53,8 +53,9 @@ export default {
   },
   methods: {
     onFieldChanged (field, value) {
+      this.$emit('field-changed', field, value)
       // Checks whether the form is valid
-      if (! this.validator(this.values())) {
+      if (!this.validator(this.values())) {
         // Checks whether the touched field has an error
         let error = this.hasFieldError(field)
         if (error) {
@@ -65,7 +66,6 @@ export default {
       } 
       // Validate the field
       this.$refs[field][0].validate()
-      this.$emit('field-changed', field, value)
     },
     hasFieldError (field) {
       for (let i = 0; i < this.validator.errors.length; i++) {
