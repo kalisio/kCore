@@ -64,7 +64,6 @@ export default {
       this.$store.patch('search', { pattern: selection.label, selection: selection.data })
     },
     onChanged (pattern) {
-      console.log(pattern)
       if (this.$store.get('search.pattern') !== pattern) {
         this.$store.patch('search', { pattern: pattern, selection: null })
       }
