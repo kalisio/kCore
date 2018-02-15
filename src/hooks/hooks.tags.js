@@ -25,7 +25,8 @@ export async function updateTags (hook) {
     return Promise.resolve(hook)
   }
   // Tag service is contextual, look for context on initiator service
-  const tagService = hook.app.getService('tags', hook.service.context)
+  const context = hook.service.context
+  const tagService = hook.app.getService('tags', context)
   if (!tagService) return Promise.reject(new Error('No valid context found to retrieve tag service for initiator service ' + hook.service.name))
   // Retrieve previous version of the item
   let previousTags = _.get(hook.params, 'previousItem.tags')
@@ -46,6 +47,10 @@ export async function updateTags (hook) {
     ])
     debug('Tags removed/added', oldTags, newTags)
     // Update tags to include information added when they are created (eg _id)
+    // and add also context because tags might come from different ones on the same target object
+    if (context) {
+      newTags = newTags.map(tag => Object.assign({ context: (typeof context === 'object' ? context._id : context) }, tag))
+    }
     item.tags = commonTags.concat(newTags)
   } else {
     if (hook.method !== 'remove') {
@@ -53,7 +58,12 @@ export async function updateTags (hook) {
       debug('Adding tags for object ' + item)
       const addPromises = item.tags.map(tag => tagService.create(tag))
       // Update tags to include information added when they are created (eg _id)
-      item.tags = await Promise.all(addPromises)
+      let newTags = await Promise.all(addPromises)
+      // and add also context because tags might come from different ones on the same target object
+      if (context) {
+        newTags = newTags.map(tag => Object.assign({ context: (typeof context === 'object' ? context._id : context) }, tag))
+      }
+      item.tags = newTags
     } else {
       debug('Removing tags for object ' + item)
       const removePromises = item.tags.map(tag => tagService.remove(null, { query: tag }))
@@ -140,6 +150,7 @@ export function tagResource (hook) {
     throw new Error(`The 'tagResource' hook should only be used as a 'after' hook.`)
   }
   const tag = hook.result
+  const context = hook.service.context
   const resourcesService = hook.params.resourcesService
   let resource = hook.params.resource
   // If not already tagged
@@ -147,6 +158,10 @@ export function tagResource (hook) {
     // Initialize on first tag
     if (!resource.tags) {
       resource.tags = []
+    }
+    // Add context because tags might come from different ones on the same target object
+    if (context) {
+      tag.context = (typeof context === 'object' ? context._id : context)
     }
     resource.tags.push(tag)
     return resourcesService.patch(resource._id.toString(), {
