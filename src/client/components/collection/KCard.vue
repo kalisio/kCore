@@ -12,7 +12,9 @@
             </div>
             <q-card-title slot="overlay">
               {{name}}
-              <span slot="subtitle" v-html="description"></span>
+              <div slot="subtitle">
+                <k-text-area :text="description" />
+              </div>
               <div slot="right">
                 <slot name="card-icon"></slot>
               </div>
@@ -20,9 +22,11 @@
           </q-card-media>
         </div>
         <div v-else>
-          <q-card-title slot="overlay">
+          <q-card-title>
             {{name}}
-            <span slot="subtitle" v-html="description"></span>
+            <div slot="subtitle">
+              <k-text-area :text="description" />
+            </div>
             <div slot="right">
               <slot name="card-icon"></slot>
             </div>
@@ -90,6 +94,7 @@
 import _ from 'lodash'
 import { QCard, QCardTitle, QCardActions, QCardSeparator, QCardMain, QCardMedia, QBtn, QIcon, QPopover, QList, QItem, QItemSide, QItemMain, QTooltip, QChip } from 'quasar'
 import Avatar from 'vue-avatar/dist/Avatar'
+import { KTextArea } from '../frame'
 
 export default {
   name: 'k-card',
@@ -109,7 +114,8 @@ export default {
     QPopover,
     QTooltip,
     QChip,
-    Avatar
+    Avatar,
+    KTextArea
   },
   props: {
     item: {
@@ -134,14 +140,17 @@ export default {
     },
     description () {
       // Check for custom description field
-      let description = (this.options.descriptionField ? _.get(this.item, this.options.descriptionField, '') : this.item.description)
-      // Convert from JS formatted strings to HTML formatted strings as we usually allow multilines in this one
-      if (description) description = description.replace(/[\n\r]/g, '<br/>')
-      return description
+      return this.options.descriptionField ? _.get(this.item, this.options.descriptionField, '') : this.item.description
     },
     tags () {
       // Check for custom name field
       return (this.options.tagsField ? _.get(this.item, this.options.tagsField, '') : this.item.tags)
+    }
+  },
+  data () {
+    return {
+      descriptionTruncated: true,
+      descriptionToggle: false
     }
   },
   methods: {
