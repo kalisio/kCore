@@ -82,6 +82,7 @@ export function serialize (rules, options = {}) {
 export function processObjectIDs (hook) {
   if (hook.params.query) objectifyIDs(hook.params.query)
   if (hook.data) objectifyIDs(hook.data)
+  return hook
 }
 
 // The hook convert allows to transform a set of input properties as a string
@@ -90,25 +91,34 @@ export function convertObjectIDs (properties) {
   return function (hook) {
     if (hook.params.query) toObjectIDs(hook.params.query, properties)
     if (hook.data) toObjectIDs(hook.data, properties)
+    return hook
   }
 }
 
 // Utility function used to convert from string to Dates a fixed set of properties on a given object
-export function toDates (object, properties) {
+export function toDates (object, properties, asMoment) {
   properties.forEach(property => {
-    const date = moment.utc(_.get(object, property))
-    if (date.isValid()) {
-      _.set(object, property, date)
+    let date = _.get(object, property)
+    if (date) {
+      // We use moment to validate the date
+      date = moment.utc(date)
+      if (date.isValid()) {
+        if (!asMoment) {
+          date = date.toDate()
+        }
+        _.set(object, property, date)
+      }
     }
   })
 }
 
-// The hook convert allows to transform a set of input properties as a string
-// into a Date object on client queries
-export function convertDates (properties) {
+// The hook allows to transform a set of input properties as a string
+// into a Date/Moment object on client queries
+export function convertDates (properties, asMoment) {
   return function (hook) {
-    if (hook.params.query) toDates(hook.params.query, properties)
-    if (hook.data) toDates(hook.data, properties)
+    if (hook.params.query) toDates(hook.params.query, properties, asMoment)
+    if (hook.data) toDates(hook.data, properties, asMoment)
+    return hook
   }
 }
 
