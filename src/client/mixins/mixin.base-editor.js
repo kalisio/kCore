@@ -65,6 +65,8 @@ export default function baseEditorMixin (formRefs) {
               } else {
                 form.fill(this.getObject())
               }
+            } else {
+              form.clear()
             }
           } else {
             logger.warn(`Trying to fill the editor with a non-ready form named ${name}`)
@@ -89,15 +91,7 @@ export default function baseEditorMixin (formRefs) {
         })
       },
       reset () {
-        // Iterate over forms
-        formRefs.forEach(name => {
-          let form = this.$refs[name]
-          if (form.loadRefs().isFulfilled()) {
-            form.reset()
-          } else {
-            logger.warn(`Trying to reset the editor with a non-ready form named ${name}`)
-          }
-        })
+        this.fillEditor()
       },
       apply (event, done) {
         // Iterate over forms for validation

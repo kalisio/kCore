@@ -56,6 +56,7 @@ export default {
   },
   methods: {
     open () {
+      this.refresh()
       this.$refs.modal.open()
     },
     close (onClose) {
@@ -63,7 +64,8 @@ export default {
     }
   },
   created () {
-    this.refresh()
+    // Refresh the editor only when using a router. Otherwise it will be done when opening the editor
+    if (this.router) this.refresh()
     this.$on('applied', _ => {
       if (this.router) this.close(_ => this.$router.push(this.router.onApply))
     })

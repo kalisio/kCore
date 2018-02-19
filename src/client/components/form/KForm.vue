@@ -134,7 +134,7 @@ export default {
           this.getField(field.name).fill(value)
         } else {
           // The field has no value, then assign a default one
-          this.getField(field.name).reset()
+          this.getField(field.name).clear()
         }
       })
       this.validate()
@@ -145,11 +145,6 @@ export default {
     clear () {
       if (!this.loadRefs().isFulfilled()) throw Error('Cannot clear the form while not ready')
       this.fields.forEach(field => this.getField(field.name).clear())
-    },
-    reset () {
-      if (!this.loadRefs().isFulfilled()) throw Error('Cannot reset the form while not ready')
-      this.fields.forEach(field => this.getField(field.name).reset())
-      this.validate()
     },
     validate () {
       if (!this.loadRefs().isFulfilled()) throw Error('Cannot validate the form while not ready')

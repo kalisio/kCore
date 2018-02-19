@@ -63,9 +63,6 @@ let baseFieldMixin = {
       this.model = value
     },
     clear () {
-      this.fill(this.emptyModel())
-    },
-    reset () {
       this.fill(lodash.get(this.properties, 'default', this.emptyModel()))
     },
     validate () {
@@ -81,9 +78,6 @@ let baseFieldMixin = {
       // We need to force a refresh so that the model is correctly updated by Vuejs
       this.$nextTick().then(_ => this.$emit('field-changed', this.properties.name, this.model))
     }
-  },
-  created () {
-    this.reset()
   }
 }
 
