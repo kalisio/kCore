@@ -25,19 +25,21 @@ export default {
   },
   computed: {
     textToDisplay () {
+      const nbCharacters = this.text.length
       // Convert from JS formatted strings to HTML formatted strings as we usually allow multilines in this one
       let result = this.text.replace(/[\n\r]/g, '<br/>')
       // Truncate the description if required
-      if (result.length > this.length) {
-        this.hasToggle = true
+      if (nbCharacters > this.length) {
         if (this.mustTruncate) result = _.truncate(result, { length: this.length })
       }
       return result 
+    },
+    hasToggle () {
+      return this.text.length > this.length
     }
   },
   data () {
     return  {
-      hasToggle: false,
       mustTruncate: true 
     }
   },
