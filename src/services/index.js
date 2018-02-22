@@ -17,6 +17,30 @@ export function removeTagService (context) {
   // TODO
 }
 
+function proxyStorageId (context) {
+  return (id) => (typeof context === 'object' ? context._id.toString() + '/' + id : context + '/' + id)
+}
+
+export function createStorageService (context, blobService) {
+  const app = this
+
+  app.createService('storage', {
+    servicesPath,
+    modelsPath,
+    context,
+    // Create a proxy on top of a Feathers blob service, adding context as prefix on all keys
+    proxy: {
+      service: blobService,
+      id: proxyStorageId(context),
+      data: (data) => (data.id ? Object.assign(data, { id: proxyStorageId(context)(data.id) }) : data)
+    }
+  })
+}
+
+export function removeStorageService (context) {
+  // TODO
+}
+
 export default async function () {
   const app = this
 

@@ -111,24 +111,32 @@ export function configureService (name, service, servicesPath) {
 
 export function createProxyService (options) {
   const targetService = options.service
-  function proxy (params) {
+  function proxyParams (params) {
     if (options.params) {
-      let proxyParams
+      let proxiedParams
       if (options.params === 'function') {
-        proxyParams = options.params(params)
+        proxiedParams = options.params(params)
       } else {
-        proxyParams = merge(params, options.params)
+        proxiedParams = merge(params, options.params)
       }
-      return proxyParams
+      return proxiedParams
     } else return params
   }
+  function proxyId (id) {
+    if (options.id) return options.id(id)
+    else return id
+  }
+  function proxyData (data) {
+    if (options.data) return options.data(data)
+    else return data
+  }
   return {
-    find (params) { return targetService.find(proxy(params)) },
-    get (id, params) { return targetService.get(id, proxy(params)) },
-    create (data, params) { return targetService.create(data, proxy(params)) },
-    update (id, data, params) { return targetService.update(id, data, proxy(params)) },
-    patch (id, data, params) { return targetService.patch(id, data, proxy(params)) },
-    remove (id, params) { return targetService.remove(id, proxy(params)) }
+    find (params) { return targetService.find(proxyParams(params)) },
+    get (id, params) { return targetService.get(proxyId(id), proxyParams(params)) },
+    create (data, params) { return targetService.create(proxyData(data), proxyParams(params)) },
+    update (id, data, params) { return targetService.update(proxyId(id), proxyData(data), proxyParams(params)) },
+    patch (id, data, params) { return targetService.patch(proxyId(id), proxyData(data), proxyParams(params)) },
+    remove (id, params) { return targetService.remove(proxyId(id), proxyParams(params)) }
   }
 }
 

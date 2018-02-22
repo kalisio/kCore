@@ -99,6 +99,7 @@
     "winston-daily-rotate-file": "^1.7.2"
   },
   "devDependencies": {
+    "aws-sdk": "^2.200.0",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.3",
@@ -115,12 +116,15 @@
     "cpx": "^1.5.0",
     "cross-env": "^4.0.0",
     "css-loader": "^0.28.7",
+    "dauria": "^2.0.0",
+    "feathers-blob": "^1.4.0",
     "isomorphic-fetch": "^2.2.1",
     "istanbul": "^1.1.0-alpha.1",
     "jsdom": "^10.1.0",
     "jsdom-global": "^3.0.2",
     "mocha": "^3.2.0",
     "npm-run-all": "^4.1.1",
+    "s3-blob-store": "2.1.0",
     "shx": "^0.2.2",
     "standard": "^10.0.3",
     "superagent": "^3.5.2",
