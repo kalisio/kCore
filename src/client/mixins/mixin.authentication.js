@@ -16,7 +16,7 @@ let authenticationMixin = {
       delete user.confirmPassword
       // TODO: delete user.policiesAccepted
       return this.$api.getService('users').create(user)
-      .then(_ => {
+      .then(() => {
         return this.login(user.email, user.password)
       })
     },

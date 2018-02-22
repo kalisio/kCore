@@ -67,7 +67,7 @@ export default {
     // Refresh the editor only when using a router. Otherwise it will be done when opening the editor
     if (this.router) this.refresh()
     this.$on('applied', _ => {
-      if (this.router) this.close(_ => this.$router.push(this.router.onApply))
+      if (this.router) this.close(() => this.$router.push(this.router.onApply))
     })
   }
 }

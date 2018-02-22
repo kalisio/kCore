@@ -103,7 +103,7 @@ export function addTagIfNew (hook) {
       return Promise.resolve(hook)
     }
   })
-  .then(_ => {
+  .then(() => {
     return hook
   })
 }
@@ -140,7 +140,7 @@ export function removeTagIfUnused (hook) {
       return Promise.resolve(hook)
     }
   })
-  .then(_ => {
+  .then(() => {
     return hook
   })
 }

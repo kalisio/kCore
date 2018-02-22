@@ -218,7 +218,7 @@ describe('kCore', () => {
     logger.info(log)
     // FIXME: need to let some time to proceed with log file
     // Didn't find a better way since fs.watch() does not seem to work...
-    setTimeout(_ => {
+    setTimeout(() => {
       let logFilePath = path.join(__dirname, 'test-log-' + now.toISOString().slice(0, 10) + '.log')
       fs.readFile(logFilePath, 'utf8', (err, content) => {
         expect(err).beNull()

@@ -161,8 +161,8 @@ export default function baseEditorMixin (formRefs) {
           this.loadRefs()
         ])
         // We finally build the forms then fill it
-        .then(_ => Promise.all(formRefs.map(name => this.$refs[name].build())))
-        .then(_ => this.fillEditor())
+        .then(() => Promise.all(formRefs.map(name => this.$refs[name].build())))
+        .then(() => this.fillEditor())
       }
     }
   }

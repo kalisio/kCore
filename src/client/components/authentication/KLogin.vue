@@ -107,10 +107,10 @@ export default {
       let result = this.$refs.form.validate()
       if (result.isValid) {
         this.login(result.values.email, result.values.password)
-        .then(_ => {
+        .then(() => {
           done()
         })
-        .catch(_ => {
+        .catch(() => {
           Toast.create.negative({
             html: 'Wrong credentials or service unavailable, please try again.',
             timeout: 5000

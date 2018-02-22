@@ -1,4 +1,4 @@
-import lodash from 'lodash'
+import _ from 'lodash'
 import logger from 'winston'
 import moment from 'moment'
 import makeDebug from 'debug'
@@ -25,7 +25,7 @@ export function createObjectID (id) {
 
 // Utility function used to convert from string to MongoDB IDs as required eg by queries
 export function objectifyIDs (object) {
-  lodash.forOwn(object, (value, key) => {
+  _.forOwn(object, (value, key) => {
     // Process current attributes or recurse
     // Take care to nested fields like 'field._id'
     if (key === '_id' || key.endsWith('._id')) {
@@ -55,9 +55,9 @@ export function objectifyIDs (object) {
 // Utility function used to convert from string to MongoDB IDs a fixed set of properties on a given object
 export function toObjectIDs (object, properties) {
   properties.forEach(property => {
-    const id = createObjectID(lodash.get(object, property))
+    const id = createObjectID(_.get(object, property))
     if (id) {
-      lodash.set(object, property, id)
+      _.set(object, property, id)
     }
   })
 }

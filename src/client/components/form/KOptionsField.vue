@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import lodash from 'lodash'
+import _ from 'lodash'
 import { QField, QOptionGroup } from 'quasar'
 import mixins from '../../mixins'
 
@@ -30,7 +30,7 @@ export default {
   mixins: [mixins.baseField],
   methods: {
     emptyModel () {
-      let type = lodash.get(this.properties.field.type, 'radio')
+      let type = _.get(this.properties.field.type, 'radio')
       if (type === 'radio') return ''
       return []
     }

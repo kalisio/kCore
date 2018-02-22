@@ -15,7 +15,6 @@
 
 <script>
 import logger from 'loglevel'
-import lodash from 'lodash'
 import { QList, QItem, QItemSide, QItemMain, QItemSeparator } from 'quasar'
 
 export default {

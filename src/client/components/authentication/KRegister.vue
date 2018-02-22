@@ -107,7 +107,7 @@ export default {
       let result = this.$refs.form.validate()
       if (result.isValid) {
         this.register(result.values)
-        .then(_ => {
+        .then(() => {
           done()
         })
         .catch(error => {

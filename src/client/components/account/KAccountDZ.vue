@@ -53,7 +53,7 @@ export default {
               if (data.confirm === this.name) {
                 close(() => { 
                   this.loadService().remove(this.id)
-                  .then(_ => {
+                  .then(() => {
                     this.$router.push({name: 'logout'})
                   })
                 })

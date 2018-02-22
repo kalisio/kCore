@@ -1,4 +1,4 @@
-import lodash from 'lodash'
+import _ from 'lodash'
 
 let baseFieldMixin = {
   props: {
@@ -18,24 +18,24 @@ let baseFieldMixin = {
   computed: {
     icon () {
       if (this.display.icon) {
-        return lodash.get(this.properties.field, 'icon', '')
+        return _.get(this.properties.field, 'icon', '')
       }
       return ''
     },
     label () {
       if (this.display.label) {
-        return lodash.get(this.properties.field, 'label', '')
+        return _.get(this.properties.field, 'label', '')
       }
       return ''
     },
     labelWidth () {
-      return lodash.get(this.display, 'labelWidth', 3)
+      return _.get(this.display, 'labelWidth', 3)
     },
     helper () {
-      return lodash.get(this.properties.field, 'helper', '')
+      return _.get(this.properties.field, 'helper', '')
     },
     hasError () {
-      return !lodash.isEmpty(this.error)
+      return !_.isEmpty(this.error)
     },
     errorLabel () {
       return this.error
@@ -54,7 +54,7 @@ let baseFieldMixin = {
       return ''
     },
     isEmpty () {
-      return lodash.isEqual(this.model, this.emptyModel())
+      return _.isEqual(this.model, this.emptyModel())
     },
     value () {
       return this.model
@@ -63,7 +63,7 @@ let baseFieldMixin = {
       this.model = value
     },
     clear () {
-      this.fill(lodash.get(this.properties, 'default', this.emptyModel()))
+      this.fill(_.get(this.properties, 'default', this.emptyModel()))
     },
     validate () {
       this.error = ''
@@ -76,7 +76,7 @@ let baseFieldMixin = {
       // Consequently the form will validate or invalidate the field
       // Warning: This method must be called once the form is mounted
       // We need to force a refresh so that the model is correctly updated by Vuejs
-      this.$nextTick().then(_ => this.$emit('field-changed', this.properties.name, this.model))
+      this.$nextTick().then(() => this.$emit('field-changed', this.properties.name, this.model))
     }
   }
 }

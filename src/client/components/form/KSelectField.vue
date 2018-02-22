@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import lodash from 'lodash'
+import _ from 'lodash'
 import { QField, QSelect } from 'quasar'
 import mixins from '../../mixins'
 
@@ -33,7 +33,7 @@ export default {
   mixins: [mixins.baseField],
   methods: {
     emptyModel () {
-      let multiple = lodash.get(this.properties, 'field.multiple', false)
+      let multiple = _.get(this.properties, 'field.multiple', false)
       if (multiple) return []
       return (this.properties.type === 'object' ? {} : '')
     }

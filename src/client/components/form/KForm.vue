@@ -16,7 +16,7 @@
 
 <script>
 import logger from 'loglevel'
-import lodash from 'lodash'
+import _ from 'lodash'
 import Ajv from 'ajv'
 import mixins from '../../mixins'
 
@@ -98,7 +98,7 @@ export default {
         // 1- assign a name corresponding to the key to enable a binding between properties and fields
         field['name'] = property
         // 2- assign a component key corresponding to the component path
-        let componentKey = lodash.kebabCase(field.field.component)
+        let componentKey = _.kebabCase(field.field.component)
         field['componentKey'] = componentKey
         // Adds the field to the list of fields to be rendered
         this.fields.push(field)
@@ -107,7 +107,7 @@ export default {
           this.$options.components[componentKey] = this.$load(field.field.component)
         }
         // 4- Assign whether the field is required or not
-        field['required'] = lodash.includes(this.schema.required, property)
+        field['required'] = _.includes(this.schema.required, property)
       })
       // Set the refs to be resolved
       this.setRefs(this.fields.map(field => field.name))
@@ -127,10 +127,10 @@ export default {
     fill (values) {
       if (!this.loadRefs().isFulfilled()) throw Error('Cannot fill the form while not ready')
       this.fields.forEach(field => {
-        let value = lodash.get(values, field.name)
+        let value = _.get(values, field.name)
         if (value) {
           // Override the default value in order to use this value when reseting the form
-          lodash.set(field, 'default', value)
+          _.set(field, 'default', value)
           this.getField(field.name).fill(value)
         } else {
           // The field has no value, then assign a default one
