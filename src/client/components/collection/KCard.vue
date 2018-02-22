@@ -163,11 +163,8 @@ export default {
     onActionTriggered (action, item) {
       // If a handler is given call it
       if (action.handler) action.handler.call(this, item)
-      // If a route is given activate it with item ID
-      else if (action.route) {
-        let route = _.merge({ params: { id: item._id } }, action.route)
-        this.$router.push(route)
-      }
+      // If a route is given activate it 
+      else if (action.route) this.$router.push(action.route)
     }
   }
 }
