@@ -192,7 +192,11 @@ export function createService (name, app, options = {}) {
   // Optionnally a specific service mixin can be provided, apply it
   if (dbService && options.servicesPath) {
     try {
-      const serviceMixin = require(path.join(options.servicesPath, name, name + '.service'))
+      let serviceMixin = require(path.join(options.servicesPath, name, name + '.service'))
+      // If we get a function try to call it assuming it will return the mixin object
+      if (typeof serviceMixin === 'function') {
+        serviceMixin = serviceMixin(name, app, options)
+      }
       service.mixin(serviceMixin)
     } catch (error) {
       debug('No ' + name + ' service mixin configured on path ' + options.servicesPath)
