@@ -177,8 +177,10 @@ export default {
     this.ajv = ajv
     // If a schema is already registered automatially build the form
     // otherwise the parent component would have to manually
+    // FIXME: cannot know when the form is built => should be done by the parent or need to emit an event
     if (this.schema) {
       this.build()
+      .then(() => this.clear())
     }
   }
 }
