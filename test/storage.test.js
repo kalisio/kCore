@@ -4,7 +4,7 @@ import { getBase64DataURI } from 'dauria'
 import BlobService from 'feathers-blob'
 import chai, { util, expect } from 'chai'
 import chailint from 'chai-lint'
-import core, { kalisio, createStorageService } from '../src'
+import { kalisio, createStorageService } from '../src'
 
 describe('kCore:storage', () => {
   let app, s3, storageService, storageObject
