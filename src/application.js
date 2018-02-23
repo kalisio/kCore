@@ -235,7 +235,7 @@ function setupLogger (logsConfig) {
     logger.remove(logger.transports.Console)
   } catch (error) {
     // Logger might be down, use console
-    console.error('Could not remove default logger transport')
+    console.error('Could not remove default logger transport', error)
   }
   // We have one entry per log type
   let logsTypes = logsConfig ? Object.getOwnPropertyNames(logsConfig) : []
@@ -250,7 +250,7 @@ function setupLogger (logsConfig) {
       logger.add(logger.transports[logType], options)
     } catch (error) {
       // Logger might be down, use console
-      console.error('Could not setup default log levels')
+      console.error('Could not setup default log levels', error)
     }
   })
 }
