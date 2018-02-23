@@ -1,6 +1,9 @@
 import path from 'path'
 import makeDebug from 'debug'
 import multer from 'multer'
+import aws from 'aws-sdk'
+import store from 's3-blob-store'
+import BlobService from 'feathers-blob'
 const multipart = multer().single('file')
 const modelsPath = path.join(__dirname, '..', 'models')
 const servicesPath = path.join(__dirname, '..', 'services')
@@ -58,6 +61,13 @@ export function removeStorageService (context) {
 
 export default async function () {
   const app = this
+  const config = app.get('storage')
+  const client = new aws.S3({
+    accessKeyId: config.accessKeyId,
+    secretAccessKey: config.secretAccessKey
+  })
+  const bucket = config.bucket
+  debug('S3 core storage client created with config ', config)
 
   app.createService('users', {
     modelsPath,
@@ -66,6 +76,9 @@ export default async function () {
     perspectives: ['profile'].concat(app.authenticationProviders)
   })
   app.createService('authorisations', { servicesPath })
-  // We have a global tag service and one by context if app requires it
+  // We have a global tag/storage service and one by context if app requires it
   app.createService('tags', { modelsPath, servicesPath })
+  const blobStore = store({ client, bucket })
+  const blobService = BlobService({ Model: blobStore, id: '_id' })
+  createStorageService.call(app, blobService)
 }

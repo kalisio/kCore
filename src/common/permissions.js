@@ -54,6 +54,11 @@ export function defineUserAbilities (subject, can, cannot) {
     can(['update', 'remove'], 'users', { _id: subject._id })
     // Access authorisation service, then rights will be granted on a per-resource basis
     can('service', 'authorisations')
+    // Access storage service, then rights will be granted on a per-resource basis
+    can('service', 'storage')
+    // This is for the user avatar
+    can('create', 'storage', { id: subject._id.toString() })
+    can('read', 'storage', { _id: subject._id.toString() })
   }
 }
 
