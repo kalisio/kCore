@@ -1,11 +1,17 @@
+import { getBase64DataURI } from 'dauria'
 import { disallow } from 'feathers-hooks-common'
 
 module.exports = {
   before: {
-    all: [ disallow('external') ],
+    all: [],
     find: [],
     get: [],
-    create: [],
+    create: [ (hook) => {
+                // If form multipart data transform to data URI for blob service
+                if (!hook.data.uri && hook.params.file){
+                  hook.data.uri = getBase64DataURI(hook.params.file.buffer, hook.params.file.mimetype)
+                }
+            }],
     update: [],
     patch: [],
     remove: []

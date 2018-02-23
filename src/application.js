@@ -63,15 +63,19 @@ function auth () {
   })
 }
 
-export function declareService (path, app, service) {
+export function declareService (path, app, service, middlewares = {}) {
   const feathersPath = app.get('apiPath') + '/' + path
   let feathersService = app.service(feathersPath)
   // Some internal Feathers service might internally declare the service
   if (feathersService) {
     return feathersService
   }
-  // Initialize our service
-  app.use(feathersPath, service)
+  // Initialize our service by providing any middleware as well
+  let args = [ feathersPath ]
+  if (middlewares.before) args = args.concat(middlewares.before)
+  args.push(service)
+  if (middlewares.after) args = args.concat(middlewares.after)
+  app.use.apply(app, args)
   debug('Service declared on path ' + feathersPath)
   // Return the Feathers service, ie base service + Feathers' internals
   return app.service(feathersPath)
@@ -186,7 +190,7 @@ export function createService (name, app, options = {}) {
     if (typeof options.context === 'object') servicePath = options.context._id.toString() + '/' + servicePath
     else servicePath = options.context + '/' + servicePath
   }
-  service = declareService(servicePath, app, service)
+  service = declareService(servicePath, app, service, options.middlewares)
   // Register hooks and filters
   service = configureService(name, service, options.servicesPath)
   // Optionnally a specific service mixin can be provided, apply it

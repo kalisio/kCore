@@ -1,6 +1,11 @@
 import path from 'path'
+import makeDebug from 'debug'
+import multer from 'multer'
+const multipart = multer().single('file')
 const modelsPath = path.join(__dirname, '..', 'models')
 const servicesPath = path.join(__dirname, '..', 'services')
+
+const debug = makeDebug('kalisio:kCore:services')
 
 export function createTagService (context, db) {
   const app = this
@@ -18,10 +23,10 @@ export function removeTagService (context) {
 }
 
 function proxyStorageId (context) {
-  return (id) => (typeof context === 'object' ? context._id.toString() + '/' + id : context + '/' + id)
+  return (id) => (context ? (typeof context === 'object' ? context._id.toString() + '/' + id : context + '/' + id) : id)
 }
 
-export function createStorageService (context, blobService) {
+export function createStorageService (blobService, context) {
   const app = this
 
   app.createService('storage', {
@@ -33,6 +38,16 @@ export function createStorageService (context, blobService) {
       service: blobService,
       id: proxyStorageId(context),
       data: (data) => (data.id ? Object.assign(data, { id: proxyStorageId(context)(data.id) }) : data)
+    },
+    // Add required middlewares to handle multipart form data
+    middlewares: {
+      before: [
+        multipart,
+        (req, res, next) => {
+          req.feathers.file = req.file
+          next()
+        }
+      ]
     }
   })
 }
