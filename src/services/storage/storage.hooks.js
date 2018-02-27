@@ -9,10 +9,12 @@ module.exports = {
     get: [],
     create: [ populateAttachmentResource, (hook) => {
                 // If form multipart data transform to data URI for blob service
-      if (!hook.data.uri && hook.params.file) {
-        hook.data.uri = getBase64DataURI(hook.params.file.buffer, hook.params.file.mimetype)
-      }
-    } ],
+                if (!hook.data.uri && hook.params.file) {
+                  hook.data.uri = getBase64DataURI(hook.params.file.buffer, hook.params.file.mimetype)
+                }
+                // Makes uploaded files public when required
+                if (hook.data.public) hook.params.s3 = { ACL: 'public-read' }
+              } ],
     update: [],
     patch: [],
     remove: [ populateAttachmentResource ]
