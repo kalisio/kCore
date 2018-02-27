@@ -5,6 +5,18 @@
   "description": "User profile perspective",
   "type": "object",
   "properties": {
+    "avatar": { 
+      "type": "object",
+      "field": {
+        "component": "form/KAttachmentField",
+        "label": "Avatar",
+        "helper": "Select your avatar image",
+        "params": {
+          "public": true,
+          "singleFile": true
+        }
+      }
+    },
     "name": {
       "type": "string", 
       "maxLength": 128,

@@ -57,8 +57,9 @@ export function defineUserAbilities (subject, can, cannot) {
     // Access storage service, then rights will be granted on a per-resource basis
     can('service', 'storage')
     // This is for the user avatar
-    can('create', 'storage', { id: subject._id.toString() })
-    can('read', 'storage', { _id: subject._id.toString() })
+    // take care that the storage service uses 'id' as input but produces _id as output
+    can('create', 'storage', { id: 'avatars/' + subject._id.toString() })
+    can('read', 'storage', { _id: 'avatars/' + subject._id.toString() })
   }
 }
 

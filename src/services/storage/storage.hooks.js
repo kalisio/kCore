@@ -25,7 +25,12 @@ module.exports = {
     find: [],
     get: [],
     // Let the attachment on the resource object occur only when resource has been found
-    create: [ iff(hook => hook.params.resource, attachToResource), discard('uri') ],
+    create: [ iff(hook => hook.params.resource, attachToResource), discard('uri'), (hook) => {
+                // If form multipart data get filename
+                if (hook.params.file) {
+                  hook.result.name = hook.params.file.originalname
+                }
+              } ],
     update: [],
     patch: [],
     // Let the detachment on the resource object occur only when resource has been found

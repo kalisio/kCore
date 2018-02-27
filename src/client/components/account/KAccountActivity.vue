@@ -36,6 +36,9 @@ export default {
     }
   },
   methods: {
+    onAvatarUploaded(file, response) {
+      //this.$api.getService('users').patch({ avatar: this.id })
+    },
     refreshActivity () {
       this.clearActivity()
       this.setTitle(this.$store.get('user.name'))

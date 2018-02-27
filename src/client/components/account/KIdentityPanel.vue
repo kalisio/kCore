@@ -4,7 +4,7 @@
       User avatar
     -->
     <div class="self-center" style="padding: 16px">
-      <avatar :username="name" :size="72" />
+      <avatar :username="name" :src="avatar" :size="72" />
     </div>
     <!--
       User information
@@ -36,13 +36,22 @@ export default {
   data () {
     return {
       name: '',
-      id: ''
+      id: '',
+      avatar: ''
     }
   },
   methods: {
-    refreshIdentity () {
+    async refreshIdentity () {
       this.name = this.$store.get('user.name', '')
       this.id = this.$store.get('user._id', '')
+      // This field indicates that the avatar has been set
+      let avatar = this.$store.get('user.avatar', '')
+      if (avatar) {
+        // Then we need to fetch it
+        avatar = await this.$api.getService('storage').get(avatar._id)
+        // Get as data URI
+        this.avatar = avatar.uri
+      }
     }
   },
   created () {
