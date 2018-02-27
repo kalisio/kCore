@@ -1,16 +1,13 @@
 import path from 'path'
 import fs from 'fs-extra'
-import aws from 'aws-sdk'
-import store from 's3-blob-store'
 import { getBase64DataURI } from 'dauria'
 import request from 'superagent'
-import BlobService from 'feathers-blob'
 import chai, { util, expect } from 'chai'
 import chailint from 'chai-lint'
-import { kalisio, createStorageService } from '../src'
+import core, { kalisio } from '../src'
 
 describe('kCore:storage', () => {
-  let app, server, port, baseUrl, s3, storageService, storageObject
+  let app, server, port, baseUrl, userService, userObject, storageService, storageObject
   const content = Buffer.from('some buffered data')
   const contentType = 'text/plain'
   const contentUri = getBase64DataURI(content, contentType)
@@ -19,10 +16,6 @@ describe('kCore:storage', () => {
 
   before(() => {
     chailint(chai, util)
-    s3 = new aws.S3({
-      accessKeyId: process.env.S3_ACCESS_KEY,
-      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
-    })
     app = kalisio()
     port = app.get('port')
     baseUrl = `http://localhost:${port}${app.get('apiPath')}`
@@ -31,12 +24,8 @@ describe('kCore:storage', () => {
 
   it('registers the storage service', (done) => {
     app.configure(core)
-    const blobStore = store({
-      client: s3,
-      bucket: process.env.S3_BUCKET
-    })
-    const blobService = BlobService({ Model: blobStore, id: '_id' })
-    createStorageService.call(app, blobService)
+    userService = app.getService('users')
+    expect(userService).toExist()
     storageService = app.getService('storage')
     expect(storageService).toExist()
     // Now app is configured launch the server
@@ -48,7 +37,6 @@ describe('kCore:storage', () => {
     return storageService.create({ id, uri: contentUri }).then(object => {
       storageObject = object
       expect(storageObject._id).to.equal(`${id}`)
-      expect(storageObject.uri).to.equal(contentUri)
       expect(storageObject.size).to.equal(content.length)
     })
   })
@@ -89,6 +77,47 @@ describe('kCore:storage', () => {
       expect(storageObject._id).to.equal(`${file}`)
       expect(storageObject.size).to.equal(fs.statSync(filePath).size)
       return storageService.remove(file)
+    })
+  })
+  // Let enough time to process
+  .timeout(10000)
+
+  it('creates an attachment on a resource', () => {
+    return userService.create({ email: 'test@test.org', password: 'test-password', name: 'test-user' })
+    .then(user => {
+      userObject = user
+      return storageService.create({ id, uri: contentUri, resource: userObject._id.toString(), resourcesService: 'users' })
+    })
+    .then(object => {
+      storageObject = object
+      expect(storageObject._id).to.equal(`${id}`)
+      expect(storageObject.size).to.equal(content.length)
+      return userService.find({ query: { 'profile.name': 'test-user' } })
+    })
+    .then(users => {
+      expect(users.data.length > 0).beTrue()
+      userObject = users.data[0]
+      expect(userObject.attachments).toExist()
+      expect(userObject.attachments.length > 0).beTrue()
+      expect(userObject.attachments[0]._id).to.equal(storageObject._id)
+    })
+  })
+  // Let enough time to process
+  .timeout(10000)
+
+  it('removes an attachment from a resource', () => {
+    return storageService.remove(id, { query: { resource: userObject._id.toString(), resourcesService: 'users' } })
+    .then(object => {
+      storageObject = object
+      expect(storageObject.id).to.equal(`${id}`)
+      return userService.find({ query: { 'profile.name': 'test-user' } })
+    })
+    .then(users => {
+      expect(users.data.length > 0).beTrue()
+      userObject = users.data[0]
+      expect(userObject.attachments).toExist()
+      expect(userObject.attachments.length === 0).beTrue()
+      return userService.remove(userObject._id)
     })
   })
   // Let enough time to process

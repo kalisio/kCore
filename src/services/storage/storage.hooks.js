@@ -1,30 +1,33 @@
 import { getBase64DataURI } from 'dauria'
-import { disallow, discard } from 'feathers-hooks-common'
+import { disallow, discard, iff } from 'feathers-hooks-common'
+import { populateAttachmentResource, attachToResource, detachFromResource } from '../../hooks'
 
 module.exports = {
   before: {
     all: [],
     find: [ disallow() ],
     get: [],
-    create: [ (hook) => {
+    create: [ populateAttachmentResource, (hook) => {
                 // If form multipart data transform to data URI for blob service
-                if (!hook.data.uri && hook.params.file){
-                  hook.data.uri = getBase64DataURI(hook.params.file.buffer, hook.params.file.mimetype)
-                }
-            } ],
+      if (!hook.data.uri && hook.params.file) {
+        hook.data.uri = getBase64DataURI(hook.params.file.buffer, hook.params.file.mimetype)
+      }
+    } ],
     update: [],
     patch: [],
-    remove: []
+    remove: [ populateAttachmentResource ]
   },
 
   after: {
     all: [],
     find: [],
     get: [],
-    create: [ discard('uri') ],
+    // Let the attachment on the resource object occur only when resource has been found
+    create: [ iff(hook => hook.params.resource, attachToResource), discard('uri') ],
     update: [],
     patch: [],
-    remove: [ discard('uri') ]
+    // Let the detachment on the resource object occur only when resource has been found
+    remove: [ iff(hook => hook.params.resource, detachFromResource), discard('uri') ]
   },
 
   error: {

@@ -12,7 +12,7 @@ function isTagEqual (tag1, tag2) {
 
 export function populateTagResource (hook) {
   if (hook.type !== 'before') {
-    throw new Error(`The 'populateResource' hook should only be used as a 'before' hook.`)
+    throw new Error(`The 'populateTagResource' hook should only be used as a 'before' hook.`)
   }
 
   // Avoid populating any target resource when resource parameters are not present
