@@ -59,6 +59,7 @@ export default {
               }
               data.service = item.service
               data.field = item.field
+              data.limit = item.limit
               Object.assign(result, { data: data })
               results.push(result)
             })

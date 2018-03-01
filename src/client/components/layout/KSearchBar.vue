@@ -2,7 +2,7 @@
   <div v-if="isVisible" class="row full-width">
     <k-item-chooser 
       :multiselect="true" 
-      :services="search.services" 
+      :services="searchBar.services" 
       @changed="onItemsChanged" />
   </div>
 </template>
@@ -16,25 +16,19 @@ export default {
     QBtn,
     QIcon
   },
-  props: {
-    debounce: {
-      type: Number,
-      default: 50
-    }
-  },
   computed: {
     isVisible () {
-      return this.search.field !== ''
+      return this.searchBar.field !== ''
     }
   },
   data () {
     return {
-      search: this.$store.get('search')
+      searchBar: this.$store.get('searchBar')
     }
   },
   methods: {
     onItemsChanged (items, pattern) {
-       this.$store.patch('search', { pattern: pattern, items: items })
+       this.$store.patch('searchBar', { pattern: pattern, items: items })
     }
   },
   created () {

@@ -57,11 +57,6 @@ export default {
     }
   },
   methods: {
-    clear () {
-      this.items = []
-      this.pattern = ''
-      this.$refs.autocomplete.clear()
-    },
     itemIcon (item) {
       if (item.icon && item.icon.name) return item.icon.name
       return item.icon
@@ -69,6 +64,11 @@ export default {
     itemName (item) {
       if (item.value) return item.value
       return item.name
+    },
+    clear () {
+      this.items = []
+      this.pattern = ''
+      this.$refs.autocomplete.clear()
     },
     onItemRemoved (oldItem) {
       this.items = this.items.filter(item => item._id !== oldItem._id)
@@ -83,6 +83,13 @@ export default {
       else {
         // An item has been selected
         if(_.findIndex(this.items, item => item._id === value._id) === -1) {
+          // Check wether a limit has been defined for the service
+          if (value.limit) {
+            let serviceItems = _.filter(this.items, { service: value.service })
+            if (serviceItems.length == value.limit) {
+              _.remove(this.items, { _id: serviceItems.pop()._id })
+            }
+          } 
           this.$refs.autocomplete.clear()
           this.pattern = ''
           this.items.push(value)

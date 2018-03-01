@@ -59,10 +59,14 @@ let baseActivityMixin = {
       this.$store.patch('appBar', { title: '' })
     },
     setSearchBar (field, services = []) {
-      this.$store.patch('search', { field: field, services: services })
+      if (services.length > 0) {
+        // Fix the limit to 1 item per service
+        services.map(service => service.limit = 1)
+      }
+      this.$store.patch('searchBar', { field: field, services: services })
     },
     clearSearchBar () {
-      this.$store.patch('search', { field: '', services: [] })
+      this.$store.patch('searchBar', { field: '', services: [] })
     },
     clearActivity () {
       this.clearTitle()
@@ -74,7 +78,7 @@ let baseActivityMixin = {
       this.clearActivity()
     },
     handleSearch () {
-      const search = this.$store.get('search')
+      const search = this.$store.get('searchBar')
       let query = {}
       // Handle the pattern
       if (search.pattern !== '') {
@@ -82,16 +86,9 @@ let baseActivityMixin = {
       }
       // Handle the selection
       search.items.forEach(item => {
+        // We must have only one item per service
         let queryPath = item.service + '.' + item.field
-        if (query[queryPath]) {
-          if (typeof query[queryPath] === 'string') {
-            let value = query[queryPath]
-            query[queryPath] = { $in: [value] }
-          }
-          query[queryPath]['$in'].push(item[item.field])
-        } else {
-          query[queryPath] = item[item.field]
-        }
+        query[queryPath] = item[item.field]
       })
       this.searchQuery = Object.assign({}, query)
     }
@@ -101,11 +98,11 @@ let baseActivityMixin = {
     this.refreshActivity()
     // Whenever the user is updated, update abilities as well
     Events.$on('user-abilities-changed', this.refreshActivity)
-    Events.$on('search-changed', this.handleSearch)
+    Events.$on('search-bar-changed', this.handleSearch)
   },
   beforeDestroy () {
     Events.$off('user-abilities-changed', this.refreshActivity)
-    Events.$off('search-changed', this.handleSearch)
+    Events.$off('search-bar-changed', this.handleSearch)
   }
 }
 
