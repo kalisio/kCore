@@ -1,5 +1,5 @@
 <template>
-  <k-modal ref="modal" :toolbar="toolbar" :buttons="buttons" :options="{ padding: '4px', minWidth: '50vw', maxWidth: '55vw' }">
+  <k-modal ref="modal" :toolbar="toolbar" :buttons="buttons" :options="{ padding: '4px', width: '600px' }">
     <div slot="modal-content" class="column sm-gutter">
       <div class="row justify-center items-center sm-gutter">
         <template v-for="icon in iconsPage">
@@ -44,7 +44,7 @@ export default {
   data () {
     return {
       currentPage: 1,
-      iconsPerPage: 72,
+      iconsPerPage: 70,
       maxPage: 1,
       icons: [],
       selectedIcon: {
