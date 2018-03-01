@@ -2,6 +2,10 @@ import _ from 'lodash'
 
 let baseFieldMixin = {
   props: {
+    id: {
+      type: String,
+      default: ''
+    },
     properties: {
       type: Object,
       required: true

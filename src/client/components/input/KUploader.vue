@@ -1,7 +1,7 @@
 <template>
   <k-modal ref="modal" :toolbar="toolbar" :buttons="buttons">
     <div slot="modal-content" class="column sm-gutter">
-      <drop-zone ref="dropZone" id="dropZone" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" :options="dropZoneOptions"/>
+      <drop-zone ref="dropZone" id="dropZone" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" @vdropzone-max-files-exceeded="onMaxFileExceeded" :options="dropZoneOptions"/>
       <!--vue-dropzone ref="myVueDropzone" id="dropzone" @vdropzone-file-added="vfileAdded" @vdropzone-success="vsuccess" @vdropzone-error="verror" @vdropzone-removed-file="vremoved" @vdropzone-sending="vsending" @vdropzone-success-multiple="vsuccessMuliple" @vdropzone-sending-multiple="vsendingMuliple" @vdropzone-queue-complete="vqueueComplete" @vdropzone-total-upload-progress="vprogress" @vdropzone-mounted="vmounted" @vdropzone-drop="vddrop" @vdropzone-drag-start="vdstart" @vdropzone-drag-end="vdend" @vdropzone-drag-enter="vdenter" @vdropzone-drag-over="vdover" @vdropzone-drag-leave="vdleave" :options="dropzoneOptions"-->
     </div>
   </k-modal>
@@ -18,14 +18,13 @@ export default {
     DropZone
   },
   props: {
+    id: {
+      type: String,
+      default: ''
+    },
     options: {
       type: Object,
-      default: function () {
-        return {
-          thumbnailWidth: 150,
-          maxFilesize: 0.5
-        }
-      }
+      default: () => {}
     }
   },
   computed: {
@@ -44,14 +43,31 @@ export default {
     }
   },
   methods: {
+    isMultiple () {
+      return _.get(this.options, 'multiple', false)
+    },
+    onMaxFileExceeded (file) {
+      // This is required if we don't want the file to be viewed
+      this.dropZone().removeFile(file)
+    },
     onFileSending (file, xhr, formData) {
-      //formData.set('id', `avatars/${this.id}`)
+      const idTemplate = _.get(this.options, 'storagePath')
+      // If a template is given for the storage path use it,
+      // otherwise it will be stored at the root level with a generated hash
+      if (idTemplate) {
+        const id = _.template(idTemplate)({ id: this.id, file })
+        formData.set('id', id)
+      }
     },
     onFileUploaded (addedFile, response) {
       this.files.push(response)
     },
-    onFileRemoved (removedFile, error, xhr) {
-      this.files = this.files.filter(file => file._id !== removedFile._id)
+    async onFileRemoved (removedFile, error, xhr) {
+      const index = _.findIndex(this.files, file => file.name === removedFile.name)
+      if (index >= 0) {
+        await this.storageService().remove(this.files[index]._id)
+        _.pullAt(this.files, index)
+      }
     },
     doDone (event, done) {
       this.$emit('file-selection-changed', this.files)
@@ -61,19 +77,50 @@ export default {
     doClose (event, done) {
       this.$refs.modal.close()
     },
+    storageService () {
+      return this.$api.getService(this.options.service || 'storage')
+    },
+    dropZone() {
+      // Access vue drop zone
+      return this.$refs.dropZone
+    },
+    dropZoneInstance() {
+      // Access underlying dropzone object
+      return this.$refs.dropZone.dropzone
+    },
     updateDropZoneOptions () {
       // Setup upload URL, credentials, etc. from input options
-      this.dropZoneOptions = Object.assign({}, _.omit(this.options, ['params', 'service']))
-      const service = (this.options.service || 'storage')
-      this.dropZoneOptions.url = this.$api.getBaseUrl() + this.$config('apiPath', '') + '/' + service
+      this.dropZoneOptions = Object.assign({
+        addRemoveLinks: true,
+        params: {
+          singleFile: !this.isMultiple()
+        }
+      }, _.omit(this.options, ['service', 'storagePath']))
+      this.dropZoneOptions.url = this.$api.getBaseUrl() + '/' + this.storageService().path
+      // This is used to ensure the request will be authenticated by Feathers
       this.dropZoneOptions.headers = { Authorization: window.localStorage.getItem('feathers-jwt') }
-      this.dropZoneOptions.params = Object.assign({}, _.pick(this.options, ['params']))
-      // FIXME: work only for avatars right now
-      const id = this.$store.get('user._id', '')
-      this.dropZoneOptions.params.id = `avatars/${id}`
     },
-    open (defaultFiles) {
-      // Open the modal
+    open (defaultFiles = []) {
+      // Reset drop zone in case there is running uploads
+      this.dropZone().removeAllFiles(true)
+      // Then setup existing files
+      defaultFiles.forEach(file => {
+        this.dropZoneInstance().emit('addedfile', file)
+        // Make sure that there is no progress bar, etc...
+        this.dropZoneInstance().emit('complete', file)
+        // FIXME: we should only download a thumbnail here
+        this.storageService().get(file._id)
+        .then(image => {
+          this.dropZoneInstance().emit('thumbnail', file, image.uri)
+        })
+      })
+      // Because this is dynamic we need to modify the instance as the vue drop zone is not updated automatically
+      this.dropZoneInstance().options.maxFiles = 1
+      if (this.isMultiple()) {
+        // Adjust maxFiles with files already uploaded to get the correct amount
+        this.dropZoneInstance().options.maxFiles = _.get(this.options, 'maxFiles', 5) - defaultFiles.length
+      }
+      // Then open the modal
       this.$refs.modal.open()
     }
   },

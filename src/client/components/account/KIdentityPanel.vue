@@ -4,7 +4,8 @@
       User avatar
     -->
     <div class="self-center" style="padding: 16px">
-      <avatar :username="name" :src="avatar" :size="72" />
+      <avatar v-if="!avatarImage" :username="name" :size="72" />
+      <avatar v-if="avatarImage" :username="name" :src="avatarImage" :size="72" />
     </div>
     <!--
       User information
@@ -37,7 +38,7 @@ export default {
     return {
       name: '',
       id: '',
-      avatar: ''
+      avatarImage: ''
     }
   },
   methods: {
@@ -50,7 +51,7 @@ export default {
         // Then we need to fetch it
         avatar = await this.$api.getService('storage').get(avatar._id)
         // Get as data URI
-        this.avatar = avatar.uri
+        this.avatarImage = avatar.uri
       }
     }
   },

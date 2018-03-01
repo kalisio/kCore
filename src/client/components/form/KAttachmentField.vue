@@ -10,8 +10,8 @@
     <q-chip v-for="file in files" :key="file._id" color="primary" @close="onFileRemoved(file)" closable>
       {{fileName(file)}}
     </q-chip>
-    <q-icon name="cloud_upload" @click="onUpload"/>
-    <k-uploader ref="uploader" @file-selection-changed="updateFiles" :options="properties.field"/>
+    <q-icon name="fa-cloud-upload fa-2x" @click="onUpload"/>
+    <k-uploader ref="uploader" :id="id" @file-selection-changed="updateFiles" :options="properties.field"/>
   </q-field>
 </template>
 
@@ -73,9 +73,11 @@ export default {
               (file._id ? file._id : file))
     },
     onUpload () {
-      this.$refs.uploader.open(this.model)
+      this.$refs.uploader.open(this.files)
     },
-    onFileRemoved (oldFile) {
+    async onFileRemoved (oldFile) {
+      const storage = this.$api.getService(this.properties.service || 'storage')
+      await storage.remove(oldFile._id)
       this.updateFiles(this.files.filter(file => file._id !== oldFile._id))
     }
   }
