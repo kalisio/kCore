@@ -9,12 +9,12 @@ module.exports = {
     get: [],
     create: [ populateAttachmentResource, (hook) => {
                 // If form multipart data transform to data URI for blob service
-                if (!hook.data.uri && hook.params.file) {
-                  hook.data.uri = getBase64DataURI(hook.params.file.buffer, hook.params.file.mimetype)
-                }
+      if (!hook.data.uri && hook.params.file) {
+        hook.data.uri = getBase64DataURI(hook.params.file.buffer, hook.params.file.mimetype)
+      }
                 // Makes uploaded files public when required
-                if (hook.data.public) hook.params.s3 = { ACL: 'public-read' }
-              } ],
+      if (hook.data.public) hook.params.s3 = { ACL: 'public-read' }
+    } ],
     update: [],
     patch: [],
     remove: [ populateAttachmentResource ]
@@ -27,10 +27,10 @@ module.exports = {
     // Let the attachment on the resource object occur only when resource has been found
     create: [ iff(hook => hook.params.resource, attachToResource), discard('uri'), (hook) => {
                 // If form multipart data get filename
-                if (hook.params.file) {
-                  hook.result.name = hook.params.file.originalname
-                }
-              } ],
+      if (hook.params.file) {
+        hook.result.name = hook.params.file.originalname
+      }
+    } ],
     update: [],
     patch: [],
     // Let the detachment on the resource object occur only when resource has been found

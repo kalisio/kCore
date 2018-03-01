@@ -59,10 +59,7 @@ let baseActivityMixin = {
       this.$store.patch('appBar', { title: '' })
     },
     setSearchBar (field, services = []) {
-      if (services.length > 0) {
-        // Fix the limit to 1 item per service
-        services.map(service => service.limit = 1)
-      }
+      for (let i = 0; i < services.length; i++) services[i].limit = 1
       this.$store.patch('searchBar', { field: field, services: services })
     },
     clearSearchBar () {

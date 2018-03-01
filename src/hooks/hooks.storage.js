@@ -26,7 +26,7 @@ export async function attachToResource (hook) {
   const query = params.query
   const file = hook.result
   const attachmentField = _.get(data, 'field') || _.get(query, 'field') || 'attachments'
-  const isArray = (_.get(data, 'singleFile') || _.get(query, 'singleFile') ? false : true)
+  const isArray = (!(_.get(data, 'singleFile') || _.get(query, 'singleFile')))
   const context = hook.service.context
   const resourcesService = params.resourcesService
   let resource = params.resource
@@ -65,7 +65,7 @@ export async function detachFromResource (hook) {
   // see https://github.com/feathersjs-ecosystem/feathers-blob/issues/39
   file._id = file.id
   const attachmentField = _.get(query, 'field') || 'attachments'
-  const isArray = (_.get(query, 'singleFile') ? false : true)
+  const isArray = (!_.get(query, 'singleFile'))
   const resourcesService = params.resourcesService
   let resource = params.resource
   let attachments = _.get(resource, attachmentField)
