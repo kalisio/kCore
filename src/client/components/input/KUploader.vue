@@ -61,16 +61,17 @@ export default {
     },
     onFileUploaded (addedFile, response) {
       this.files.push(response)
+      this.$emit('file-selection-changed', this.files)
     },
     async onFileRemoved (removedFile, error, xhr) {
       const index = _.findIndex(this.files, file => file.name === removedFile.name)
       if (index >= 0) {
         await this.storageService().remove(this.files[index]._id)
         _.pullAt(this.files, index)
+        this.$emit('file-selection-changed', this.files)
       }
     },
     doDone (event, done) {
-      this.$emit('file-selection-changed', this.files)
       done()
       this.doClose()
     },
@@ -101,9 +102,13 @@ export default {
       this.dropZoneOptions.headers = { Authorization: window.localStorage.getItem('feathers-jwt') }
     },
     open (defaultFiles = []) {
-      // Reset drop zone in case there is running uploads
+      // Reset drop zone
+      this.files = []
       this.dropZone().removeAllFiles(true)
       // Then setup existing files
+      // FIXME: does not seem to work very well, the files seem to be stacked
+      // Not sure it is designed to be used dynamically, eg https://github.com/enyo/dropzone/wiki/FAQ#how-to-show-files-already-stored-on-server
+      // and vue drop zone is not updated dynamically whenever the options changed (only done on mounted)
       defaultFiles.forEach(file => {
         this.dropZoneInstance().emit('addedfile', file)
         // Make sure that there is no progress bar, etc...

@@ -10,7 +10,7 @@
     <q-chip v-for="file in files" :key="file._id" color="primary" @close="onFileRemoved(file)" closable>
       {{fileName(file)}}
     </q-chip>
-    <q-icon name="fa-cloud-upload fa-2x" @click="onUpload"/>
+    <q-icon v-show="files.length < maxFiles" name="fa-cloud-upload fa-2x" @click="onUpload"/>
     <k-uploader ref="uploader" :id="id" @file-selection-changed="updateFiles" :options="properties.field"/>
   </q-field>
 </template>
@@ -33,6 +33,11 @@ export default {
   data () {
     return {
       files: []
+    }
+  },
+  computed: {
+    maxFiles () {
+      return (this.isMultiple() ? _.get(this.properties, 'maxFiles', 5) : 1)
     }
   },
   methods: {
