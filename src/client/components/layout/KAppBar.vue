@@ -16,10 +16,6 @@
       </span>
     </q-toolbar-title>
     <!--
-      Search section
-    -->
-    <k-search />
-    <!--
       Toolbar section
      -->
     <template v-for="(action,index) in appBar.toolbar">
@@ -80,7 +76,6 @@ export default {
   },
   created () {
     // Load the required components
-    this.$options.components['k-search'] = this.$load('layout/KSearch')
     this.appBar.title = this.$config('appName')
   }
 }

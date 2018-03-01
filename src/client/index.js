@@ -30,7 +30,7 @@ export default function init () {
   // It is generally done using the registerAction on an Activity based component
   let appBar = { title: '', subtitle: '', toolbar: [], menu: [] }
   Store.set('appBar', appBar)
-  let search = { requests: [], selection: {}, pattern: '' }
+  let search = { field: '', pattern: '', services: [], items: {} }
   Store.set('search', search)
   let tabBar = { tabs: [] }
   Store.set('tabBar', tabBar)

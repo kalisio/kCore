@@ -7,7 +7,11 @@
     :label-width="labelWidth"
     :error="hasError"
   >
-    <k-item-chooser class="col" ref="search" :multiselect="properties.multiselect" :default-items="model" :services="properties.services" @item-selection-changed="updateModel" />
+    <k-item-chooser
+      :multiselect="properties.multiselect" 
+      :default-items="model" 
+      :services="properties.services" 
+      @changed="updateModel" />
   </q-field>
 </template>
 

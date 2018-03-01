@@ -1,5 +1,5 @@
 <template>
-  <q-search v-model="selection">
+  <q-search v-model="pattern" @change="onChanged">
     <q-autocomplete @search="onSearch" @selected="onSelected" />
   </q-search>
 </template>
@@ -25,10 +25,13 @@ export default {
   },
   data () {
     return {
-      selection: null
+      pattern: ''
     }
   },
   methods: {
+    clear () {
+      this.pattern = ''
+    },
     onSearch (pattern, done) {
       // Perform request for partial match to all registered services
       const requests = this.services.map(item => {
@@ -52,9 +55,10 @@ export default {
               let result = {
                 label: _.get(data, item.field),
                 value: _.get(data, item.field),
-                icon: _.get(result, item.iconField || item.icon)
+                icon: _.get(result, item.iconField || item.icon),
               }
               data.service = item.service
+              data.field = item.field
               Object.assign(result, { data: data })
               results.push(result)
             })
@@ -63,12 +67,19 @@ export default {
         if (this.processResults) {
           this.processResults(pattern, results)
         }
+        this.$emit('pattern-changed', pattern)
         done(results)
       })
     },
     onSelected (item) {
-      this.$emit('item-selected', item.data)
+      this.emitChange(item.data)
+    },
+    onChanged (pattern) {
+      this.emitChange(pattern)
     }
+  },
+  created () {
+    this.emitChange = _.debounce((value) => {this.$emit('changed', value)}, 300)
   }
 }
 </script>

@@ -18,13 +18,17 @@
     <div slot="navigation">
       <k-tab-bar id="tab-bar" />
     </div>
+    <!-- 
+      The search bar
+     -->
+    <k-search-bar id="search-bar" />
     <!--
       The Content area
     -->
     <router-view />
-     <!--
-      The TabBar
-     -->
+    <!--
+     The Fab
+    -->
     <k-fab id="fab" />
   </q-layout>
 </template>
@@ -45,6 +49,7 @@ export default {
   created () {
     this.$options.components['k-side-nav'] = this.$load(this.$config('layout.sideNav', 'layout/KSideNav'))
     this.$options.components['k-app-bar'] = this.$load(this.$config('layout.appBar', 'layout/KAppBar'))
+    this.$options.components['k-search-bar'] = this.$load(this.$config('layout.searchBar', 'layout/KSearchBar'))
     this.$options.components['k-tab-bar'] = this.$load(this.$config('layout.tabBar', 'layout/KTabBar'))
     this.$options.components['k-fab'] = this.$load(this.$config('layout.fab', 'layout/KFab'))
   },

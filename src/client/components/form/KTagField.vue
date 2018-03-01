@@ -10,7 +10,7 @@
     >
       <div class="row justify-between items-center">
         <div class="col-4">
-          <k-autocomplete ref="search" :services="services" :process-results="processResults" @item-selected="onTagAdded" />
+          <k-autocomplete ref="search" :services="services" :process-results="processResults" @changed="onTagAdded" />
         </div>
         <div class="col-7" v-if="tags.length > 0">
           <template v-for="(tag, index) in tags">
@@ -84,6 +84,7 @@ export default {
       }
     },
     onTagAdded (newTag) {
+      if (typeof newTag === 'string') return
       if(_.findIndex(this.tags, tag => tag.value === newTag.value) === -1) {
         // Filter the tag data and transform the icon provided by the autocomplete into an icon object
         let tag = _.pick(newTag, ['value', 'scope', 'icon'])

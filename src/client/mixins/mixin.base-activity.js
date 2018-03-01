@@ -5,7 +5,8 @@ let baseActivityMixin = {
   data () {
     return {
       title: '',
-      actions: {}
+      actions: {},
+      searchQuery: {}
     }
   },
   watch: {
@@ -57,15 +58,15 @@ let baseActivityMixin = {
     clearTitle () {
       this.$store.patch('appBar', { title: '' })
     },
-    setSearch (requests) {
-      this.$store.patch('search', { requests: requests })
+    setSearchBar (field, services = []) {
+      this.$store.patch('search', { field: field, services: services })
     },
-    clearSearch () {
-      this.$store.patch('search', { requests: [], results: [] })
+    clearSearchBar () {
+      this.$store.patch('search', { field: '', services: [] })
     },
     clearActivity () {
       this.clearTitle()
-      this.clearSearch()
+      this.clearSearchBar()
       this.clearActions()
     },
     refreshActivity () {
@@ -73,7 +74,26 @@ let baseActivityMixin = {
       this.clearActivity()
     },
     handleSearch () {
-      // This method should be overriden in activities
+      const search = this.$store.get('search')
+      let query = {}
+      // Handle the pattern
+      if (search.pattern !== '') {
+        query[search.field] = { $search: search.pattern }
+      }
+      // Handle the selection
+      search.items.forEach(item => {
+        let queryPath = item.service + '.' + item.field
+        if (query[queryPath]) {
+          if (typeof query[queryPath] === 'string') {
+            let value = query[queryPath]
+            query[queryPath] = { $in: [value] }
+          }
+          query[queryPath]['$in'].push(item[item.field])
+        } else {
+          query[queryPath] = item[item.field]
+        }
+      })
+      this.searchQuery = Object.assign({}, query)
     }
   },
   created () {

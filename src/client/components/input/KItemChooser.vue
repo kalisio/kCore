@@ -1,8 +1,8 @@
 <template>
-  <div class="row justify-between">
-    <k-autocomplete v-if="!isCompleted" class="col" ref="search" :services="services" @item-selected="onItemSelected" />
-    <div class="row col-7" v-if="items.length > 0">
-      <q-chip v-for="item in items" :key="item._id" :icon="itemIcon(item)" color="primary" @close="onItemRemoved(item)" closable>
+  <div class="row full-width justify-between items-center">
+    <k-autocomplete v-if="!isCompleted" class="col" ref="autocomplete" :services="services" @changed="onAutocompleteChanged" />
+    <div class="col-8" v-if="items.length > 0">
+      <q-chip v-for="item in items" :key="item._id" class="chip" :icon="itemIcon(item)" color="primary" @close="onItemRemoved(item)" closable>
         {{itemName(item)}}
       </q-chip>
     </div>
@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     autocompleteSize () { 
-      return this.items.length > 0 ? 'col-5' : 'col-12'
+      return this.itemslength > 0 ? 'col-5' : 'col-12'
     },
     isCompleted () {
       return this.multiselect ? false : (this.items.length > 0)
@@ -32,7 +32,9 @@ export default {
   props: {
     defaultItems: {
       type: Array,
-      required: true
+      default: () => {
+        return []
+      }
     },
     services: {
       type: Array,
@@ -43,12 +45,23 @@ export default {
       default: false
     }
   },
+  watch: {
+    services: function () {
+      this.clear()
+    }
+  },
   data () {
     return {
-      items: this.defaultItems
+      items: this.defaultItems,
+      pattern: ''
     }
   },
   methods: {
+    clear () {
+      this.items = []
+      this.pattern = ''
+      this.$refs.autocomplete.clear()
+    },
     itemIcon (item) {
       if (item.icon && item.icon.name) return item.icon.name
       return item.icon
@@ -57,24 +70,32 @@ export default {
       if (item.value) return item.value
       return item.name
     },
-    onItemSelected (newItem) {
-      if(_.findIndex(this.items, item => item._id === newItem._id) === -1) {
-        this.items.push(newItem)
-        this.$emit('item-selection-changed', this.items)
-      }
-    },
     onItemRemoved (oldItem) {
       this.items = this.items.filter(item => item._id !== oldItem._id)
-      this.$emit('item-selection-changed', this.items)
+      this.$emit('changed', this.items, this.pattern)
+    },
+    onAutocompleteChanged (value) {
+      if (typeof value === 'string') {
+        // The input pattern has changed
+        this.pattern = value
+        this.$emit('changed', this.items, this.pattern)
+      }
+      else {
+        // An item has been selected
+        if(_.findIndex(this.items, item => item._id === value._id) === -1) {
+          this.$refs.autocomplete.clear()
+          this.pattern = ''
+          this.items.push(value)
+          this.$emit('changed', this.items, this.pattern)
+        }
+      }
     }
   }
 }
 </script>
 
 <style>
-.icon {
-  cursor: pointer;
-  font-size: 24px;
-  color: rgba(0, 0, 0, .54);
+.chip {
+  margin: 4px;
 }
 </style>
