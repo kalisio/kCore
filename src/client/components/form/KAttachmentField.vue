@@ -7,7 +7,7 @@
     :label-width="labelWidth"
     :error="hasError"
   >
-    <q-chip v-for="file in files" :key="file._id" color="primary" @close="onFileRemoved(file)" closable>
+    <q-chip v-for="file in files" :key="file.name" color="primary" @close="onFileRemoved(file)" closable>
       {{fileName(file)}}
     </q-chip>
     <q-icon v-show="files.length < maxFiles" name="fa-cloud-upload fa-2x" @click="onUpload"/>
@@ -44,6 +44,9 @@ export default {
     isMultiple () {
       return _.get(this.properties, 'field.multiple', false)
     },
+    autoProcessQueue () {
+      return _.get(this.properties, 'field.autoProcessQueue', true)
+    },
     isObject () {
       return (this.properties.type === 'object')
     },
@@ -78,12 +81,20 @@ export default {
               (file._id ? file._id : file))
     },
     onUpload () {
+      // When not processing uploads we start from a fresh state
+      // otherwise we would have to keep thumbnails, etc. in-memory
+      if (!this.autoProcessQueue()) {
+        this.updateFiles([])
+      }
       this.$refs.uploader.open(this.files)
     },
     async onFileRemoved (oldFile) {
       const storage = this.$api.getService(this.properties.service || 'storage')
-      await storage.remove(oldFile._id)
-      this.updateFiles(this.files.filter(file => file._id !== oldFile._id))
+      // When processing uploads we need to remove from server first
+      if (this.autoProcessQueue()) {
+        await storage.remove(oldFile._id)
+      }
+      this.updateFiles(this.files.filter(file => file.name !== oldFile.name))
     }
   }
 }

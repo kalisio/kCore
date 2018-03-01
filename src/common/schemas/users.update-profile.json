@@ -14,6 +14,7 @@
         "service": "storage",
         "acceptedFiles": "image/*",
         "maxFilesize": 0.5,
+        "autoProcessQueue": true,
         "storagePath": "avatars/<%= id %>",
         "params": {
           "public": true

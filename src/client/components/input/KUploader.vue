@@ -1,7 +1,7 @@
 <template>
   <k-modal ref="modal" :toolbar="toolbar" :buttons="buttons">
     <div slot="modal-content" class="column sm-gutter">
-      <drop-zone ref="dropZone" id="dropZone" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" @vdropzone-max-files-exceeded="onMaxFileExceeded" :options="dropZoneOptions"/>
+      <drop-zone ref="dropZone" id="dropZone" @vdropzone-file-added="onFileAdded" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" @vdropzone-max-files-exceeded="onMaxFileExceeded" :options="dropZoneOptions"/>
       <!--vue-dropzone ref="myVueDropzone" id="dropzone" @vdropzone-file-added="vfileAdded" @vdropzone-success="vsuccess" @vdropzone-error="verror" @vdropzone-removed-file="vremoved" @vdropzone-sending="vsending" @vdropzone-success-multiple="vsuccessMuliple" @vdropzone-sending-multiple="vsendingMuliple" @vdropzone-queue-complete="vqueueComplete" @vdropzone-total-upload-progress="vprogress" @vdropzone-mounted="vmounted" @vdropzone-drop="vddrop" @vdropzone-drag-start="vdstart" @vdropzone-drag-end="vdend" @vdropzone-drag-enter="vdenter" @vdropzone-drag-over="vdover" @vdropzone-drag-leave="vdleave" :options="dropzoneOptions"-->
     </div>
   </k-modal>
@@ -46,6 +46,24 @@ export default {
     isMultiple () {
       return _.get(this.options, 'multiple', false)
     },
+    autoProcessQueue () {
+      return _.get(this.options, 'autoProcessQueue', true)
+    },
+    addFile(addedFile) {
+      this.files.push(addedFile)
+      this.$emit('file-selection-changed', this.files)
+    },
+    async removeFile(removedFile) {
+      const index = _.findIndex(this.files, file => file.name === removedFile.name)
+      if (index >= 0) {
+        // When processing uploads we need to remove from server first
+        if (this.autoProcessQueue()) {
+          await this.storageService().remove(this.files[index]._id)
+        }
+        _.pullAt(this.files, index)
+        this.$emit('file-selection-changed', this.files)
+      }
+    },
     onMaxFileExceeded (file) {
       // This is required if we don't want the file to be viewed
       this.dropZone().removeFile(file)
@@ -59,17 +77,21 @@ export default {
         formData.set('id', id)
       }
     },
-    onFileUploaded (addedFile, response) {
-      this.files.push(response)
-      this.$emit('file-selection-changed', this.files)
-    },
-    async onFileRemoved (removedFile, error, xhr) {
-      const index = _.findIndex(this.files, file => file.name === removedFile.name)
-      if (index >= 0) {
-        await this.storageService().remove(this.files[index]._id)
-        _.pullAt(this.files, index)
-        this.$emit('file-selection-changed', this.files)
+    onFileAdded (addedFile) {
+      // When not processing uploads we update file list on file selection
+      if (!this.autoProcessQueue()) {
+        // Filter all internal properties used by drop zone
+        this.addFile(_.pick(addedFile, ['name', 'size', '_id']))
       }
+    },
+    onFileUploaded (addedFile, response) {
+      // When processing uploads we only update file list on successful upload
+      if (this.autoProcessQueue()) {
+        this.addFile(response)
+      }
+    },
+    onFileRemoved (removedFile, error, xhr) {
+      this.removeFile(removedFile)
     },
     doDone (event, done) {
       done()
@@ -105,19 +127,18 @@ export default {
       // Reset drop zone
       this.files = []
       this.dropZone().removeAllFiles(true)
-      // Then setup existing files
-      // FIXME: does not seem to work very well, the files seem to be stacked
-      // Not sure it is designed to be used dynamically, eg https://github.com/enyo/dropzone/wiki/FAQ#how-to-show-files-already-stored-on-server
-      // and vue drop zone is not updated dynamically whenever the options changed (only done on mounted)
+      // Then setup existing files on server
       defaultFiles.forEach(file => {
         this.dropZoneInstance().emit('addedfile', file)
         // Make sure that there is no progress bar, etc...
         this.dropZoneInstance().emit('complete', file)
         // FIXME: we should only download a thumbnail here
-        this.storageService().get(file._id)
-        .then(image => {
-          this.dropZoneInstance().emit('thumbnail', file, image.uri)
-        })
+        if (file._id) {
+          this.storageService().get(file._id)
+          .then(image => {
+            this.dropZoneInstance().emit('thumbnail', file, image.uri)
+          })
+        }
       })
       // Because this is dynamic we need to modify the instance as the vue drop zone is not updated automatically
       this.dropZoneInstance().options.maxFiles = 1
