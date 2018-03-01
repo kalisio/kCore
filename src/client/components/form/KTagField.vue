@@ -53,7 +53,6 @@ export default {
         service: 'tags',
         baseQuery: { scope: this.properties.scope },
         field: 'value',
-        iconField: 'icon.name',
         icon: { name: 'label', color: 'faded' }
       }],
       tags: []
