@@ -97,9 +97,15 @@ export default function baseEditorMixin (formRefs) {
         // Iterate over forms for validation
         let isValid = true
         // Start from default object or input base object
-        // This is used to keep track of existing or additional properties
+        // This is used to keep track of existing or additional "hidden" or "internal" properties
         // in addition to the ones edited throught the form
-        let object = Object.assign({}, this.getObject() || this.baseObject)
+        let object = {}
+        const baseObject = this.getObject() || this.baseObject
+        if (this.perspective !== '') {
+          Object.assign(object, _.get(baseObject, this.perspective))
+        } else {
+          Object.assign(object, baseObject)
+        }
         formRefs.forEach(name => {
           let form = this.$refs[name]
           if (form.loadRefs().isFulfilled()) {
@@ -131,7 +137,7 @@ export default function baseEditorMixin (formRefs) {
 
           // Update the item
           if (this.applyButton === 'Update') {
-            // Edtng mode => patch the item
+            // Editing mode => patch the item
             if (this.perspective !== '') {
               let data = {}
               data[this.perspective] = object
