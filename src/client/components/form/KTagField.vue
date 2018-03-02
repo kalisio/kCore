@@ -72,7 +72,7 @@ export default {
       if (_.findIndex(results, result => result.value === pattern) === -1) {
         results.unshift({
           label: 'Add "' + pattern + '" tag',
-          icon: 'label',
+          icon: 'send',
           value: pattern,
           data: { 
             value: pattern, 
