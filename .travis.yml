@@ -1,14 +1,19 @@
 language: node_js
 node_js:
-  - '8'
+- '8'
 services:
-  - mongodb
+- mongodb
 addons:
   code_climate:
-    repo_token: '58d58ff016ef31f1b6b2a83c191d80cdfadf1f194b3f839b9931aeb28952e3c4'
+    repo_token: 58d58ff016ef31f1b6b2a83c191d80cdfadf1f194b3f839b9931aeb28952e3c4
 notifications:
   email: false
+  slack:
+    rooms:
+      secure: L43LpAbnLCuwuGc7DWxSo1dcYPfbckdyhALTSkFa4Uiq8SrfSfQ+vm9fr7p31m/c5/QziloBvZCUkeF96w3uX3jjaZBbdqRsGhZ9QRaDw6i5VqvgKpB89vhCaTAHP37OjuuASlDZCZqie69ZOlrId+Fsh0V2o4J0EC8mj9e4B2R69FR8dw2GAzZfb4u+xkPlo/P4JvGFHLkc1G74bRp6AymPE2g/MFm/iQur5h58eNmBotuPwjL4dXiZ97OZMusk6z+NiHntyZTUQ3ULxtaAk/Qxm+DDq1/Xzxm5Suc2tdW+PCfBETvlgVUmdsUmGC/B7BAT68W+wY6CYv10gb7CAUIeKVE0R/aCuYzRfUnhUe/A/t0g+7918gWxC2o4zp5sGCKjxq53fER4mxqK4t+N5m6xShs0+bJVk8uLsdkWXSzj0xk1FM9SQDkavlDNep2gi3cDvkKyqtLXphisRbbmqz+CfPJn7jnOn9OrUhgAtKyhrb+QCUTrrEb38JjnlISYV/6s4LkiD+LbTV/IcZO84rVPNAq7Qa6PPIEwCegTkcJwdXEjNjlQ6VuIN9t3jQBcSksfIOmsMkTj/3y9seJXxni3WhXFIaGAkDel+JdPdgNnxQEU7J8fIUV9UE33JSj3cGJYrt9QKh8Wx3CoLk4c5TjE6kZkOKU5+J9ZDqRqBdA=
+    on_success: always
+    on_failure: always
 before_script:
-  - npm install -g codeclimate-test-reporter
+- npm install -g codeclimate-test-reporter
 after_script:
-  - codeclimate-test-reporter < coverage/lcov.info
+- codeclimate-test-reporter < coverage/lcov.info
