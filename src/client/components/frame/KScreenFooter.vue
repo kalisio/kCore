@@ -2,7 +2,7 @@
   <small>
     <div class="row justify-center">
       <template v-for="link in links">
-        <div>
+        <div :key="link.label">
           &nbsp;
           <a @click="onLinkClicked(link.url)" >
             {{ $t(link.label) }}
