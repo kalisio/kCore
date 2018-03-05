@@ -74,7 +74,7 @@ export default {
             "format": "email",
             "field": {
               "component": "form/KEmailField",
-              "label": "Email",
+              "label": "KLogin.EMAIL",
               "helper": "KLogin.ENTER_YOUR_EMAIL_ADDRESS",
             }
           },
@@ -82,7 +82,7 @@ export default {
             "type": "string",
             "field": {
               "component": "form/KPasswordField",
-              "label": "Password",
+              "label": "KLogin.PASSWORD",
               "helper": "KLogin.ENTER_YOUR_PASSWORD",
             }
           }

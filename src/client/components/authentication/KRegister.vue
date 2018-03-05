@@ -1,5 +1,5 @@
 <template>
-  <k-screen title="Register">
+  <k-screen :title="$t('KRegister.REGISTER')">
     <div slot="screen-content">
       <div class="column justify-center sm-gutter">
         <!--
@@ -9,18 +9,18 @@
           <k-form ref="form" :schema="schema" />
         </div>
         <div class="self-center">
-          <q-btn id="register" color="primary" loader @click="onRegister">Register</q-btn>
+          <q-btn id="register" color="primary" loader @click="onRegister">{{ $t('KRegister.REGISTER') }}</q-btn>
         </div>
         <!--
           Additionnal links
         -->
         <div class="self-center">
           <a @click="$router.push({name: 'login'})">
-            Already have an account ?
+            {{ $t('KRegister.ALREADY_HAVE_AN_ACCOUNT') }}
           </a>
           &nbsp;&nbsp;
           <a v-if="isCordova" @click="$router.push({name: 'change-endpoint'})">
-            Change endpoint ?
+            {{ $t('KRegister.CHANGE_ENDPOINT') }}
           </a>
         </div>
       </div>
@@ -56,8 +56,8 @@ export default {
             "maxLength": 128,
             "field": {
               "component": "form/KTextField",
-              "label": "Name",
-              "helper": "Type your name",
+              "label": "KRegister.NAME",
+              "helper": "KRegister.ENTER_YOUR_NAME",
             }
           },
           "email": { 
@@ -65,16 +65,16 @@ export default {
             "format": "email",
             "field": {
               "component": "form/KEmailField",
-              "label": "Email",
-              "helper": "Type your email address",
+              "label": "KRegister.EMAIL",
+              "helper": "KRegister.ENTER_YOUR_EMAIL_ADDRESS",
             }
           },
           "password": { 
             "type": "string",
             "field": {
               "component": "form/KPasswordField",
-              "label": "Password",
-              "helper": "Type your password",
+              "label": "KRegister.PASSWORD",
+              "helper": "KRegister.ENTER_YOUR_PASSWORD",
             }
           },
           "confirmPassword": { 
@@ -83,8 +83,8 @@ export default {
             },
             "field": {
               "component": "form/KPasswordField",
-              "label": "Confirm Password",
-              "helper": "Type your password again",
+              "label": "KRegister.CONFIRM_PASSWORD",
+              "helper": "KRegister.CONFIRM_YOUR_PASSWORD",
             }
           }
         },

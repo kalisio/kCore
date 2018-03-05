@@ -2,11 +2,26 @@
   "KLogin": {
     "LOG_IN_WITH": "Connectez vous avec",
     "OR": "Ou",
+    "EMAIL": "Email",
     "ENTER_YOUR_EMAIL_ADDRESS": "Saisissez votre adresse mail",
+    "PASSWORD": "Mot de passe",
     "ENTER_YOUR_PASSWORD": "Saisissez votre mot de passe",
     "LOG_IN": "Se connecter",
     "FORGOT_YOUR_PASSWORD": "Mot de passe oublié ?",
     "DONT_HAVE_AN_ACCOUNT": "Vous n'avez pas de compte ?",
-    "CHANGE_ENDPOINT": "Modifier le serveur ?"
+    "CHANGE_ENDPOINT": "Modifier l'adresse du serveur ?"
+  },
+  "KRegister": {
+    "REGISTER": "S'enregistrer",
+    "NAME": "Nom",
+    "ENTER_YOUR_NAME": "Saisissez votre nom",
+    "EMAIL": "Email",
+    "ENTER_YOUR_EMAIL_ADDRESS": "Saisissez votre adresse mail",
+    "PASSWORD": "Mot de passe",
+    "ENTER_YOUR_PASSWORD": "Saisissez votre mot de passe",
+    "CONFIRM_PASSWORD": "Confirmation",
+    "CONFIRM_YOUR_PASSWORD": "Confirmez votre mot de passe",
+    "ALREADY_HAVE_AN_ACCOUNT": "Déjà un compte ?",
+    "CHANGE_ENDPOINT": "Modifier l'adresse du serveur ?"
   }
 }
