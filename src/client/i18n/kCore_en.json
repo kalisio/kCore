@@ -1,1 +1,10 @@
-{}
+{
+  "KLogin": {
+    "LOG_IN_WITH": "Log in with",
+    "OR": "Or",
+    "ENTER_YOUR_EMAIL_ADDRESS": "Enter your email address",
+    "ENTER_YOUR_PASSWORD": "Enter your password",
+    "FORGOT_YOUR_PASSWORD": "Forgot your password ?",
+    "DONT_HAVE_AN_ACCOUNT": "Dont't have an account ?"
+  }
+}

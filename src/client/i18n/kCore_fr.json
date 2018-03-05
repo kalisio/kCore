@@ -1,6 +1,10 @@
 {
   "KLogin": {
     "LOG_IN_WITH": "Connectez vous avec",
-    "TYPE_YOUR_EMAIL_ADDRESS": "Saisissez votre addresse mail"
+    "OR": "Ou",
+    "ENTER_YOUR_EMAIL_ADDRESS": "Saisissez votre addresse mail",
+    "ENTER_YOUR_PASSWORD": "Saisissez votre mot de passe",
+    "FORGOT_YOUR_PASSWORD": "Mot de passe oublié ?",
+    "DONT_HAVE_AN_ACCOUNT": "Vous n'avez pas de compte ?"
   }
 }

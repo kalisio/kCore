@@ -59,3 +59,17 @@ export const Colors = {
   'grey': '#9e9e9e',
   'blue-grey': '#607d8b'
 }
+
+export function getLocale () {
+  let locale =
+    navigator.language ||
+    navigator.languages[0] ||
+    navigator.browserLanguage ||
+    navigator.userLanguage ||
+    navigator.systemLanguage
+
+  if (locale) {
+    return locale.toLowerCase()
+  }
+  // return undefined by default
+}

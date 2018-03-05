@@ -1,5 +1,5 @@
 <template>
-  <k-screen title="Log in with">
+  <k-screen :title="$t('KLogin.LOG_IN_WITH')">
     <div slot="screen-content">
       <div class="column justify-center sm-gutter">
         <!-- 
@@ -10,7 +10,7 @@
             <q-btn v-for="provider in providers" :icon="'fa-' + provider" :id="provider" @click="onLogWith(provider)" :key="provider">{{provider}}</q-btn>
           </div>
           <div class="row items-center"> 
-            <div class="col-1"><h6>Or</h6></div>
+            <div class="col-1"><h6>{{ $t('KLogin.OR') }}</h6></div>
             <div class="col-11"><hr></div>
           </div>
         </div>
@@ -28,11 +28,11 @@
         -->
         <div class="self-center">
           <a @click="$router.push({name: 'send-reset-password'})">
-            Forgot your password ?
+            {{ $t('KLogin.FORGOT_YOUR_PASSWORD') }}
           </a>
           &nbsp;&nbsp;
           <a @click="$router.push({name: 'register'})">
-            Don't have an account ?
+            {{ $t('KLogin.DONT_HAVE_AN_ACCOUNT') }}
           </a>
           &nbsp;&nbsp;
           <a v-if="isCordova" @click="$router.push({name: 'change-endpoint'})">
@@ -75,7 +75,7 @@ export default {
             "field": {
               "component": "form/KEmailField",
               "label": "Email",
-              "helper": "Type your email address",
+              "helper": "KLogin.ENTER_YOUR_EMAIL_ADDRESS",
             }
           },
           "password": { 
@@ -83,7 +83,7 @@ export default {
             "field": {
               "component": "form/KPasswordField",
               "label": "Password",
-              "helper": "Type your password",
+              "helper": "KLogin.ENTER_YOUR_PASSWORD",
             }
           }
         },
