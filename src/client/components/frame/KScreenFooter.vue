@@ -5,7 +5,7 @@
         <div>
           &nbsp;
           <a @click="onLinkClicked(link.url)" >
-            {{ link.label }}
+            {{ $t(link.label) }}
           </a>
           &nbsp;
         </div>
