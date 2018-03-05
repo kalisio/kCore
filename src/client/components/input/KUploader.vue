@@ -53,6 +53,13 @@ export default {
       this.files.push(addedFile)
       this.$emit('file-selection-changed', this.files)
     },
+    updateFile(updatedFile) {
+      const index = _.findIndex(this.files, file => file.name === updatedFile.name)
+      if (index >= 0) {
+        this.files[index] = updatedFile
+        this.$emit('file-selection-changed', this.files)
+      }
+    },
     async removeFile(removedFile) {
       const index = _.findIndex(this.files, file => file.name === removedFile.name)
       if (index >= 0) {
@@ -85,9 +92,12 @@ export default {
       }
     },
     onFileUploaded (addedFile, response) {
-      // When processing uploads we only update file list on successful upload
+      // We update file list on successful upload,
+      // take care the file has already been added when not processing uploads on the fly
       if (this.autoProcessQueue()) {
         this.addFile(response)
+      } else {
+        this.updateFile(response)
       }
     },
     onFileRemoved (removedFile, error, xhr) {
@@ -122,6 +132,21 @@ export default {
       this.dropZoneOptions.url = this.$api.getBaseUrl() + '/' + this.storageService().path
       // This is used to ensure the request will be authenticated by Feathers
       this.dropZoneOptions.headers = { Authorization: window.localStorage.getItem('feathers-jwt') }
+    },
+    processQueue () {
+      if (this.dropZone().getQueuedFiles().length === 0) {
+        return Promise.resolve()
+      } else {
+        return new Promise((resolve, reject) => {
+          // Register to upload complete event
+          this.dropZone().$on('vdropzone-queue-complete', () => {
+            this.dropZone().$off('vdropzone-queue-complete')
+            resolve()
+          })
+          // Then launch upload
+          this.dropZone().processQueue()
+        })
+      }
     },
     open (defaultFiles = []) {
       // Reset drop zone

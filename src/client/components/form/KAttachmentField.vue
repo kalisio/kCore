@@ -62,6 +62,13 @@ export default {
         this.files = (!_.isEmpty(this.model) ? [this.model] : [])
       }
     },
+    async apply (object, field) {
+      // When not processing uploads on-the-fly upload when the form is being submitted
+      if (!this.autoProcessQueue()) {
+        await this.$refs.uploader.processQueue()
+      }
+      _.set(object, field, this.value())
+    },
     updateFiles (files) {
       this.files = files
       this.updateModel()
@@ -89,9 +96,9 @@ export default {
       this.$refs.uploader.open(this.files)
     },
     async onFileRemoved (oldFile) {
-      const storage = this.$api.getService(this.properties.service || 'storage')
       // When processing uploads we need to remove from server first
       if (this.autoProcessQueue()) {
+        const storage = this.$api.getService(this.properties.service || 'storage')
         await storage.remove(oldFile._id)
       }
       this.updateFiles(this.files.filter(file => file.name !== oldFile.name))
