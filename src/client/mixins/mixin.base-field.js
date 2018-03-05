@@ -81,6 +81,11 @@ let baseFieldMixin = {
       // Warning: This method must be called once the form is mounted
       // We need to force a refresh so that the model is correctly updated by Vuejs
       this.$nextTick().then(() => this.$emit('field-changed', this.properties.name, this.model))
+    },
+    apply (object, field) {
+      // To be overloaded if you need to perform specific operations before the form has been applied
+      // By default simply set the current value on the given object field
+      _.set(object, field, this.value())
     }
   }
 }

@@ -93,9 +93,25 @@ export default function baseEditorMixin (formRefs) {
       reset () {
         this.fillEditor()
       },
-      apply (event, done) {
+      async apply (event, done) {
         // Iterate over forms for validation
         let isValid = true
+        formRefs.forEach(name => {
+          let form = this.$refs[name]
+          if (form.loadRefs().isFulfilled()) {
+            if (!form.isDisabled) {
+              let result = form.validate()
+              if (!result.isValid) {
+                isValid = false
+              }
+            }
+          } else {
+            logger.warn(`Trying to apply the editor with a non-ready form named ${name}`)
+            isValid = false
+          }
+        })
+
+        // Now the form is valid apply it to the target object
         // Start from default object or input base object
         // This is used to keep track of existing or additional "hidden" or "internal" properties
         // in addition to the ones edited throught the form
@@ -106,23 +122,21 @@ export default function baseEditorMixin (formRefs) {
         } else {
           Object.assign(object, baseObject)
         }
-        formRefs.forEach(name => {
-          let form = this.$refs[name]
-          if (form.loadRefs().isFulfilled()) {
-            if (!form.isDisabled) {
-              let result = form.validate()
-              if (!result.isValid) {
-                isValid = false
-              } else {
-                Object.assign(object, result.values)
-              }
-            }
-          } else {
-            logger.warn(`Trying to apply the editor with a non-ready form named ${name}`)
-            isValid = false
-          }
-        })
 
+        if (isValid) {
+          // Apply each form
+          for (let i = 0; i < formRefs.length; i++) {
+            const name = formRefs[i]
+            let form = this.$refs[name]
+            try {
+              await form.apply(object)
+            } catch (error) {
+              isValid = false
+              break
+            }
+          }
+        }
+        // Stop here if invalid or not applied correctly
         if (!isValid) {
           if (done) done()
           return

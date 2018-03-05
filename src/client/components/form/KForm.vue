@@ -175,6 +175,13 @@ export default {
       })
       result.isValid = true
       return result
+    },
+    async apply (object) {
+      if (!this.loadRefs().isFulfilled()) throw Error('Cannot apply the form while not ready')
+      for (let i = 0; i < this.fields.length; i++) {
+        const field = this.fields[i]
+        await this.getField(field.name).apply(object, field.name)
+      }
     }
   },
   created () {
