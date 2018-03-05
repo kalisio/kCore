@@ -2,9 +2,11 @@
   "KLogin": {
     "LOG_IN_WITH": "Connectez vous avec",
     "OR": "Ou",
-    "ENTER_YOUR_EMAIL_ADDRESS": "Saisissez votre addresse mail",
+    "ENTER_YOUR_EMAIL_ADDRESS": "Saisissez votre adresse mail",
     "ENTER_YOUR_PASSWORD": "Saisissez votre mot de passe",
+    "LOG_IN": "Se connecter",
     "FORGOT_YOUR_PASSWORD": "Mot de passe oublié ?",
-    "DONT_HAVE_AN_ACCOUNT": "Vous n'avez pas de compte ?"
+    "DONT_HAVE_AN_ACCOUNT": "Vous n'avez pas de compte ?",
+    "CHANGE_ENDPOINT": "Modifier le serveur ?"
   }
 }

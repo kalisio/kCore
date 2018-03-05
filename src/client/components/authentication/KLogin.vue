@@ -21,7 +21,7 @@
           <k-form ref="form" :schema="schema" />
         </div>
         <div class="self-center">
-          <q-btn color="primary" loader id="local" @click="onLogin">Log in</q-btn>
+          <q-btn color="primary" loader id="local" @click="onLogin">{{ $t('KLogin.LOG_IN') }}</q-btn>
         </div>
         <!-- 
           Additionnal links
@@ -36,7 +36,7 @@
           </a>
           &nbsp;&nbsp;
           <a v-if="isCordova" @click="$router.push({name: 'change-endpoint'})">
-            Change endpoint ?
+            {{ $t('KLogin.CHANGE_ENDPOINT') }}
           </a>
         </div>
       </div>

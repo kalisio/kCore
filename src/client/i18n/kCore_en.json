@@ -4,7 +4,9 @@
     "OR": "Or",
     "ENTER_YOUR_EMAIL_ADDRESS": "Enter your email address",
     "ENTER_YOUR_PASSWORD": "Enter your password",
+    "LOG_IN": "Log in",
     "FORGOT_YOUR_PASSWORD": "Forgot your password ?",
-    "DONT_HAVE_AN_ACCOUNT": "Dont't have an account ?"
+    "DONT_HAVE_AN_ACCOUNT": "Dont't have an account ?",
+    "CHANGE_ENDPOINT": "Change endpoint ?"
   }
 }
