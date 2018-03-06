@@ -1,5 +1,11 @@
 {
   "CANCEL": "Annuler",
+  "UPDATE": "Mettre à jour",
+  "CREATE": "Créer",
+  "schemas": {
+    "AVATAR_FIELD_HELPER": "Choisissez un avatar",
+    "NAME_FIELD_HELPER": "Saisissez votre nom"
+  },
   "KAuthentication": {
     "EMAIL_FIELD_HELPER": "Saisissez votre adresse mail",
     "CHANGE_ENDPOINT_LINK": "Modifier l'adresse du serveur ?"
@@ -16,8 +22,8 @@
   },
   "KRegister": {
     "TITLE": "S'enregistrer",
-    "NAME_FIELD_HELPER": "Saisissez votre nom",
-    "EMAIL_FIELD_HELPER": "{{KAuthentication.EMAIL_FIELD_HELPER}}",
+    "NAME_FIELD_HELPER": "$t(schemas.NAME_FIELD_HELPER)",
+    "EMAIL_FIELD_HELPER": "$t(KAuthentication.EMAIL_FIELD_HELPER)",
     "PASSWORD_FIELD_HELPER": "Saisissez un mot de passe",
     "CONFIRM_PASSWORD_FIELD_HELPER": "Confirmez votre mot de passe",
     "APPLY_BUTTON": "S'enregistrer",
@@ -40,5 +46,18 @@
     "PROFILE": "Profil",
     "SECURITY": "Securité",
     "DANGER_ZONE": "Zone de danger"
+  },
+  "KAccountDZ": {
+    "TITLE": "Supprimer votre compte ?",
+    "TEXT": "Avant de continuer veuillez bien prendre en compte que le suppression de votre compte entraine la suppression de toutes les données s'y repportant.<br>La suppresion ne peut pas être annulée et vous serez déconnecté de l'application.",
+    "ACTION": "Supprimer"
+  },
+  "KAccountSecurity": {
+    "TITLE_PASSWORD_BLOCK": "Changer votre mot de passe ?",
+    "TEXT_PASSWORD_BLOCK": "Votre mot de passe protège votre compte.<br>Changez le avec précaution.",
+    "ACTION_PASSWORD_BLOCK": "Changer",
+    "TITLE_EMAIL_BLOCK": "Changez votre addresse mail ?",
+    "TEXT_EMAIL_BLOCK": "Changer votre adresse mail sécurise les accès à votre compte.<br>Changez la avec précaution.",
+    "ACTION_EMAIL_BLOCK": "Changer"
   }
 }

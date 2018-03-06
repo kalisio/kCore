@@ -1,5 +1,11 @@
 {
   "CANCEL": "Cancel",
+  "UPDATE": "Update",
+  "CREATE": "Create",
+  "schemas": {
+    "AVATAR_FIELD_HELPER": "Select an avatar",
+    "NAME_FIELD_HELPER": "Enter your name"
+  },
   "KAuthentication": {
     "EMAIL_FIELD_HELPER": "Enter your email address",
     "CHANGE_ENDPOINT_LINK": "Change endpoint ?"    
@@ -16,8 +22,8 @@
   },
   "KRegister": {
     "TITLE": "Register",
-    "NAME_FIELD_HELPER": "Enter your name",
-    "EMAIL_FIELD_HELPER": "{{KAuthentication.EMAIL_FIELD_HELPER}}",
+    "NAME_FIELD_HELPER": "$t(schemas.NAME_FIELD_HELPER)",
+    "EMAIL_FIELD_HELPER": "$t(KAuthentication.EMAIL_FIELD_HELPER)",
     "PASSWORD_FIELD_HELPER": "Enter a password",
     "CONFIRM_PASSWORD_FIELD_HELPER": "Confirm your password",
     "APPLY_BUTTON": "Register",
@@ -28,7 +34,7 @@
     "TITLE": "Changer endpoint",
     "BASE_URL_FIELD_HELPER": "Enter the address of the server to be used",
     "APPLY_BUTTON": "APPLY",
-    "CANCEL_BUTTON": "$t(CANCEL)",
+    "CANCEL_BUTTON": "$t(common.CANCEL)",
     "RESET_BUTTON": "Reset"
   },  
   "KLogout": {
@@ -40,5 +46,18 @@
     "PROFILE": "Profile",
     "SECURITY": "Security",
     "DANGER_ZONE": "Danger zone"
+  },
+  "KAccountDZ": {
+    "TITLE": "Delete your account ?",
+    "TEXT": "Please note that deleting your account will delete any data attached to this account.<br><br>The deletion cannot be undone and you will be logged out of the application.",
+    "ACTION": "Delete account"
+  },
+  "KAccountSecurity": {
+    "TITLE_PASSWORD_BLOCK": "Change your password ?",
+    "TEXT_PASSWORD_BLOCK": "Your password protect your account.<br>Change it carefully.",
+    "ACTION_PASSWORD_BLOCK": "Change password",
+    "TITLE_EMAIL_BLOCK": "Change your email ?",
+    "TEXT_EMAIL_BLOCK": "Your email secures changes to your account credentials.<br>Change it carefully.",
+    "ACTION_EMAIL_BLOCK": "Change email"
   }
 }

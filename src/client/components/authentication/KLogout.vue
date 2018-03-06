@@ -7,7 +7,7 @@
         -->
         <div>
           <blockquote class="text-right">
-            <p>{{$t('KLogout.SIGN_OFF')}}&nbsp;<cite>{{appName}}</cite>.</p>
+            <p>{{$t('KLogout.SIGN_OFF_LABEL')}}&nbsp;<cite>{{appName}}</cite>.</p>
             <small v-if="publisherName"><cite>{{publisherName}}</cite></small>
           </blockquote>
         </div>
@@ -16,7 +16,7 @@
         -->
         <div class="self-center">
           <a @click="$router.push({name: 'login'})">
-            {{$t('KLogout.LOG_IN_AGAIN')}}
+            {{$t('KLogout.LOG_IN_AGAIN_LINK')}}
           </a>
         </div>
       </div>

@@ -9,8 +9,7 @@
       "type": "object",
       "field": {
         "component": "form/KAttachmentField",
-        "label": "Avatar",
-        "helper": "Select your avatar image",
+        "helper": "schemas.AVATAR_FIELD_HELPER",
         "service": "storage",
         "acceptedFiles": "image/*",
         "maxFilesize": 0.5,
@@ -27,16 +26,7 @@
       "minLength": 3,
       "field": {
         "component": "form/KTextField",
-        "label": "Name",
-        "helper": "Enter your name"
-      }
-    },
-    "phone": { 
-      "type": "string",
-      "field": {
-        "component": "form/KPhoneField",
-        "label": "Phone",
-        "helper": "Enter your phone number"
+        "helper": "schemas.NAME_FIELD_HELPER"
       }
     }
   },

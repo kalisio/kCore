@@ -11,9 +11,9 @@
     -->
     <div>
       <div class="row justify-end" style="padding: 12px">
-        <q-btn v-if="clearButton !== ''" id="clear-button" color="primary" @click="clear" loader>{{ clearButton }}</q-btn>
-        <q-btn v-if="resetButton !== ''" id="reset-button" color="primary" @click="reset" loader>{{ resetButton }}</q-btn>
-        <q-btn v-if="applyButton !== ''" id="apply-button" color="primary" @click="apply" loader>{{ applyButton }}</q-btn>
+        <q-btn v-if="clearButton !== ''" id="clear-button" color="primary" @click="clear" loader>{{clearButton}}</q-btn>
+        <q-btn v-if="resetButton !== ''" id="reset-button" color="primary" @click="reset" loader>{{resetButton}}</q-btn>
+        <q-btn v-if="applyButton !== ''" id="apply-button" color="primary" @click="apply" loader>{{applyButton}}</q-btn>
       </div>
     </div>
   </div>

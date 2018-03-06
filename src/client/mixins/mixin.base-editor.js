@@ -1,4 +1,5 @@
 import logger from 'loglevel'
+import i18next from 'i18next'
 import _ from 'lodash'
 
 export default function baseEditorMixin (formRefs) {
@@ -74,9 +75,9 @@ export default function baseEditorMixin (formRefs) {
         })
         // Update button accordingly
         if (this.getMode() === 'update') {
-          this.applyButton = 'Update'
+          this.applyButton = i18next.t('UPDATE')
         } else {
-          this.applyButton = 'Create'
+          this.applyButton = i18next.t('CREATE')
         }
       },
       clear () {
@@ -150,7 +151,7 @@ export default function baseEditorMixin (formRefs) {
           }
 
           // Update the item
-          if (this.applyButton === 'Update') {
+          if (this.getMode() === 'update') {
             // Editing mode => patch the item
             if (this.perspective !== '') {
               let data = {}
@@ -161,7 +162,7 @@ export default function baseEditorMixin (formRefs) {
               this.servicePatch(this.id, object)
               .then(onServiceResponse)
             }
-          } else if (this.applyButton === 'Create') {
+          } else if (this.getMode() === 'create') {
             // Creation mode => create the item
             this.serviceCreate(object)
             .then(onServiceResponse)

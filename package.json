@@ -81,6 +81,7 @@
     "feathers-socketio": "^2.0.0",
     "fs-extra": "^3.0.0",
     "helmet": "^3.5.0",
+    "i18next": "^10.5.0",
     "js-yaml": "^3.10.0",
     "lodash": "^4.17.4",
     "loglevel": "^1.6.0",

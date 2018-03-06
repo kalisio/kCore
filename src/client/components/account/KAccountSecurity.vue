@@ -7,10 +7,9 @@
       <div class="col-12">
         <k-block
           color="grey" 
-          title="Change your password ?"
-          :text="`Your password protect your account, change it carefully.<br>
-          You will be asked to type your current password.`"
-          action="Change password"
+          :title="$t('KAccountSecurity.TITLE_PASSWORD_BLOCK')"
+          :text="$t('KAccountSecurity.TEXT_PASSWORD_BLOCK')"
+          :action="$t('KAccountSecurity.ACTION_PASSWORD_BLOCK')"
           @action-triggered="onChangePassword" />
       </div>
        <!-- 
@@ -19,10 +18,9 @@
       <div class="col-12">
         <k-block
           color="orange" 
-          title="Change your email ?"
-          :text="`Your email secures changes to your account credentials, change it carefully.<br>
-          You will be asked to type your current password.`"
-          action="Change email"
+          :title="$t('KAccountSecurity.TITLE_EMAIL_BLOCK')"
+          :text="$t('KAccountSecurity.TEXT_EMAIL_BLOCK')"
+          :action="$t('KAccountSecurity.ACTION_EMAIL_BLOCK')"
           @action-triggered="onChangeEmail" />
       </div>
     </div>

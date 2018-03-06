@@ -2,8 +2,8 @@
   <div>
     <q-field
       :icon="icon"
-      :label="label"
-      :helper="helper"
+      :label="$t(label)"
+      :helper="$t(helper)"
       :error-label="errorLabel"
       :label-width="labelWidth"
       :error="hasError"

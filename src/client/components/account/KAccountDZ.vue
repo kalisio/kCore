@@ -3,15 +3,16 @@
     <div class="col-12">
       <k-block 
         color="red" 
-        title="Delete your account ?"
-        :text="blockText()"
-        action="Delete"
+        :title="$t('KAccountDZ.TITLE')"
+        :text="$t('KAccountDZ.TEXT')"
+        :action="$t('KAccountDZ.ACTION')"
         @action-triggered="onDeleteClicked" />
     </div>
   </div>
 </template>
 
 <script>
+import i18next from 'i18next'
 import { Dialog } from 'quasar'
 import mixins from '../../mixins'
 
@@ -27,11 +28,6 @@ export default {
     }
   },
   methods: {
-    blockText () {
-      /*return "Please note that deleting \'" + this.name + 
-              "\' will delete any data attached to this account.<br>" +
-              "The deletion cannot be undone and you will be logged out of the application."*/
-    },
     loadService () {
       return this._service = this.$api.getService('users')
     },
