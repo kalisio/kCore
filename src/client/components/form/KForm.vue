@@ -57,6 +57,10 @@ export default {
     }
   },
   methods: {
+    getMode () {
+      if (this.id) return 'update'
+      return 'create'
+    },
     getField (field) {
       return this.$refs[field][0]
     },
@@ -181,6 +185,13 @@ export default {
       for (let i = 0; i < this.fields.length; i++) {
         const field = this.fields[i]
         await this.getField(field.name).apply(object, field.name)
+      }
+    },
+    async submitted (object) {
+      if (!this.loadRefs().isFulfilled()) throw Error('Cannot run submitted on the form while not ready')
+      for (let i = 0; i < this.fields.length; i++) {
+        const field = this.fields[i]
+        await this.getField(field.name).submitted(object, field.name)
       }
     }
   },
