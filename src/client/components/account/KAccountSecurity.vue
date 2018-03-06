@@ -7,9 +7,9 @@
       <div class="col-12">
         <k-block
           color="grey" 
-          :title="$t('KAccountSecurity.TITLE_PASSWORD_BLOCK')"
-          :text="$t('KAccountSecurity.TEXT_PASSWORD_BLOCK')"
-          :action="$t('KAccountSecurity.ACTION_PASSWORD_BLOCK')"
+          :title="$t('KAccountSecurity.PASSWORD_BLOCK_TITLE')"
+          :text="$t('KAccountSecurity.PASSWORD_BLOCK_TEXT')"
+          :action="$t('KAccountSecurity.PASSWORD_BLOCK_ACTION')"
           @action-triggered="onChangePassword" />
       </div>
        <!-- 
@@ -18,9 +18,9 @@
       <div class="col-12">
         <k-block
           color="orange" 
-          :title="$t('KAccountSecurity.TITLE_EMAIL_BLOCK')"
-          :text="$t('KAccountSecurity.TEXT_EMAIL_BLOCK')"
-          :action="$t('KAccountSecurity.ACTION_EMAIL_BLOCK')"
+          :title="$t('KAccountSecurity.EMAIL_BLOCK_TITLE')"
+          :text="$t('KAccountSecurity.EMAIL_BLOCK_TEXT')"
+          :action="$t('KAccountSecurity.EMAIL_BLOCK_ACTION')"
           @action-triggered="onChangeEmail" />
       </div>
     </div>

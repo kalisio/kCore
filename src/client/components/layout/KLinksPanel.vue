@@ -5,7 +5,7 @@
       <template v-for="(link,index) in links">
         <q-item v-if="link.label" :key="index" @click="onLinkClicked(link)" item>
           <q-item-side :icon="link.icon" />
-          <q-item-main :label="link.label" />
+          <q-item-main :label="$t(link.label)" />
         </q-item>
         <q-item-separator v-else :key="index" />
       </template>

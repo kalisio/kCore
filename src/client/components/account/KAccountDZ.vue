@@ -3,9 +3,9 @@
     <div class="col-12">
       <k-block 
         color="red" 
-        :title="$t('KAccountDZ.TITLE')"
-        :text="$t('KAccountDZ.TEXT')"
-        :action="$t('KAccountDZ.ACTION')"
+        :title="$t('KAccountDZ.BLOCK_TITLE')"
+        :text="$t('KAccountDZ.BLOCK_TEXT')"
+        :action="$t('KAccountDZ.BLOCK_ACTION')"
         @action-triggered="onDeleteClicked" />
     </div>
   </div>
@@ -33,12 +33,12 @@ export default {
     },
     onDeleteClicked () {
       Dialog.create({
-        title: 'Are you sure you want to delete \'' + this.name + '\' ?',
+        title: i18next.t('KAccountDZ.DIALOG_TITLE'),
         form: {
           confirm: {
             type: 'text',
             model: '',
-            label: 'Enter your account name to confirm the deletion'
+            label: i18next.t('KAccountDZ.DIALOG_HELPER')
           }
         },
         buttons: [

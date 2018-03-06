@@ -48,17 +48,19 @@
     "DANGER_ZONE": "Zone de danger"
   },
   "KAccountDZ": {
-    "TITLE": "Supprimer votre compte ?",
-    "TEXT": "Avant de continuer veuillez bien prendre en compte que le suppression de votre compte entraine la suppression de toutes les données s'y repportant.<br>La suppresion ne peut pas être annulée et vous serez déconnecté de l'application.",
-    "ACTION": "Supprimer"
+    "BLOCK_TITLE": "Supprimer votre compte ?",
+    "BLOCK_TEXT": "Avant de continuer veuillez bien prendre en compte que le suppression de votre compte entraine la suppression de toutes les données s'y repportant.<br>La suppresion ne peut pas être annulée et vous serez déconnecté de l'application.",
+    "BLOCK_ACTION": "Supprimer",
+    "DIALOG_TITLE": "Etes vous sur de vouloir supprimer votre compte ?",
+    "DIALOG_HELPER": "Saisissez le nom de votre compte pour confirmer la suprression" 
   },
   "KAccountSecurity": {
-    "TITLE_PASSWORD_BLOCK": "Changer votre mot de passe ?",
-    "TEXT_PASSWORD_BLOCK": "Votre mot de passe protège votre compte.<br>Changez le avec précaution.",
-    "ACTION_PASSWORD_BLOCK": "Changer",
-    "TITLE_EMAIL_BLOCK": "Changez votre addresse mail ?",
-    "TEXT_EMAIL_BLOCK": "Changer votre adresse mail sécurise les accès à votre compte.<br>Changez la avec précaution.",
-    "ACTION_EMAIL_BLOCK": "Changer"
+    "PASSWORD_BLOCK_TITLE": "Changer votre mot de passe ?",
+    "PASSWORD_BLOCK_TEXT": "Votre mot de passe protège votre compte.<br>Changez le avec précaution.",
+    "PASSWORD_BLOCK_ACTION": "Changer",
+    "EMAIL_BLOCK_TITLE": "Changez votre addresse mail ?",
+    "EMAIL_BLOCK_TEXT": "Changer votre adresse mail sécurise les accès à votre compte.<br>Changez la avec précaution.",
+    "EMAIL_BLOCK_ACTION": "Changer"
   },
   "KGrid": {
     "EMPTY_GRID": "Aucun élément trouvé"

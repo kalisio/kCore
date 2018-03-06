@@ -48,17 +48,19 @@
     "DANGER_ZONE": "Danger zone"
   },
   "KAccountDZ": {
-    "TITLE": "Delete your account ?",
-    "TEXT": "Please note that deleting your account will delete any data attached to this account.<br><br>The deletion cannot be undone and you will be logged out of the application.",
-    "ACTION": "Delete account"
+    "BLOCK_TITLE": "Delete your account ?",
+    "BLOCK_TEXT": "Please note that deleting your account will delete any data attached to this account.<br><br>The deletion cannot be undone and you will be logged out of the application.",
+    "BLOCK_ACTION": "Delete account",
+    "DIALOG_TITLE": "Are you sure you want to delete your account ?",
+    "DIALOG_HELPER": "Enter your account name to confirm the deletion" 
   },
   "KAccountSecurity": {
-    "TITLE_PASSWORD_BLOCK": "Change your password ?",
-    "TEXT_PASSWORD_BLOCK": "Your password protect your account.<br>Change it carefully.",
-    "ACTION_PASSWORD_BLOCK": "Change password",
-    "TITLE_EMAIL_BLOCK": "Change your email ?",
-    "TEXT_EMAIL_BLOCK": "Your email secures changes to your account credentials.<br>Change it carefully.",
-    "ACTION_EMAIL_BLOCK": "Change email"
+    "PASSWORD_BLOCK_TITLE": "Change your password ?",
+    "PASSWORD_BLOCK_TEXT": "Your password protect your account.<br>Change it carefully.",
+    "PASSWORD_BLOCK_ACTION": "Change password",
+    "EMAIL_BLOCK_TITLE": "Change your email ?",
+    "EMAIL_BLOCK_TEXT": "Your email secures changes to your account credentials.<br>Change it carefully.",
+    "EMAIL_BLOCK_ACTION": "Change email"
   },
   "KGrid": {
     "EMPTY_GRID": "No elements found"
