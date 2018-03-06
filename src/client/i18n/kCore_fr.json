@@ -59,5 +59,8 @@
     "TITLE_EMAIL_BLOCK": "Changez votre addresse mail ?",
     "TEXT_EMAIL_BLOCK": "Changer votre adresse mail sécurise les accès à votre compte.<br>Changez la avec précaution.",
     "ACTION_EMAIL_BLOCK": "Changer"
+  },
+  "KGrid": {
+    "EMPTY_GRID": "Aucun éléments trouvés"
   }
 }

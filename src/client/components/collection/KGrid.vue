@@ -4,7 +4,14 @@
       <template v-for="item in items">
         <component :is="renderer.component" :key="item._id" :item="item" :contextId="contextId" v-bind="renderer.props" />
       </template>
-      <h5 v-if="items.length === 0">No elements to be displayed</h5>
+    </div>
+    <div class="column items-center" v-if="items.length === 0">
+      <div>
+        <q-icon size="2rem" name="error_outline" />
+      </div>
+      <div class="message">
+        {{$t('KGrid.EMPTY_GRID')}}
+      </div>
     </div>
     <div class="self-center" v-if="nbPages > 1">
       <q-pagination v-model="currentPage" :max="nbPages" style="padding: 18px" @input="onPageChanged" />
@@ -13,12 +20,13 @@
 </template>
 
 <script>
-import { QPagination } from 'quasar'
+import { QIcon, QPagination } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-grid',
   components: {
+    QIcon,
     QPagination
   },
   mixins: [mixins.service, mixins.baseCollection],
@@ -73,3 +81,12 @@ export default {
   }
 }
 </script>
+
+<style>
+.message {
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 2rem
+}
+</style>

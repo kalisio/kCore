@@ -59,5 +59,8 @@
     "TITLE_EMAIL_BLOCK": "Change your email ?",
     "TEXT_EMAIL_BLOCK": "Your email secures changes to your account credentials.<br>Change it carefully.",
     "ACTION_EMAIL_BLOCK": "Change email"
+  },
+  "KGrid": {
+    "EMPTY_GRID": "No elements found"
   }
 }
