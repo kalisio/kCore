@@ -72,7 +72,9 @@ export default {
       if (index >= 0) {
         // When processing uploads we need to remove from server first
         if (this.autoProcessQueue()) {
-          await this.storageService().remove(this.files[index]._id)
+          await this.storageService().remove(this.files[index]._id, {
+            query: { resource: this.resource, resourcesService: this.resourcesService() }
+          })
         }
         _.pullAt(this.files, index)
         this.$emit('file-selection-changed', this.files)
@@ -100,20 +102,12 @@ export default {
       }
     },
     onFileAdded (addedFile) {
-      // When not processing uploads we update file list on file selection
-      if (!this.autoProcessQueue()) {
-        // Filter all internal properties used by drop zone
-        this.addFile(_.pick(addedFile, ['name', 'size', '_id']))
-      }
+      // Filter all internal properties used by drop zone
+      this.addFile(_.pick(addedFile, ['name', 'size', '_id']))
     },
     onFileUploaded (addedFile, response) {
       // We update file list on successful upload,
-      // take care the file has already been added when not processing uploads on the fly
-      if (this.autoProcessQueue()) {
-        this.addFile(response)
-      } else {
-        this.updateFile(response)
-      }
+      this.updateFile(response)
     },
     onFileRemoved (removedFile, error, xhr) {
       this.removeFile(removedFile)
