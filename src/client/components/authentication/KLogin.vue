@@ -1,5 +1,5 @@
 <template>
-  <k-screen :title="$t('KLogin.LOG_IN_WITH')">
+  <k-screen :title="$t('KLogin.TITLE')">
     <div slot="screen-content">
       <div class="column justify-center sm-gutter">
         <!-- 
@@ -21,22 +21,22 @@
           <k-form ref="form" :schema="schema" />
         </div>
         <div class="self-center">
-          <q-btn color="primary" loader id="local" @click="onLogin">{{ $t('KLogin.LOG_IN') }}</q-btn>
+          <q-btn color="primary" loader id="local" @click="onLogin">{{$t('KLogin.LOG_IN')}}</q-btn>
         </div>
         <!-- 
           Additionnal links
         -->
         <div class="self-center">
           <a @click="$router.push({name: 'send-reset-password'})">
-            {{ $t('KLogin.FORGOT_YOUR_PASSWORD') }}
+            {{$t('KLogin.FORGOT_YOUR_PASSWORD')}}
           </a>
           &nbsp;&nbsp;
           <a @click="$router.push({name: 'register'})">
-            {{ $t('KLogin.DONT_HAVE_AN_ACCOUNT') }}
+            {{$t('KLogin.DONT_HAVE_AN_ACCOUNT')}}
           </a>
           &nbsp;&nbsp;
           <a v-if="isCordova" @click="$router.push({name: 'change-endpoint'})">
-            {{ $t('KLogin.CHANGE_ENDPOINT') }}
+            {{$t('KLogin.CHANGE_ENDPOINT')}}
           </a>
         </div>
       </div>

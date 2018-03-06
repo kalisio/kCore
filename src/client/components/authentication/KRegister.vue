@@ -1,5 +1,5 @@
 <template>
-  <k-screen :title="$t('KRegister.REGISTER')">
+  <k-screen :title="$t('KRegister.TITLE')">
     <div slot="screen-content">
       <div class="column justify-center sm-gutter">
         <!--
@@ -9,18 +9,18 @@
           <k-form ref="form" :schema="schema" />
         </div>
         <div class="self-center">
-          <q-btn id="register" color="primary" loader @click="onRegister">{{ $t('KRegister.REGISTER') }}</q-btn>
+          <q-btn id="register" color="primary" loader @click="onRegister">{{$t('KRegister.REGISTER')}}</q-btn>
         </div>
         <!--
           Additionnal links
         -->
         <div class="self-center">
           <a @click="$router.push({name: 'login'})">
-            {{ $t('KRegister.ALREADY_HAVE_AN_ACCOUNT') }}
+            {{$t('KRegister.ALREADY_HAVE_AN_ACCOUNT')}}
           </a>
           &nbsp;&nbsp;
           <a v-if="isCordova" @click="$router.push({name: 'change-endpoint'})">
-            {{ $t('KRegister.CHANGE_ENDPOINT') }}
+            {{$t('KRegister.CHANGE_ENDPOINT')}}
           </a>
         </div>
       </div>

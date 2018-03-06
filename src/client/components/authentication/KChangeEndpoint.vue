@@ -1,22 +1,15 @@
 <template>
-  <k-screen title="Change endpoint">
+  <k-screen :title="$t('KChangeEndpoint.TITLE')">
     <div slot="screen-content">
       <div class="column justify-center sm-gutter">
-        <div>
-          <blockquote>
-            <p>
-              Please enter the URL of the remote service to be used.
-              <a @click="onReset">Click this link</a> if you want to reset it to the default value.
-            </p>
-          </blockquote>
-        </div>
         <div>
           <k-form ref="form" :schema="schema" />
         </div>
         <div>
           <div class="row justify-around">
-            <q-btn color="primary" @click="onCanceled">Cancel</q-btn>
-            <q-btn color="primary" @click="onApplied">Apply</q-btn>
+            <q-btn color="primary" @click="onCanceled">{{$t('KChangeEndpoint.CANCEL')}}</q-btn>
+            <q-btn color="primary" @click="onReset">{{$t('KChangeEndpoint.RESET')}}</q-btn>
+            <q-btn color="primary" @click="onApplied">{{$t('KChangeEndpoint.APPLY')}}</q-btn>
           </div>
         </div>
       </div>
@@ -54,20 +47,11 @@ export default {
             "format": "uri",
             "field": {
               "component": "form/KTextField",
-              "label": "URL",
-              "helper": "Enter remote URL",
+              "helper": "KChangeEndpoint.ENTER_REMOTE_URL",
             }
           }
         },
-        "required": ["baseUrl"],
-        "form": {
-          "type": "object",
-          "properties":  {
-            "icon": false,
-            "label": true,
-            "labelWidth": 3
-          }
-        }
+        "required": ["baseUrl"]
       }
     }
   },

@@ -1,6 +1,6 @@
 {
   "KLogin": {
-    "LOG_IN_WITH": "Log in with",
+    "TITLE": "Log in with",
     "OR": "Or",
     "NAME": "Name",
     "ENTER_YOUR_EMAIL_ADDRESS": "Enter your email address",
@@ -12,7 +12,7 @@
     "CHANGE_ENDPOINT": "Change endpoint ?"
   },
   "KRegister": {
-    "REGISTER": "Register",
+    "TITLE": "Register",
     "NAME": "Name",
     "ENTER_YOUR_NAME": "Enter your name",
     "EMAIL": "Email",
@@ -21,7 +21,20 @@
     "ENTER_YOUR_PASSWORD": "Enter your password",
     "CONFIRM_PASSWORD": "Confirm password",
     "CONFIRM_YOUR_PASSWORD": "Confirm your password",
+    "REGISTER": "Register",
     "DONT_HAVE_AN_ACCOUNT": "Dont't have an account ?",
     "CHANGE_ENDPOINT": "Change endpoint ?"
+  },
+  "KChangeEndpoint": {
+    "TITLE": "Change endpoint",
+    "ENTER_REMOTE_URL": "Enter the address of the server to be used",
+    "CANCEL": "Cancel",
+    "RESET": "Reset",
+    "APPLY": "Apply"    
+  },
+  "KLogout": {
+    "TITLE": "Your are now logged out",
+    "SIGN_OFF": "Tkank you for using",
+    "LOG_IN_AGAIN": "Log in again ?"
   }
 }

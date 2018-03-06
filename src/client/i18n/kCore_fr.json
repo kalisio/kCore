@@ -1,6 +1,7 @@
 {
   "KLogin": {
-    "LOG_IN_WITH": "Connectez vous avec",
+    "TITLE": "Connectez vous avec",
+    "BUTTON": "Se connecter",
     "OR": "Ou",
     "EMAIL": "Email",
     "ENTER_YOUR_EMAIL_ADDRESS": "Saisissez votre adresse mail",
@@ -12,7 +13,8 @@
     "CHANGE_ENDPOINT": "Modifier l'adresse du serveur ?"
   },
   "KRegister": {
-    "REGISTER": "S'enregistrer",
+    "TITLE": "S'enregistrer",
+    "BUTTON": "S'enregistrer",
     "NAME": "Nom",
     "ENTER_YOUR_NAME": "Saisissez votre nom",
     "EMAIL": "Email",
@@ -21,7 +23,20 @@
     "ENTER_YOUR_PASSWORD": "Saisissez votre mot de passe",
     "CONFIRM_PASSWORD": "Confirmation",
     "CONFIRM_YOUR_PASSWORD": "Confirmez votre mot de passe",
+    "REGISTER": "S'enregistrer",
     "ALREADY_HAVE_AN_ACCOUNT": "Déjà un compte ?",
     "CHANGE_ENDPOINT": "Modifier l'adresse du serveur ?"
+  },
+  "KChangeEndpoint": {
+    "TITLE": "Changer l'adresse du serveur",
+    "ENTER_REMOTE_URL": "Saisissez l'adresse du serveur à utiliser",
+    "CANCEL": "Annuler",
+    "RESET": "Réinitialiser",
+    "APPLY": "Appliquer"
+  },  
+  "KLogout": {
+    "TITLE": "Vous avez été déconnecté",
+    "SIGN_OFF": "Merci d'utiliser",
+    "LOG_IN_AGAIN": "Se reconnecter ?"
   }
 }

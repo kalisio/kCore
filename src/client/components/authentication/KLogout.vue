@@ -1,5 +1,5 @@
 <template>
-  <k-screen title="Your are now logged out">
+  <k-screen :title="$t('KLogout.TITLE')">
     <div slot="screen-content">
       <div class="column justify-center">
         <!--
@@ -7,8 +7,8 @@
         -->
         <div>
           <blockquote class="text-right">
-            <p>Thank you for using <cite>{{ appName }}</cite>.</p>
-            <small v-if="publisherName">The <cite>{{ publisherName }}</cite> team</small>
+            <p>{{$t('KLogout.SIGN_OFF')}}&nbsp;<cite>{{appName}}</cite>.</p>
+            <small v-if="publisherName"><cite>{{publisherName}}</cite></small>
           </blockquote>
         </div>
         <!--
@@ -16,7 +16,7 @@
         -->
         <div class="self-center">
           <a @click="$router.push({name: 'login'})">
-            Log in again ?
+            {{$t('KLogout.LOG_IN_AGAIN')}}
           </a>
         </div>
       </div>
