@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import i18next from 'i18next'
 import { Dialog } from 'quasar'
 import mixins from '../../mixins'
 
@@ -33,12 +32,12 @@ export default {
     },
     onDeleteClicked () {
       Dialog.create({
-        title: i18next.t('KAccountDZ.DIALOG_TITLE'),
+        title: this.$i18n.i18next.t('KAccountDZ.DIALOG_TITLE'),
         form: {
           confirm: {
             type: 'text',
             model: '',
-            label: i18next.t('KAccountDZ.DIALOG_HELPER')
+            label: this.$i18n.i18next.t('KAccountDZ.DIALOG_HELPER')
           }
         },
         buttons: [

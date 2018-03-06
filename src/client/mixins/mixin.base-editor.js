@@ -1,5 +1,4 @@
 import logger from 'loglevel'
-import i18next from 'i18next'
 import _ from 'lodash'
 
 export default function baseEditorMixin (formRefs) {
@@ -75,9 +74,9 @@ export default function baseEditorMixin (formRefs) {
         })
         // Update button accordingly
         if (this.getMode() === 'update') {
-          this.applyButton = i18next.t('UPDATE')
+          this.applyButton = this.$i18n.i18next.t('UPDATE')
         } else {
-          this.applyButton = i18next.t('CREATE')
+          this.applyButton = this.$i18n.i18next.t('CREATE')
         }
       },
       clear () {
