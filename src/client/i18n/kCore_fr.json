@@ -49,9 +49,9 @@
   },
   "KAccountDZ": {
     "BLOCK_TITLE": "Supprimer votre compte ?",
-    "BLOCK_TEXT": "Avant de continuer veuillez bien prendre en compte que le suppression de votre compte entraine la suppression de toutes les données s'y repportant.<br>La suppresion ne peut pas être annulée et vous serez déconnecté de l'application.",
+    "BLOCK_TEXT": "Veuillez prendre en compte que le suppression de votre compte entrainera la suppression de toutes les données qui y sont attachées.<br>La suppresion ne peut pas être annulée et vous serez déconnecté de l'application.",
     "BLOCK_ACTION": "Supprimer",
-    "DIALOG_TITLE": "Etes vous sur de vouloir supprimer votre compte ?",
+    "DIALOG_TITLE": "Etes vous sûr de vouloir supprimer votre compte ?",
     "DIALOG_HELPER": "Saisissez le nom de votre compte pour confirmer la suprression" 
   },
   "KAccountSecurity": {

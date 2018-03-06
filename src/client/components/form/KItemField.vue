@@ -1,7 +1,7 @@
 <template>
   <q-field
     :icon="icon"
-    :label="$t(label)"
+    :label="label"
     :helper="helper"
     :error-label="errorLabel"
     :label-width="labelWidth"

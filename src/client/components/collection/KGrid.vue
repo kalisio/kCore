@@ -1,20 +1,22 @@
 <template>
-  <div class="column justify-center"> 
-    <div class="row">
-      <template v-for="item in items">
-        <component :is="renderer.component" :key="item._id" :item="item" :contextId="contextId" v-bind="renderer.props" />
-      </template>
+  <div class="content">
+    <div v-if="items.length > 0" class="column justify-center">
+      <div class="row">
+        <template v-for="item in items">
+          <component :is="renderer.component" :key="item._id" :item="item" :contextId="contextId" v-bind="renderer.props" />
+        </template>
+      </div>
+      <div class="self-center" v-if="nbPages > 1">
+        <q-pagination v-model="currentPage" :max="nbPages" style="padding: 18px" @input="onPageChanged" />
+      </div>
     </div>
-    <div class="column items-center" v-if="items.length === 0">
+    <div v-else class="column items-center">
       <div>
         <q-icon size="2rem" name="error_outline" />
       </div>
       <div class="message">
         {{$t('KGrid.EMPTY_GRID')}}
       </div>
-    </div>
-    <div class="self-center" v-if="nbPages > 1">
-      <q-pagination v-model="currentPage" :max="nbPages" style="padding: 18px" @input="onPageChanged" />
     </div>
   </div>
 </template>
@@ -83,6 +85,9 @@ export default {
 </script>
 
 <style>
+.content {
+  padding: 6px
+}
 .message {
   font-size: 18px;
   font-weight: 400;
