@@ -30,7 +30,7 @@ export async function attachToResource (hook) {
   let isArray = _.get(data, 'isArray') || _.get(query, 'isArray') || true
   // Take care that because file uploads might be submitted by external multipart form data middlewares
   // all parameters types might be string
-  if (typeof(isArray) !== 'boolean') {
+  if (typeof (isArray) !== 'boolean') {
     isArray = (isArray === 'true')
   }
   const context = hook.service.context
@@ -111,9 +111,9 @@ export function removeAttachments (attachmentField) {
       if (Array.isArray(attachments)) {
         let removePromises = []
         attachments.forEach(attachment => removePromises.push(storageService.remove(attachment._id)))
-        let results = await Promise.all(removePromises)
+        await Promise.all(removePromises)
       } else {
-        let result = await storageService.remove(attachments._id)
+        await storageService.remove(attachments._id)
       }
     }
     return hook
