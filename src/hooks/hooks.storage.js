@@ -26,12 +26,18 @@ export async function attachToResource (hook) {
   const query = params.query
   const file = hook.result
   const attachmentField = _.get(data, 'field') || _.get(query, 'field') || 'attachments'
-  const isArray = (!(_.get(data, 'singleFile') || _.get(query, 'singleFile')))
+  // By default attachments are stored in an array
+  let isArray = _.get(data, 'isArray') || _.get(query, 'isArray') || true
+  // Take care that because file uploads might be submitted by external multipart form data middlewares
+  // all parameters types might be string
+  if (typeof(isArray) !== 'boolean') {
+    isArray = (isArray === 'true')
+  }
   const context = hook.service.context
   const resourcesService = params.resourcesService
   let resource = params.resource
   let attachments = _.get(resource, attachmentField)
-  let attachment = { _id: file._id }
+  let attachment = Object.assign({ _id: file._id }, _.omit(file, ['uri']))
   // Add context because attachments might come from different ones on the same target object
   if (context) {
     attachment.context = (typeof context === 'object' ? context._id : context)
@@ -49,7 +55,7 @@ export async function attachToResource (hook) {
   }, {
     user: hook.params.user
   })
-  debug('Attached file ' + file._id + ' on resource ' + resource._id.toString())
+  debug('Attached file on resource ' + resource._id.toString(), attachment)
   return hook
 }
 
@@ -65,16 +71,21 @@ export async function detachFromResource (hook) {
   // see https://github.com/feathersjs-ecosystem/feathers-blob/issues/39
   file._id = file.id
   const attachmentField = _.get(query, 'field') || 'attachments'
-  const isArray = (!_.get(query, 'singleFile'))
   const resourcesService = params.resourcesService
   let resource = params.resource
   let attachments = _.get(resource, attachmentField)
-  if (isArray) {
+  let attachment
+  // List of attachments
+  if (Array.isArray(attachments)) {
     const attachmentIndex = _.findIndex(attachments, attachment => isAttachmentEqual(attachment, file))
     if (attachmentIndex >= 0) {
+      // Keep track of it for logging
+      attachment = attachments[attachmentIndex]
       _.pullAt(attachments, attachmentIndex)
     }
   } else {
+    // Single attachment object
+    attachment = attachments
     attachments = null
   }
 
@@ -83,6 +94,28 @@ export async function detachFromResource (hook) {
   }, {
     user: hook.params.user
   })
-  debug('Detached file ' + file._id + ' on resource ' + resource._id.toString())
+  debug('Detached file on resource ' + resource._id.toString(), attachment)
   return hook
+}
+
+export function removeAttachments (attachmentField) {
+  return async function (hook) {
+    const context = hook.service.context
+    let storageService = hook.app.getService('storage', context)
+    if (!storageService) return Promise.reject(new Error('No valid context found to retrieve storage service for initiator service ' + hook.service.name))
+    let resource = hook.result
+    let attachments = _.get(resource, attachmentField)
+    // Process with each attachment
+    if (attachments) {
+      debug('Removing attachments for resource ' + resource._id.toString(), attachments)
+      if (Array.isArray(attachments)) {
+        let removePromises = []
+        attachments.forEach(attachment => removePromises.push(storageService.remove(attachment._id)))
+        let results = await Promise.all(removePromises)
+      } else {
+        let result = await storageService.remove(attachments._id)
+      }
+    }
+    return hook
+  }
 }

@@ -11,7 +11,7 @@
       {{fileName(file)}}
     </q-chip>
     <q-icon v-show="files.length < maxFiles" name="fa-cloud-upload fa-2x" @click="onUpload"/>
-    <k-uploader ref="uploader" :id="id" @file-selection-changed="updateFiles" :options="properties.field"/>
+    <k-uploader ref="uploader" :id="id" :resource="resource" @file-selection-changed="updateFiles" :options="properties.field"/>
   </q-field>
 </template>
 
@@ -32,7 +32,8 @@ export default {
   mixins: [mixins.baseField],
   data () {
     return {
-      files: []
+      files: [],
+      resource: ''
     }
   },
   computed: {
@@ -63,11 +64,31 @@ export default {
       }
     },
     async apply (object, field) {
-      // When not processing uploads on-the-fly upload when the form is being submitted
+      // If not processing uploads on-the-fly upload when the form is being submitted on update
+      // because we already have the object ID that might be required to build the storage path
       if (!this.autoProcessQueue()) {
-        await this.$refs.uploader.processQueue()
+        if (this.getMode() === 'update') {
+          await this.$refs.uploader.processQueue()
+          // On create we don't send the attachment field because it will be
+          // updated as a postprocess when attaching files on the newly created object
+          _.set(object, field, this.value())
+        }
+      } else {
+        _.set(object, field, this.value())
       }
-      _.set(object, field, this.value())
+    },
+    async submitted (object, field) {
+      // If not processing uploads on-the-fly upload when the form has being submitted on create
+      // so that we have the object ID available that might be required to build the storage path
+      if (!this.autoProcessQueue()) {
+        // On update the files are created before updating the object
+        if (this.getMode() === 'create') {
+          this.resource = object._id
+          // We need to force a refresh so that the prop is correctly updated by Vuejs in child component
+          await this.$nextTick()
+          await this.$refs.uploader.processQueue()
+        }
+      }
     },
     updateFiles (files) {
       this.files = files

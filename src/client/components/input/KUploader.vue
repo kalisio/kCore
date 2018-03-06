@@ -22,6 +22,10 @@ export default {
       type: String,
       default: ''
     },
+    resource: {
+      type: String,
+      default: ''
+    },
     options: {
       type: Object,
       default: () => {}
@@ -48,6 +52,9 @@ export default {
     },
     autoProcessQueue () {
       return _.get(this.options, 'autoProcessQueue', true)
+    },
+    resourcesService () {
+      return _.get(this.options, 'resourcesService', '')
     },
     addFile(addedFile) {
       this.files.push(addedFile)
@@ -80,8 +87,16 @@ export default {
       // If a template is given for the storage path use it,
       // otherwise it will be stored at the root level with a generated hash
       if (idTemplate) {
-        const id = _.template(idTemplate)({ id: this.id, file })
+        // Inject useful properties such as current object ID, file, etc.
+        let environment = { id: this.id || this.resource, file }
+        // The template generates the final ID for the file in storage
+        const id = _.template(idTemplate)(environment)
         formData.set('id', id)
+      }
+      // If we attach file to an existing resource add required parameters
+      if (this.resource) {
+        formData.set('resource', this.resource)
+        formData.set('resourcesService', this.resourcesService()) 
       }
     },
     onFileAdded (addedFile) {
@@ -125,8 +140,14 @@ export default {
       // Setup upload URL, credentials, etc. from input options
       this.dropZoneOptions = Object.assign({
         addRemoveLinks: true,
+        // FIXME: for now we send files sequentially
+        // Indeed when we attach files to a resource as a post process of form submission
+        // our backend does not handle multiple files at once
+        uploadMultiple: false,
+        // Similarly it does not support attaching multiple files to the same resource simultaneously
+        parallelUploads: 1,
         params: {
-          singleFile: !this.isMultiple()
+          isArray: this.isMultiple()
         }
       }, _.omit(this.options, ['service', 'storagePath']))
       this.dropZoneOptions.url = this.$api.getBaseUrl() + '/' + this.storageService().path
