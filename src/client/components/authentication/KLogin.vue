@@ -10,7 +10,7 @@
             <q-btn v-for="provider in providers" :icon="'fa-' + provider" :id="provider" @click="onLogWith(provider)" :key="provider">{{provider}}</q-btn>
           </div>
           <div class="row items-center"> 
-            <div class="col-1"><h6>{{ $t('KLogin.OR') }}</h6></div>
+            <div class="col-1"><h6>{{ $t('KLogin.OR_LABEL') }}</h6></div>
             <div class="col-11"><hr></div>
           </div>
         </div>
@@ -21,22 +21,22 @@
           <k-form ref="form" :schema="schema" />
         </div>
         <div class="self-center">
-          <q-btn color="primary" loader id="local" @click="onLogin">{{$t('KLogin.LOG_IN')}}</q-btn>
+          <q-btn color="primary" loader id="local" @click="onLogin">{{$t('KLogin.APPLY_BUTTON')}}</q-btn>
         </div>
         <!-- 
           Additionnal links
         -->
         <div class="self-center">
           <a @click="$router.push({name: 'send-reset-password'})">
-            {{$t('KLogin.FORGOT_YOUR_PASSWORD')}}
+            {{$t('KLogin.FORGOT_YOUR_PASSWORD_LINK')}}
           </a>
           &nbsp;&nbsp;
           <a @click="$router.push({name: 'register'})">
-            {{$t('KLogin.DONT_HAVE_AN_ACCOUNT')}}
+            {{$t('KLogin.DONT_HAVE_AN_ACCOUNT_LINK')}}
           </a>
           &nbsp;&nbsp;
           <a v-if="isCordova" @click="$router.push({name: 'change-endpoint'})">
-            {{$t('KLogin.CHANGE_ENDPOINT')}}
+            {{$t('KLogin.CHANGE_ENDPOINT_LINK')}}
           </a>
         </div>
       </div>
@@ -66,7 +66,6 @@ export default {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "$id": "http:/kalisio.xyz/schemas/login.json#",
         "title": "Login form",
-        "description": "Authentication login form",
         "type": "object",
         "properties": {
           "email": { 
@@ -74,28 +73,18 @@ export default {
             "format": "email",
             "field": {
               "component": "form/KEmailField",
-              "label": "KLogin.EMAIL",
-              "helper": "KLogin.ENTER_YOUR_EMAIL_ADDRESS",
+              "helper": "KLogin.EMAIL_FIELD_HELPER",
             }
           },
           "password": { 
             "type": "string",
             "field": {
               "component": "form/KPasswordField",
-              "label": "KLogin.PASSWORD",
-              "helper": "KLogin.ENTER_YOUR_PASSWORD",
+              "helper": "KLogin.PASSWORD_FIELD_HELPER",
             }
           }
         },
-        "required": ["email", "password"],
-        "form": {
-          "type": "object",
-          "properties":  {
-            "icon": false,
-            "label": true,
-            "labelWidth": 3
-          }
-        }
+        "required": ["email", "password"]
       },
       providers: [],
       isCordova: Platform.is.cordova

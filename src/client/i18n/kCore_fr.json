@@ -1,42 +1,39 @@
 {
+  "CANCEL": "Annuler",
+  "KAuthentication": {
+    "EMAIL_FIELD_HELPER": "Saisissez votre adresse mail",
+    "CHANGE_ENDPOINT_LINK": "Modifier l'adresse du serveur ?"
+  },
   "KLogin": {
     "TITLE": "Connectez vous avec",
-    "BUTTON": "Se connecter",
-    "OR": "Ou",
-    "EMAIL": "Email",
-    "ENTER_YOUR_EMAIL_ADDRESS": "Saisissez votre adresse mail",
-    "PASSWORD": "Mot de passe",
-    "ENTER_YOUR_PASSWORD": "Saisissez votre mot de passe",
-    "LOG_IN": "Se connecter",
-    "FORGOT_YOUR_PASSWORD": "Mot de passe oublié ?",
-    "DONT_HAVE_AN_ACCOUNT": "Vous n'avez pas de compte ?",
-    "CHANGE_ENDPOINT": "Modifier l'adresse du serveur ?"
+    "OR_LABEL": "Ou",
+    "EMAIL_FIELD_HELPER": "$t(KAuthentication.EMAIL_FIELD_HELPER)",
+    "PASSWORD_FIELD_HELPER": "Saisissez votre mot de passe",
+    "APPLY_BUTTON": "Se connecter",
+    "FORGOT_YOUR_PASSWORD_LINK": "Mot de passe oublié ?",
+    "DONT_HAVE_AN_ACCOUNT_LINK": "Vous n'avez pas de compte ?",
+    "CHANGE_ENDPOINT_LINK": "$t(KAuthentication.CHANGE_ENDPOINT_LINK)"
   },
   "KRegister": {
     "TITLE": "S'enregistrer",
-    "BUTTON": "S'enregistrer",
-    "NAME": "Nom",
-    "ENTER_YOUR_NAME": "Saisissez votre nom",
-    "EMAIL": "Email",
-    "ENTER_YOUR_EMAIL_ADDRESS": "Saisissez votre adresse mail",
-    "PASSWORD": "Mot de passe",
-    "ENTER_YOUR_PASSWORD": "Saisissez votre mot de passe",
-    "CONFIRM_PASSWORD": "Confirmation",
-    "CONFIRM_YOUR_PASSWORD": "Confirmez votre mot de passe",
-    "REGISTER": "S'enregistrer",
-    "ALREADY_HAVE_AN_ACCOUNT": "Déjà un compte ?",
-    "CHANGE_ENDPOINT": "Modifier l'adresse du serveur ?"
+    "NAME_FIELD_HELPER": "Saisissez votre nom",
+    "EMAIL_FIELD_HELPER": "{{KAuthentication.EMAIL_FIELD_HELPER}}",
+    "PASSWORD_FIELD_HELPER": "Saisissez un mot de passe",
+    "CONFIRM_PASSWORD_FIELD_HELPER": "Confirmez votre mot de passe",
+    "APPLY_BUTTON": "S'enregistrer",
+    "ALREADY_HAVE_AN_ACCOUNT_LINK": "Déjà un compte ?",
+    "CHANGE_ENDPOINT_LINK": "$t(KAuthentication.CHANGE_ENDPOINT_LINK)"
   },
   "KChangeEndpoint": {
     "TITLE": "Changer l'adresse du serveur",
-    "ENTER_REMOTE_URL": "Saisissez l'adresse du serveur à utiliser",
-    "CANCEL": "Annuler",
-    "RESET": "Réinitialiser",
-    "APPLY": "Appliquer"
+    "BASE_URL_FIELD_HELPER": "Saisissez l'adresse du serveur à utiliser",
+    "APPLY_BUTTON": "Appliquer",
+    "CANCEL_BUTTON": "$t(CANCEL)",
+    "RESET_BUTTON": "Réinitialiser"
   },  
   "KLogout": {
     "TITLE": "Vous avez été déconnecté",
-    "SIGN_OFF": "Merci d'utiliser",
-    "LOG_IN_AGAIN": "Se reconnecter ?"
+    "SIGN_OFF_LABEL": "Merci d'utiliser",
+    "LOG_IN_AGAIN_LINK": "Se reconnecter ?"
   }
 }

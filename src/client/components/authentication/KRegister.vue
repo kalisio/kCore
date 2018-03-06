@@ -9,18 +9,18 @@
           <k-form ref="form" :schema="schema" />
         </div>
         <div class="self-center">
-          <q-btn id="register" color="primary" loader @click="onRegister">{{$t('KRegister.REGISTER')}}</q-btn>
+          <q-btn id="register" color="primary" loader @click="onRegister">{{$t('KRegister.APPLY_BUTTON')}}</q-btn>
         </div>
         <!--
           Additionnal links
         -->
         <div class="self-center">
           <a @click="$router.push({name: 'login'})">
-            {{$t('KRegister.ALREADY_HAVE_AN_ACCOUNT')}}
+            {{$t('KRegister.ALREADY_HAVE_AN_ACCOUNT_LINK')}}
           </a>
           &nbsp;&nbsp;
           <a v-if="isCordova" @click="$router.push({name: 'change-endpoint'})">
-            {{$t('KRegister.CHANGE_ENDPOINT')}}
+            {{$t('KRegister.CHANGE_ENDPOINT_LINK')}}
           </a>
         </div>
       </div>
@@ -46,8 +46,7 @@ export default {
       schema: {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "$id": "http://kalisio.xyz/schemas/register.json#",
-        "title": "Register Form",
-        "description": "Authentication registration form",
+        "title": "Registration Form",
         "type": "object",
         "properties": {
           "name": { 
@@ -56,8 +55,7 @@ export default {
             "maxLength": 128,
             "field": {
               "component": "form/KTextField",
-              "label": "KRegister.NAME",
-              "helper": "KRegister.ENTER_YOUR_NAME",
+              "helper": "KRegister.NAME_FIELD_HELPER",
             }
           },
           "email": { 
@@ -65,16 +63,14 @@ export default {
             "format": "email",
             "field": {
               "component": "form/KEmailField",
-              "label": "KRegister.EMAIL",
-              "helper": "KRegister.ENTER_YOUR_EMAIL_ADDRESS",
+              "helper": "KRegister.EMAIL_FIELD_HELPER",
             }
           },
           "password": { 
             "type": "string",
             "field": {
               "component": "form/KPasswordField",
-              "label": "KRegister.PASSWORD",
-              "helper": "KRegister.ENTER_YOUR_PASSWORD",
+              "helper": "KRegister.PASSWORD_FIELD_HELPER",
             }
           },
           "confirmPassword": { 
@@ -83,20 +79,11 @@ export default {
             },
             "field": {
               "component": "form/KPasswordField",
-              "label": "KRegister.CONFIRM_PASSWORD",
-              "helper": "KRegister.CONFIRM_YOUR_PASSWORD",
+              "helper": "KRegister.CONFIRM_PASSWORD_FIELD_HELPER",
             }
           }
         },
-        "required": ["name", "email", "password", "confirmPassword"],
-        "form": {
-          "type": "object",
-          "properties":  {
-            "icon": false,
-            "label": true,
-            "labelWidth": 3
-          }
-        }
+        "required": ["name", "email", "password", "confirmPassword"]
       },
       isCordova: DEV ? true : Platform.is.cordova
     }

@@ -1,40 +1,39 @@
 {
+  "CANCEL": "Cancel",
+  "KAuthentication": {
+    "EMAIL_FIELD_HELPER": "Enter your email address",
+    "CHANGE_ENDPOINT_LINK": "Change endpoint ?"    
+  },
   "KLogin": {
     "TITLE": "Log in with",
-    "OR": "Or",
-    "NAME": "Name",
-    "ENTER_YOUR_EMAIL_ADDRESS": "Enter your email address",
-    "PASSWORD": "Password",
-    "ENTER_YOUR_PASSWORD": "Enter your password",
-    "LOG_IN": "Log in",
-    "FORGOT_YOUR_PASSWORD": "Forgot your password ?",
-    "DONT_HAVE_AN_ACCOUNT": "Dont't have an account ?",
-    "CHANGE_ENDPOINT": "Change endpoint ?"
+    "OR_LABEL": "Or",
+    "EMAIL_FIELD_HELPER": "$t(KAuthentication.EMAIL_FIELD_HELPER)",
+    "PASSWORD_FIELD_HELPER": "Enter your password",
+    "APPLY_BUTTON": "Log in",
+    "FORGOT_YOUR_PASSWORD_LINK": "Forgot your password ?",
+    "DONT_HAVE_AN_ACCOUNT_LINK": "Dont't have an account ?",
+    "CHANGE_ENDPOINT_LINK": "$t(KAuthentication.CHANGE_ENDPOINT_LINK)"
   },
   "KRegister": {
     "TITLE": "Register",
-    "NAME": "Name",
-    "ENTER_YOUR_NAME": "Enter your name",
-    "EMAIL": "Email",
-    "ENTER_YOUR_EMAIL_ADDRESS": "Enter your email address",
-    "PASSWORD": "Password",
-    "ENTER_YOUR_PASSWORD": "Enter your password",
-    "CONFIRM_PASSWORD": "Confirm password",
-    "CONFIRM_YOUR_PASSWORD": "Confirm your password",
-    "REGISTER": "Register",
-    "DONT_HAVE_AN_ACCOUNT": "Dont't have an account ?",
-    "CHANGE_ENDPOINT": "Change endpoint ?"
+    "NAME_FIELD_HELPER": "Enter your name",
+    "EMAIL_FIELD_HELPER": "{{KAuthentication.EMAIL_FIELD_HELPER}}",
+    "PASSWORD_FIELD_HELPER": "Enter a password",
+    "CONFIRM_PASSWORD_FIELD_HELPER": "Confirm your password",
+    "APPLY_BUTTON": "Register",
+    "ALREADY_HAVE_AN_ACCOUNT_LINK": "Already have an account ?",
+    "CHANGE_ENDPOINT_LINK_LINK": "$t(KAuthentication.CHANGE_ENDPOINT_LINK)"
   },
   "KChangeEndpoint": {
-    "TITLE": "Change endpoint",
-    "ENTER_REMOTE_URL": "Enter the address of the server to be used",
-    "CANCEL": "Cancel",
-    "RESET": "Reset",
-    "APPLY": "Apply"    
-  },
+    "TITLE": "Changer endpoint",
+    "BASE_URL_FIELD_HELPER": "Enter the address of the server to be used",
+    "APPLY_BUTTON": "APPLY",
+    "CANCEL_BUTTON": "$t(CANCEL)",
+    "RESET_BUTTON": "Reset"
+  },  
   "KLogout": {
     "TITLE": "Your are now logged out",
-    "SIGN_OFF": "Tkank you for using",
-    "LOG_IN_AGAIN": "Log in again ?"
+    "SIGN_OFF_LABEL": "Thank you for using",
+    "LOG_IN_AGAIN_LINK": "Log in again ?"
   }
 }

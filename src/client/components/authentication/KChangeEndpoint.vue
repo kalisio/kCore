@@ -7,9 +7,9 @@
         </div>
         <div>
           <div class="row justify-around">
-            <q-btn color="primary" @click="onCanceled">{{$t('KChangeEndpoint.CANCEL')}}</q-btn>
-            <q-btn color="primary" @click="onReset">{{$t('KChangeEndpoint.RESET')}}</q-btn>
-            <q-btn color="primary" @click="onApplied">{{$t('KChangeEndpoint.APPLY')}}</q-btn>
+            <q-btn color="primary" @click="onCanceled">{{$t('KChangeEndpoint.CANCEL_BUTTON')}}</q-btn>
+            <q-btn color="primary" @click="onReset">{{$t('KChangeEndpoint.RESET_BUTTON')}}</q-btn>
+            <q-btn color="primary" @click="onApplied">{{$t('KChangeEndpoint.APPLY_BUTTON')}}</q-btn>
           </div>
         </div>
       </div>
@@ -47,7 +47,7 @@ export default {
             "format": "uri",
             "field": {
               "component": "form/KTextField",
-              "helper": "KChangeEndpoint.ENTER_REMOTE_URL",
+              "helper": "KChangeEndpoint.BASE_URL_FIELD_HELPER",
             }
           }
         },
