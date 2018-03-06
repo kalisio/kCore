@@ -43,17 +43,17 @@ export default {
       this.clearActivity()
       this.setTitle(this.$store.get('user.name'))
       this.registerTabAction({ 
-        name: 'profile', label: 'Profile', icon: 'description', 
+        name: 'profile', label: 'KAccountActivity.PROFILE', icon: 'description', 
         route: { name: 'account-activity', params: { perspective: 'profile' } },
         default: this.perspective === 'profile'
       })
       this.registerTabAction({ 
-        name: 'security', label: 'Security', icon: 'security',
+        name: 'security', label: 'KAccountActivity.SECURITY', icon: 'security',
         route: { name: 'account-activity', params: { perspective: 'security' } },
         default: this.perspective === 'security'
       })
       this.registerTabAction({ 
-        name: 'danger-zone', label: 'Danger Zone', icon: 'warning',
+        name: 'danger-zone', label: 'KAccountActivity.DANGER_ZONE', icon: 'warning',
         route: { name: 'account-activity', params: { perspective: 'danger-zone' } },
         default: this.perspective === 'danger-zone'
       })

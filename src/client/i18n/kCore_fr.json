@@ -35,5 +35,10 @@
     "TITLE": "Vous avez été déconnecté",
     "SIGN_OFF_LABEL": "Merci d'utiliser",
     "LOG_IN_AGAIN_LINK": "Se reconnecter ?"
+  },
+  "KAccountActivity": {
+    "PROFILE": "Profil",
+    "SECURITY": "Securité",
+    "DANGER_ZONE": "Zone de danger"
   }
 }

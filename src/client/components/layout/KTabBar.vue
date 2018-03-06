@@ -6,7 +6,7 @@
           :key="tab.uid"
           :default="tab.default"
           :name="tab.name"
-          :label="tab.label" 
+          :label="$t(tab.label)" 
           :icon="tab.icon" 
           :to="tab.route"/>
       </template>

@@ -28,9 +28,9 @@ export default {
   },
   methods: {
     blockText () {
-      return "Please note that deleting \'" + this.name + 
+      /*return "Please note that deleting \'" + this.name + 
               "\' will delete any data attached to this account.<br>" +
-              "The deletion cannot be undone and you will be logged out of the application."
+              "The deletion cannot be undone and you will be logged out of the application."*/
     },
     loadService () {
       return this._service = this.$api.getService('users')

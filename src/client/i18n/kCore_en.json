@@ -35,5 +35,10 @@
     "TITLE": "Your are now logged out",
     "SIGN_OFF_LABEL": "Thank you for using",
     "LOG_IN_AGAIN_LINK": "Log in again ?"
+  },
+  "KAccountActivity": {
+    "PROFILE": "Profile",
+    "SECURITY": "Security",
+    "DANGER_ZONE": "Danger zone"
   }
 }
