@@ -109,7 +109,7 @@ describe('kCore:storage', () => {
     return storageService.remove(id, { query: { resource: userObject._id.toString(), resourcesService: 'users' } })
     .then(object => {
       storageObject = object
-      expect(storageObject.id).to.equal(`${id}`)
+      expect(storageObject._id).to.equal(`${id}`)
       return userService.find({ query: { 'profile.name': 'test-user' } })
     })
     .then(users => {

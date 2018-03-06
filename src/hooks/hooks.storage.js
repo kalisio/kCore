@@ -67,9 +67,6 @@ export async function detachFromResource (hook) {
   const params = hook.params
   const query = params.query
   let file = hook.result
-  // Feathers blob has an inconsistent behavior accross operations,
-  // see https://github.com/feathersjs-ecosystem/feathers-blob/issues/39
-  file._id = file.id
   const attachmentField = _.get(query, 'field') || 'attachments'
   const resourcesService = params.resourcesService
   let resource = params.resource

@@ -48,6 +48,9 @@ export default {
     autoProcessQueue () {
       return _.get(this.properties, 'field.autoProcessQueue', true)
     },
+    resourcesService () {
+      return _.get(this.properties, 'field.resourcesService', '')
+    },
     isObject () {
       return (this.properties.type === 'object')
     },
@@ -120,7 +123,9 @@ export default {
       // When processing uploads we need to remove from server first
       if (this.autoProcessQueue()) {
         const storage = this.$api.getService(this.properties.service || 'storage')
-        await storage.remove(oldFile._id)
+        await storage.remove(oldFile._id, {
+          query: { resource: this.id, resourcesService: this.resourcesService() }
+        })
       }
       this.updateFiles(this.files.filter(file => file.name !== oldFile.name))
     }
