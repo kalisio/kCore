@@ -26,21 +26,32 @@ export function removeTagService (context) {
 }
 
 function proxyStorageId (context) {
-  return (id) => (context ? (typeof context === 'object' ? context._id.toString() + '/' + id : context + '/' + id) : id)
+  return (id) => {
+    if (!context) return id
+    const prefix = (typeof context === 'object' ? context._id.toString() : context) + '/'
+    // Check if context is already in ID, in this case we have to remove it on output
+    if (id.startsWith(prefix)) return id.replace(prefix, '')
+    // Otherwise we have to add it on input
+    else return (prefix + id)
+  }
 }
 
 export function createStorageService (blobService, context) {
   const app = this
-
+  // Closure to keep track of context
+  const proxyId = proxyStorageId(context)
   app.createService('storage', {
     servicesPath,
     modelsPath,
     context,
-    // Create a proxy on top of a Feathers blob service, adding context as prefix on all keys
+    // Create a proxy on top of a Feathers blob service,
+    // adding context as prefix on all keys on input
+    // removing context as prefix on all keys as result
     proxy: {
       service: blobService,
-      id: proxyStorageId(context),
-      data: (data) => (data.id ? Object.assign(data, { id: proxyStorageId(context)(data.id) }) : data)
+      id: proxyId,
+      data: (data) => (data.id ? Object.assign(data, { id: proxyId(data.id) }) : data),
+      result: (data) => (data._id ? Object.assign(data, { _id: proxyId(data._id) }) : data)
     },
     // Add required middlewares to handle multipart form data
     middlewares: {

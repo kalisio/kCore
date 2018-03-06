@@ -134,13 +134,17 @@ export function createProxyService (options) {
     if (options.data) return options.data(data)
     else return data
   }
+  function proxyResult (data) {
+    if (options.result) return options.result(data)
+    else return data
+  }
   return {
-    find (params) { return targetService.find(proxyParams(params)) },
-    get (id, params) { return targetService.get(proxyId(id), proxyParams(params)) },
-    create (data, params) { return targetService.create(proxyData(data), proxyParams(params)) },
-    update (id, data, params) { return targetService.update(proxyId(id), proxyData(data), proxyParams(params)) },
-    patch (id, data, params) { return targetService.patch(proxyId(id), proxyData(data), proxyParams(params)) },
-    remove (id, params) { return targetService.remove(proxyId(id), proxyParams(params)) }
+    async find (params) { return proxyResult(await targetService.find(proxyParams(params))) },
+    async get (id, params) { return proxyResult(await targetService.get(proxyId(id), proxyParams(params))) },
+    async create (data, params) { return proxyResult(await targetService.create(proxyData(data), proxyParams(params))) },
+    async update (id, data, params) { return proxyResult(await targetService.update(proxyId(id), proxyData(data), proxyParams(params))) },
+    async patch (id, data, params) { return proxyResult(await targetService.patch(proxyId(id), proxyData(data), proxyParams(params))) },
+    async remove (id, params) { return proxyResult(await targetService.remove(proxyId(id), proxyParams(params))) }
   }
 }
 

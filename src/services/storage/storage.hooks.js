@@ -15,8 +15,8 @@ module.exports = {
                 // Makes uploaded files public when required
       if (hook.data.public) hook.params.s3 = { ACL: 'public-read' }
     } ],
-    update: [],
-    patch: [],
+    update: [ disallow() ],
+    patch: [ disallow() ],
     remove: [ populateAttachmentResource ]
   },
 

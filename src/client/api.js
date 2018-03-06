@@ -18,7 +18,11 @@ export function kalisio () {
   let api = feathers()
 
   // Setup our interface
+  // -------------------
+
   // This avoid managing the API path before each service name
+  // If a context is not given it will be retrieved from the store if any and used for contextual services
+  // If the context is forced to null the service is assumed to be global
   api.getServicePath = function (name, context, withApiPrefix = true) {
     const options = _.get(api.serviceOptions, name, {})
     let path
@@ -31,14 +35,18 @@ export function kalisio () {
         path = context + '/' + name
       } else if (context && typeof context === 'object') {
         path = context._id + '/' + name
-      } else {
-        // Service is registered as contextual
+      } else if (context === undefined) {
+        // Service is registered as contextual ?
         const context = Store.get('context')
         if (context) {
           path = api.getServicePath(name, context, false)
         } else {
-          throw new Error('Cannot retrieve context for contextual service ' + name)
+          // It could also be registered as global with the same name
+          path = name
         }
+      } else {
+        // We force to check for global service only by a null context
+        path = name
       }
     }
 
@@ -50,6 +58,9 @@ export function kalisio () {
   api.getService = function (name, context) {
     const path = api.getServicePath(name, context)
     let service = api.service(path)
+    if (!service) {
+      throw new Error('Cannot retrieve service ' + name + ' for context ' + (typeof context === 'object' ? context._id : context))
+    }
     // Store the path on first call
     if (!service.path) service.path = path
     return service

@@ -94,7 +94,7 @@ export default function baseEditorMixin (formRefs) {
       reset () {
         this.fillEditor()
       },
-      async apply (event, done) {
+      validateForms () {
         // Iterate over forms for validation
         let isValid = true
         formRefs.forEach(name => {
@@ -111,8 +111,41 @@ export default function baseEditorMixin (formRefs) {
             isValid = false
           }
         })
-
-        // Now the form is valid apply it to the target object
+        return isValid
+      },
+      async applyForms (object) {
+        // Apply each form
+        let isApplied = true
+        for (let i = 0; i < formRefs.length; i++) {
+          const name = formRefs[i]
+          let form = this.$refs[name]
+          try {
+            await form.apply(object)
+          } catch (error) {
+            isApplied = false
+            break
+          }
+        }
+        return isApplied
+      },
+      async submittedForms (object) {
+        // Apply each form
+        let isApplied = true
+        for (let i = 0; i < formRefs.length; i++) {
+          const name = formRefs[i]
+          let form = this.$refs[name]
+          try {
+            await form.submitted(object)
+          } catch (error) {
+            isApplied = false
+            break
+          }
+        }
+        return isApplied
+      },
+      async apply (event, done) {
+        let isValid = this.validateForms()
+        // Now the form is validated apply it to the target object
         // Start from default object or input base object
         // This is used to keep track of existing or additional "hidden" or "internal" properties
         // in addition to the ones edited throught the form
@@ -123,19 +156,8 @@ export default function baseEditorMixin (formRefs) {
         } else {
           Object.assign(object, baseObject)
         }
-
         if (isValid) {
-          // Apply each form
-          for (let i = 0; i < formRefs.length; i++) {
-            const name = formRefs[i]
-            let form = this.$refs[name]
-            try {
-              await form.apply(object)
-            } catch (error) {
-              isValid = false
-              break
-            }
-          }
+          isValid = await this.applyForms(object)
         }
         // Stop here if invalid or not applied correctly
         if (!isValid) {
@@ -145,7 +167,8 @@ export default function baseEditorMixin (formRefs) {
 
         if (this.getService()) {
           // Small helper to avoid repeating too much similar code
-          let onServiceResponse = response => {
+          let onServiceResponse = async (response) => {
+            await this.submittedForms(response)
             this.$emit('applied', response)
             if (done) done()
           }

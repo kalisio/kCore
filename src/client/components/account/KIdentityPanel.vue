@@ -48,8 +48,8 @@ export default {
       // This field indicates that the avatar has been set
       let avatarId = this.$store.get('user.avatar._id', '')
       if (avatarId) {
-        // Then we need to fetch it
-        const data = await this.$api.getService('storage').get(avatarId)
+        // Then we need to fetch it from global storage service
+        const data = await this.$api.getService('storage', null).get(avatarId)
         // Get as data URI
         this.avatarImage = data.uri
       } else {

@@ -75,6 +75,10 @@ let baseFieldMixin = {
     invalidate (error) {
       this.error = error
     },
+    getMode () {
+      if (this.id) return 'update'
+      return 'create'
+    },
     onChanged () {
       // Tell the form that this field has a new value.
       // Consequently the form will validate or invalidate the field
@@ -83,9 +87,12 @@ let baseFieldMixin = {
       this.$nextTick().then(() => this.$emit('field-changed', this.properties.name, this.model))
     },
     apply (object, field) {
-      // To be overloaded if you need to perform specific operations before the form has been applied
-      // By default simply set the current value on the given object field
+      // To be overloaded if you need to perform specific operations before the form has been submitted
+      // By default simply set the current value on the given object field to apply the form
       _.set(object, field, this.value())
+    },
+    submitted (object, field) {
+      // To be overloaded if you need to perform specific operations after the form has been submitted
     }
   }
 }

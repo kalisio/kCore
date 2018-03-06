@@ -63,6 +63,7 @@ export function populateObject (options) {
     let data = hook.data
     let params = hook.params
     let query = params.query
+    const context = hook.service.context
     const idProperty = options.nameIdAs || options.idField
     const serviceProperty = options.nameServiceAs || options.serviceField
 
@@ -81,7 +82,7 @@ export function populateObject (options) {
     let service = _.get(data, options.serviceField) || _.get(query, options.serviceField)
     if (typeof service === 'string') {
       const message = `Cannot find the service for ${options.serviceField} = ${service} to dynamically populate.`
-      service = app.getService(service)
+      service = app.getService(service, context)
       if (!service) {
         if (options.throwOnNotFound) throw new Error(message)
         else return Promise.resolve(hook)
@@ -125,6 +126,7 @@ export function populateObjects (options) {
     let data = hook.data
     let params = hook.params
     let query = params.query
+    const context = hook.service.context
     const idProperty = options.nameIdAs || options.idField
     const serviceProperty = options.nameServiceAs || options.serviceField
 
@@ -143,7 +145,7 @@ export function populateObjects (options) {
     let service = _.get(data, options.serviceField) || _.get(query, options.serviceField)
     if (typeof service === 'string') {
       const message = `Cannot find the service for ${options.serviceField} = ${service} to dynamically populate.`
-      service = app.getService(service)
+      service = app.getService(service, context)
       if (!service) {
         if (options.throwOnNotFound) throw new Error(message)
         else return Promise.resolve(hook)
