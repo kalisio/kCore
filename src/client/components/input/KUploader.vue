@@ -175,9 +175,7 @@ export default {
         // FIXME: we should only download a thumbnail here
         if (file._id) {
           this.storageService().get(file._id)
-          .then(image => {
-            this.dropZoneInstance().emit('thumbnail', file, image.uri)
-          })
+          .then(image => this.dropZoneInstance().emit('thumbnail', file, image.uri))
         }
       })
       // Because this is dynamic we need to modify the instance as the vue drop zone is not updated automatically
