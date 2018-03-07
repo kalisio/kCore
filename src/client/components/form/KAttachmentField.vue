@@ -112,20 +112,22 @@ export default {
               (file._id ? file._id : file))
     },
     onUpload () {
-      // When not processing uploads we start from a fresh state
+      // When not processing uploads on-the-fly we start from a fresh state
       // otherwise we would have to keep thumbnails, etc. in-memory
       if (!this.autoProcessQueue()) {
         this.updateFiles([])
       }
       this.$refs.uploader.open(this.files)
     },
-    async onFileRemoved (oldFile) {
-      // When processing uploads we need to remove from server first
+    onFileRemoved (oldFile) {
+      // When processing uploads on-the-fly we need to remove from server
       if (this.autoProcessQueue()) {
         const storage = this.$api.getService(this.properties.service || 'storage')
-        await storage.remove(oldFile._id, {
+        storage.remove(oldFile._id, {
           query: { resource: this.id, resourcesService: this.resourcesService() }
         })
+        // Thumbnail as well
+        storage.remove(oldFile._id + '.thumbnail')
       }
       this.updateFiles(this.files.filter(file => file.name !== oldFile.name))
     }
