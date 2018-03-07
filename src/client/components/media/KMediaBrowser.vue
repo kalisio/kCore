@@ -1,7 +1,7 @@
 <template>
   <k-modal ref="modal" :toolbar="toolbar" :buttons="buttons">
     <div slot="modal-content" style="max-width: 50vw;">
-      <q-carousel arrows dots fullscreen infinite @slide="onViewMedia" class="text-white bg-black">
+      <q-carousel arrows dots fullscreen infinite v-if="medias.length > 0" @slide="onViewMedia" class="text-white bg-black">
         <div v-for="media in medias" :key="media._id" slot="slide" class="no-padding flex-center row">
           <img v-if="media.uri" style="width: 100%; height: auto;" :src="media.uri">
           <div v-if="!media.uri">
@@ -10,6 +10,7 @@
           </div>
         </div>
       </q-carousel>
+      <div v-if="medias.length === 0" class="text-center"><big>There is nothing to show, please add medias first !</big></div>
     </div>
   </k-modal>
 </template>
@@ -48,6 +49,9 @@ export default {
     }
   },
   methods: {
+    hasMedia () {
+      return (this.medias.length > 0)
+    },
     doClose (event, done) {
       this.$refs.modal.close()
     },
@@ -63,7 +67,7 @@ export default {
     open (medias = []) {
       this.medias = medias
       // Quasar does not send the silde event on first display
-      this.onViewMedia(0)
+      if (this.hasMedia()) this.onViewMedia(0)
       // Then open the modal
       this.$refs.modal.open()
     }
