@@ -32,12 +32,12 @@ export default {
     },
     onDeleteClicked () {
       Dialog.create({
-        title: this.$i18n.i18next.t('KAccountDZ.DIALOG_TITLE'),
+        title: this.$t('KAccountDZ.DIALOG_TITLE'),
         form: {
           confirm: {
             type: 'text',
             model: '',
-            label: this.$i18n.i18next.t('KAccountDZ.DIALOG_HELPER')
+            label: this.$t('KAccountDZ.DIALOG_HELPER')
           }
         },
         buttons: [

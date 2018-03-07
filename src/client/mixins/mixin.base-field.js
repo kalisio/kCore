@@ -28,7 +28,7 @@ let baseFieldMixin = {
     },
     label () {
       if (this.display.label) {
-        return this.$i18n.i18next.t(_.get(this.properties.field, 'label', ''))
+        return this.$t(_.get(this.properties.field, 'label', ''))
       }
       return ''
     },
@@ -36,7 +36,7 @@ let baseFieldMixin = {
       return _.get(this.display, 'labelWidth', 3)
     },
     helper () {
-      return this.$i18n.i18next.t(_.get(this.properties.field, 'helper', ''))
+      return this.$t(_.get(this.properties.field, 'helper', ''))
     },
     hasError () {
       return !_.isEmpty(this.error)
