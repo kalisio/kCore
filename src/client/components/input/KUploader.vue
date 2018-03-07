@@ -18,6 +18,10 @@ export default {
     DropZone
   },
   props: {
+    contextId: {
+      type: String,
+      default: ''
+    },
     id: {
       type: String,
       default: ''
@@ -120,7 +124,7 @@ export default {
       this.$refs.modal.close()
     },
     storageService () {
-      return this.$api.getService(this.options.service || 'storage')
+      return this.$api.getService(this.options.service || 'storage', this.contextId)
     },
     dropZone() {
       // Access vue drop zone
