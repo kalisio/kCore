@@ -60,6 +60,7 @@ export function defineUserAbilities (subject, can, cannot) {
     // take care that the storage service uses 'id' as input but produces _id as output
     can('create', 'storage', { id: 'avatars/' + subject._id.toString() })
     can(['read', 'remove'], 'storage', { _id: 'avatars/' + subject._id.toString() })
+    can(['read', 'remove'], 'storage', { _id: 'avatars/' + subject._id.toString() + '.thumbnail' })
   }
 }
 

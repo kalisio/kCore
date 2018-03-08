@@ -64,5 +64,28 @@
   },
   "KGrid": {
     "EMPTY_GRID": "No elements found"
+  },
+  "KUploader": {
+    "dropZone": {
+      "dictDefaultMessage": "Drop files or click here",
+      "dictFallbackMessage": "Your browser does not support drag'n'drop file uploads.",
+      "dictFallbackText": "Please use the fallback form below to upload your files.",
+      "dictFileTooBig": "Your file ({{filesize}}MiB) exceeds the maximum allowed size ({{maxFilesize}}MiB).",
+      "dictInvalidFileType": "You can't upload files of this type.",
+      "dictResponseError": "An error occured while uploading (code {{statusCode}}), please try again.",
+      "dictCancelUpload": "Cancel",
+      "dictUploadCanceled": "Upload canceled.",
+      "dictCancelUploadConfirmation": "Are you sure you want to cancel this upload?",
+      "dictRemoveFile": "Remove",
+      "dictRemoveFileConfirmation": "Are you sure you want to remove this file?",
+      "dictMaxFilesExceeded": "You can not upload any more files.",
+      "dictFileSizeUnits": {
+        "tb": "TB",
+        "gb": "GB",
+        "mb": "MB",
+        "kb": "KB",
+        "b": "b"
+      }
+    }
   }
 }

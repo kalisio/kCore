@@ -30,6 +30,6 @@
       }
     }
   },
-  "required": ["name", "phone"]
+  "required": ["name"]
 }
 

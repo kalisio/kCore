@@ -1,8 +1,7 @@
 <template>
   <k-modal ref="modal" :toolbar="toolbar" :buttons="buttons">
     <div slot="modal-content" class="column sm-gutter">
-      <drop-zone ref="dropZone" id="dropZone" @vdropzone-file-added="onFileAdded" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" @vdropzone-max-files-exceeded="onMaxFileExceeded" :options="dropZoneOptions"/>
-      <!--vue-dropzone ref="myVueDropzone" id="dropzone" @vdropzone-file-added="vfileAdded" @vdropzone-success="vsuccess" @vdropzone-error="verror" @vdropzone-removed-file="vremoved" @vdropzone-sending="vsending" @vdropzone-success-multiple="vsuccessMuliple" @vdropzone-sending-multiple="vsendingMuliple" @vdropzone-queue-complete="vqueueComplete" @vdropzone-total-upload-progress="vprogress" @vdropzone-mounted="vmounted" @vdropzone-drop="vddrop" @vdropzone-drag-start="vdstart" @vdropzone-drag-end="vdend" @vdropzone-drag-enter="vdenter" @vdropzone-drag-over="vdover" @vdropzone-drag-leave="vdleave" :options="dropzoneOptions"-->
+      <drop-zone ref="dropZone" id="dropZone" @vdropzone-file-added="onFileAdded" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" @vdropzone-max-files-exceeded="onMaxFileExceeded" @vdropzone-thumbnail="onThumbnailGenerated" :options="dropZoneOptions"/>
     </div>
   </k-modal>
 </template>
@@ -18,6 +17,10 @@ export default {
     DropZone
   },
   props: {
+    contextId: {
+      type: String,
+      default: ''
+    },
     id: {
       type: String,
       default: ''
@@ -67,14 +70,16 @@ export default {
         this.$emit('file-selection-changed', this.files)
       }
     },
-    async removeFile(removedFile) {
+    removeFile(removedFile) {
       const index = _.findIndex(this.files, file => file.name === removedFile.name)
       if (index >= 0) {
-        // When processing uploads we need to remove from server first
+        // When processing uploads on-the-fly we need to remove from server
         if (this.autoProcessQueue()) {
-          await this.storageService().remove(this.files[index]._id, {
+          this.storageService().remove(this.files[index]._id, {
             query: { resource: this.resource, resourcesService: this.resourcesService() }
           })
+          // Thumbnail as well
+          this.storageService().remove(this.files[index]._id + '.thumbnail')
         }
         _.pullAt(this.files, index)
         this.$emit('file-selection-changed', this.files)
@@ -84,7 +89,20 @@ export default {
       // This is required if we don't want the file to be viewed
       this.dropZone().removeFile(file)
     },
-    onFileSending (file, xhr, formData) {
+    onThumbnailGenerated (thumbnailFile, dataUrl) {
+      const index = _.findIndex(this.files, file => file.name === thumbnailFile.name)
+      if (index >= 0) {
+        // When processing uploads on-the-fly send thumbnail to the server once computed
+        if (this.autoProcessQueue()) {
+          const id = this.generateFileId(thumbnailFile)
+          this.storageService().create({ id: id + '.thumbnail', uri: dataUrl })
+        } else {
+          // Store it temporarily
+          thumbnailFile.thumbnail = dataUrl
+        }
+      }
+    },
+    generateFileId (file) {
       const idTemplate = _.get(this.options, 'storagePath')
       // If a template is given for the storage path use it,
       // otherwise it will be stored at the root level with a generated hash
@@ -92,21 +110,28 @@ export default {
         // Inject useful properties such as current object ID, file, etc.
         let environment = { id: this.id || this.resource, file }
         // The template generates the final ID for the file in storage
-        const id = _.template(idTemplate)(environment)
-        formData.set('id', id)
+        return _.template(idTemplate)(environment)
+      } else {
+        return this.id || this.resource
       }
+    },
+    onFileSending (file, xhr, formData) {
+      const id = this.generateFileId(file)
+      formData.set('id', id)
       // If we attach file to an existing resource add required parameters
       if (this.resource) {
         formData.set('resource', this.resource)
         formData.set('resourcesService', this.resourcesService()) 
       }
+      // When not processing uploads on-the-fly send thumbnail to the server along with the file
+      this.storageService().create({ id: id + '.thumbnail', uri: file.thumbnail })
     },
     onFileAdded (addedFile) {
       // Filter all internal properties used by drop zone
       this.addFile(_.pick(addedFile, ['name', 'size', '_id']))
     },
     onFileUploaded (addedFile, response) {
-      // We update file list on successful upload,
+      // We update file list on successful upload
       this.updateFile(response)
     },
     onFileRemoved (removedFile, error, xhr) {
@@ -120,7 +145,7 @@ export default {
       this.$refs.modal.close()
     },
     storageService () {
-      return this.$api.getService(this.options.service || 'storage')
+      return this.$api.getService(this.options.service || 'storage', this.contextId)
     },
     dropZone() {
       // Access vue drop zone
@@ -143,7 +168,9 @@ export default {
         params: {
           isArray: this.isMultiple()
         }
-      }, _.omit(this.options, ['service', 'storagePath']))
+      },
+      _.omit(this.options, ['service', 'storagePath']),
+      this.$t('KUploader.dropZone', { returnObjects: true }))
       this.dropZoneOptions.url = this.$api.getBaseUrl() + '/' + this.storageService().path
       // This is used to ensure the request will be authenticated by Feathers
       this.dropZoneOptions.headers = { Authorization: window.localStorage.getItem('feathers-jwt') }
@@ -172,10 +199,12 @@ export default {
         this.dropZoneInstance().emit('addedfile', file)
         // Make sure that there is no progress bar, etc...
         this.dropZoneInstance().emit('complete', file)
-        // FIXME: we should only download a thumbnail here
         if (file._id) {
-          this.storageService().get(file._id)
-          .then(image => this.dropZoneInstance().emit('thumbnail', file, image.uri))
+          // Download thumbnail
+          this.storageService().get(file._id + '.thumbnail')
+          .then(image => {
+            this.dropZoneInstance().emit('thumbnail', file, image.uri)
+          })
         }
       })
       // Because this is dynamic we need to modify the instance as the vue drop zone is not updated automatically

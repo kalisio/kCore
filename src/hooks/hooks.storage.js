@@ -107,7 +107,11 @@ export function removeAttachments (attachmentField) {
       debug('Removing attachments for resource ' + resource._id.toString(), attachments)
       if (Array.isArray(attachments)) {
         let removePromises = []
-        attachments.forEach(attachment => removePromises.push(storageService.remove(attachment._id)))
+        attachments.forEach(attachment => {
+          removePromises.push(storageService.remove(attachment._id))
+          // Thumbnail as well
+          removePromises.push(storageService.remove(attachment._id + '.thumbnail'))
+        })
         await Promise.all(removePromises)
       } else {
         await storageService.remove(attachments._id)
