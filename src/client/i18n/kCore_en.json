@@ -34,7 +34,7 @@
     "TITLE": "Changer endpoint",
     "BASE_URL_FIELD_HELPER": "Enter the address of the server to be used",
     "APPLY_BUTTON": "APPLY",
-    "CANCEL_BUTTON": "$t(common.CANCEL)",
+    "CANCEL_BUTTON": "$t(CANCEL)",
     "RESET_BUTTON": "Reset"
   },  
   "KLogout": {
