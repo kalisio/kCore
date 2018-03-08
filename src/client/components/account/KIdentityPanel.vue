@@ -49,7 +49,7 @@ export default {
       let avatarId = this.$store.get('user.avatar._id', '')
       if (avatarId) {
         // Then we need to fetch it from global storage service
-        const data = await this.$api.getService('storage', null).get(avatarId)
+        const data = await this.$api.getService('storage').get(avatarId + '.thumbnail')
         // Get as data URI
         this.avatarImage = data.uri
       } else {

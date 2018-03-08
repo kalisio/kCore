@@ -59,6 +59,7 @@ export function defineUserAbilities (subject, can, cannot) {
     // This is for the user avatar
     // take care that the storage service uses 'id' as input but produces _id as output
     can('create', 'storage', { id: 'avatars/' + subject._id.toString() })
+    can('create', 'storage', { id: 'avatars/' + subject._id.toString() + '.thumbnail' })
     can(['read', 'remove'], 'storage', { _id: 'avatars/' + subject._id.toString() })
     can(['read', 'remove'], 'storage', { _id: 'avatars/' + subject._id.toString() + '.thumbnail' })
   }
