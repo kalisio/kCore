@@ -10,9 +10,13 @@ module.exports = {
     create: [
       populateAttachmentResource,
       (hook) => {
-        // If form multipart data transform to data URI for blob service
+        // If form multipart data transform to data buffer for blob service
         if (!hook.data.uri && hook.params.file) {
-          hook.data.uri = getBase64DataURI(hook.params.file.buffer, hook.params.file.mimetype)
+          // Before https://github.com/feathersjs-ecosystem/feathers-blob/releases/tag/v1.5.0 only data URI were supported
+          //hook.data.uri = getBase64DataURI(hook.params.file.buffer, hook.params.file.mimetype)
+          // Now raw buffers are
+          hook.data.buffer = hook.params.file.buffer
+          hook.data.contentType = hook.params.file.mimetype
         }
         // Makes uploaded files public when required
         if (hook.data.public) hook.params.s3 = { ACL: 'public-read' }

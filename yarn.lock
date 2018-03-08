@@ -2307,8 +2307,8 @@ feathers-authentication@^1.2.2:
     passport "^0.3.2"
 
 feathers-blob@^1.4.0:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/feathers-blob/-/feathers-blob-1.4.1.tgz#1241d33ffde0fc0ba8c326bcf45e8ed56491daff"
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/feathers-blob/-/feathers-blob-1.5.0.tgz#f1e7b8c745f325844d52018e5b98de40d370d4a1"
   dependencies:
     concat-stream "^1.5.1"
     dauria "^2.0.0"
