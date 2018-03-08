@@ -10,6 +10,12 @@ export default function baseEditorMixin (formRefs) {
           return {}
         }
       },
+      baseQuery: {
+        type: Object,
+        default: function () {
+          return {}
+        }
+      },
       clearButton: {
         type: String,
         default: ''
@@ -142,9 +148,7 @@ export default function baseEditorMixin (formRefs) {
         }
         return isApplied
       },
-      async apply (event, done) {
-        let isValid = this.validateForms()
-        // Now the form is validated apply it to the target object
+      getBaseObject () {
         // Start from default object or input base object
         // This is used to keep track of existing or additional "hidden" or "internal" properties
         // in addition to the ones edited throught the form
@@ -155,6 +159,21 @@ export default function baseEditorMixin (formRefs) {
         } else {
           Object.assign(object, baseObject)
         }
+        return object
+      },
+      getBaseQuery () {
+        // Start from default query
+        let query = {}
+        Object.assign(query, this.baseQuery)
+        if ((this.getMode() === 'update') && (this.perspective !== '')) {
+          Object.assign(query, { $select: [this.perspective] })
+        }
+        return query
+      },
+      async apply (event, done) {
+        let isValid = this.validateForms()
+        // Now the form is validated apply it to the target object
+        const object = this.getBaseObject()
         if (isValid) {
           isValid = await this.applyForms(object)
         }
@@ -171,22 +190,22 @@ export default function baseEditorMixin (formRefs) {
             this.$emit('applied', response)
             if (done) done()
           }
-
+          const query = this.getBaseQuery()
           // Update the item
           if (this.getMode() === 'update') {
             // Editing mode => patch the item
             if (this.perspective !== '') {
               let data = {}
               data[this.perspective] = object
-              this.servicePatch(this.id, data, { query: { $select: [this.perspective] } })
+              this.servicePatch(this.id, data, { query })
               .then(onServiceResponse)
             } else {
-              this.servicePatch(this.id, object)
+              this.servicePatch(this.id, object, { query })
               .then(onServiceResponse)
             }
           } else if (this.getMode() === 'create') {
             // Creation mode => create the item
-            this.serviceCreate(object)
+            this.serviceCreate(object, { query })
             .then(onServiceResponse)
           } else {
             logger.warn('Invalid editor mode')
