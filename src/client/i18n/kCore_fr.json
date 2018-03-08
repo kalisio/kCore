@@ -64,5 +64,28 @@
   },
   "KGrid": {
     "EMPTY_GRID": "Aucun élément trouvé"
+  },
+  "KUploader": {
+    "dropZone": {
+      "dictDefaultMessage": "Glisser-déposer vos fichiers ou cliquez ici",
+      "dictFallbackMessage": "Votre navigateur ne supporte pas le glisser-déposer.",
+      "dictFallbackText": "Utilisez le formulaire ci-dessous pour télécharger vos fichiers.",
+      "dictFileTooBig": "Votre fichier ({{filesize}}MO) excède la taille maximale autorisée ({{maxFilesize}}MO).",
+      "dictInvalidFileType": "Vous ne pouvez ajouter des fichiers de ce type.",
+      "dictResponseError": "Une erreur est survenues lors du téléchargement (code {{statusCode}}), veuillez réessayer.",
+      "dictCancelUpload": "Annuler",
+      "dictUploadCanceled": "Téléchargement annulé.",
+      "dictCancelUploadConfirmation": "Etes-vous sûr de vouloir annuler le téléchargement ?",
+      "dictRemoveFile": "Effacer",
+      "dictRemoveFileConfirmation": "Etes-vous sûr de vouloir effacer ce fichier ?",
+      "dictMaxFilesExceeded": "Vous ne pouvez ajouter plus de fichiers.",
+      "dictFileSizeUnits": {
+        "tb": "TO",
+        "gb": "GO",
+        "mb": "MO",
+        "kb": "KO",
+        "b": "o"
+      }
+    }
   }
 }

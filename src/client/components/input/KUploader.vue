@@ -168,7 +168,9 @@ export default {
         params: {
           isArray: this.isMultiple()
         }
-      }, _.omit(this.options, ['service', 'storagePath']))
+      },
+      _.omit(this.options, ['service', 'storagePath']),
+      this.$t('KUploader.dropZone', { returnObjects: true }))
       this.dropZoneOptions.url = this.$api.getBaseUrl() + '/' + this.storageService().path
       // This is used to ensure the request will be authenticated by Feathers
       this.dropZoneOptions.headers = { Authorization: window.localStorage.getItem('feathers-jwt') }
