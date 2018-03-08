@@ -24,7 +24,7 @@ export default function baseEditorMixin (formRefs) {
         // Retuns the schema title
         if (this.getSchema()) {
           let schemaTitle = this.getSchema().title
-          if (this.getMode() === 'create') return this.$i18n.i18next.t(schemaTitle)
+          if (this.getMode() === 'create') return this.$t(schemaTitle)
           if (this.getObject()) return _.template(schemaTitle)({ object: this.getObject() })
         }
         return ''
@@ -74,9 +74,9 @@ export default function baseEditorMixin (formRefs) {
         })
         // Update button accordingly
         if (this.getMode() === 'update') {
-          this.applyButton = this.$i18n.i18next.t('UPDATE')
+          this.applyButton = this.$t('UPDATE')
         } else {
-          this.applyButton = this.$i18n.i18next.t('CREATE')
+          this.applyButton = this.$t('CREATE')
         }
       },
       clear () {
