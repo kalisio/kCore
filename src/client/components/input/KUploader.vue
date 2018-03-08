@@ -92,13 +92,19 @@ export default {
     onThumbnailGenerated (thumbnailFile, dataUrl) {
       const index = _.findIndex(this.files, file => file.name === thumbnailFile.name)
       if (index >= 0) {
+        const id = this.generateFileId(thumbnailFile)
         // When processing uploads on-the-fly send thumbnail to the server once computed
         if (this.autoProcessQueue()) {
-          const id = this.generateFileId(thumbnailFile)
           this.storageService().create({ id: id + '.thumbnail', uri: dataUrl })
         } else {
-          // Store it temporarily
-          thumbnailFile.thumbnail = dataUrl
+          // Check if the file has already been uploaded because it is an asynchronous process
+          // that might happen before the thumbnail has been generated
+          if (thumbnailFile._id) {
+            this.storageService().create({ id: id + '.thumbnail', uri: dataUrl })
+          } else {
+            // Otherwise store it temporarily until the file is uploaded
+            thumbnailFile.thumbnail = dataUrl
+          }
         }
       }
     },
@@ -124,7 +130,10 @@ export default {
         formData.set('resourcesService', this.resourcesService()) 
       }
       // When not processing uploads on-the-fly send thumbnail to the server along with the file
-      this.storageService().create({ id: id + '.thumbnail', uri: file.thumbnail })
+      // Check if it does exist however because it is processed asynchronously
+      if (file.thumbnail) {
+        this.storageService().create({ id: id + '.thumbnail', uri: file.thumbnail })
+      }
     },
     onFileAdded (addedFile) {
       // Filter all internal properties used by drop zone
