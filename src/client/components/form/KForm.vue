@@ -2,6 +2,7 @@
   <div class="column">
     <template v-for="field in fields">
       <component
+        :contextId="contextId"
         :id="id"
         :key="field.name"
         :is="field.componentKey"
@@ -34,6 +35,10 @@ export default {
     mixins.refsResolver()
   ],
   props: {
+    contextId: {
+      type: String,
+      default: ''
+    },
     id: {
       type: String,
       default: ''

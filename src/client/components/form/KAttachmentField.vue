@@ -11,7 +11,7 @@
       {{fileName(file)}}
     </q-chip>
     <q-icon v-show="files.length < maxFiles" name="fa-cloud-upload fa-2x" @click="onUpload"/>
-    <k-uploader ref="uploader" :id="id" :resource="resource" @file-selection-changed="updateFiles" :options="properties.field"/>
+    <k-uploader ref="uploader" :contextId="contextId" :id="id" :resource="resource" @file-selection-changed="updateFiles" :options="properties.field"/>
   </q-field>
 </template>
 

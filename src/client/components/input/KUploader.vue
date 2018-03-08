@@ -124,7 +124,7 @@ export default {
         formData.set('resourcesService', this.resourcesService()) 
       }
       // When not processing uploads on-the-fly send thumbnail to the server along with the file
-      //this.storageService().create({ id: id + '.thumbnail', uri: file.thumbnail })
+      this.storageService().create({ id: id + '.thumbnail', uri: file.thumbnail })
     },
     onFileAdded (addedFile) {
       // Filter all internal properties used by drop zone
