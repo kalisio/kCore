@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 /**
  * This function allow you to modify a JS Promise by adding some status properties.
  * Based on: http://stackoverflow.com/questions/21485545/is-there-a-way-to-tell-if-an-es6-promise-is-fulfilled-rejected-resolved
@@ -69,7 +71,9 @@ export function getLocale () {
     navigator.systemLanguage
 
   if (locale) {
-    return locale.toLowerCase()
+    // see https://www.ietf.org/rfc/bcp/bcp47.txt
+    let languageCodes = _.split(locale, '-')
+    if (languageCodes.length > 0) return languageCodes[0]
   }
   // return undefined by default
 }
