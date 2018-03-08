@@ -22,7 +22,6 @@ export function kalisio () {
 
   // This avoid managing the API path before each service name
   // If a context is not given it will be retrieved from the store if any and used for contextual services
-  // If the context is forced to null the service is assumed to be global
   api.getServicePath = function (name, context, withApiPrefix = true) {
     const options = _.get(api.serviceOptions, name, {})
     let path
@@ -35,7 +34,7 @@ export function kalisio () {
         path = context + '/' + name
       } else if (context && typeof context === 'object') {
         path = context._id + '/' + name
-      } else if (context === undefined) {
+      } else {
         // Service is registered as contextual ?
         const context = Store.get('context')
         if (context) {
@@ -44,9 +43,6 @@ export function kalisio () {
           // It could also be registered as global with the same name
           path = name
         }
-      } else {
-        // We force to check for global service only by a null context
-        path = name
       }
     }
 
