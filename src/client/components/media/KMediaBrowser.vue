@@ -1,9 +1,9 @@
 <template>
   <k-modal ref="modal" :toolbar="toolbar" :buttons="buttons">
     <div slot="modal-content" style="max-width: 50vw;">
-      <q-carousel arrows dots fullscreen infinite v-if="medias.length > 0" @slide="onViewMedia" class="text-white bg-black">
-        <div v-for="media in medias" :key="media._id" slot="slide" class="no-padding flex-center row">
-          <img v-if="media.uri" style="width: 100%; height: auto;" :src="media.uri">
+      <q-carousel arrows dots fullscreen infinite v-if="medias.length > 0" @slide="onViewMedia">
+        <div v-for="media in medias" :key="media._id" slot="slide" class="flex-center row">
+          <img v-if="media.uri" style="width: auto; height: auto;" :src="media.uri">
           <div v-if="!media.uri">
             <q-spinner-cube size="4em"/>
             <span style="font-size: 2em;">Loading...&nbsp;</span>
