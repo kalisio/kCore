@@ -20,7 +20,9 @@
 import logger from 'loglevel'
 import _ from 'lodash'
 import Ajv from 'ajv'
+import AjvLocalize from 'ajv-i18n'
 import mixins from '../../mixins'
+import { getLocale } from '../../utils'
 
 // Create the AJV instance
 let ajv = new Ajv({ 
@@ -73,6 +75,10 @@ export default {
       this.$emit('field-changed', field, value)
       // Checks whether the form is valid
       if (!this.validator(this.values())) {
+        const locale = getLocale()
+        if (AjvLocalize.hasOwnProperty(locale)) {
+          AjvLocalize[locale](this.validator.errors)
+        }
         // Checks whether the touched field has an error
         let error = this.hasFieldError(field)
         if (error) {
@@ -169,6 +175,10 @@ export default {
       // If the validation fails, it iterates though the errors in order
       // to update the validation status of each field
       if (!this.validator(result.values)) {
+        const locale = getLocale()
+        if (AjvLocalize.hasOwnProperty(locale)) {
+          AjvLocalize[locale](this.validator.errors)
+        }
         this.fields.forEach(field => {
           let error = this.hasFieldError(field.name)
           if (error) {
