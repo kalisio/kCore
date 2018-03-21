@@ -124,11 +124,13 @@ export default function baseEditorMixin (formRefs) {
         for (let i = 0; i < formRefs.length; i++) {
           const name = formRefs[i]
           let form = this.$refs[name]
-          try {
-            await form.apply(object)
-          } catch (error) {
-            isApplied = false
-            break
+          if (!form.isDisabled) {
+            try {
+              await form.apply(object)
+            } catch (error) {
+              isApplied = false
+              break
+            }
           }
         }
         return isApplied
@@ -139,11 +141,13 @@ export default function baseEditorMixin (formRefs) {
         for (let i = 0; i < formRefs.length; i++) {
           const name = formRefs[i]
           let form = this.$refs[name]
-          try {
-            await form.submitted(object)
-          } catch (error) {
-            isApplied = false
-            break
+          if (!form.isDisabled) {
+            try {
+              await form.submitted(object)
+            } catch (error) {
+              isApplied = false
+              break
+            }
           }
         }
         return isApplied
