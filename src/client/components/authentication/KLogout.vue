@@ -42,7 +42,7 @@ export default {
   mixins: [mixins.authentication],
   created () {
     this.appName = this.$store.get('config.appName', 'kApp')
-    this.publisherName = this.$store.get('config.publisher.name', 'Kalisio')
+    this.publisherName = this.$store.get('config.publisher', 'Kalisio')
     this.logout()
   }
 }
