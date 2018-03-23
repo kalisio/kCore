@@ -59,7 +59,7 @@
     "PASSWORD_BLOCK_TEXT": "Votre mot de passe protège votre compte.<br>Changez le avec précaution.",
     "PASSWORD_BLOCK_ACTION": "Changer",
     "EMAIL_BLOCK_TITLE": "Changez votre addresse mail ?",
-    "EMAIL_BLOCK_TEXT": "Changer votre adresse mail sécurise les accès à votre compte.<br>Changez la avec précaution.",
+    "EMAIL_BLOCK_TEXT": "Changer votre adresse mail sécurise les accès à votre compte, changez la avec précaution.<br>Addresse actuelle: <b>{{email}}</b>",
     "EMAIL_BLOCK_ACTION": "Changer"
   },
   "KGrid": {

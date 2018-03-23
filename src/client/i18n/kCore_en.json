@@ -59,7 +59,7 @@
     "PASSWORD_BLOCK_TEXT": "Your password protect your account.<br>Change it carefully.",
     "PASSWORD_BLOCK_ACTION": "Change password",
     "EMAIL_BLOCK_TITLE": "Change your email ?",
-    "EMAIL_BLOCK_TEXT": "Your email secures changes to your account credentials.<br>Change it carefully.",
+    "EMAIL_BLOCK_TEXT": "Your email secures changes to your account credentials, change it carefully.<br>Current email address: <b>{{email}}</b>",
     "EMAIL_BLOCK_ACTION": "Change email"
   },
   "KGrid": {

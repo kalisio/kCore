@@ -4,10 +4,10 @@
       <k-editor service="users" :id="id" perspective="profile"/>
     </div>
     <div v-if="perspective === 'security'"  class="col-11">
-      <k-account-security :id="id" />
+      <k-account-security :id="id" :email="email" />
     </div>
     <div v-else-if="perspective === 'danger-zone'" class="col-11">
-      <k-account-dz :id="id" />
+      <k-account-dz :id="id" :name="name" />
     </div>
     <div v-else>
       <!-- Error -->  
@@ -32,7 +32,9 @@ export default {
   },
   data () {
     return {
-      id: ''
+      id: '',
+      name: '',
+      email: ''
     }
   },
   methods: {
@@ -57,6 +59,8 @@ export default {
     },
     refreshAccount () {
       this.id = this.$store.get('user._id', '')
+      this.name = this.$store.get('user.name', '')
+      this.email = this.$store.get('user.email', '')
     }
   },
   created () {

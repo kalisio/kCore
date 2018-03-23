@@ -19,7 +19,7 @@
         <k-block
           color="orange" 
           :title="$t('KAccountSecurity.EMAIL_BLOCK_TITLE')"
-          :text="$t('KAccountSecurity.EMAIL_BLOCK_TEXT')"
+          :text="$t('KAccountSecurity.EMAIL_BLOCK_TEXT', { email })"
           :action="$t('KAccountSecurity.EMAIL_BLOCK_ACTION')"
           @action-triggered="onChangeEmail" />
       </div>
@@ -35,9 +35,10 @@ export default {
   components: {
     KBlock
   },
-  data () {
-    return {
-      name: ''
+  props: {
+    email: {
+      type: String,
+      default: ''
     }
   },
   methods: {

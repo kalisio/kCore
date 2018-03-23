@@ -18,12 +18,12 @@ import mixins from '../../mixins'
 export default {
   name: 'k-account-dz',
   mixins: [
-    mixins.service,
-    mixins.objectProxy
+    mixins.service
   ],
-  data () {
-    return {
-      name: ''
+  props: {
+    name: {
+      type: String,
+      default: ''
     }
   },
   methods: {
@@ -63,9 +63,6 @@ export default {
   created () {
     // Load the components
     this.$options.components['k-block'] = this.$load('frame/KBlock')
-    // Update underlying object
-    this.loadObject()
-    .then(object => this.name = object.name)
   }
 }
 </script>
