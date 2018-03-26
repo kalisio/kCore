@@ -1,5 +1,5 @@
 <template>
-  <q-modal ref="modal" no-esc-dismiss no-backdrop-dismiss :content-css="options" @open="$emit('opened')" @close="$emit('closed')">
+  <q-modal ref="modal" no-esc-dismiss no-backdrop-dismiss :content-css="options" @open="$emit('opened')" @close="$emit('closed')" :maximized="options.maximized">
     <div class="column">
       <!-- 
          Toolbar section
