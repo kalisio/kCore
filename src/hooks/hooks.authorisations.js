@@ -82,12 +82,16 @@ export function authorise (hook) {
           throw new Forbidden(`You are not allowed to perform ${operation} operation on ${resourceType}`)
         }
       } else {
-        // When we find/update/patch/remove multiple items this ensures thet
+        // When we find/update/patch/remove multiple items this ensures that
         // only the ones authorised by constraints on the resources will be fetched
         // This avoid fetching all first then check it one by one
         const dbQuery = objectifyIDs(getQueryForAbilities(abilities, operation, resourceType))
-        debug('Target resource conditions are ', dbQuery)
-        merge(hook.params.query, dbQuery)
+        if (dbQuery) {
+          debug('Target resource conditions are ', dbQuery)
+          merge(hook.params.query, dbQuery)
+        } else {
+          hook.result = { total: 0, skip: 0, data: [] }
+        }
       }
       debug('Resource acces granted')
     // Some specific services might not expose a get function, in this case we cannot check for authorisation

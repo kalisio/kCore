@@ -136,13 +136,15 @@ export function removeContext (query) {
   return query
 }
 
+// Get the query used to filter the objects according to given abilities
+// A null query indicates that access should not be granted
 export function getQueryForAbilities (abilities, operation, resourceType) {
-  if (!abilities) return {}
+  if (!abilities) return null
 
   const rules = abilities.rulesFor(operation, resourceType)
-  let query = toMongoQuery(rules) || {}
+  let query = toMongoQuery(rules)
   // Remove any context to avoid taking it into account because it is not really stored on objects
-  return removeContext(query)
+  return (query ? removeContext(query) : null)
 }
 
 export function findSubjectsForResource (subjectService, resourceScope, resourceId, role) {
