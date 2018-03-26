@@ -1,4 +1,4 @@
-import { getBase64DataURI } from 'dauria'
+// import { getBase64DataURI } from 'dauria'
 import { disallow, discard, iff } from 'feathers-hooks-common'
 import { populateAttachmentResource, attachToResource, detachFromResource } from '../../hooks'
 
@@ -13,7 +13,7 @@ module.exports = {
         // If form multipart data transform to data buffer for blob service
         if (!hook.data.uri && hook.params.file) {
           // Before https://github.com/feathersjs-ecosystem/feathers-blob/releases/tag/v1.5.0 only data URI were supported
-          //hook.data.uri = getBase64DataURI(hook.params.file.buffer, hook.params.file.mimetype)
+          // hook.data.uri = getBase64DataURI(hook.params.file.buffer, hook.params.file.mimetype)
           // Now raw buffers are
           hook.data.buffer = hook.params.file.buffer
           hook.data.contentType = hook.params.file.mimetype
