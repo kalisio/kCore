@@ -43,7 +43,7 @@ export default function baseEditorMixin (formRefs) {
     },
     methods: {
       getMode () {
-        if (this.id) return 'update'
+        if (this.objectId) return 'update'
         return 'create'
       },
       // Disabled forms will not be applied
@@ -201,10 +201,10 @@ export default function baseEditorMixin (formRefs) {
             if (this.perspective !== '') {
               let data = {}
               data[this.perspective] = object
-              this.servicePatch(this.id, data, { query })
+              this.servicePatch(this.objectId, data, { query })
               .then(onServiceResponse)
             } else {
-              this.servicePatch(this.id, object, { query })
+              this.servicePatch(this.objectId, object, { query })
               .then(onServiceResponse)
             }
           } else if (this.getMode() === 'create') {

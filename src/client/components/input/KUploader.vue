@@ -21,7 +21,7 @@ export default {
       type: String,
       default: ''
     },
-    id: {
+    objectId: {
       type: String,
       default: ''
     },
@@ -114,11 +114,11 @@ export default {
       // otherwise it will be stored at the root level with a generated hash
       if (idTemplate) {
         // Inject useful properties such as current object ID, file, etc.
-        let environment = { id: this.id || this.resource, file }
+        let environment = { id: this.objectId || this.resource, file }
         // The template generates the final ID for the file in storage
         return _.template(idTemplate)(environment)
       } else {
-        return this.id || this.resource
+        return this.objectId || this.resource
       }
     },
     onFileSending (file, xhr, formData) {

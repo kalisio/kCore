@@ -1,13 +1,13 @@
 <template>
-  <div v-if="id !== ''" class="row justify-center full-width">
+  <div v-if="objectId !== ''" class="row justify-center full-width">
     <div v-if="perspective === 'profile'" class="col-11">
-      <k-editor service="users" :id="id" perspective="profile"/>
+      <k-editor service="users" :objectId="objectId" perspective="profile"/>
     </div>
     <div v-if="perspective === 'security'"  class="col-11">
-      <k-account-security :id="id" :email="email" />
+      <k-account-security :objectId="objectId" :email="email" />
     </div>
     <div v-else-if="perspective === 'danger-zone'" class="col-11">
-      <k-account-dz :id="id" :name="name" />
+      <k-account-dz :objectId="objectId" :name="name" />
     </div>
     <div v-else>
       <!-- Error -->  
@@ -32,7 +32,7 @@ export default {
   },
   data () {
     return {
-      id: '',
+      objectId: '',
       name: '',
       email: ''
     }
@@ -58,7 +58,7 @@ export default {
       })
     },
     refreshAccount () {
-      this.id = this.$store.get('user._id', '')
+      this.objectId = this.$store.get('user._id', '')
       this.name = this.$store.get('user.name', '')
       this.email = this.$store.get('user.email', '')
     }

@@ -6,7 +6,7 @@ let baseFieldMixin = {
       type: String,
       default: ''
     },
-    id: {
+    objectId: {
       type: String,
       default: ''
     },
@@ -80,7 +80,7 @@ let baseFieldMixin = {
       this.error = error
     },
     getMode () {
-      if (this.id) return 'update'
+      if (this.objectId) return 'update'
       return 'create'
     },
     onChanged () {

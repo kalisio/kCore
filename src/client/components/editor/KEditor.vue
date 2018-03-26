@@ -4,7 +4,7 @@
       Form section
     -->
     <div>
-      <k-form ref="form" :schema="schema" :contextId="contextId" :id="id"/>
+      <k-form ref="form" :schema="schema" :contextId="contextId" :objectId="objectId"/>
     </div>
     <!--
       Buttons section

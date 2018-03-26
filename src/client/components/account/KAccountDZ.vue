@@ -47,7 +47,7 @@ export default {
             handler: (data, close) => {
               if (data.confirm === this.name) {
                 close(() => { 
-                  this.loadService().remove(this.id)
+                  this.loadService().remove(this.objectId)
                   .then(() => {
                     this.$router.push({name: 'logout'})
                   })

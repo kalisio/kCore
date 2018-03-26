@@ -37,14 +37,13 @@ export default {
   data () {
     return {
       name: '',
-      id: '',
       avatarImage: ''
     }
   },
   methods: {
     async refreshIdentity () {
       this.name = this.$store.get('user.name', '')
-      this.id = this.$store.get('user._id', '')
+      this.objectId = this.$store.get('user._id', '')
       // This field indicates that the avatar has been set
       let avatarId = this.$store.get('user.avatar._id', '')
       if (avatarId) {

@@ -3,7 +3,7 @@
     <template v-for="field in fields">
       <component
         :contextId="contextId"
-        :id="id"
+        :objectId="objectId"
         :key="field.name"
         :is="field.componentKey"
         :ref="field.name"
@@ -41,7 +41,7 @@ export default {
       type: String,
       default: ''
     },
-    id: {
+    objectId: {
       type: String,
       default: ''
     },
@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     getMode () {
-      if (this.id) return 'update'
+      if (this.objectId) return 'update'
       return 'create'
     },
     getField (field) {
