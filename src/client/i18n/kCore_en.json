@@ -2,6 +2,7 @@
   "CANCEL": "Cancel",
   "UPDATE": "Update",
   "CREATE": "Create",
+  "FORBIDDEN": "Operation not allowed",
   "schemas": {
     "AVATAR_FIELD_HELPER": "Select an avatar",
     "NAME_FIELD_HELPER": "Enter your name"
@@ -28,7 +29,8 @@
     "CONFIRM_PASSWORD_FIELD_HELPER": "Confirm your password",
     "APPLY_BUTTON": "Register",
     "ALREADY_HAVE_AN_ACCOUNT_LINK": "Already have an account ?",
-    "CHANGE_ENDPOINT_LINK_LINK": "$t(KAuthentication.CHANGE_ENDPOINT_LINK)"
+    "CHANGE_ENDPOINT_LINK_LINK": "$t(KAuthentication.CHANGE_ENDPOINT_LINK)",
+    "EMAIL_ALREADY_TAKEN": "Email already taken !"
   },
   "KChangeEndpoint": {
     "TITLE": "Changer endpoint",
