@@ -48,6 +48,9 @@ export default {
     autoProcessQueue () {
       return _.get(this.properties, 'field.autoProcessQueue', true)
     },
+    storageService () {
+      return this.$api.getService(this.properties.service || 'storage', this.contextId)
+    },
     resourcesService () {
       return _.get(this.properties, 'field.resourcesService', '')
     },
@@ -122,7 +125,7 @@ export default {
     onFileRemoved (oldFile) {
       // When processing uploads on-the-fly we need to remove from server
       if (this.autoProcessQueue()) {
-        const storage = this.$api.getService(this.properties.service || 'storage')
+        const storage = this.storageService()
         storage.remove(oldFile._id, {
           query: { resource: this.objectId, resourcesService: this.resourcesService() }
         })

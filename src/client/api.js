@@ -30,17 +30,21 @@ export function kalisio () {
       path = name
     } else {
       // Context is given as string ID or object ?
-      if (context && typeof context === 'string') {
-        path = context + '/' + name
-      } else if (context && typeof context === 'object') {
-        path = context._id + '/' + name
+      if (typeof context === 'string') {
+        if (context) path = context + '/' + name
+        // Force global context on empty string
+        else path = name
+      } else if (typeof context === 'object') {
+        if (context && context._id) path = context._id + '/' + name
+        // Force global context on empty object
+        else path = name
       } else {
-        // Service is registered as contextual ?
+        // Otherwise test for current context as service is registered as contextual
         const context = Store.get('context')
         if (context) {
           path = api.getServicePath(name, context, false)
         } else {
-          // It could also be registered as global with the same name
+          // Because it could also be registered as global with the same name fallback
           path = name
         }
       }
