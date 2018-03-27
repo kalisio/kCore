@@ -42,8 +42,9 @@ let schemaProxyMixin = {
             this.schema = schema
             // We need to force a refresh so that the schema is correctly
             // transfered to child component by Vuejs
-            return this.$nextTick().then(() => schema)
+            return this.$nextTick()
           })
+          .then(() => schema)
           .catch(error => {
             Events.$emit('error', error)
             throw error
