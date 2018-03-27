@@ -34,13 +34,13 @@ export default {
   computed: {
     buttons () {
       let buttons = [
-        { name: this.applyButton, color: 'primary', handler: (event, done) => this.apply(event, done) }
+        { name: 'apply-button', label: this.applyButton, color: 'primary', handler: (event, done) => this.apply(event, done) }
       ]
       if (this.clearButton != '') buttons.push({
-        name: this.clearButton, color: 'primary', handler: (event, done) => this.clear(event, done)
+        name: 'clear-button', label: this.clearButton, color: 'primary', handler: (event, done) => this.clear(event, done)
       })
       if (this.resetButton != '') buttons.push({
-        name: this.resetButton, color: 'primary', handler: (event, done) => this.reset(event, done)
+        name: 'reset-button', label: this.resetButton, color: 'primary', handler: (event, done) => this.reset(event, done)
       })
       return buttons
     }

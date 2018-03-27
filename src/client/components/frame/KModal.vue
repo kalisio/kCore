@@ -6,7 +6,7 @@
        -->
       <div class="row justify-end">
         <template v-for="action in toolbar">
-          <q-btn v-bind:key="action.name" flat round small color="primary" @click="action.handler">
+          <q-btn :id="action.name" v-bind:key="action.name" flat round small color="primary" @click="action.handler">
             <q-icon :name="action.icon" />
             <q-tooltip v-if="action.label">{{action.label}}</q-tooltip>
           </q-btn>
@@ -33,8 +33,8 @@
         <slot name="dialog-actions">
           <div class="row justify-end">
             <template v-for="button in buttons">
-              <q-btn v-bind:key="button.name" loader flat color="primary" @click="button.handler">
-                {{button.name}}
+              <q-btn :id="button.name" v-bind:key="button.name" loader flat color="primary" @click="button.handler">
+                {{button.label}}
               </q-btn>
             </template>
           </div>

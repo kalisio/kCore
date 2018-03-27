@@ -2,6 +2,8 @@
   "CANCEL": "Annuler",
   "UPDATE": "Mettre à jour",
   "CREATE": "Créer",
+  "CLOSE": "Fermer",
+  "DONE": "Ok",
   "schemas": {
     "AVATAR_FIELD_HELPER": "Choisissez un avatar",
     "NAME_FIELD_HELPER": "Saisissez votre nom"
@@ -86,6 +88,12 @@
         "kb": "KO",
         "b": "o"
       }
-    }
+    },
+    "CLOSE_ACTION": "$t(CANCEL)",
+    "DONE_BUTTON": "$t(DONE)"
+  },
+  "KIconChooser": {
+    "CLOSE_ACTION": "$t(CANCEL)",
+    "DONE_BUTTON": "$t(DONE)"
   }
 }

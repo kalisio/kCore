@@ -1,5 +1,5 @@
 <template>
-  <k-modal ref="modal" :toolbar="toolbar" :buttons="buttons">
+  <k-modal ref="modal" :toolbar="getToolbar()" :buttons="getButtons()">
     <div slot="modal-content" class="column sm-gutter">
       <drop-zone ref="dropZone" id="dropZone" @vdropzone-file-added="onFileAdded" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" @vdropzone-max-files-exceeded="onMaxFileExceeded" @vdropzone-thumbnail="onThumbnailGenerated" :options="dropZoneOptions"/>
     </div>
@@ -40,16 +40,20 @@ export default {
     return {
       dropZoneOptions: {
       },
-      toolbar: [
-        { name: 'Close', icon: 'close', handler: () => this.doClose() }
-      ],
-      buttons: [
-        { name: 'Done', color: 'primary', handler: (event, done) => this.doDone(event, done) }
-      ],
       files: []
     }
   },
   methods: {
+    getToolbar () {
+      return [
+        { name: 'close-action', label: this.$t('KUploader.CLOSE_ACTION'), icon: 'close', handler: () => this.doClose() }
+      ]
+    },
+    getButtons () {
+      return [
+        { name: 'done-button', label: this.$t('KUploader.DONE_BUTTON'), color: 'primary', handler: (event, done) => this.doDone(event, done) }
+      ]
+    },
     isMultiple () {
       return _.get(this.options, 'multiple', false)
     },

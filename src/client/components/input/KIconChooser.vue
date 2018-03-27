@@ -1,5 +1,5 @@
 <template>
-  <k-modal ref="modal" :toolbar="toolbar" :buttons="buttons" :options="{ padding: '4px', width: '600px' }">
+  <k-modal ref="modal" :toolbar="getToolbar()" :buttons="getButtons()" :options="{ padding: '4px', width: '600px' }">
     <div slot="modal-content" class="column sm-gutter">
       <div class="row justify-center items-center sm-gutter">
         <template v-for="icon in iconsPage">
@@ -50,16 +50,20 @@ export default {
       selectedIcon: {
         name: '',
         color: 'dark'
-      },
-      toolbar: [
-        { name: 'Close', icon: 'close', handler: () => this.doClose() }
-      ],
-      buttons: [
-        { name: 'Done', color: 'primary', handler: (event, done) => this.doDone(event, done) }
-      ],
+      }
     }
   },
   methods: {
+    getToolbar () {
+      return [
+        { name: 'close-action', label: this.$t('KIconChooser.CLOSE_ACTION'), icon: 'close', handler: () => this.doClose() }
+      ]
+    },
+    getButtons () {
+      return [
+        { name: 'done-button', label: this.$t('KIconChooser.DONE_BUTTON'), color: 'primary', handler: (event, done) => this.doDone(event, done) }
+      ]
+    },
     open (defaultIcon) {
       // Assign the selected icon to the default one if any
       if (defaultIcon) Object.assign(this.selectedIcon, defaultIcon)

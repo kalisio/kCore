@@ -3,7 +3,7 @@
     <!--
       SideNav menu
      -->
-    <q-btn flat id="menu" @click="$emit('menu-clicked')">
+    <q-btn id="sidenav-menu" flat @click="$emit('menu-clicked')">
       <q-icon name="menu" />
     </q-btn>
     <!-- 
@@ -18,8 +18,8 @@
     <!--
       Toolbar section
      -->
-    <template v-for="(action,index) in appBar.toolbar">
-      <q-btn flat :key="index" @click="$router.push(action.route)">
+    <template v-for="action in appBar.toolbar">
+      <q-btn :id ="action.name" :key="action.name" flat @click="$router.push(action.route)">
         <q-icon :name="action.icon" />
       </q-btn>
     </template>
@@ -27,12 +27,12 @@
       Menu section
      -->
     <template v-if="appBar.menu && appBar.menu.length > 0">
-      <q-btn flat>
+      <q-btn id="actions-menu" flat>
         <q-icon name="more_vert">
           <q-popover ref="menu">
             <q-list>
               <template v-for="action in appBar.menu">
-                <q-item link :key="action.name" @click="$router.push(action.route), $refs.menu.close()">
+                <q-item :id="action.name" :key="action.name" link  @click="$router.push(action.route), $refs.menu.close()">
                   <q-item-side :icon="action.icon" />
                   <q-item-main>
                     {{action.label}}
