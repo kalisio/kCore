@@ -133,3 +133,15 @@ export async function populatePreviousObject (hook) {
   }
   return hook
 }
+
+export function setAsDeleted (hook) {
+  // Retrieve the items from the hook
+  let items = getItems(hook)
+  const isArray = Array.isArray(items)
+  items = (isArray ? items : [items])
+  // Apply the rules for each item
+  items.forEach(item => _.set(item, 'deleted', true))
+  // Replace the items within the hook
+  replaceItems(hook, isArray ? items : items[0])
+  return hook
+}

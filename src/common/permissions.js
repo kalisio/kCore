@@ -147,11 +147,28 @@ export function getQueryForAbilities (abilities, operation, resourceType) {
   return (query ? removeContext(query) : null)
 }
 
-export function findSubjectsForResource (subjectService, resourceScope, resourceId, role) {
-  // Build the query
+function buildSubjectsQueryForResource (resourceScope, resourceId, role) {
   let query = {}
   query[resourceScope + '._id'] = resourceId
-  if (role) query[resourceScope + '.permissions'] = this.RoleNames[role]
-  // Execute the query
-  return subjectService.find({ query: query })
+  if (role) {
+    query[resourceScope + '.permissions'] = RoleNames[role]
+  }
+  return query
 }
+
+export function findSubjectsForResource (subjectService, resourceScope, resourceId, role) {
+  // Build the query
+  let query = buildSubjectsQueryForResource(resourceScope, resourceId, role)
+  // Execute the query
+  return subjectService.find({ query })
+}
+
+export function countSubjectsForResource (subjectService, resourceScope, resourceId, role) {
+  // Build the query
+  let query = buildSubjectsQueryForResource(resourceScope, resourceId, role)
+  // Indicate we'd only like to count
+  query.$limit = 0
+  // Execute the query
+  return subjectService.find({ query })
+}
+

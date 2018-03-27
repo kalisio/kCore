@@ -230,6 +230,9 @@ export function createService (name, app, options = {}) {
     }
     return path
   }
+  service.getContextId = function () {
+    return (typeof this.context === 'object' ? this.context._id.toString() : this.context)
+  }
 
   debug(service.name + ' service registration completed')
   app.emit('service', service)
