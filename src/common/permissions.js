@@ -47,7 +47,7 @@ export function defineUserAbilities (subject, can, cannot) {
   can('service', 'users')
   can('create', 'users')
 
-  if (subject) {
+  if (subject && subject._id) {
     // Read user profiles for authorizing
     can('read', 'users')
     // Update user profile and destroy it
