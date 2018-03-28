@@ -2,6 +2,7 @@
   "CANCEL": "Annuler",
   "UPDATE": "Mettre à jour",
   "CREATE": "Créer",
+  "FORBIDDEN": "Cette opération n'est pas autorisée",
   "CLOSE": "Fermer",
   "DONE": "Ok",
   "schemas": {
@@ -30,7 +31,8 @@
     "CONFIRM_PASSWORD_FIELD_HELPER": "Confirmez votre mot de passe",
     "APPLY_BUTTON": "S'enregistrer",
     "ALREADY_HAVE_AN_ACCOUNT_LINK": "Déjà un compte ?",
-    "CHANGE_ENDPOINT_LINK": "$t(KAuthentication.CHANGE_ENDPOINT_LINK)"
+    "CHANGE_ENDPOINT_LINK": "$t(KAuthentication.CHANGE_ENDPOINT_LINK)",
+    "EMAIL_ALREADY_TAKEN": "Mail déjà pris !"
   },
   "KChangeEndpoint": {
     "TITLE": "Changer l'adresse du serveur",
