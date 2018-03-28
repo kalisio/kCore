@@ -2,7 +2,25 @@
   "CANCEL": "Cancel",
   "UPDATE": "Update",
   "CREATE": "Create",
-  "FORBIDDEN": "Operation not allowed",
+  "errors": {
+    "400": "Operation cannot be performed: bad parameters",
+    "401": "Operation cannot be performed: authentication required",
+    "402": "Operation cannot be performed: payment error",
+    "403": "Operation cannot be performed: not allowed",
+    "404": "Operation cannot be performed: not found",
+    "405": "Operation cannot be performed: not allowed",
+    "406": "Operation cannot be performed: not acceptable",
+    "408": "Operation cannot be performed: timeout",
+    "409": "Operation cannot be performed: conflict",
+    "411": "Operation cannot be performed: length required",
+    "422": "Operation cannot be performed: unprocessable",
+    "429": "Operation cannot be performed: too many requests",
+    "500": "Operation cannot be performed: an error occured",
+    "501": "Operation cannot be performed: not implemented",
+    "502": "Operation cannot be performed: service unavailable",
+    "503": "Operation cannot be performed: service unavailable",
+    "RETRY": "Please try again later or modify your parameters"
+  },
   "CLOSE": "Close",
   "DONE": "Done",
   "schemas": {
@@ -21,7 +39,8 @@
     "APPLY_BUTTON": "Log in",
     "FORGOT_YOUR_PASSWORD_LINK": "Forgot your password ?",
     "DONT_HAVE_AN_ACCOUNT_LINK": "Dont't have an account ?",
-    "CHANGE_ENDPOINT_LINK": "$t(KAuthentication.CHANGE_ENDPOINT_LINK)"
+    "CHANGE_ENDPOINT_LINK": "$t(KAuthentication.CHANGE_ENDPOINT_LINK)",
+    "LOGIN_ERROR": "Wrong credentials or service unavailable, please try again"
   },
   "KRegister": {
     "TITLE": "Register",

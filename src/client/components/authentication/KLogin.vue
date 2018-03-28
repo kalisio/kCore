@@ -101,7 +101,7 @@ export default {
         })
         .catch(() => {
           Toast.create.negative({
-            html: 'Wrong credentials or service unavailable, please try again.',
+            html: this.$t('KLogin.LOGIN_ERROR'),
             timeout: 5000
           })
           done()

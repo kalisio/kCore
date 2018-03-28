@@ -2,7 +2,25 @@
   "CANCEL": "Annuler",
   "UPDATE": "Mettre à jour",
   "CREATE": "Créer",
-  "FORBIDDEN": "Cette opération n'est pas autorisée",
+  "errors": {
+    "400": "Cette opération ne peut être réalisée: paramètres incorrects",
+    "401": "Cette opération ne peut être réalisée: vous devez être authentifié",
+    "402": "Cette opération ne peut être réalisée: erreur de paiement",
+    "403": "Cette opération ne peut être réalisée: non autorisée",
+    "404": "Cette opération ne peut être réalisée: introuvable",
+    "405": "Cette opération ne peut être réalisée: non autorisée",
+    "406": "Cette opération ne peut être réalisée: non autorisée",
+    "408": "Cette opération ne peut être réalisée: temps alloué écoulé",
+    "409": "Cette opération ne peut être réalisée: conflit",
+    "411": "Cette opération ne peut être réalisée: taille requise",
+    "422": "Cette opération ne peut être réalisée: impossible à traiter",
+    "429": "Cette opération ne peut être réalisée: trop de requêtes",
+    "500": "Cette opération ne peut être réalisée: une erreur a été rencontrée",
+    "501": "Cette opération ne peut être réalisée: non gérée",
+    "502": "Cette opération ne peut être réalisée: service introuvable",
+    "503": "Cette opération ne peut être réalisée: service indisponible",
+    "RETRY": "Veuillez réessayer plus tard ou modifier votre paramétrage"
+  },
   "CLOSE": "Fermer",
   "DONE": "Ok",
   "schemas": {
@@ -21,7 +39,8 @@
     "APPLY_BUTTON": "Se connecter",
     "FORGOT_YOUR_PASSWORD_LINK": "Mot de passe oublié ?",
     "DONT_HAVE_AN_ACCOUNT_LINK": "Vous n'avez pas de compte ?",
-    "CHANGE_ENDPOINT_LINK": "$t(KAuthentication.CHANGE_ENDPOINT_LINK)"
+    "CHANGE_ENDPOINT_LINK": "$t(KAuthentication.CHANGE_ENDPOINT_LINK)",
+    "LOGIN_ERROR": "Mauvais identifiants ou service indisponible, veuillez réessayer"
   },
   "KRegister": {
     "TITLE": "S'enregistrer",

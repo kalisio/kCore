@@ -42,7 +42,6 @@ let objectProxyMixin = {
             resolve(object)
           })
           .catch(error => {
-            Events.$emit('error', error)
             reject(error)
           })
         })

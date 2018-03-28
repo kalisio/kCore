@@ -98,12 +98,6 @@ export default {
           done()
         })
         .catch(error => {
-          if (error.code === 400) {
-            Toast.create.negative({
-              html: this.$t('KRegister.EMAIL_ALREADY_TAKEN'),
-              timeout: 10000
-            })
-          }
           done()
         })
       } else {
