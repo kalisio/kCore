@@ -1,7 +1,7 @@
 <template>
   <k-modal ref="modal" :toolbar="getToolbar()" :buttons="getButtons()">
     <div slot="modal-content" class="column sm-gutter">
-      <drop-zone ref="dropZone" id="dropZone" @vdropzone-file-added="onFileAdded" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" @vdropzone-max-files-exceeded="onMaxFileExceeded" @vdropzone-thumbnail="onThumbnailGenerated" :options="dropZoneOptions"/>
+      <drop-zone ref="dropZone" id="dropZone" @vdropzone-file-added="onFileAdded" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" @vdropzone-max-files-exceeded="onMaxFileExceeded" @vdropzone-thumbnail="onThumbnailGenerated" :options="dropZoneOptions" :destroyDropzone="false"/>
     </div>
   </k-modal>
 </template>
@@ -10,6 +10,7 @@
 import _ from 'lodash'
 import 'vue2-dropzone/dist/vue2Dropzone.css'
 import DropZone from 'vue2-dropzone'
+import { Events } from 'quasar'
 
 export default {
   name: 'k-uploader',
@@ -75,6 +76,8 @@ export default {
       }
     },
     removeFile(removedFile) {
+      // Possible on max files exceeded
+      if (removedFile.status === 'error') return
       const index = _.findIndex(this.files, file => file.name === removedFile.name)
       if (index >= 0) {
         // When processing uploads on-the-fly we need to remove from server
@@ -92,6 +95,7 @@ export default {
     onMaxFileExceeded (file) {
       // This is required if we don't want the file to be viewed
       this.dropZone().removeFile(file)
+      Events.$emit('error', { message: this.$t('KUploader.dropZone.dictMaxFilesExceeded') })
     },
     onThumbnailGenerated (thumbnailFile, dataUrl) {
       const index = _.findIndex(this.files, file => file.name === thumbnailFile.name)
@@ -142,6 +146,8 @@ export default {
     onFileAdded (addedFile) {
       // Filter all internal properties used by drop zone
       this.addFile(_.pick(addedFile, ['name', 'size', '_id']))
+      // Keep track of previews for cleanup
+      this.previews.push(addedFile.previewElement)
     },
     onFileUploaded (addedFile, response) {
       // We update file list on successful upload
@@ -203,10 +209,22 @@ export default {
         })
       }
     },
+    clearPreviews ()  {
+      this.previews.forEach(preview => {
+        // Code taken from removedfile method of DropZone.js
+        if (preview.parentNode) {
+          preview.parentNode.removeChild(preview)
+        }
+      })
+      this.previews = []
+    },
     open (defaultFiles = []) {
       // Reset drop zone
-      this.files = []
       this.dropZone().removeAllFiles(true)
+      // FIXME: for now we need to remove previous preview elements manually
+      // Indeed the previous method does not seem to work for this
+      this.clearPreviews()
+      this.files = []
       // Then setup existing files on server
       defaultFiles.forEach(file => {
         this.dropZoneInstance().emit('addedfile', file)
@@ -231,6 +249,8 @@ export default {
     }
   },
   created () {
+    // Initialize private properties
+    this.previews = []
     // Load the required components
     this.$options.components['k-modal'] = this.$load('frame/KModal')
     this.updateDropZoneOptions()

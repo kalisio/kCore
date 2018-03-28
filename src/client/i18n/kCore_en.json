@@ -110,7 +110,7 @@
         "b": "b"
       }
     },
-    "CLOSE_ACTION": "$t(CANCEL)",
+    "CLOSE_ACTION": "$t(CLOSE)",
     "DONE_BUTTON": "$t(DONE)"
   },
   "KIconChooser": {

@@ -101,7 +101,7 @@
       "dictCancelUploadConfirmation": "Etes-vous sûr de vouloir annuler le téléchargement ?",
       "dictRemoveFile": "Effacer",
       "dictRemoveFileConfirmation": "Etes-vous sûr de vouloir effacer ce fichier ?",
-      "dictMaxFilesExceeded": "Vous ne pouvez ajouter plus de fichiers.",
+      "dictMaxFilesExceeded": "Vous ne pouvez plus ajouter de fichiers.",
       "dictFileSizeUnits": {
         "tb": "TO",
         "gb": "GO",
@@ -110,7 +110,7 @@
         "b": "o"
       }
     },
-    "CLOSE_ACTION": "$t(CANCEL)",
+    "CLOSE_ACTION": "$t(CLOSE)",
     "DONE_BUTTON": "$t(DONE)"
   },
   "KIconChooser": {
