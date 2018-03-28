@@ -29,6 +29,7 @@ let baseActivityMixin = {
       this.$store.patch('fab', { actions: _.concat(this.$store.get('fab.actions'), action) })
     },
     registerAction (type, action) {
+      action.id = _.kebabCase(action.name)
       if (!this.actions[type]) this.actions[type] = []
       this.actions[type].push(action)
     },

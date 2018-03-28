@@ -1,15 +1,15 @@
 <template>
   <q-toolbar>
     <!--
-      SideNav menu
+      SideNav toggle
      -->
-    <q-btn id="sidenav-menu" flat @click="$emit('menu-clicked')">
+    <q-btn id="side-nav-toggle" flat @click="$emit('menu-clicked')">
       <q-icon name="menu" />
     </q-btn>
     <!-- 
       Title/subtitle section
      -->
-    <q-toolbar-title>
+    <q-toolbar-title id="app-bar-title">
       {{ appBar.title }}
       <span slot="subtitle">
         {{ appBar.subtitle }}
@@ -27,9 +27,9 @@
       Menu section
      -->
     <template v-if="appBar.menu && appBar.menu.length > 0">
-      <q-btn id="actions-menu" flat>
+      <q-btn id="overflow-menu-entry" flat>
         <q-icon name="more_vert">
-          <q-popover ref="menu">
+          <q-popover id="overflow-menu" ref="menu">
             <q-list>
               <template v-for="action in appBar.menu">
                 <q-item :id="action.name" :key="action.name" link  @click="$router.push(action.route), $refs.menu.close()">

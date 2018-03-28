@@ -11,7 +11,8 @@
       color="primary">
         <q-fab-action 
           v-for="action in fab.actions" 
-          :key="action.name"
+          :id="action.id"
+          :key="action.id"
           color="primary"
           @click="onActionTriggered(action)"
           :icon="action.icon">
@@ -23,10 +24,12 @@
     <!-- 
       Render a non expandable fab if a single action is provided
      -->
-    <q-btn v-else-if="fab.actions.length === 1" round 
+    <q-btn v-else-if="fab.actions.length === 1" 
+      id="action.id"
       color="primary"
       class="fixed"
       style="right: 18px; bottom: 18px"
+      round
       @click="onActionTriggered(fab.actions[0])">
       <q-icon :name="fab.actions[0].icon" />
       <q-tooltip v-if="fab.actions[0].label" anchor="center left" self="center right" :offset="[20, 20]">
