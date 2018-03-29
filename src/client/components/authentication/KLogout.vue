@@ -15,7 +15,7 @@
           Additionnal links
         -->
         <div class="self-center">
-          <a @click="$router.push({name: 'login'})">
+          <a id="login-link" @click="$router.push({name: 'login'})">
             {{$t('KLogout.LOG_IN_AGAIN_LINK')}}
           </a>
         </div>

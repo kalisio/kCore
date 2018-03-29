@@ -15,11 +15,11 @@
           Additionnal links
         -->
         <div class="self-center">
-          <a @click="$router.push({name: 'login'})">
+          <a id="login-link" @click="$router.push({name: 'login'})">
             {{$t('KRegister.ALREADY_HAVE_AN_ACCOUNT_LINK')}}
           </a>
           &nbsp;&nbsp;
-          <a v-if="isCordova" @click="$router.push({name: 'change-endpoint'})">
+          <a v-if="isCordova" id="change-endpoint-link" @click="$router.push({name: 'change-endpoint'})">
             {{$t('KRegister.CHANGE_ENDPOINT_LINK')}}
           </a>
         </div>

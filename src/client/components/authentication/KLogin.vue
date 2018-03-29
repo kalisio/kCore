@@ -27,15 +27,15 @@
           Additionnal links
         -->
         <div class="self-center">
-          <a @click="$router.push({name: 'send-reset-password'})">
+          <a id="reset-password-link" @click="$router.push({name: 'send-reset-password'})">
             {{$t('KLogin.FORGOT_YOUR_PASSWORD_LINK')}}
           </a>
           &nbsp;&nbsp;
-          <a @click="$router.push({name: 'register'})">
+          <a id="register-link" @click="$router.push({name: 'register'})">
             {{$t('KLogin.DONT_HAVE_AN_ACCOUNT_LINK')}}
           </a>
           &nbsp;&nbsp;
-          <a v-if="isCordova" @click="$router.push({name: 'change-endpoint'})">
+          <a id="change-endpoint-link" v-if="isCordova" @click="$router.push({name: 'change-endpoint'})">
             {{$t('KLogin.CHANGE_ENDPOINT_LINK')}}
           </a>
         </div>
@@ -87,7 +87,7 @@ export default {
         "required": ["email", "password"]
       },
       providers: [],
-      isCordova: Platform.is.cordova
+      isCordova: DEV ? true : Platform.is.cordova
     }
   },
   mixins: [mixins.authentication],

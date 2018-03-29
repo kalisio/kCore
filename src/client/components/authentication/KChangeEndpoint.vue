@@ -2,15 +2,29 @@
   <k-screen :title="$t('KChangeEndpoint.TITLE')">
     <div slot="screen-content">
       <div class="column justify-center sm-gutter">
+         <!-- 
+          Change endpoint form
+        -->
         <div>
           <k-form ref="form" :schema="schema" />
         </div>
         <div>
           <div class="row justify-around">
-            <q-btn color="primary" @click="onCanceled">{{$t('KChangeEndpoint.CANCEL_BUTTON')}}</q-btn>
             <q-btn color="primary" @click="onReset">{{$t('KChangeEndpoint.RESET_BUTTON')}}</q-btn>
             <q-btn color="primary" @click="onApplied">{{$t('KChangeEndpoint.APPLY_BUTTON')}}</q-btn>
           </div>
+        </div>
+        <!--
+            Additionnal links
+          -->
+        <div class="self-center">
+          <a id="login-link" @click="$router.push({name: 'login'})">
+            {{$t('KChangeEndpoint.LOGIN_LINK')}}
+          </a>
+          &nbsp;&nbsp;
+          <a id="register-link" @click="$router.push({name: 'register'})">
+            {{$t('KChangeEndpoint.DONT_HAVE_AN_ACCOUNT_LINK')}}
+          </a>
         </div>
       </div>
     </div>
