@@ -57,8 +57,9 @@
     "TITLE": "Changer l'adresse du serveur",
     "BASE_URL_FIELD_HELPER": "Saisissez l'adresse du serveur à utiliser",
     "APPLY_BUTTON": "Appliquer",
-    "CANCEL_BUTTON": "$t(CANCEL)",
-    "RESET_BUTTON": "Réinitialiser"
+    "RESET_BUTTON": "Réinitialiser",
+    "LOGIN_LINK": "Se connecter ?",
+    "DONT_HAVE_AN_ACCOUNT_LINK": "Vous n'avez pas de compte ?"
   },  
   "KLogout": {
     "TITLE": "Vous avez été déconnecté",

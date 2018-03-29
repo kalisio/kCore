@@ -56,9 +56,10 @@
   "KChangeEndpoint": {
     "TITLE": "Changer endpoint",
     "BASE_URL_FIELD_HELPER": "Enter the address of the server to be used",
-    "APPLY_BUTTON": "APPLY",
-    "CANCEL_BUTTON": "$t(CANCEL)",
-    "RESET_BUTTON": "Reset"
+    "APPLY_BUTTON": "Apply",
+    "RESET_BUTTON": "Reset",
+    "LOGIN_LINK": "Log in ?",
+    "DONT_HAVE_AN_ACCOUNT_LINK": "Dont't have an account ?"
   },  
   "KLogout": {
     "TITLE": "Your are now logged out",
