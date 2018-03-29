@@ -94,7 +94,7 @@ let baseActivityMixin = {
   created () {
     // Register the actions
     this.refreshActivity()
-    // Whenever the user is updated, update abilities as well
+    // Whenever the user abilities are updated, update activity as well
     Events.$on('user-abilities-changed', this.refreshActivity)
     Events.$on('search-bar-changed', this.handleSearch)
   },

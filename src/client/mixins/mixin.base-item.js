@@ -59,7 +59,7 @@ let baseItemMixin = {
   created () {
     // Register the actions
     this.refreshActions()
-    // Whenever the user is updated, update abilities as well
+    // Whenever the user abilities are updated, update actions as well
     Events.$on('user-abilities-changed', this.refreshActions)
   },
   beforeDestroy () {
