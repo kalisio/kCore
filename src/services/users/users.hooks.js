@@ -38,7 +38,7 @@ module.exports = {
     ],
     find: [],
     get: [],
-    create: [ updateAbilities ],
+    create: [ updateAbilities() ],
     update: [],
     patch: [],
     remove: []

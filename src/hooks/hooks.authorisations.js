@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { merge } from 'feathers-commons'
+import { getItems } from 'feathers-hooks-common'
 import { Forbidden } from 'feathers-errors'
 import { populateObject, populateObjects } from './hooks.query'
 import { objectifyIDs } from '../db'
@@ -122,3 +123,22 @@ export function authorise (hook) {
   hook.params.authorised = true
   return Promise.resolve(hook)
 }
+
+export function updateAbilities (options = {}) {
+  return async function (hook) {
+    let app = hook.app
+    let params = hook.params
+    const context = hook.service.context
+    let authorisationService = app.getService('authorisations')
+    let subject = (options.subjectAsItem ? getItems(hook) : params.user)
+    // We might not have all information required eg on patch to compute new abilities,
+    // in this case we have to fetch the whole subject
+    if (options.fetchSubject) {
+      subject = await hook.service.get(subject._id.toString())
+    }
+    const abilities = authorisationService.updateAbilities(subject)
+    debug('Abilities updated on subject', subject, abilities.rules)
+    return hook
+  }
+}
+
