@@ -1,7 +1,7 @@
 <template>
   <k-modal ref="modal" :toolbar="getToolbar()" :buttons="getButtons()">
     <div slot="modal-content" class="column sm-gutter">
-      <drop-zone ref="dropZone" id="dropZone" @vdropzone-file-added="onFileAdded" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" @vdropzone-max-files-exceeded="onMaxFileExceeded" @vdropzone-thumbnail="onThumbnailGenerated" :options="dropZoneOptions" :destroyDropzone="false"/>
+      <drop-zone ref="dropZone" id="dropZone" @vdropzone-file-added="onFileAdded" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" @vdropzone-thumbnail="onThumbnailGenerated" @vdropzone-error="onError" :options="dropZoneOptions"/>
     </div>
   </k-modal>
 </template>
@@ -92,11 +92,6 @@ export default {
         this.$emit('file-selection-changed', this.files)
       }
     },
-    onMaxFileExceeded (file) {
-      // This is required if we don't want the file to be viewed
-      this.dropZone().removeFile(file)
-      Events.$emit('error', { message: this.$t('KUploader.dropZone.dictMaxFilesExceeded') })
-    },
     onThumbnailGenerated (thumbnailFile, dataUrl) {
       const index = _.findIndex(this.files, file => file.name === thumbnailFile.name)
       if (index >= 0) {
@@ -155,6 +150,12 @@ export default {
     },
     onFileRemoved (removedFile, error, xhr) {
       this.removeFile(removedFile)
+    },
+    onError (file, error, xhr) {
+      // This is required if we don't want the file to be viewed
+      this.dropZone().removeFile(file)
+      // The error message is already translated using the DropZone dictionary
+      Events.$emit('error', { message: error })
     },
     doDone (event, done) {
       done()
