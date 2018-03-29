@@ -48,9 +48,8 @@ export default {
               if (data.confirm === this.name) {
                 close(() => { 
                   this.loadService().remove(this.objectId)
-                  .then(() => {
-                    this.$router.push({name: 'logout'})
-                  })
+                  // Force to logout even if the triggered hook chain failed
+                  this.$router.push({name: 'logout'})
                 })
               }
             }
