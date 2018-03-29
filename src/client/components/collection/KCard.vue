@@ -62,18 +62,18 @@
         <q-card-actions align="end">
           <!-- Pane -->
           <template v-for="action in itemActions.pane">
-            <q-btn :key="key(action, 'name')" flat round small :color="action.warning ? 'red' : 'faded'" @click="onActionTriggered(action, item)">
+            <q-btn :id="action.name" :key="key(action, 'name')" flat round small :color="action.warning ? 'red' : 'faded'" @click="onActionTriggered(action, item)">
               <q-icon :name="action.icon"/>
               <q-tooltip>{{action.warning ? action.warning : action.label}}</q-tooltip>
             </q-btn>
           </template>
           <!-- Menu -->
-          <q-btn v-if="itemActions.menu && itemActions.menu.length > 0" flat small round>
+          <q-btn id="card-overflow-menu-entry" v-if="itemActions.menu && itemActions.menu.length > 0" flat small round>
             <q-icon color="faded" name="more_vert">
-              <q-popover ref="menu">
+              <q-popover id="card-overflow-menu" ref="menu">
                 <q-list>
                   <template v-for="action in itemActions.menu">
-                    <q-item link :key="key(action, 'name')" @click="$refs.menu.close(); onActionTriggered(action, item)">
+                    <q-item :id="action.name" link :key="key(action, 'name')" @click="$refs.menu.close(); onActionTriggered(action, item)">
                       <q-item-side :icon="action.icon" />
                       <q-item-main>
                         {{action.label}}
