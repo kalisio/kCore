@@ -128,7 +128,6 @@ export function updateAbilities (options = {}) {
   return async function (hook) {
     let app = hook.app
     let params = hook.params
-    const context = hook.service.context
     let authorisationService = app.getService('authorisations')
     let subject = (options.subjectAsItem ? getItems(hook) : params.user)
     // We might not have all information required eg on patch to compute new abilities,
