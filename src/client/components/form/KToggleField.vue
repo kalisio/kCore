@@ -8,6 +8,7 @@
     :error="hasError"
   >
     <q-toggle
+      :id="properties.name + '-field'"
       v-model="model" 
       v-bind="properties.field"
       @blur="onChanged" />

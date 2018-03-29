@@ -8,6 +8,7 @@
     :error="hasError"
   >
     <q-input
+      :id="properties.name + '-field'"
       type="number"
       v-model="model"
       @blur="onChanged" />

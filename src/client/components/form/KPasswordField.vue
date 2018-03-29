@@ -9,6 +9,7 @@
       :error="hasError"
     >
       <q-input
+        :id="properties.name + '-field'"
         type="password"
         v-model="model"
         @blur="onChanged" />

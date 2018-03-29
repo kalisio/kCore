@@ -8,7 +8,7 @@
     :error="hasError"
   >
     <q-select
-      :id="properties.name"
+      :id="properties.name + '-field'"
       :multiple="properties.field.multiple ? properties.field.multiple : false"
       :toggle="properties.field.toggle ? properties.field.toggle : false"
       :radio="properties.field.radio ? properties.field.radio : false"

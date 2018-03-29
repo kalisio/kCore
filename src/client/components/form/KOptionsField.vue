@@ -8,6 +8,7 @@
     :error="hasError"
   >
     <q-option-group
+      :id="properties.name + '-field'"
       :type="properties.field.type"
       v-model="model"
       :options="properties.field.options"

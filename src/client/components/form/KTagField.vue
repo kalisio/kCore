@@ -28,7 +28,10 @@
         </div>
       </div>
     </q-field>
-    <k-icon-chooser ref="iconChooser" @icon-choosed="onIconChoosed" />
+    <k-icon-chooser 
+      :id="properties.name + '-field'"
+      ref="iconChooser" 
+      @icon-choosed="onIconChoosed" />
   </div>
 </template>
 

@@ -8,6 +8,7 @@
     :error="hasError"
   >
     <k-item-chooser
+      :id="properties.name + '-field'"
       :multiselect="properties.multiselect" 
       :default-items="model" 
       :services="properties.services" 

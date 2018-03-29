@@ -7,7 +7,8 @@
     :label-width="labelWidth"
     :error="hasError"
   >
-    <q-chips-input 
+    <q-chips-input
+      :id="properties.name + '-field'"
       v-model="model" 
       @change="onChanged"
       @blur="onChanged" />
