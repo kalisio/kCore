@@ -10,7 +10,7 @@
     >
       <div class="row justify-between items-center">
         <div class="col-4">
-          <k-autocomplete ref="search" :services="services" :process-results="processResults" @changed="onTagAdded" />
+          <k-autocomplete :id="properties.name + '-field'" ref="search" :services="services" :process-results="processResults" @changed="onTagAdded" />
         </div>
         <div class="col-7" v-if="tags.length > 0">
           <template v-for="(tag, index) in tags">
@@ -29,7 +29,6 @@
       </div>
     </q-field>
     <k-icon-chooser 
-      :id="properties.name + '-field'"
       ref="iconChooser" 
       @icon-choosed="onIconChoosed" />
   </div>
