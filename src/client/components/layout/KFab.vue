@@ -25,7 +25,7 @@
       Render a non expandable fab if a single action is provided
      -->
     <q-btn v-else-if="fab.actions.length === 1" 
-      id="action.id"
+      :id="fab.actions[0].id"
       color="primary"
       class="fixed"
       style="right: 18px; bottom: 18px"
