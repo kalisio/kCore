@@ -148,10 +148,9 @@ export function getQueryForAbilities (abilities, operation, resourceType) {
 }
 
 function buildSubjectsQueryForResource (resourceScope, resourceId, role) {
-  let query = {}
-  query[resourceScope + '._id'] = resourceId
+  let query = { [resourceScope]: { $elemMatch: { _id: resourceId } } }
   if (role) {
-    query[resourceScope + '.permissions'] = RoleNames[role]
+    _.set(query[resourceScope], '$elemMatch.permissions', RoleNames[role])
   }
   return query
 }

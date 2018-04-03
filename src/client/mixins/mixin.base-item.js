@@ -34,8 +34,7 @@ let baseItemMixin = {
       this.registerAction('menu', action)
     },
     registerAction (type, action) {
-      if (!this.actions[type]) this.actions[type] = []
-      this.actions[type].push(action)
+      this.actions[type] = this.actions[type].concat([action])
     },
     getActions (type) {
       return this.actions[type] || []
@@ -49,7 +48,8 @@ let baseItemMixin = {
       return action
     },
     clearActions () {
-      this.actions = {}
+      this.actions.menu = []
+      this.actions.pane = []
     },
     // This method should be overriden in items
     refreshActions () {
