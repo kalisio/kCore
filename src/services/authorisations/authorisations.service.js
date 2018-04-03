@@ -36,17 +36,22 @@ export default {
       // This cover the case when we create the scope on the first auth,
       // so that if the caller want to get back the update subject he can have it
       _.set(subject, scopeName, scope)
-      debug('Updating scope ' + scopeName + ' for subject ' + subject._id + ' on resource ' + params.resource._id + ':', scope)
-      return params.subjectsService.patch(subject._id, {
-        [scopeName]: scope
-      }, {
-        user: params.user
-      })
-      .then(subject => {
-        this.updateAbilities(subject)
-        debug('Authorisation ' + data.permissions + ' set for subject ' + subject._id + ' on resource ' + params.resource._id + ' with scope ' + scopeName)
-        return subject
-      })
+      // Skip patching if the subject is currently deleted
+      if (!subject.deleted) {
+        debug('Updating scope ' + scopeName + ' for subject ' + subject._id + ' on resource ' + params.resource._id + ':', scope)
+        return params.subjectsService.patch(subject._id, {
+          [scopeName]: scope
+        }, {
+          user: params.user
+        })
+        .then(subject => {
+          this.updateAbilities(subject)
+          debug('Authorisation ' + data.permissions + ' set for subject ' + subject._id + ' on resource ' + params.resource._id + ' with scope ' + scopeName)
+          return subject
+        })
+      } else {
+        return Promise.resolve(subject)
+      }
     }))
   },
 
@@ -64,17 +69,22 @@ export default {
       // This cover the case when we create the scope on the first auth,
       // so that if the caller want to get back the update subject he can have it
       _.set(subject, scopeName, scope)
-      debug('Updating scope ' + scopeName + ' for subject ' + subject._id + ' on resource ' + id + ':', scope)
-      return params.subjectsService.patch(subject._id, {
-        [scopeName]: scope
-      }, {
-        user: params.user
-      })
-      .then(subject => {
-        this.updateAbilities(subject)
-        debug('Authorisation unset for subject ' + subject._id + ' on resource ' + id + ' with scope ' + scopeName)
-        return subject
-      })
+      // Skip patching if the subject is currently deleted
+      if (!subject.deleted) {
+        debug('Updating scope ' + scopeName + ' for subject ' + subject._id + ' on resource ' + id + ':', scope)
+        return params.subjectsService.patch(subject._id, {
+          [scopeName]: scope
+        }, {
+          user: params.user
+        })
+        .then(subject => {
+          this.updateAbilities(subject)
+          debug('Authorisation unset for subject ' + subject._id + ' on resource ' + id + ' with scope ' + scopeName)
+          return subject
+        })
+      } else {
+        return Promise.resolve(subject)
+      }
     }))
   },
 
