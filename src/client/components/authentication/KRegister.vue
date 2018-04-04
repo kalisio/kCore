@@ -19,7 +19,7 @@
             {{$t('KRegister.ALREADY_HAVE_AN_ACCOUNT_LINK')}}
           </a>
           &nbsp;&nbsp;
-          <a v-if="isCordova" id="change-endpoint-link" @click="$router.push({name: 'change-endpoint'})">
+          <a v-if="canChangeEndpoint()" id="change-endpoint-link" @click="$router.push({name: 'change-endpoint'})">
             {{$t('KRegister.CHANGE_ENDPOINT_LINK')}}
           </a>
         </div>
@@ -84,12 +84,14 @@ export default {
           }
         },
         "required": ["name", "email", "password", "confirmPassword"]
-      },
-      isCordova: DEV ? true : Platform.is.cordova
+      }
     }
   },
   mixins: [mixins.authentication],
   methods: {
+    canChangeEndpoint () {
+      return DEV ? true : Platform.is.cordova
+    },
     onRegister (event, done) {
       let result = this.$refs.form.validate()
       if (result.isValid) {

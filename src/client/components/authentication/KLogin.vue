@@ -35,7 +35,7 @@
             {{$t('KLogin.DONT_HAVE_AN_ACCOUNT_LINK')}}
           </a>
           &nbsp;&nbsp;
-          <a id="change-endpoint-link" v-if="isCordova" @click="$router.push({name: 'change-endpoint'})">
+          <a  v-if="canChangeEndpoint()" id="change-endpoint-link" @click="$router.push({name: 'change-endpoint'})">
             {{$t('KLogin.CHANGE_ENDPOINT_LINK')}}
           </a>
         </div>
@@ -86,12 +86,14 @@ export default {
         },
         "required": ["email", "password"]
       },
-      providers: [],
-      isCordova: DEV ? true : Platform.is.cordova
+      providers: []
     }
   },
   mixins: [mixins.authentication],
   methods: {
+    canChangeEndpoint () {
+      return DEV ? true : Platform.is.cordova
+    },
     onLogin (event, done) {
       let result = this.$refs.form.validate()
       if (result.isValid) {
@@ -113,7 +115,7 @@ export default {
     onLogWith (provider) {
       const authUrl = this.$api.getBaseUrl() + '/auth/' + provider.toLowerCase()
       const callbackUrl = authUrl + '/callback'
-      if (this.isCordova) {
+      if (Platform.is.cordova) {
         // Use in app browser so that we can intercept the redirect on the callback URL
         let authBrowser = window.cordova.InAppBrowser.open(authUrl, '_blank', 'location=no,clearsessioncache=yes,clearcache=yes')
         // Detect when the login has finished and the feathers cookie is ready
