@@ -57,9 +57,10 @@ export async function updateTags (hook) {
     debug('Tags removed/added', oldTags, newTags)
     // Update tags to include information added when they are created (eg _id)
     // and add also context because tags might come from different ones on the same target object
-    if (context) {
-      newTags = newTags.map(tag => Object.assign({ context: (typeof context === 'object' ? context._id : context) }, tag))
-    }
+    newTags = newTags.map(tag => {
+      if (tag.context) return tag
+      else return Object.assign({ context: (typeof context === 'object' ? context._id : context) }, tag)
+    })
     item.tags = commonTags.concat(newTags)
   } else {
     if (hook.method !== 'remove') {
@@ -74,9 +75,10 @@ export async function updateTags (hook) {
       // Update tags to include information added when they are created (eg _id)
       let newTags = await Promise.all(addPromises)
       // and add also context because tags might come from different ones on the same target object
-      if (context) {
-        newTags = newTags.map(tag => Object.assign({ context: (typeof context === 'object' ? context._id : context) }, tag))
-      }
+      newTags = newTags.map(tag => {
+        if (tag.context) return tag
+        else return Object.assign({ context: (typeof context === 'object' ? context._id : context) }, tag)
+      })
       item.tags = newTags
     } else {
       debug('Removing tags for object ', item)
