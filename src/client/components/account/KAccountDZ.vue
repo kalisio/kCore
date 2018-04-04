@@ -21,6 +21,10 @@ export default {
     mixins.service
   ],
   props: {
+    objectId: {
+      type: String,
+      default: ''
+    },
     name: {
       type: String,
       default: ''
@@ -46,9 +50,10 @@ export default {
             preventClose: true,
             handler: (data, close) => {
               if (data.confirm === this.name) {
-                close(() => { 
-                  this.loadService().remove(this.objectId)
-                  // Force to logout even if the triggered hook chain failed
+                close(async () => { 
+                  await this.loadService().remove(this.objectId)
+                  // FIXME: Force to logout even if the triggered hook chain failed does not seem to work
+                  // The auth token seems to be removed before the service operation is launched
                   this.$router.push({name: 'logout'})
                 })
               }
