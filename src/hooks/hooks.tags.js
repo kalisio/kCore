@@ -22,12 +22,11 @@ export function populateTagResource (hook) {
 export async function updateTags (hook) {
   let item = getItems(hook)
   if (!item.tags) {
+    debug('No tags to update for object ', item)
     return Promise.resolve(hook)
   }
   // Tag service is contextual, look for context on initiator service
   const context = hook.service.context
-  const tagService = hook.app.getService('tags', context)
-  if (!tagService) return Promise.reject(new Error('No valid context found to retrieve tag service for initiator service ' + hook.service.name))
   // Retrieve previous version of the item
   let previousTags = _.get(hook.params, 'previousItem.tags')
   if (previousTags) {
@@ -35,12 +34,22 @@ export async function updateTags (hook) {
     const commonTags = _.intersectionWith(item.tags, previousTags, isTagEqual)
     // Clear removed tags
     const removedTags = _.pullAllWith(previousTags, commonTags, isTagEqual)
-    debug('Removing tags for object ' + item, removedTags)
-    const removePromises = removedTags.map(tag => tagService.remove(null, { query: tag }))
+    debug('Removing tags for object ', item, removedTags)
+    const removePromises = removedTags.map(tag => {
+      // When a contextual service is used we might not provide the context in tag, extract from service instead
+      const tagService = hook.app.getService('tags', tag.context || context)
+      if (!tagService) return Promise.reject(new Error('No valid context found to retrieve tag service for ', tag))
+      else return tagService.remove(null, { query: tag })
+    })
     // And add new ones
     const addedTags = _.pullAllWith(item.tags, commonTags, isTagEqual)
-    debug('Adding tags for object ' + item, addedTags)
-    const addedPromises = addedTags.map(tag => tagService.create(tag))
+    debug('Adding tags for object ', item, addedTags)
+    const addedPromises = addedTags.map(tag => {
+      // When a contextual service is used we might not provide the context in tag, extract from service instead
+      const tagService = hook.app.getService('tags', tag.context || context)
+      if (!tagService) return Promise.reject(new Error('No valid context found to retrieve tag service for ', tag))
+      else return tagService.create(tag)
+    })
     let [ oldTags, newTags ] = await Promise.all([
       Promise.all(removePromises),
       Promise.all(addedPromises)
@@ -55,8 +64,13 @@ export async function updateTags (hook) {
   } else {
     if (hook.method !== 'remove') {
       // Add new tags
-      debug('Adding tags for object ' + item)
-      const addPromises = item.tags.map(tag => tagService.create(tag))
+      debug('Adding tags for object ', item)
+      const addPromises = item.tags.map(tag => {
+        // When a contextual service is used we might not provide the context in tag, extract from service instead
+        const tagService = hook.app.getService('tags', tag.context || context)
+        if (!tagService) return Promise.reject(new Error('No valid context found to retrieve tag service for ', tag))
+        else return tagService.create(tag)
+      })
       // Update tags to include information added when they are created (eg _id)
       let newTags = await Promise.all(addPromises)
       // and add also context because tags might come from different ones on the same target object
@@ -65,8 +79,13 @@ export async function updateTags (hook) {
       }
       item.tags = newTags
     } else {
-      debug('Removing tags for object ' + item)
-      const removePromises = item.tags.map(tag => tagService.remove(null, { query: tag }))
+      debug('Removing tags for object ', item)
+      const removePromises = item.tags.map(tag => {
+        // When a contextual service is used we might not provide the context in tag, extract from service instead
+        const tagService = hook.app.getService('tags', tag.context || context)
+        if (!tagService) return Promise.reject(new Error('No valid context found to retrieve tag service for ', tag))
+        else return tagService.remove(null, { query: tag })
+      })
       await Promise.all(removePromises)
     }
   }

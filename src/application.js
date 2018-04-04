@@ -19,6 +19,7 @@ import oauth2 from 'feathers-authentication-oauth2'
 import GithubStrategy from 'passport-github'
 import GoogleStrategy from 'passport-google-oauth20'
 import OAuth2Verifier from './verifier'
+import { ObjectID } from 'mongodb'
 import { Database } from './db'
 
 const debug = makeDebug('kalisio:kCore:application')
@@ -279,7 +280,9 @@ export function kalisio () {
     if (context && typeof context === 'string') {
       return app.service(app.get('apiPath') + '/' + context + '/' + path)
     } else if (context && typeof context === 'object') {
-      return app.service(app.get('apiPath') + '/' + context._id.toString() + '/' + path)
+      // Could be Object ID or raw object
+      if (ObjectID.isValid(context)) return app.service(app.get('apiPath') + '/' + context.toString() + '/' + path)
+      else return app.service(app.get('apiPath') + '/' + context._id.toString() + '/' + path)
     } else {
       return app.service(app.get('apiPath') + '/' + path)
     }
