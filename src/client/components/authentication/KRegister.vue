@@ -33,6 +33,7 @@ import { QBtn, Platform, Toast } from 'quasar'
 import { KScreen } from '../frame'
 import { KForm } from '../form'
 import mixins from '../../mixins'
+import { getLocale } from '../../utils'
 
 export default {
   name: 'k-register',
@@ -95,6 +96,8 @@ export default {
     onRegister (event, done) {
       let result = this.$refs.form.validate()
       if (result.isValid) {
+        // Add the locale information
+        result.values.locale = getLocale()
         this.register(result.values)
         .then(() => {
           done()
