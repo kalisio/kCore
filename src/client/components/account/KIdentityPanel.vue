@@ -1,5 +1,5 @@
 <template>
-  <div class="column" :class="[bgColor, textColor]">
+  <div class="column">
     <!--
       User avatar
     -->
@@ -14,7 +14,7 @@
       <q-list highlight no-border>
         <q-side-link id="account" item :to="{ name: 'account-activity', params: { perspective: 'profile' }}">
           <q-item-main :label="name" />
-          <q-item-side icon="perm_identity" :color="iconColor" right />
+          <q-item-side icon="perm_identity" right />
         </q-side-link>
       </q-list>
     </div>
@@ -22,16 +22,18 @@
 </template>
 
 <script>
-import { Events, QList, QSideLink, QItemSide, QItemMain } from 'quasar'
+import { Events, QList, QItem, QSideLink, QItemSide, QItemMain, QItemSeparator } from 'quasar'
 import Avatar from 'vue-avatar/dist/Avatar'
 
 export default {
   name: 'k-identity-panel',
   components: {
-    QList, 
+    QList,
+    QItem,
     QSideLink, 
     QItemSide, 
     QItemMain,
+    QItemSeparator,
     Avatar
   },
   data () {
@@ -58,11 +60,6 @@ export default {
     }
   },
   created () {
-    // Load the configuration
-    this.bgColor = this.$config(this.name + '.bgColor', 'bg-dark')
-    this.textColor = this.$config(this.name + '.textColor', 'text-white')
-    this.iconColor = this.$config(this.name + '.iconColor', 'white')
-    // Update the panel
     this.refreshIdentity()
     Events.$on('user-changed', this.refreshIdentity)
   },

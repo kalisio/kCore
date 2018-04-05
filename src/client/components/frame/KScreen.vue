@@ -1,5 +1,5 @@
 <template>
-  <div class="row justify-center items-center window-height window-width" :class="[bgColor, bgTextColor]">
+  <div class="row justify-center items-center window-height window-width">
     <div style="width: 540px">
       <!--
         Header section
@@ -10,7 +10,7 @@
       <!--
         Frame section
       -->
-      <q-card :class="[color, textColor]">
+      <q-card>
         <!-- 
           Title section 
         -->
@@ -62,22 +62,9 @@ export default {
       default: ''
     }
   },
-  data () {
-    return {
-      bgColor: '',
-      bgTextColor: '',
-      color: '',
-      textColor: ''
-    }
-  },
   created () {
     this.$options.components['k-screen-header'] = this.$load('frame/KScreenHeader')
     this.$options.components['k-screen-footer'] = this.$load('frame/KScreenFooter')
-    // setup the color schema
-    this.color = this.$config('screen.color', 'bg-white')
-    this.textColor = this.$config('screen.textColor', 'text-dark')
-    this.bgColor = this.$config('screen.bgColor', 'bg-light')
-    this.bgTextColor = this.$config('screen.bgTextColor', 'text-dark')
   }
 }
 </script>

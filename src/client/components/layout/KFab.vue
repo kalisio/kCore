@@ -8,12 +8,12 @@
       class="fixed"
       style="right: 18px; bottom: 18px" 
       direction ="up" 
-      color="primary">
+      color="secondary">
         <q-fab-action 
           v-for="action in fab.actions" 
           :id="action.id"
           :key="action.id"
-          color="primary"
+          color="secondary"
           @click="onActionTriggered(action)"
           :icon="action.icon">
           <q-tooltip v-if="action.label" anchor="center left" self="center right" :offset="[20, 0]">
@@ -26,7 +26,7 @@
      -->
     <q-btn v-else-if="fab.actions.length === 1" 
       :id="fab.actions[0].id"
-      color="primary"
+      color="secondary"
       class="fixed"
       style="right: 18px; bottom: 18px"
       round
