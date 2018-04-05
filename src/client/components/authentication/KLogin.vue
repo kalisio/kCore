@@ -5,7 +5,7 @@
         <!-- 
           Login providers
         -->
-        <div v-if="providers.length > 0">
+        <div v-if="canLogWith()">
           <div class="row justify-around" style="padding: 18px">
             <q-btn v-for="provider in providers" :icon="'fa-' + provider" :id="provider" @click="onLogWith(provider)" :key="provider">{{provider}}</q-btn>
           </div>
@@ -93,6 +93,10 @@ export default {
   methods: {
     canChangeEndpoint () {
       return DEV ? true : Platform.is.cordova
+    },
+    canLogWith () {
+      if (this.providers.length === 0) return false
+      else return DEV ? true : !Platform.is.cordova
     },
     onLogin (event, done) {
       let result = this.$refs.form.validate()
