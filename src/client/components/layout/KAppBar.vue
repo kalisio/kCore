@@ -19,7 +19,7 @@
       Toolbar section
      -->
     <template v-for="action in appBar.toolbar">
-      <q-btn :id ="action.name" :key="action.name" flat @click="$router.push(action.route)">
+      <q-btn :id ="action.name" :key="action.name" flat @click="onActionTriggered(action)">
         <q-icon :name="action.icon" />
       </q-btn>
     </template>
@@ -32,7 +32,7 @@
           <q-popover id="overflow-menu" ref="menu">
             <q-list>
               <template v-for="action in appBar.menu">
-                <q-item :id="action.name" :key="action.name" link  @click="$router.push(action.route), $refs.menu.close()">
+                <q-item :id="action.name" :key="action.name" link @click="onActionTriggered(action)">
                   <q-item-side :icon="action.icon" />
                   <q-item-main>
                     {{action.label}}
@@ -72,6 +72,15 @@ export default {
   data () {
     return {
       appBar: this.$store.get('appBar')
+    }
+  },
+  methods: {
+    onActionTriggered (action) {
+      this.$refs.menu.close()
+      // If a handler is given call it
+      if (action.handler) action.handler()
+      // If a route is given activate it 
+      else if (action.route) this.$router.push(action.route)
     }
   },
   created () {
