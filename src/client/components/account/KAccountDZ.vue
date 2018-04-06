@@ -50,10 +50,14 @@ export default {
             preventClose: true,
             handler: (data, close) => {
               if (data.confirm === this.name) {
-                close(async () => { 
-                  await this.loadService().remove(this.objectId)
-                  // FIXME: Force to logout even if the triggered hook chain failed does not seem to work
-                  // The auth token seems to be removed before the service operation is launched
+                close(async () => {
+                  try {
+                    await this.loadService().remove(this.objectId)
+                  }
+                  catch(error) {
+                    // do not logout
+                    return
+                  }
                   this.$router.push({name: 'logout'})
                 })
               }
