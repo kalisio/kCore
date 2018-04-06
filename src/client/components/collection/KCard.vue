@@ -144,7 +144,8 @@ export default {
     },
     tags () {
       // Check for custom name field
-      return (this.options.tagsField ? _.get(this.item, this.options.tagsField, '') : this.item.tags)
+      let tags = this.options.tagsField ? _.get(this.item, this.options.tagsField, '') : this.item.tags
+      return _.filter(tags, { context: $store.get('context._id') })
     }
   },
   data () {

@@ -92,7 +92,7 @@ export default {
 
 <style>
 .content {
-  padding: 6px
+  padding: 8px
 }
 .message {
   font-size: 18px;
