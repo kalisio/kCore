@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import logger from 'loglevel'
 import _ from 'lodash'
 import Ajv from 'ajv'
 import AjvLocalize from 'ajv-i18n'

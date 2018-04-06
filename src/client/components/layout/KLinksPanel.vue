@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import logger from 'loglevel'
 import { QList, QItem, QItemSide, QItemMain, QItemSeparator } from 'quasar'
 
 export default {
