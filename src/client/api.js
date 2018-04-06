@@ -144,6 +144,7 @@ export function kalisio () {
       path: config.apiPath + 'ws'
     })
     api.configure(feathers.socketio(socket, { timeout: config.apiTimeout || 10000 }))
+    socket.on('reconnect', () => window.location.reload())
   }
   api.configure(feathers.authentication({
     storage: window.localStorage,
