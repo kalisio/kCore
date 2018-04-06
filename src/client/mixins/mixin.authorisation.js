@@ -33,6 +33,4 @@ let authorisationMixin = {
   }
 }
 
-Store.set('mixins.authorisation', authorisationMixin)
-
 export default authorisationMixin
