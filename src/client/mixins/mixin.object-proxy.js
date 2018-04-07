@@ -1,4 +1,3 @@
-import { Events } from 'quasar'
 import { createQuerablePromise } from '../utils'
 
 let objectProxyMixin = {
