@@ -3,7 +3,7 @@
     <div slot="modal-content" class="column sm-gutter">
       <div class="row justify-center items-center sm-gutter">
         <template v-for="icon in iconsPage">
-          <q-icon class="col-1" style="margin:4px" :key="icon" v-if="icon !== selectedIcon.name" :name="icon" size="2rem" color="faded" @click="onIconSelected(icon)" />
+          <q-icon class="col-1" style="margin:4px" :key="icon" v-if="icon !== selectedIcon.name" :name="icon" size="2rem" color="grey-7" @click="onIconSelected(icon)" />
           <q-icon class="col-1" style="margin:4px" :key="icon" v-else :name="icon" size="2rem" :color="selectedIcon.color" />
         </template>
       </div>
