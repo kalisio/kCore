@@ -2,6 +2,8 @@
   "CANCEL": "Annuler",
   "UPDATE": "Mettre à jour",
   "CREATE": "Créer",
+  "CLOSE": "Fermer",
+  "DONE": "Ok",
   "errors": {
     "400": "Cette opération ne peut être réalisée: paramètres incorrects",
     "401": "Cette opération ne peut être réalisée: vous devez être authentifié",
@@ -21,8 +23,6 @@
     "503": "Cette opération ne peut être réalisée: service indisponible",
     "RETRY": "Veuillez réessayer plus tard ou modifier votre paramétrage"
   },
-  "CLOSE": "Fermer",
-  "DONE": "Ok",
   "schemas": {
     "AVATAR_FIELD_HELPER": "Choisissez un avatar",
     "NAME_FIELD_HELPER": "Saisissez votre nom"

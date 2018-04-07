@@ -2,6 +2,8 @@
   "CANCEL": "Cancel",
   "UPDATE": "Update",
   "CREATE": "Create",
+  "CLOSE": "Close",
+  "DONE": "Done",
   "errors": {
     "400": "Operation cannot be performed: bad parameters",
     "401": "Operation cannot be performed: authentication required",
@@ -21,8 +23,6 @@
     "503": "Operation cannot be performed: service unavailable",
     "RETRY": "Please try again later or modify your parameters"
   },
-  "CLOSE": "Close",
-  "DONE": "Done",
   "schemas": {
     "AVATAR_FIELD_HELPER": "Select an avatar",
     "NAME_FIELD_HELPER": "Enter your name"
