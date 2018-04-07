@@ -140,4 +140,3 @@ export function updateAbilities (options = {}) {
     return hook
   }
 }
-

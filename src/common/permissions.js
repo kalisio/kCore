@@ -170,4 +170,3 @@ export function countSubjectsForResource (subjectService, resourceScope, resourc
   // Execute the query
   return subjectService.find({ query })
 }
-
