@@ -73,7 +73,7 @@
   },
   "KAccountDZ": {
     "BLOCK_TITLE": "Supprimer votre compte ?",
-    "BLOCK_TEXT": "Veuillez prendre en compte que le suppression de votre compte entrainera la suppression de toutes les données qui y sont attachées.<br>La suppresion ne peut pas être annulée et vous serez déconnecté de l'application.",
+    "BLOCK_TEXT": "Veuillez prendre en compte que la suppression de votre compte entrainera la suppression de toutes les données qui y sont attachées.<br>La suppression ne peut pas être annulée et vous serez déconnecté de l'application.",
     "BLOCK_ACTION": "Supprimer",
     "DIALOG_TITLE": "Etes vous sûr de vouloir supprimer votre compte ?",
     "DIALOG_HELPER": "Saisissez le nom de votre compte pour confirmer la suprression" 
@@ -82,8 +82,8 @@
     "PASSWORD_BLOCK_TITLE": "Changer votre mot de passe ?",
     "PASSWORD_BLOCK_TEXT": "Votre mot de passe protège votre compte.<br>Changez le avec précaution.",
     "PASSWORD_BLOCK_ACTION": "Changer",
-    "EMAIL_BLOCK_TITLE": "Changez votre addresse mail ?",
-    "EMAIL_BLOCK_TEXT": "Changer votre adresse mail sécurise les accès à votre compte, changez la avec précaution.<br>Addresse actuelle: <b>{{email}}</b>",
+    "EMAIL_BLOCK_TITLE": "Changez votre adresse mail ?",
+    "EMAIL_BLOCK_TEXT": "Changer votre adresse mail sécurise les accès à votre compte, changez la avec précaution.<br>Adresse actuelle: <b>{{email}}</b>",
     "EMAIL_BLOCK_ACTION": "Changer"
   },
   "KGrid": {
@@ -91,12 +91,12 @@
   },
   "KUploader": {
     "dropZone": {
-      "dictDefaultMessage": "Glisser-déposer vos fichiers ou cliquez ici",
+      "dictDefaultMessage": "Glissez-déposez vos fichiers ou cliquez ici",
       "dictFallbackMessage": "Votre navigateur ne supporte pas le glisser-déposer.",
       "dictFallbackText": "Utilisez le formulaire ci-dessous pour télécharger vos fichiers.",
       "dictFileTooBig": "Votre fichier ({{filesize}}MO) excède la taille maximale autorisée ({{maxFilesize}}MO).",
       "dictInvalidFileType": "Vous ne pouvez ajouter des fichiers de ce type.",
-      "dictResponseError": "Une erreur est survenues lors du téléchargement (code {{statusCode}}), veuillez réessayer.",
+      "dictResponseError": "Une erreur est survenue lors du téléchargement (code {{statusCode}}), veuillez réessayer.",
       "dictCancelUpload": "Annuler",
       "dictUploadCanceled": "Téléchargement annulé.",
       "dictCancelUploadConfirmation": "Etes-vous sûr de vouloir annuler le téléchargement ?",
