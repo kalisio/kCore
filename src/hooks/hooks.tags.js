@@ -141,7 +141,7 @@ export function removeTagIfUnused (hook) {
     throw new BadRequest('Scope and value should be provided to remove a tag')
   }
 
-  return tagService.find({ value, scope })
+  return tagService.find({ query: { value, scope } })
   .then(result => {
     // If it already exist decrease counter and erase it if not used anymore
     if (result.total > 0) {
