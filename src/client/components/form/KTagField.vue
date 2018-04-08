@@ -10,7 +10,12 @@
     >
       <div class="row justify-between items-center">
         <div class="col-4">
-          <k-autocomplete :id="properties.name + '-field'" ref="search" :services="services" :process-results="processResults" @changed="onTagAdded" />
+          <k-autocomplete 
+            :id="properties.name + '-field'" 
+            ref="search" 
+            :services="services" 
+            :process-results="processResults" 
+            @changed="onTagAdded" />
         </div>
         <div class="col-7" v-if="tags.length > 0">
           <template v-for="(tag, index) in tags">
@@ -67,7 +72,8 @@ export default {
     fill (value) {
       this.model = value
       // Update tags as well
-      this.tags = this.model.slice()
+      this.partition = _.partition(this.model, { context: this.contextId })
+      this.tags = this.partition[0]
     },
     processResults(pattern, results) {
       // We always add first an entry to create a new tag
@@ -99,7 +105,7 @@ export default {
     },
     updateModel () {
       // filter rendering properties only
-      this.model = this.tags
+      this.model = _.concat(this.tags, this.partition[1])
       this.onChanged()
     },
     onTagClicked (tag) {
