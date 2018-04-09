@@ -176,6 +176,10 @@ describe('kCore', () => {
       return tagService.find({ query: { value: 'manager' } })
     })
     .then(tags => {
+      expect(tags.data.length === 0).beTrue()
+      return tagService.find({ query: { value: 'developer' } })
+    })
+    .then(tags => {
       expect(tags.data.length === 1).beTrue()
       return userService.find({ query: { 'profile.name': 'test-user' } })
     })
@@ -194,6 +198,7 @@ describe('kCore', () => {
       expect(response.status).to.equal(200)
     })
   })
+
 
   it('removes a user', () => {
     return userService.remove(userObject._id, {
@@ -233,6 +238,6 @@ describe('kCore', () => {
   // Cleanup
   after(async () => {
     if (server) await server.close()
-    app.db.instance.dropDatabase()
+    // app.db.instance.dropDatabase()
   })
 })
