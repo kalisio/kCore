@@ -139,12 +139,11 @@ export function kalisio () {
   if (config.transport === 'http') {
     api.configure(feathers.rest(origin).fetch(window.fetch.bind(window)))
   } else {
-    let socket = io(origin, {
+    api.socket = io(origin, {
       transports: ['websocket'],
       path: config.apiPath + 'ws'
     })
-    api.configure(feathers.socketio(socket, { timeout: config.apiTimeout || 10000 }))
-    socket.on('reconnect', () => window.location.reload())
+    api.configure(feathers.socketio(api.socket, { timeout: config.apiTimeout || 10000 }))
   }
   api.configure(feathers.authentication({
     storage: window.localStorage,
