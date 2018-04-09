@@ -33,7 +33,7 @@ export async function updateTags (hook) {
     // Find common tags
     const commonTags = _.intersectionWith(item.tags, previousTags, isTagEqual)
     // Clear removed tags
-    const removedTags = _.pullAllWith(previousTags, commonTags, isTagEqual)
+    const removedTags = _.differenceWith(previousTags, commonTags, isTagEqual)
     debug('Removing tags for object ', item, removedTags)
     const removePromises = removedTags.map(tag => {
       // When a contextual service is used we might not provide the context in tag, extract from service instead
@@ -42,7 +42,7 @@ export async function updateTags (hook) {
       else return tagService.remove(null, { query: tag })
     })
     // And add new ones
-    const addedTags = _.pullAllWith(item.tags, commonTags, isTagEqual)
+    const addedTags = _.differenceWith(item.tags, commonTags, isTagEqual)
     debug('Adding tags for object ', item, addedTags)
     const addedPromises = addedTags.map(tag => {
       // When a contextual service is used we might not provide the context in tag, extract from service instead
