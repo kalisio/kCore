@@ -4,6 +4,8 @@
   "CREATE": "Créer",
   "CLOSE": "Fermer",
   "DONE": "Ok",
+  "CLIENT_VERSION": "Version du client",
+  "API_VERSION": "Version de l'API",
   "errors": {
     "400": "Cette opération ne peut être réalisée: paramètres incorrects",
     "401": "Cette opération ne peut être réalisée: vous devez être authentifié",
@@ -32,6 +34,8 @@
     "CHANGE_ENDPOINT_LINK": "Modifier l'adresse du serveur ?"
   },
   "KLogin": {
+    "CLIENT_VERSION": "$t(CLIENT_VERSION)",
+    "API_VERSION": "$t(API_VERSION)",
     "TITLE": "Connectez vous avec",
     "OR_LABEL": "Ou",
     "EMAIL_FIELD_HELPER": "$t(KAuthentication.EMAIL_FIELD_HELPER)",
@@ -62,6 +66,8 @@
     "DONT_HAVE_AN_ACCOUNT_LINK": "Vous n'avez pas de compte ?"
   },  
   "KLogout": {
+    "CLIENT_VERSION": "$t(CLIENT_VERSION)",
+    "API_VERSION": "$t(API_VERSION)",
     "TITLE": "Vous avez été déconnecté",
     "SIGN_OFF_LABEL": "Merci d'utiliser",
     "LOG_IN_AGAIN_LINK": "Se reconnecter ?"

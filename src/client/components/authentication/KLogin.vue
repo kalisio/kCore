@@ -39,13 +39,18 @@
             {{$t('KLogin.CHANGE_ENDPOINT_LINK')}}
           </a>
         </div>
+        <br>
+        <div class="text-center">
+          <small v-if="clientVersionName"><cite>{{$t('KLogin.CLIENT_VERSION')}} {{clientVersionName}}</cite></small>
+          <small v-if="apiVersionName"><cite>- {{$t('KLogin.API_VERSION')}} {{apiVersionName}}</cite></small>
+        </div>
       </div>
     </div>
   </k-screen>
 </template>
 
 <script>
-import { QList, QItem, QItemMain, QBtn, Toast, Platform } from 'quasar'
+import { QList, QItem, QItemMain, QBtn, Toast, Platform, Events } from 'quasar'
 import { KScreen } from '../frame'
 import { KForm } from '../form'
 import mixins from '../../mixins'
@@ -86,7 +91,9 @@ export default {
         },
         "required": ["email", "password"]
       },
-      providers: []
+      providers: [],
+      clientVersionName: '',
+      apiVersionName: ''
     }
   },
   mixins: [mixins.authentication],
@@ -148,11 +155,30 @@ export default {
       } else {
         location.href = authUrl
       }
+    },
+    refreshVersionNames () {
+      const about = this.$store.get('about')
+      if (about) {
+        if (about.client) {
+          this.clientVersionName = about.client.version
+          if (about.client.buildNumber) {
+            this.clientVersionName += ' (' + about.client.buildNumber + ')'
+          }
+        }
+        if (about.api) {
+          this.apiVersionName = about.api.version
+          if (about.api.buildNumber) {
+            this.apiVersionName += ' (' + about.api.buildNumber + ')'
+          }
+        }
+      }
     }
   },
   created () {
     // Retrieve the availalbe providers
     this.providers = this.$config('login.providers', [])
+    this.refreshVersionNames()
+    Events.$on('about-api-changed', this.refreshVersionNames)
   }
 }
 </script>
