@@ -39,10 +39,10 @@
             {{$t('KLogin.CHANGE_ENDPOINT_LINK')}}
           </a>
         </div>
-        <br>
-        <div class="text-center">
-          <small v-if="clientVersionName"><cite>{{$t('KLogin.CLIENT_VERSION')}} {{clientVersionName}}</cite></small>
-          <small v-if="apiVersionName"><cite>- {{$t('KLogin.API_VERSION')}} {{apiVersionName}}</cite></small>
+        <div class="text-right">
+          <small v-if="displayDetails && clientVersionName"><cite>{{$t('KLogin.CLIENT_VERSION')}} {{clientVersionName}}</cite></small>
+          <small v-if="displayDetails && apiVersionName"><cite>- {{$t('KLogin.API_VERSION')}} {{apiVersionName}}</cite></small>
+          <q-icon name="info" size="1.5rem" @click="displayDetails = !displayDetails"/>
         </div>
       </div>
     </div>
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { QList, QItem, QItemMain, QBtn, Toast, Platform, Events } from 'quasar'
+import { QIcon, QList, QItem, QItemMain, QBtn, Toast, Platform, Events } from 'quasar'
 import { KScreen } from '../frame'
 import { KForm } from '../form'
 import mixins from '../../mixins'
@@ -58,6 +58,7 @@ import mixins from '../../mixins'
 export default {
   name: 'k-login',
   components: {
+    QIcon,
     QList,
     QItem,
     QItemMain,
@@ -92,6 +93,7 @@ export default {
         "required": ["email", "password"]
       },
       providers: [],
+      displayDetails: false,
       clientVersionName: '',
       apiVersionName: ''
     }

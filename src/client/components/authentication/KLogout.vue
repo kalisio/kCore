@@ -19,10 +19,10 @@
             {{$t('KLogout.LOG_IN_AGAIN_LINK')}}
           </a>
         </div>
-        <br>
-        <div class="text-center">
-          <small v-if="clientVersionName"><cite>{{$t('KLogout.CLIENT_VERSION')}} {{clientVersionName}}</cite></small>
-          <small v-if="apiVersionName"><cite>- {{$t('KLogout.API_VERSION')}} {{apiVersionName}}</cite></small>
+        <div class="text-right">
+          <small v-if="displayDetails && clientVersionName"><cite>{{$t('KLogout.CLIENT_VERSION')}} {{clientVersionName}}</cite></small>
+          <small v-if="displayDetails && apiVersionName"><cite>- {{$t('KLogout.API_VERSION')}} {{apiVersionName}}</cite></small>
+          <q-icon name="info" size="1.5rem" @click="displayDetails = !displayDetails"/>
         </div>
       </div>
     </div>
@@ -30,19 +30,21 @@
 </template>
 
 <script>
-import { Events } from 'quasar'
+import { QIcon, Events } from 'quasar'
 import { KScreen } from '../frame'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-logout',
   components: {
-    KScreen
+    KScreen,
+    QIcon
   },
   data () {
     return {
       appName: '',
       publisherName: '',
+      displayDetails: false,
       clientVersionName: '',
       apiVersionName: ''
     }
