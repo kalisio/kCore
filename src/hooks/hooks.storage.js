@@ -115,6 +115,8 @@ export function removeAttachments (attachmentField) {
         await Promise.all(removePromises)
       } else {
         await storageService.remove(attachments._id)
+        // Thumbnail as well
+        await storageService.remove(attachments._id + '.thumbnail')
       }
     }
     return hook
