@@ -219,13 +219,19 @@ export default {
       })
       this.previews = []
     },
-    open (defaultFiles = []) {
+    clearFiles ()  {
+      this.files = []
       // Reset drop zone
       this.dropZone().removeAllFiles(true)
+    },
+    clear ()  {
       // FIXME: for now we need to remove previous preview elements manually
       // Indeed the previous method does not seem to work for this
       this.clearPreviews()
-      this.files = []
+      this.clearFiles()
+    },
+    open (defaultFiles = []) {
+      this.clear()
       // Then setup existing files on server
       defaultFiles.forEach(file => {
         this.dropZoneInstance().emit('addedfile', file)
@@ -255,6 +261,11 @@ export default {
     // Load the required components
     this.$options.components['k-modal'] = this.$load('frame/KModal')
     this.updateDropZoneOptions()
+  },
+  beforeDestroy () {
+    // Without this the lastest uploaded files remain active in drop zone
+    // causing the file removed event to be trigerred
+    this.clear()
   }
 }
 </script>
