@@ -79,7 +79,7 @@ export default {
       // We always add first an entry to create a new tag
       if (_.findIndex(results, result => result.value === pattern) === -1) {
         results.unshift({
-          label: 'Add "' + pattern + '" tag',
+          label: this.$t('KTagField.ADD_TAG', { tag: pattern }),
           icon: 'send',
           value: pattern,
           data: { 
