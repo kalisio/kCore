@@ -6,8 +6,13 @@ import makeDebug from 'debug'
 
 const debug = makeDebug('kalisio:kCore:tags:hooks')
 
-function isTagEqual (tag1, tag2) {
-  return tag1.value === tag2.value && tag1.scope === tag2.scope
+export function isTagEqual (tag1, tag2) {
+  let equal = (tag1.value === tag2.value && tag1.scope === tag2.scope)
+  // when context is provided use it as well
+  if (tag1.context && tag2.context) {
+    equal = equal && (tag1.context.toString() === tag2.context.toString())
+  }
+  return equal
 }
 
 export function populateTagResource (hook) {
