@@ -23,7 +23,7 @@
 
 <script>
 import { Events, QList, QItem, QSideLink, QItemSide, QItemMain, QItemSeparator } from 'quasar'
-import Avatar from 'vue-avatar/dist/Avatar'
+import { Avatar } from 'vue-avatar'
 
 export default {
   name: 'k-identity-panel',
@@ -34,7 +34,7 @@ export default {
     QItemSide, 
     QItemMain,
     QItemSeparator,
-    Avatar
+    Avatar: Avatar
   },
   data () {
     return {

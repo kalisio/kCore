@@ -93,7 +93,7 @@
 <script>
 import _ from 'lodash'
 import { QCard, QCardTitle, QCardActions, QCardSeparator, QCardMain, QCardMedia, QBtn, QIcon, QPopover, QList, QItem, QItemSide, QItemMain, QTooltip, QChip } from 'quasar'
-import Avatar from 'vue-avatar/dist/Avatar'
+import { Avatar } from 'vue-avatar'
 import { KTextArea } from '../frame'
 
 export default {

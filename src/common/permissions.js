@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { Ability, AbilityBuilder, toMongoQuery } from 'casl'
+import { Ability, AbilityBuilder, toMongoQuery } from 'casl/dist/umd'
 
 // Define some alias to simplify ability definitions
 Ability.addAlias('update', 'patch')
