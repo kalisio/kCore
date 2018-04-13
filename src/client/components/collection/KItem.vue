@@ -39,7 +39,7 @@ import mixins from '../../mixins'
 
 export default {
   name: 'k-item',
-  mixins: [mixins.baseItem],  
+  mixins: [mixins.baseItem],
   components: {
     QList,
     QItem,

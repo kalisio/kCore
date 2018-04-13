@@ -145,7 +145,7 @@ export default {
     tags () {
       // Check for custom name field
       let tags = this.options.tagsField ? _.get(this.item, this.options.tagsField, '') : this.item.tags
-      return _.filter(tags, { context: $store.get('context._id') })
+      return _.filter(tags, { context: this.$store.get('context._id') })
     }
   },
   data () {
@@ -164,7 +164,7 @@ export default {
     onActionTriggered (action, item) {
       // If a handler is given call it
       if (action.handler) action.handler.call(this, item)
-      // If a route is given activate it 
+      // If a route is given activate it
       else if (action.route) this.$router.push(action.route)
     }
   }

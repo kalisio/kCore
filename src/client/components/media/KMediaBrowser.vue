@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import { QCarousel, QSpinnerCube, QIcon } from 'quasar'
 import { KModal } from '../frame'
 import mixins from '../../mixins'

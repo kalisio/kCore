@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { Events, QToolbar, QToolbarTitle, QBtn, QIcon, QList, QItem, QItemSide, QItemMain, QPopover } from 'quasar'
+import { QToolbar, QToolbarTitle, QBtn, QIcon, QList, QItem, QItemSide, QItemMain, QPopover } from 'quasar'
 import KVoice from './KVoice.vue'
 
 export default {
@@ -79,7 +79,7 @@ export default {
       this.$refs.menu.close()
       // If a handler is given call it
       if (action.handler) action.handler()
-      // If a route is given activate it 
+      // If a route is given activate it
       else if (action.route) this.$router.push(action.route)
     }
   },

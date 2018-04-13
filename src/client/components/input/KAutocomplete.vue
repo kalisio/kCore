@@ -41,8 +41,8 @@ export default {
         // Then add partial match
         // We don't use set by dot here because Mongo queries on nested fields
         // require the key to contain the path and not nested objects
-        //_.set(query, item.field, { $search: pattern })
-        
+        // _.set(query, item.field, { $search: pattern })
+
         query[item.field] = { $search: pattern }
         return service.find({ query })
       })
@@ -56,11 +56,11 @@ export default {
               data.service = item.service
               data.field = item.field
               data.limit = item.limit
-              if (! data.icon) data.icon = item.icon
+              if (!data.icon) data.icon = item.icon
               let result = {
                 label: _.get(data, item.field),
                 value: _.get(data, item.field),
-                icon: _.get(data, item.iconField || "icon.name")
+                icon: _.get(data, item.iconField || 'icon.name')
               }
               Object.assign(result, { data: data })
               results.push(result)
@@ -82,7 +82,7 @@ export default {
     }
   },
   created () {
-    this.emitChange = _.debounce((value) => {this.$emit('changed', value)}, 300)
+    this.emitChange = _.debounce((value) => { this.$emit('changed', value) }, 300)
   }
 }
 </script>

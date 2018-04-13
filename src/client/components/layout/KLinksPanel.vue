@@ -23,7 +23,7 @@ export default {
     QItem,
     QItemSide,
     QItemMain,
-    QItemSeparator,
+    QItemSeparator
   },
   props: {
     name: {
@@ -47,7 +47,7 @@ export default {
           resolvedParams.context = context
         }
       }
-      this.sideNav.navigate({name: link.route.name, params: resolvedParams })
+      this.sideNav.navigate({ name: link.route.name, params: resolvedParams })
     }
   },
   created () {

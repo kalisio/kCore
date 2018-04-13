@@ -116,9 +116,9 @@ export default {
       this.onChanged()
     },
     fileName (file) {
-      return (file.name ?
-              file.name :
-              (file._id ? file._id : file))
+      return (file.name
+              ? file.name
+              : (file._id ? file._id : file))
     },
     onUpload () {
       // When not processing uploads on-the-fly we start from a fresh state

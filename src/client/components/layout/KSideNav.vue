@@ -35,10 +35,10 @@ export default {
     this.banner = this.$load(this.$config('sideNav.banner', 'kalisio-banner.png'), 'asset')
     // Setup the components structure
     // We build an array of components using the SideNav properties
-    // A component is defined with 
+    // A component is defined with
     //   - the renderer: the Vue component to be used for the rendering
     //   - the name: the key to retrieve the configuration
-    
+
     let content = this.$config('sideNav.components', {})
     Object.entries(content).forEach(element => {
       // Setup the component
@@ -46,7 +46,7 @@ export default {
       component.name = element[0]
       component.renderer = _.kebabCase(_.last(_.split(element[1], '/')))
       // Load the renderer
-      if (! this.$options.components[component.key]) {
+      if (!this.$options.components[component.key]) {
         this.$options.components[component.renderer] = this.$load(element[1])
       }
       // Add the component to the components array

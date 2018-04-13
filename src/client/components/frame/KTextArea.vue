@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 
 export default {
   name: 'k-text-area',
@@ -32,19 +33,19 @@ export default {
       if (nbCharacters > this.length) {
         if (this.mustTruncate) result = _.truncate(result, { length: this.length })
       }
-      return result 
+      return result
     },
     hasToggle () {
       return this.text.length > this.length
     }
   },
   data () {
-    return  {
-      mustTruncate: true 
+    return {
+      mustTruncate: true
     }
   },
   methods: {
-     toggle () {
+    toggle () {
       this.mustTruncate = !this.mustTruncate
     }
   }

@@ -24,7 +24,7 @@ import mixins from '../../mixins'
 import { getLocale } from '../../utils'
 
 // Create the AJV instance
-let ajv = new Ajv({ 
+let ajv = new Ajv({
   allErrors: true,
   coerceTypes: true,
   $data: true
@@ -50,11 +50,13 @@ export default {
     },
     display: {
       type: Object,
-      default: () => { return {
-        icon: false,
-        label: false,
-        labelWidth: 3
-      }}
+      default: () => {
+        return {
+          icon: false,
+          label: false,
+          labelWidth: 3
+        }
+      }
     }
   },
   data () {
@@ -85,7 +87,7 @@ export default {
           this.getField(field).invalidate(error.message)
           return
         }
-      } 
+      }
       // Validate the field
       this.getField(field).validate()
     },
@@ -97,7 +99,7 @@ export default {
           if (error.params.missingProperty === field) return error
         } else {
           // Check whether is the field in invalid
-          let fieldDataPath = "." + field
+          let fieldDataPath = '.' + field
           if (error.dataPath === fieldDataPath) return error
         }
       }
@@ -110,7 +112,7 @@ export default {
       this.nbReadyFields = 0
       // Build the fields
       // 1- assign a name corresponding to the key to enable a binding between properties and fields
-      // 2- assign a component key corresponding to the component path 
+      // 2- assign a component key corresponding to the component path
       // 3- load the component if not previously loaded
       Object.keys(this.schema.properties).forEach(property => {
         let field = this.schema.properties[property]
@@ -167,9 +169,9 @@ export default {
     },
     validate () {
       if (!this.loadRefs().isFulfilled()) throw Error('Cannot validate the form while not ready')
-      let result = { 
-        isValid: false, 
-        values: this.values() 
+      let result = {
+        isValid: false,
+        values: this.values()
       }
       // If the validation fails, it iterates though the errors in order
       // to update the validation status of each field

@@ -27,7 +27,7 @@ export default {
     this.refresh()
     Events.$on('user-changed', this.refresh)
   },
-  beforeDestroy() {
+  beforeDestroy () {
     Events.$off('user-changed', this.refresh)
   }
 }

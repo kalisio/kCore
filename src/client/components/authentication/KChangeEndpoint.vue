@@ -50,22 +50,22 @@ export default {
   data () {
     return {
       schema: {
-        "$schema": "http://json-schema.org/draft-06/schema#",
-        "$id": "http://kalisio.xyz/schemas/change-endpoint.json#",
-        "title": "Change Endpoint form",
-        "description": "Change remote service URL form",
-        "type": "object",
-        "properties": {
-          "baseUrl": { 
-            "type": "string", 
-            "format": "uri",
-            "field": {
-              "component": "form/KTextField",
-              "helper": "KChangeEndpoint.BASE_URL_FIELD_HELPER",
+        '$schema': 'http://json-schema.org/draft-06/schema#',
+        '$id': 'http://kalisio.xyz/schemas/change-endpoint.json#',
+        'title': 'Change Endpoint form',
+        'description': 'Change remote service URL form',
+        'type': 'object',
+        'properties': {
+          'baseUrl': {
+            'type': 'string',
+            'format': 'uri',
+            'field': {
+              'component': 'form/KTextField',
+              'helper': 'KChangeEndpoint.BASE_URL_FIELD_HELPER'
             }
           }
         },
-        "required": ["baseUrl"]
+        'required': ['baseUrl']
       }
     }
   },

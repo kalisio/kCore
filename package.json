@@ -38,7 +38,7 @@
     "watch:js": "babel --watch -d lib/ src/ --copy-files",
     "watch:vue": "cpx src/**/*.vue lib/ --watch",
     "watch": "npm-run-all --parallel watch:**",
-    "lint": "standard src/**/*.js test/**/*.js --fix",
+    "lint": "standard src/**/*.js src/**/*.vue test/**/*.js --fix",
     "mocha": "cross-env NODE_CONFIG_DIR=./test/config/ mocha --opts mocha.opts",
     "coverage": "cross-env NODE_CONFIG_DIR=./test/config/ node node_modules/istanbul/lib/cli cover node_modules/mocha/bin/_mocha -- --opts mocha.opts",
     "test": "npm run compile && npm run lint && npm run coverage",
@@ -46,9 +46,19 @@
   },
   "standard": {
     "parser": "babel-eslint",
+    "plugins": [
+      "html"
+    ],
     "sourceType": "module",
     "env": [
       "mocha"
+    ],
+    "globals": [
+      "DEV",
+      "PROD",
+      "fetch",
+      "cordova",
+      "location"
     ]
   },
   "directories": {
@@ -122,6 +132,7 @@
     "cpx": "^1.5.0",
     "cross-env": "^4.0.0",
     "css-loader": "^0.28.7",
+    "eslint-plugin-html": "^3.1.1",
     "isomorphic-fetch": "^2.2.1",
     "istanbul": "^1.1.0-alpha.1",
     "jsdom": "^10.1.0",

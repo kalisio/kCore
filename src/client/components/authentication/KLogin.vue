@@ -69,28 +69,28 @@ export default {
   data () {
     return {
       schema: {
-        "$schema": "http://json-schema.org/draft-06/schema#",
-        "$id": "http:/kalisio.xyz/schemas/login.json#",
-        "title": "Login form",
-        "type": "object",
-        "properties": {
-          "email": { 
-            "type": "string", 
-            "format": "email",
-            "field": {
-              "component": "form/KEmailField",
-              "helper": "KLogin.EMAIL_FIELD_HELPER",
+        '$schema': 'http://json-schema.org/draft-06/schema#',
+        '$id': 'http:/kalisio.xyz/schemas/login.json#',
+        'title': 'Login form',
+        'type': 'object',
+        'properties': {
+          'email': {
+            'type': 'string',
+            'format': 'email',
+            'field': {
+              'component': 'form/KEmailField',
+              'helper': 'KLogin.EMAIL_FIELD_HELPER'
             }
           },
-          "password": { 
-            "type": "string",
-            "field": {
-              "component": "form/KPasswordField",
-              "helper": "KLogin.PASSWORD_FIELD_HELPER",
+          'password': {
+            'type': 'string',
+            'field': {
+              'component': 'form/KPasswordField',
+              'helper': 'KLogin.PASSWORD_FIELD_HELPER'
             }
           }
         },
-        "required": ["email", "password"]
+        'required': ['email', 'password']
       },
       providers: [],
       displayDetails: false,

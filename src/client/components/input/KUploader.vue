@@ -64,18 +64,18 @@ export default {
     resourcesService () {
       return _.get(this.options, 'resourcesService', '')
     },
-    addFile(addedFile) {
+    addFile (addedFile) {
       this.files.push(addedFile)
       this.$emit('file-selection-changed', this.files)
     },
-    updateFile(updatedFile) {
+    updateFile (updatedFile) {
       const index = _.findIndex(this.files, file => file.name === updatedFile.name)
       if (index >= 0) {
         this.files[index] = updatedFile
         this.$emit('file-selection-changed', this.files)
       }
     },
-    removeFile(removedFile) {
+    removeFile (removedFile) {
       // Possible on max files exceeded
       if (removedFile.status === 'error') return
       const index = _.findIndex(this.files, file => file.name === removedFile.name)
@@ -130,7 +130,7 @@ export default {
       // If we attach file to an existing resource add required parameters
       if (this.resource) {
         formData.set('resource', this.resource)
-        formData.set('resourcesService', this.resourcesService()) 
+        formData.set('resourcesService', this.resourcesService())
       }
       // When not processing uploads on-the-fly send thumbnail to the server along with the file
       // Check if it does exist however because it is processed asynchronously
@@ -167,11 +167,11 @@ export default {
     storageService () {
       return this.$api.getService(this.options.service || 'storage', this.contextId)
     },
-    dropZone() {
+    dropZone () {
       // Access vue drop zone
       return this.$refs.dropZone
     },
-    dropZoneInstance() {
+    dropZoneInstance () {
       // Access underlying dropzone object
       return this.$refs.dropZone.dropzone
     },
@@ -210,7 +210,7 @@ export default {
         })
       }
     },
-    clearPreviews ()  {
+    clearPreviews () {
       this.previews.forEach(preview => {
         // Code taken from removedfile method of DropZone.js
         if (preview.parentNode) {
@@ -219,12 +219,12 @@ export default {
       })
       this.previews = []
     },
-    clearFiles ()  {
+    clearFiles () {
       this.files = []
       // Reset drop zone
       this.dropZone().removeAllFiles(true)
     },
-    clear ()  {
+    clear () {
       // FIXME: for now we need to remove previous preview elements manually
       // Indeed the previous method does not seem to work for this
       this.clearPreviews()

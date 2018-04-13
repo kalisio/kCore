@@ -35,12 +35,12 @@ export default {
   props: {
     renderer: {
       type: Object,
-      default: () => { 
-        return { 
+      default: () => {
+        return {
           component: 'collection/KCard',
           options: {},
-          props: {} 
-        } 
+          props: {}
+        }
       }
     },
     baseQuery: {

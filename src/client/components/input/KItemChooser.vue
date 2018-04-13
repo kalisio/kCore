@@ -22,7 +22,7 @@ export default {
     KAutocomplete
   },
   computed: {
-    autocompleteSize () { 
+    autocompleteSize () {
       return this.itemslength > 0 ? 'col-5' : 'col-12'
     },
     isCompleted () {
@@ -79,17 +79,16 @@ export default {
         // The input pattern has changed
         this.pattern = value
         this.$emit('changed', this.items, this.pattern)
-      }
-      else {
+      } else {
         // An item has been selected
-        if(_.findIndex(this.items, item => item._id === value._id) === -1) {
+        if (_.findIndex(this.items, item => item._id === value._id) === -1) {
           // Check wether a limit has been defined for the service
           if (value.limit) {
             let serviceItems = _.filter(this.items, { service: value.service })
-            if (serviceItems.length == value.limit) {
+            if (serviceItems.length === value.limit) {
               _.remove(this.items, { _id: serviceItems.pop()._id })
             }
-          } 
+          }
           this.$refs.autocomplete.clear()
           this.pattern = ''
           this.items.push(value)

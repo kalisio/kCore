@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { QField, QChip, QIcon } from 'quasar'
 import { KAutocomplete, KIconChooser } from '../input'
 import mixins from '../../mixins'
@@ -75,16 +76,16 @@ export default {
       this.partition = _.partition(this.model, { context: this.contextId })
       this.tags = this.partition[0]
     },
-    processResults(pattern, results) {
+    processResults (pattern, results) {
       // We always add first an entry to create a new tag
       if (_.findIndex(results, result => result.value === pattern) === -1) {
         results.unshift({
           label: this.$t('KTagField.ADD_TAG', { tag: pattern }),
           icon: 'send',
           value: pattern,
-          data: { 
-            value: pattern, 
-            scope: this.properties.scope, 
+          data: {
+            value: pattern,
+            scope: this.properties.scope,
             icon: { name: 'label', color: 'dark' }
           }
         })
@@ -92,7 +93,7 @@ export default {
     },
     onTagAdded (newTag) {
       if (typeof newTag === 'string') return
-      if(_.findIndex(this.tags, tag => tag.value === newTag.value) === -1) {
+      if (_.findIndex(this.tags, tag => tag.value === newTag.value) === -1) {
         // Filter the tag data and transform the icon provided by the autocomplete into an icon object
         let tag = _.pick(newTag, ['value', 'scope', 'icon'])
         this.tags.push(tag)
@@ -101,7 +102,7 @@ export default {
     },
     onTagRemoved (oldTag) {
       this.tags = this.tags.filter(tag => tag.value !== oldTag.value)
-      this.updateModel() 
+      this.updateModel()
     },
     updateModel () {
       // filter rendering properties only

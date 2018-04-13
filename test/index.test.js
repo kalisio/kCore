@@ -199,7 +199,6 @@ describe('kCore', () => {
     })
   })
 
-
   it('removes a user', () => {
     return userService.remove(userObject._id, {
       user: userObject,

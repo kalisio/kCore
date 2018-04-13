@@ -39,7 +39,7 @@ export default {
   mixins: [mixins.baseField],
   computed: {
     closable () {
-      return ! this.properties.required
+      return !this.properties.required
     }
   },
   methods: {

@@ -53,7 +53,7 @@ export default {
   mixins: [mixins.baseField],
   computed: {
     inputClass () {
-      return this.chips.length > 0 ? "col-auto" : "col-12"
+      return this.chips.length > 0 ? 'col-auto' : 'col-12'
     },
     inputActions () {
       let actions = []
@@ -87,7 +87,7 @@ export default {
       this.chips = this.model.slice()
     },
     onChipAdded () {
-      let chip = { 
+      let chip = {
         value: this.input,
         icon: {
           name: _.get(this.properties.field, 'icon.name', 'mood'),
@@ -100,7 +100,7 @@ export default {
     },
     onChipRemoved (oldChip) {
       this.chips = this.chips.filter(chip => chip.value !== oldChip.value)
-      this.updateModel() 
+      this.updateModel()
     },
     onChipClicked (chip) {
       this.selectedChip = chip

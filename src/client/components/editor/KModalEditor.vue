@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import { KModal } from '../frame'
 import { KForm } from '../form'
 import mixins from '../../mixins'
@@ -36,21 +35,25 @@ export default {
       let buttons = [
         { name: 'apply-button', label: this.applyButton, color: 'primary', handler: (event, done) => this.apply(event, done) }
       ]
-      if (this.clearButton != '') buttons.push({
-        name: 'clear-button', label: this.clearButton, color: 'primary', handler: (event, done) => this.clear(event, done)
-      })
-      if (this.resetButton != '') buttons.push({
-        name: 'reset-button', label: this.resetButton, color: 'primary', handler: (event, done) => this.reset(event, done)
-      })
+      if (this.clearButton !== '') {
+        buttons.push({
+          name: 'clear-button', label: this.clearButton, color: 'primary', handler: (event, done) => this.clear(event, done)
+        })
+      }
+      if (this.resetButton !== '') {
+        buttons.push({
+          name: 'reset-button', label: this.resetButton, color: 'primary', handler: (event, done) => this.reset(event, done)
+        })
+      }
       return buttons
     }
   },
   data () {
     return {
-      toolbar: [{ 
-        name: 'close', 
-        icon: 'close', 
-        handler: () => this.close(this.router ? _ => this.$router.push(this.router.onDismiss) : null) 
+      toolbar: [{
+        name: 'close',
+        icon: 'close',
+        handler: () => this.close(this.router ? _ => this.$router.push(this.router.onDismiss) : null)
       }]
     }
   },

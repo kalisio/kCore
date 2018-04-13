@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import { QModal, QBtn, QIcon, QTooltip } from 'quasar'
 
 export default {
@@ -85,7 +84,7 @@ export default {
       this.$refs.modal.open()
     },
     close (onClose) {
-      // FIXME: du to https://github.com/quasarframework/quasar/issues/994 
+      // FIXME: du to https://github.com/quasarframework/quasar/issues/994
       // we force the toggleInProgress property to false in order to close the modal
       // There is still a bug as it is needed to click twice on close the modal
       this.$refs.modal.close(onClose)

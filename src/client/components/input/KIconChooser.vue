@@ -112,7 +112,7 @@ export default {
     } else if (this.iconSet === 'fontawesome') {
       // Fetch available FA icons from the font awesome repository so we are always in sync
       // FIXME: this code should work with FA v5 and new quasar version
-      //fetch('https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/advanced-options/metadata/icons.yml')
+      // fetch('https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/advanced-options/metadata/icons.yml')
       fetch('https://raw.githubusercontent.com/FortAwesome/Font-Awesome/fa-4/src/icons.yml')
       .then(response => {
         if (response.status !== 200) {
@@ -125,7 +125,7 @@ export default {
           // FA v4
           let yamlCodes = yaml.safeLoad(text).icons
           // We have a list with on each entry 'name id ...' so we need to filter the codes
-          if (yamlCodes && yamlCodes.length > 0 ) {
+          if (yamlCodes && yamlCodes.length > 0) {
             // Add also prefix for quasar
             this.icons = yamlCodes.map(icon => 'fa-' + icon.id)
           }

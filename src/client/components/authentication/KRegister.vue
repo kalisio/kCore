@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { QBtn, Platform, Toast } from 'quasar'
+import { QBtn, Platform } from 'quasar'
 import { KScreen } from '../frame'
 import { KForm } from '../form'
 import mixins from '../../mixins'
@@ -45,46 +45,46 @@ export default {
   data () {
     return {
       schema: {
-        "$schema": "http://json-schema.org/draft-06/schema#",
-        "$id": "http://kalisio.xyz/schemas/register.json#",
-        "title": "Registration Form",
-        "type": "object",
-        "properties": {
-          "name": { 
-            "type": "string", 
-            "minLength": 3,
-            "maxLength": 128,
-            "field": {
-              "component": "form/KTextField",
-              "helper": "KRegister.NAME_FIELD_HELPER",
+        '$schema': 'http://json-schema.org/draft-06/schema#',
+        '$id': 'http://kalisio.xyz/schemas/register.json#',
+        'title': 'Registration Form',
+        'type': 'object',
+        'properties': {
+          'name': {
+            'type': 'string',
+            'minLength': 3,
+            'maxLength': 128,
+            'field': {
+              'component': 'form/KTextField',
+              'helper': 'KRegister.NAME_FIELD_HELPER'
             }
           },
-          "email": { 
-            "type": "string", 
-            "format": "email",
-            "field": {
-              "component": "form/KEmailField",
-              "helper": "KRegister.EMAIL_FIELD_HELPER",
+          'email': {
+            'type': 'string',
+            'format': 'email',
+            'field': {
+              'component': 'form/KEmailField',
+              'helper': 'KRegister.EMAIL_FIELD_HELPER'
             }
           },
-          "password": { 
-            "type": "string",
-            "field": {
-              "component": "form/KPasswordField",
-              "helper": "KRegister.PASSWORD_FIELD_HELPER",
+          'password': {
+            'type': 'string',
+            'field': {
+              'component': 'form/KPasswordField',
+              'helper': 'KRegister.PASSWORD_FIELD_HELPER'
             }
           },
-          "confirmPassword": { 
-            "const": { 
-              "$data": "1/password" 
+          'confirmPassword': {
+            'const': {
+              '$data': '1/password'
             },
-            "field": {
-              "component": "form/KPasswordField",
-              "helper": "KRegister.CONFIRM_PASSWORD_FIELD_HELPER",
+            'field': {
+              'component': 'form/KPasswordField',
+              'helper': 'KRegister.CONFIRM_PASSWORD_FIELD_HELPER'
             }
           }
         },
-        "required": ["name", "email", "password", "confirmPassword"]
+        'required': ['name', 'email', 'password', 'confirmPassword']
       }
     }
   },
@@ -103,7 +103,7 @@ export default {
           done()
         })
         .catch(error => {
-          done()
+          done(error)
         })
       } else {
         done()

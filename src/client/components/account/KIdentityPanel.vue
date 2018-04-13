@@ -30,8 +30,8 @@ export default {
   components: {
     QList,
     QItem,
-    QSideLink, 
-    QItemSide, 
+    QSideLink,
+    QItemSide,
     QItemMain,
     QItemSeparator,
     Avatar: Avatar
@@ -63,7 +63,7 @@ export default {
     this.refreshIdentity()
     Events.$on('user-changed', this.refreshIdentity)
   },
-  beforeDestroy() {
+  beforeDestroy () {
     Events.$off('user-changed', this.refreshIdentity)
   }
 }

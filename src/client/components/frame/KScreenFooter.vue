@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import { openURL } from 'quasar'
 
 export default {

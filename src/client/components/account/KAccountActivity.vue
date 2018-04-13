@@ -22,7 +22,7 @@ import { Events } from 'quasar'
 export default {
   name: 'k-account-activity',
   mixins: [
-    mixins.baseActivity,
+    mixins.baseActivity
   ],
   props: {
     perspective: {
@@ -41,18 +41,24 @@ export default {
     refreshActivity () {
       this.clearActivity()
       this.setTitle(this.$store.get('user.name'))
-      this.registerTabAction({ 
-        name: 'profile', label: this.$t('KAccountActivity.PROFILE'), icon: 'description', 
+      this.registerTabAction({
+        name: 'profile',
+        label: this.$t('KAccountActivity.PROFILE'),
+        icon: 'description',
         route: { name: 'account-activity', params: { perspective: 'profile' } },
         default: this.perspective === 'profile'
       })
-      this.registerTabAction({ 
-        name: 'security', label: this.$t('KAccountActivity.SECURITY'), icon: 'security',
+      this.registerTabAction({
+        name: 'security',
+        label: this.$t('KAccountActivity.SECURITY'),
+        icon: 'security',
         route: { name: 'account-activity', params: { perspective: 'security' } },
         default: this.perspective === 'security'
       })
-      this.registerTabAction({ 
-        name: 'danger-zone', label: this.$t('KAccountActivity.DANGER_ZONE'), icon: 'warning',
+      this.registerTabAction({
+        name: 'danger-zone',
+        label: this.$t('KAccountActivity.DANGER_ZONE'),
+        icon: 'warning',
         route: { name: 'account-activity', params: { perspective: 'danger-zone' } },
         default: this.perspective === 'danger-zone'
       })
@@ -72,7 +78,7 @@ export default {
     this.refreshAccount()
     Events.$on('user-changed', this.refreshAccount)
   },
-  beforeDestroy() {
+  beforeDestroy () {
     Events.$off('user-changed', this.refreshAccount)
   }
 }

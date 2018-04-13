@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     onItemsChanged (items, pattern) {
-       this.$store.patch('searchBar', { pattern: pattern, items: items })
+      this.$store.patch('searchBar', { pattern: pattern, items: items })
     }
   },
   created () {
