@@ -28,20 +28,19 @@
      -->
     <template v-if="appBar.menu && appBar.menu.length > 0">
       <q-btn id="overflow-menu-entry" flat>
-        <q-icon name="more_vert">
-          <q-popover id="overflow-menu" ref="menu">
-            <q-list>
-              <template v-for="action in appBar.menu">
-                <q-item :id="action.name" :key="action.name" link @click="onActionTriggered(action)">
-                  <q-item-side :icon="action.icon" />
-                  <q-item-main>
-                    {{action.label}}
-                  </q-item-main>
-                </q-item>
-              </template>
-            </q-list>
-          </q-popover>
-        </q-icon>
+        <q-popover id="overflow-menu" ref="menu">
+          <q-list>
+            <template v-for="action in appBar.menu">
+              <q-item :id="action.name" :key="action.name" link @click="onActionTriggered(action)">
+                <q-item-side :icon="action.icon" />
+                <q-item-main>
+                  {{action.label}}
+                </q-item-main>
+              </q-item>
+            </template>
+          </q-list>
+        </q-popover>
+        <q-icon name="more_vert"></q-icon>
       </q-btn>
     </template>
     <!-- 

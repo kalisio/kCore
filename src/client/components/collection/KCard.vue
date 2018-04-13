@@ -69,20 +69,19 @@
           </template>
           <!-- Menu -->
           <q-btn id="card-overflow-menu-entry" v-if="itemActions.menu && itemActions.menu.length > 0" flat small round>
-            <q-icon color="grey-7" name="more_vert">
-              <q-popover id="card-overflow-menu" ref="menu">
-                <q-list>
-                  <template v-for="action in itemActions.menu">
-                    <q-item :id="action.name" link :key="key(action, 'name')" @click="$refs.menu.close(); onActionTriggered(action, item)">
-                      <q-item-side :icon="action.icon" />
-                      <q-item-main>
-                        {{action.label}}
-                      </q-item-main>
-                    </q-item>
-                  </template>
-                </q-list>
-              </q-popover>
-            </q-icon>
+            <q-popover id="card-overflow-menu" ref="menu">
+              <q-list>
+                <template v-for="action in itemActions.menu">
+                  <q-item :id="action.name" link :key="key(action, 'name')" @click="$refs.menu.close(); onActionTriggered(action, item)">
+                    <q-item-side :icon="action.icon" />
+                    <q-item-main>
+                      {{action.label}}
+                    </q-item-main>
+                  </q-item>
+                </template>
+              </q-list>
+            </q-popover>
+            <q-icon color="grey-7" name="more_vert"></q-icon>
           </q-btn>
         </q-card-actions>
       </slot>
