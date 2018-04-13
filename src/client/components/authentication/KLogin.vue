@@ -159,18 +159,18 @@ export default {
       }
     },
     refreshVersionNames () {
-      const about = this.$store.get('about')
-      if (about) {
-        if (about.client) {
-          this.clientVersionName = about.client.version
-          if (about.client.buildNumber) {
-            this.clientVersionName += ' (' + about.client.buildNumber + ')'
+      const capabilities = this.$store.get('capabilities')
+      if (capabilities) {
+        if (capabilities.client) {
+          this.clientVersionName = capabilities.client.version
+          if (capabilities.client.buildNumber) {
+            this.clientVersionName += ' (' + capabilities.client.buildNumber + ')'
           }
         }
-        if (about.api) {
-          this.apiVersionName = about.api.version
-          if (about.api.buildNumber) {
-            this.apiVersionName += ' (' + about.api.buildNumber + ')'
+        if (capabilities.api) {
+          this.apiVersionName = capabilities.api.version
+          if (capabilities.api.buildNumber) {
+            this.apiVersionName += ' (' + capabilities.api.buildNumber + ')'
           }
         }
       }
@@ -180,7 +180,7 @@ export default {
     // Retrieve the availalbe providers
     this.providers = this.$config('login.providers', [])
     this.refreshVersionNames()
-    Events.$on('about-api-changed', this.refreshVersionNames)
+    Events.$on('capabilities-api-changed', this.refreshVersionNames)
   }
 }
 </script>
