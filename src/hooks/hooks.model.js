@@ -2,9 +2,9 @@ import _ from 'lodash'
 import moment from 'moment'
 import { objectifyIDs, toObjectIDs } from '../db'
 import { discard, disallow, getItems, replaceItems } from 'feathers-hooks-common'
-// import makeDebug from 'debug'
+import makeDebug from 'debug'
 
-// const debug = makeDebug('kalisio:kCore')
+const debug = makeDebug('kalisio:kCore:model:hooks')
 
 export function processPerspectives (hook) {
   let params = hook.params
@@ -127,9 +127,11 @@ export async function populatePreviousObject (hook) {
     throw new Error(`The 'populatePreviousObject' hook should only be used as a 'before' hook.`)
   }
   let item = getItems(hook)
+  let id = item._id || hook.id
   // Retrieve previous version of the item and make it available to next hooks
-  if (item._id) {
-    hook.params.previousItem = await hook.service.get(item._id.toString())
+  if (id) {
+    hook.params.previousItem = await hook.service.get(id.toString())
+    debug('Populated previous object', hook.params.previousItem)
   }
   return hook
 }
