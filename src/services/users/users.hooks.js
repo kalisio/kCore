@@ -1,4 +1,4 @@
-import { serialize, updateAbilities } from '../../hooks'
+import { serialize, updateAbilities, enforcePasswordPolicy } from '../../hooks'
 const { hashPassword } = require('feathers-authentication-local').hooks
 const commonHooks = require('feathers-hooks-common')
 
@@ -9,18 +9,29 @@ module.exports = {
     get: [],
     create: [
       commonHooks.when(hook => hook.data.googleId, serialize([
-        {source: 'google.profile.displayName', target: 'name'},
-        {source: 'google.profile.emails[0].value', target: 'email'}
+        { source: 'google.profile.displayName', target: 'name' },
+        { source: 'google.profile.emails[0].value', target: 'email' }
       ], { throwOnNotFound: true })),
       commonHooks.when(hook => hook.data.githubId, serialize([
-        {source: 'github.profile.displayName', target: 'name'},
-        {source: 'github.profile.emails[0].value', target: 'email'}
+        { source: 'github.profile.displayName', target: 'name' },
+        { source: 'github.profile.emails[0].value', target: 'email' }
       ], { throwOnNotFound: true })),
       serialize([
-        {source: 'name', target: 'profile.name', delete: true},
-        {source: 'email', target: 'profile.description'}
+        { source: 'name', target: 'profile.name', delete: true },
+        { source: 'email', target: 'profile.description' }
       ], { throwOnNotFound: true }),
-      hashPassword()
+      serialize([
+        // Enforcing password policy requires both the clear and hashed password,
+        // Keep track of clear password here since hashPassword() remove it
+        // FIXME: for testing purpose we create users without a password for now
+        // should it be fixed for safety ?
+        { source: 'password', target: 'clearPassword' }
+      ], { throwOnNotFound: false }),
+      hashPassword(),
+      enforcePasswordPolicy(),
+      // Now we have enforced password policy remove the clear password
+      // (we only stored hashed password for safety)
+      commonHooks.discard('clearPassword')
     ],
     update: [],
     patch: [],

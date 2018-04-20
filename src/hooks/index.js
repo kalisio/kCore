@@ -1,6 +1,7 @@
 export * from './hooks.query'
 export * from './hooks.logger'
 export * from './hooks.model'
+export * from './hooks.users'
 export * from './hooks.tags'
 export * from './hooks.authorisations'
 export * from './hooks.storage'

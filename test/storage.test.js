@@ -83,7 +83,7 @@ describe('kCore:storage', () => {
   .timeout(10000)
 
   it('creates an attachment on a resource', () => {
-    return userService.create({ email: 'test@test.org', password: 'test-password', name: 'test-user' })
+    return userService.create({ email: 'test@test.org', password: 'Pass;word1', name: 'test-user' })
     .then(user => {
       userObject = user
       return storageService.create({ id, uri: contentUri, resource: userObject._id.toString(), resourcesService: 'users' })

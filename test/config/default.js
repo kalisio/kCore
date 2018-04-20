@@ -20,7 +20,14 @@ module.exports = {
       'local'
     ],
     path: API_PREFIX + '/authentication',
-    service: API_PREFIX + '/users'
+    service: API_PREFIX + '/users',
+    passwordPolicy: {
+      minLength: 8,
+      maxLength: 128,
+      uppercase: true,
+      lowercase: true,
+      digits: true
+    }
   },
   logs: {
     Console: {

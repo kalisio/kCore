@@ -19,6 +19,7 @@ import oauth2 from 'feathers-authentication-oauth2'
 import GithubStrategy from 'passport-github'
 import GoogleStrategy from 'passport-google-oauth20'
 import OAuth2Verifier from './verifier'
+import PasswordValidator from 'password-validator'
 import { ObjectID } from 'mongodb'
 import { Database } from './db'
 
@@ -29,6 +30,27 @@ function auth () {
   const config = app.get('authentication')
   // Store availalbe OAuth2 providers
   app.authenticationProviders = []
+  // Get access to password validator if a policy is defined
+  if (config.passwordPolicy) {
+    app.getPasswordPolicy = function (options = {}) {
+      let passwordPolicyConfig = Object.assign({}, config.passwordPolicy, options)
+      let { minLength, maxLength, uppercase, lowercase, digits, noSpaces, prohibited, hashedPassword } = passwordPolicyConfig
+
+      let validator = new PasswordValidator()
+      // These options only work on clear password
+      if (!hashedPassword) {
+        if (minLength) validator.is().min(minLength)
+        if (maxLength) validator.is().max(maxLength)
+        if (uppercase) validator.has().uppercase()
+        if (lowercase) validator.has().lowercase()
+        if (digits) validator.has().digits()
+        if (noSpaces) validator.not().spaces()
+      } else {
+        if (prohibited) validator.is().not().oneOf(prohibited)
+      }
+      return validator
+    }
+  }
   // Set up authentication with the secret
   app.configure(authentication(config))
   app.configure(jwt())

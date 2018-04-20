@@ -18,7 +18,11 @@ describe('kCore', () => {
 
     app = kalisio()
     // Register perspective hook
-    app.hooks({ after: { all: hooks.processPerspectives } })
+    app.hooks({
+      before: { all: hooks.authorise },
+      after: { all: hooks.processPerspectives },
+      error: { all: hooks.log }
+    })
     port = app.get('port')
     baseUrl = `http://localhost:${port}${app.get('apiPath')}`
     return app.db.connect()
@@ -33,7 +37,9 @@ describe('kCore', () => {
     userService = app.getService('users')
     expect(userService).toExist()
     // Register tag hooks
-    userService.hooks({ after: { create: hooks.updateTags, remove: hooks.updateTags } })
+    userService.hooks({
+      after: { create: hooks.updateTags, remove: hooks.updateTags }
+    })
     tagService = app.getService('tags')
     expect(tagService).toExist()
     authorisationService = app.getService('authorisations')
@@ -43,10 +49,31 @@ describe('kCore', () => {
     server.once('listening', _ => done())
   })
 
+  it('unauthenticated user cannot access services', (done) => {
+    tagService.create({}, { checkAuthorisation: true })
+    .catch(error => {
+      expect(error).toExist()
+      expect(error.name).to.equal('Forbidden')
+      done()
+    })
+  })
+
+  it('creates a user with a weak password', (done) => {
+    userService.create({
+      email: 'test@test.org',
+      password: 'weak',
+      name: 'test-user'})
+    .catch(error => {
+      expect(error).toExist()
+      expect(error.name).to.equal('BadRequest')
+      done()
+    })
+  })
+
   it('creates a user', () => {
     return userService.create({
       email: 'test@test.org',
-      password: 'test-password',
+      password: 'Pass;word1',
       name: 'test-user',
       tags: [{
         scope: 'skills',
@@ -63,6 +90,7 @@ describe('kCore', () => {
       expect(users.data[0].name).toExist()
       expect(users.data[0].description).toExist()
       expect(users.data[0].email).toExist()
+      expect(users.data[0].clearPassword).beUndefined()
       expect(users.data[0].profile).beUndefined()
       return tagService.find({ query: { value: 'developer' } })
     })
@@ -76,10 +104,17 @@ describe('kCore', () => {
   it('authenticates a user', () => {
     return request
     .post(`${baseUrl}/authentication`)
-    .send({ email: 'test@test.org', password: 'test-password', strategy: 'local' })
+    .send({ email: 'test@test.org', password: 'Pass;word1', strategy: 'local' })
     .then(response => {
       accessToken = response.body.accessToken
       expect(accessToken).toExist()
+    })
+  })
+
+  it('authenticated user can access services', () => {
+    return userService.find({}, { user: userObject, checkAuthorisation: true })
+    .then(users => {
+      expect(users.data.length === 1).beTrue()
     })
   })
 
@@ -217,7 +252,10 @@ describe('kCore', () => {
   })
 
   it('registers the log options', (done) => {
+    // Inserted manually
     let log = 'This is a log test'
+    // Raised by Forbidden error in hooks
+    let hookLog = 'You are not allowed to access service'
     let now = new Date()
     logger.info(log)
     // FIXME: need to let some time to proceed with log file
@@ -227,6 +265,7 @@ describe('kCore', () => {
       fs.readFile(logFilePath, 'utf8', (err, content) => {
         expect(err).beNull()
         expect(content.includes(log)).to.equal(true)
+        expect(content.includes(hookLog)).to.equal(true)
         done()
       })
     }, 2500)
@@ -237,6 +276,6 @@ describe('kCore', () => {
   // Cleanup
   after(async () => {
     if (server) await server.close()
-    // app.db.instance.dropDatabase()
+    app.db.instance.dropDatabase()
   })
 })
