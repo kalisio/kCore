@@ -11,6 +11,7 @@
       :id="properties.name + '-field'"
       type="email"
       v-model="model"
+      clearable
       @blur="onChanged" />
   </q-field>
 </template>

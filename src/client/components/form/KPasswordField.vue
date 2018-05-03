@@ -12,6 +12,7 @@
         :id="properties.name + '-field'"
         type="password"
         v-model="model"
+        clearable
         @blur="onChanged" />
     </q-field>
   </div>

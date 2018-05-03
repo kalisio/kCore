@@ -11,6 +11,7 @@
       :id="properties.name + '-field'"
       type="url"
       v-model="model"
+      clearable=true
       @blur="onChanged" />
   </q-field>
 </template>
