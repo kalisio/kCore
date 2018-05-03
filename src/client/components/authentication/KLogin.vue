@@ -18,7 +18,7 @@
           Login form 
         -->
         <div>
-          <k-form ref="form" :schema="schema" />
+          <k-form ref="form" :schema="schema" @form-ready="onFormReady"/>
         </div>
         <div class="self-center">
           <q-btn color="primary" loader id="local" @click="onLogin">{{$t('KLogin.APPLY_BUTTON')}}</q-btn>
@@ -107,11 +107,27 @@ export default {
       if (this.providers.length === 0) return false
       else return DEV ? true : !Platform.is.cordova
     },
+    storeCredentials () {
+      return Platform.is.cordova
+    },
+    hasCredentials () {
+      return window.localStorage.getItem('klogin.email')
+    },
+    onFormReady (form) {
+      if (this.storeCredentials() && this.hasCredentials()) {
+        form.fill({
+          email: window.localStorage.getItem('klogin.email')
+        })
+      }
+    },
     onLogin (event, done) {
       let result = this.$refs.form.validate()
       if (result.isValid) {
         this.login(result.values.email, result.values.password)
         .then(() => {
+          if (this.storeCredentials()) {
+            window.localStorage.setItem('klogin.email', result.values.email)
+          }
           done()
         })
         .catch(() => {
