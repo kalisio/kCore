@@ -219,7 +219,10 @@ export default {
     // FIXME: cannot know when the form is built => should be done by the parent or need to emit an event
     if (this.schema) {
       this.build()
-      .then(() => this.clear())
+      .then(() => {
+        this.clear()
+        this.$emit('form-ready', this)
+      })
     }
   }
 }
