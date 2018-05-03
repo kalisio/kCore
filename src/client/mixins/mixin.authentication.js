@@ -24,12 +24,14 @@ let authenticationMixin = {
       return this.$api.authenticate()
       .then(response => {
         return this.restoreUser(response.accessToken)
-      })
-      .catch(error => {
-        // This ensure an old token cannot be kept
-        this.logout()
-        // Rethrow for caller to handle
-        throw error
+        .catch(error => {
+          // This ensure an old token is not kept when the user has been deleted
+          if (error.code === 404) {
+            this.logout()
+          }
+          // Rethrow for caller to handle
+          throw error
+        })
       })
     },
     login (email, password) {
