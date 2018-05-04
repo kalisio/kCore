@@ -31,7 +31,7 @@ export default {
       let result = this.text.replace(/[\n\r]/g, '<br/>')
       // Truncate the description if required
       if (nbCharacters > this.length) {
-        if (this.mustTruncate) result = _.truncate(result, { length: this.length })
+        if (this.mustTruncate) result = _.truncate(result, { length: this.length, separator: ' ' })
       }
       return result
     },
