@@ -62,6 +62,10 @@ export default {
                 value: _.get(data, item.field),
                 icon: _.get(data, item.iconField || 'icon.name')
               }
+              if (item.subfield) {
+                data.subfield = item.subfield
+                result.sublabel = _.get(data, item.subfield)
+              }
               Object.assign(result, { data: data })
               results.push(result)
             })
