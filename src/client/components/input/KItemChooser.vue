@@ -46,13 +46,16 @@ export default {
     }
   },
   watch: {
+    defaultItems: function () {
+      this.items = this.defaultItems
+    },
     services: function () {
       this.clear()
     }
   },
   data () {
     return {
-      items: this.defaultItems,
+      items: [],
       pattern: ''
     }
   },
