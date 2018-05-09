@@ -59,7 +59,7 @@ describe('kCore', () => {
     })
   })
 
-  it('creates a user with a weak password', (done) => {
+  it('cannot create a user with a weak password', (done) => {
     // Fake password hashing on a user to get a hashed password
     hashPassword()({ type: 'before', data: { password: 'weak;' }, params: {}, app })
     .then(hook => {
@@ -114,6 +114,17 @@ describe('kCore', () => {
       expect(tags.data.length > 0).beTrue()
       expect(tags.data[0].value).to.equal('developer')
       expect(tags.data[0].scope).to.equal('skills')
+    })
+  })
+
+  it('change user password keep history', () => {
+    return userService.patch(userObject._id.toString(), { password: userObject.password })
+    .then(() => {
+      return userService.get(userObject._id.toString())
+    })
+    .then(user => {
+      expect(user.previousPasswords).toExist()
+      expect(user.previousPasswords).to.deep.equal([userObject.password])
     })
   })
 

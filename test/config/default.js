@@ -29,7 +29,8 @@ module.exports = {
       lowercase: true,
       digits: true,
       symbols: true,
-      prohibited: fs.readFileSync(path.join(__dirname, '..', 'data', '10k_most_common_passwords.txt')).toString().split('\n')
+      prohibited: fs.readFileSync(path.join(__dirname, '..', 'data', '10k_most_common_passwords.txt')).toString().split('\n'),
+      history: 5
     }
   },
   logs: {

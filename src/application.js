@@ -33,11 +33,13 @@ function auth () {
   app.authenticationProviders = []
   // Get access to password validator if a policy is defined
   if (config.passwordPolicy) {
-    app.getPasswordPolicy = function (options = {}) {
-      let passwordPolicyConfig = Object.assign({}, config.passwordPolicy, options)
-      let { minLength, maxLength, uppercase, lowercase, digits, symbols, noSpaces, prohibited } = passwordPolicyConfig
+    let validator
+    app.getPasswordPolicy = function () {
+      // Create on first access, should not be done outside a function because the app has not yet been correctly initialized
+      if (validator) return validator
+      let { minLength, maxLength, uppercase, lowercase, digits, symbols, noSpaces, prohibited } = config.passwordPolicy
 
-      let validator = new PasswordValidator()
+      validator = new PasswordValidator()
       if (minLength) validator.is().min(minLength)
       if (maxLength) validator.is().max(maxLength)
       if (uppercase) validator.has().uppercase()
@@ -46,10 +48,11 @@ function auth () {
       if (symbols) validator.has().symbols()
       if (noSpaces) validator.not().spaces()
       if (prohibited) validator.is().not().oneOf(prohibited)
-      // Add util function to compare with previous passwords when required
+      // Add util functions/options to compare with previous passwords stored in history when required
       const verifier = new local.Verifier(app, _.merge({ usernameField: 'email', passwordField: 'password' },
         _.pick(config, ['service']), config.local))
       validator.comparePassword = verifier._comparePassword
+      validator.options = config.passwordPolicy
 
       return validator
     }

@@ -1,4 +1,4 @@
-import { serialize, updateAbilities, enforcePasswordPolicy } from '../../hooks'
+import { serialize, updateAbilities, populatePreviousObject, enforcePasswordPolicy, storePreviousPassword } from '../../hooks'
 const { hashPassword } = require('feathers-authentication-local').hooks
 const commonHooks = require('feathers-hooks-common')
 
@@ -33,8 +33,8 @@ module.exports = {
       // (we only store hashed password for safety)
       commonHooks.discard('clearPassword')
     ],
-    update: [],
-    patch: [],
+    update: [ populatePreviousObject, storePreviousPassword({ userAsItem: true }) ],
+    patch: [ populatePreviousObject, storePreviousPassword({ userAsItem: true }) ],
     remove: []
   },
 
