@@ -1,6 +1,7 @@
 import path from 'path'
 import makeDebug from 'debug'
 import logger from 'winston'
+import _ from 'lodash'
 import 'winston-daily-rotate-file'
 import compress from 'compression'
 import cors from 'cors'
@@ -34,20 +35,22 @@ function auth () {
   if (config.passwordPolicy) {
     app.getPasswordPolicy = function (options = {}) {
       let passwordPolicyConfig = Object.assign({}, config.passwordPolicy, options)
-      let { minLength, maxLength, uppercase, lowercase, digits, noSpaces, prohibited, hashedPassword } = passwordPolicyConfig
+      let { minLength, maxLength, uppercase, lowercase, digits, symbols, noSpaces, prohibited } = passwordPolicyConfig
 
       let validator = new PasswordValidator()
-      // These options only work on clear password
-      if (!hashedPassword) {
-        if (minLength) validator.is().min(minLength)
-        if (maxLength) validator.is().max(maxLength)
-        if (uppercase) validator.has().uppercase()
-        if (lowercase) validator.has().lowercase()
-        if (digits) validator.has().digits()
-        if (noSpaces) validator.not().spaces()
-      } else {
-        if (prohibited) validator.is().not().oneOf(prohibited)
-      }
+      if (minLength) validator.is().min(minLength)
+      if (maxLength) validator.is().max(maxLength)
+      if (uppercase) validator.has().uppercase()
+      if (lowercase) validator.has().lowercase()
+      if (digits) validator.has().digits()
+      if (symbols) validator.has().symbols()
+      if (noSpaces) validator.not().spaces()
+      if (prohibited) validator.is().not().oneOf(prohibited)
+      // Add util function to compare with previous passwords when required
+      const verifier = new local.Verifier(app, _.merge({ usernameField: 'email', passwordField: 'password' },
+        _.pick(config, ['service']), config.local))
+      validator.comparePassword = verifier._comparePassword
+
       return validator
     }
   }

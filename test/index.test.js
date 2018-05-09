@@ -5,6 +5,7 @@ import request from 'superagent'
 import chai, { util, expect } from 'chai'
 import chailint from 'chai-lint'
 import core, { kalisio, hooks, permissions } from '../src'
+const { hashPassword } = require('feathers-authentication-local').hooks
 
 describe('kCore', () => {
   let app, server, port, baseUrl, accessToken,
@@ -59,14 +60,29 @@ describe('kCore', () => {
   })
 
   it('creates a user with a weak password', (done) => {
-    userService.create({
-      email: 'test@test.org',
-      password: 'weak',
-      name: 'test-user'})
-    .catch(error => {
-      expect(error).toExist()
-      expect(error.name).to.equal('BadRequest')
-      done()
+    // Fake password hashing on a user to get a hashed password
+    hashPassword()({ type: 'before', data: { password: 'weak;' }, params: {}, app })
+    .then(hook => {
+      userService.create({
+        email: 'test@test.org',
+        password: 'weak;',
+        previousPasswords: [hook.data.password],
+        name: 'test-user'})
+      .catch(error => {
+        expect(error).toExist()
+        expect(error.name).to.equal('BadRequest')
+        expect(error.data.translation.params.failedRules).to.deep.equal(['min', 'uppercase', 'digits', 'previous'])
+        userService.create({
+          email: 'test@test.org',
+          password: '12345678',
+          name: 'test-user'})
+        .catch(error => {
+          expect(error).toExist()
+          expect(error.name).to.equal('BadRequest')
+          expect(error.data.translation.params.failedRules).to.deep.equal(['uppercase', 'lowercase', 'symbols', 'oneOf'])
+          done()
+        })
+      })
     })
   })
 

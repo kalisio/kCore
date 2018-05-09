@@ -1,4 +1,5 @@
 var path = require('path')
+var fs = require('fs')
 var containerized = require('containerized')()
 
 var API_PREFIX = '/api'
@@ -26,7 +27,9 @@ module.exports = {
       maxLength: 128,
       uppercase: true,
       lowercase: true,
-      digits: true
+      digits: true,
+      symbols: true,
+      prohibited: fs.readFileSync(path.join(__dirname, '..', 'data', '10k_most_common_passwords.txt')).toString().split('\n')
     }
   },
   logs: {

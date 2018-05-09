@@ -28,9 +28,9 @@ module.exports = {
         { source: 'password', target: 'clearPassword' }
       ], { throwOnNotFound: false }),
       hashPassword(),
-      enforcePasswordPolicy(),
+      enforcePasswordPolicy({ userAsItem: true }),
       // Now we have enforced password policy remove the clear password
-      // (we only stored hashed password for safety)
+      // (we only store hashed password for safety)
       commonHooks.discard('clearPassword')
     ],
     update: [],
