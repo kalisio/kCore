@@ -23,7 +23,8 @@
     "501": "Operation cannot be performed: not implemented",
     "502": "Operation cannot be performed: service unavailable",
     "503": "Operation cannot be performed: service unavailable",
-    "RETRY": "Please try again later or modify your parameters"
+    "RETRY": "Please try again later or modify your parameters",
+    "WEAK_PASSWORD": "The provided password does not comply our password policy"
   },
   "schemas": {
     "AVATAR_FIELD_HELPER": "Select an avatar",
