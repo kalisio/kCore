@@ -24,7 +24,15 @@
     "502": "Cette opération ne peut être réalisée: service introuvable",
     "503": "Cette opération ne peut être réalisée: service indisponible",
     "RETRY": "Veuillez réessayer plus tard ou modifier votre paramétrage",
-    "WEAK_PASSWORD": "Le mot de passe ne respecte pas nos règles de sécurité"
+    "WEAK_PASSWORD": "Le mot de passe ne respecte pas nos règles de sécurité",
+    "WEAK_PASSWORD_MIN": "Taille minimale de {{minLength}} caractères",
+    "WEAK_PASSWORD_MAX": "Taille maximale de {{maxLength}} caractères",
+    "WEAK_PASSWORD_LOWERCASE": "Au moins une lettre minuscule",
+    "WEAK_PASSWORD_UPPERCASE": "Au moins une lettre majuscule",
+    "WEAK_PASSWORD_DIGITS": "Au moins un nombre",
+    "WEAK_PASSWORD_SYMBOLS": "Au moins un caractère spécial comme :;?!+-.,^@",
+    "WEAK_PASSWORD_ONEOF": "Non reconnu comme l'un des mots de passe les plus courants",
+    "WEAK_PASSWORD_PREVIOUS": "Différents de vos {{history}} derniers mots de passe"
   },
   "schemas": {
     "AVATAR_FIELD_HELPER": "Choisissez un avatar",

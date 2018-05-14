@@ -24,7 +24,15 @@
     "502": "Operation cannot be performed: service unavailable",
     "503": "Operation cannot be performed: service unavailable",
     "RETRY": "Please try again later or modify your parameters",
-    "WEAK_PASSWORD": "The provided password does not comply our password policy"
+    "WEAK_PASSWORD": "The provided password does not comply our password policy",
+    "WEAK_PASSWORD_MIN": "Minimum length of {{minLength}} characters",
+    "WEAK_PASSWORD_MAX": "Maximum length of {{maxLength}} characters",
+    "WEAK_PASSWORD_LOWERCASE": "A least one lower case letter",
+    "WEAK_PASSWORD_UPPERCASE": "A least one upper case letter",
+    "WEAK_PASSWORD_DIGITS": "A least one digit",
+    "WEAK_PASSWORD_SYMBOLS": "A least one special symbol like :;?!+-.,^@",
+    "WEAK_PASSWORD_ONEOF": "Not known as one of the most common passwords",
+    "WEAK_PASSWORD_PREVIOUS": "Not one of your {{history}} last passwords"
   },
   "schemas": {
     "AVATAR_FIELD_HELPER": "Select an avatar",

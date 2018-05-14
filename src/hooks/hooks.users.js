@@ -40,7 +40,8 @@ export function enforcePasswordPolicy (options = {}) {
         throw new BadRequest('The provided password does not comply to the password policy', {
           translation: {
             key: 'WEAK_PASSWORD',
-            params: { failedRules: result }
+            keys: result.map(rule => 'WEAK_PASSWORD_' + rule.toUpperCase()),
+            params: Object.assign({ failedRules: result }, _.omit(validator.options, ['prohibited']))
           }
         })
       }
