@@ -117,7 +117,7 @@ describe('kCore', () => {
     })
   })
 
-  it('change user password keep history', () => {
+  it('changing user password keeps password history', () => {
     return userService.patch(userObject._id.toString(), { password: userObject.password })
     .then(() => {
       return userService.get(userObject._id.toString())

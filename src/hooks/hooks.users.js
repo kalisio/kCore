@@ -13,9 +13,10 @@ export function enforcePasswordPolicy (options = {}) {
     // By pass check ?
     if (hook.params.force) return hook
     let app = hook.app
-    let user = options.userAsItem ? getItems(hook) : hook.params.user
+    let item = getItems(hook)
+    let user = options.userAsItem ? item : hook.params.user
     // Get both password(s) since some rules target one and some the other one(s)
-    let clearPassword = _.get(user, options.passwordField || 'clearPassword')
+    let clearPassword = _.get(item, options.passwordField || 'clearPassword')
     let hashedPasswords = _.get(user, options.previousPasswordsField || 'previousPasswords', [])
     if (clearPassword && hashedPasswords && app.getPasswordPolicy) {
       debug('Enforcing password policy on user', user)
@@ -54,7 +55,7 @@ export function storePreviousPassword (options = {}) {
     }
     let app = hook.app
     let data = getItems(hook)
-    if (data.password && app.getPasswordPolicy && hook.params.previousItem) {
+    if (app.getPasswordPolicy && hook.params.previousItem) {
       const validator = app.getPasswordPolicy()
       // Based on previous password value
       let user = hook.params.previousItem
@@ -62,6 +63,7 @@ export function storePreviousPassword (options = {}) {
       let password = _.get(user, passwordField)
       const previousPasswordsField = options.previousPasswordsField || 'previousPasswords'
       let previousPasswords = _.get(user, previousPasswordsField, [])
+      debug(`Moving previous password from field ${passwordField} in field ${previousPasswords} on user`, user)
       previousPasswords.push(password)
       // Pop oldest password when required
       const max = _.get(validator, 'options.history', 5)

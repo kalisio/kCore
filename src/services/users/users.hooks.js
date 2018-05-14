@@ -33,14 +33,15 @@ module.exports = {
       // (we only store hashed password for safety)
       commonHooks.discard('clearPassword')
     ],
-    update: [ populatePreviousObject, storePreviousPassword({ userAsItem: true }) ],
-    patch: [ populatePreviousObject, storePreviousPassword({ userAsItem: true }) ],
+    // when changing password store previous one for password policy
+    update: [ commonHooks.when(hook => hook.data.password && hook.app.getPasswordPolicy, populatePreviousObject, storePreviousPassword({ userAsItem: true })) ],
+    patch: [ commonHooks.when(hook => hook.data.password && hook.app.getPasswordPolicy, populatePreviousObject, storePreviousPassword({ userAsItem: true })) ],
     remove: []
   },
 
   after: {
     all: [
-      commonHooks.when(hook => hook.params.provider, commonHooks.discard('password')),
+      commonHooks.when(hook => hook.params.provider, commonHooks.discard('password'), commonHooks.discard('previousPasswords')),
       serialize([
         {source: 'profile.name', target: 'name'},
         {source: 'profile.avatar', target: 'avatar'},
