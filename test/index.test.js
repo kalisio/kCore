@@ -87,9 +87,11 @@ describe('kCore', () => {
   })
 
   it('creates a user', () => {
+    // Test password generation
+    let hook = hooks.generatePassword({ type: 'before', data: {}, params: {}, app })
     return userService.create({
       email: 'test@test.org',
-      password: 'Pass;word1',
+      password: hook.data.password,
       name: 'test-user',
       tags: [{
         scope: 'skills',
@@ -98,6 +100,8 @@ describe('kCore', () => {
       profile: { phone: '0623256968' } }, { checkAuthorisation: true })
     .then(user => {
       userObject = user
+      // Keep track of clear password
+      userObject.clearPassword = hook.data.password
       return userService.find({ query: { 'profile.name': 'test-user' } })
     })
     .then(users => {
@@ -131,7 +135,7 @@ describe('kCore', () => {
   it('authenticates a user', () => {
     return request
     .post(`${baseUrl}/authentication`)
-    .send({ email: 'test@test.org', password: 'Pass;word1', strategy: 'local' })
+    .send({ email: 'test@test.org', password: userObject.clearPassword, strategy: 'local' })
     .then(response => {
       accessToken = response.body.accessToken
       expect(accessToken).toExist()

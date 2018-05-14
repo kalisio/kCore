@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import generateRandomPassword from 'password-generator'
 import makeDebug from 'debug'
 import { getItems, replaceItems } from 'feathers-hooks-common'
 import { BadRequest } from 'feathers-errors'
@@ -73,4 +74,24 @@ export function storePreviousPassword (options = {}) {
     }
     return hook
   }
+}
+
+export function generatePassword (hook) {
+  if (hook.type !== 'before') {
+    throw new Error(`The 'generatePassword' hook should only be used as a 'before' hook.`)
+  }
+  let app = hook.app
+  let data = hook.data
+  // Generate a password
+  let passwordRule = new RegExp('[\\w\\d\\?\\-]')
+  // If we have a password policy ensure we match it
+  if (app.getPasswordPolicy) {
+    const validator = app.getPasswordPolicy()
+    do {
+      data.password = generateRandomPassword(validator.options.minLength || 12, false, passwordRule)
+    } while (!validator.validate(data.password))
+  } else {
+    data.password = generateRandomPassword(12, false, passwordRule)
+  }
+  return hook
 }
