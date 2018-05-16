@@ -4,7 +4,7 @@
       <template v-for="link in links">
         <div :key="link.label">
           &nbsp;
-          <a @click="onLinkClicked(link.url)" >
+          <a @click="onLinkClicked(link)" >
             {{$t(link.label)}}
           </a>
           &nbsp;
@@ -25,8 +25,12 @@ export default {
     }
   },
   methods: {
-    onLinkClicked (url) {
-      openURL(url)
+    onLinkClicked (link) {
+      if (link.url) {
+        openURL(link.url)
+      } else if (link.route) {
+        this.$router.push(link.route)
+      }
     }
   },
   created () {
