@@ -1,5 +1,5 @@
 <template>
-  <span v-html="markdownAsHtml" />
+  <div v-html="markdownAsHtml" />
 </template>
 
 <script>
@@ -23,7 +23,7 @@ export default {
   },
   watch: {
     url: function () {
-      this.markdown = ''
+      this.markdownAsHtml = ''
       this.processMarkdown()
     },
     markdown: function () {
@@ -40,16 +40,17 @@ export default {
   },
   methods: {
     async processMarkdown() {
+      let markdown = this.markdown
       let converter = new showdown.Converter(this.options)
       converter.setFlavor('github')
-      if (!this.markdown && this.url) {
+      if (!markdown && this.url) {
         let response = await fetch(this.url)
         if (response.status !== 200) {
           throw new Error('Impossible to retrieve markdown: ' + response.status)
         }
-        this.markdown = await response.text()
+        markdown = await response.text()
       }
-      this.markdownAsHtml = converter.makeHtml(this.markdown)
+      this.markdownAsHtml = converter.makeHtml(markdown)
     }
   },
   mounted () {
