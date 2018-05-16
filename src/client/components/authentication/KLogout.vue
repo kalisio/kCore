@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { QIcon, Events } from 'quasar'
+import { QIcon } from 'quasar'
 import { KScreen } from '../frame'
 import mixins from '../../mixins'
 
@@ -44,36 +44,13 @@ export default {
     return {
       appName: '',
       publisherName: '',
-      displayDetails: false,
-      clientVersionName: '',
-      apiVersionName: ''
+      displayDetails: false
     }
   },
-  mixins: [mixins.authentication],
-  methods: {
-    refreshVersionNames () {
-      const capabilities = this.$store.get('capabilities')
-      if (capabilities) {
-        if (capabilities.client) {
-          this.clientVersionName = capabilities.client.version
-          if (capabilities.client.buildNumber) {
-            this.clientVersionName += ' (' + capabilities.client.buildNumber + ')'
-          }
-        }
-        if (capabilities.api) {
-          this.apiVersionName = capabilities.api.version
-          if (capabilities.api.buildNumber) {
-            this.apiVersionName += ' (' + capabilities.api.buildNumber + ')'
-          }
-        }
-      }
-    }
-  },
+  mixins: [mixins.authentication, mixins.version],
   created () {
     this.appName = this.$config('appName', 'kApp')
     this.publisherName = this.$config('publisher', 'Kalisio')
-    this.refreshVersionNames()
-    Events.$on('capabilities-api-changed', this.refreshVersionNames)
     this.logout()
   }
 }

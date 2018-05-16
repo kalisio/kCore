@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { QIcon, QList, QItem, QItemMain, QBtn, Toast, Platform, Events } from 'quasar'
+import { QIcon, QList, QItem, QItemMain, QBtn, Toast, Platform } from 'quasar'
 import { KScreen } from '../frame'
 import { KForm } from '../form'
 import mixins from '../../mixins'
@@ -93,12 +93,10 @@ export default {
         'required': ['email', 'password']
       },
       providers: [],
-      displayDetails: false,
-      clientVersionName: '',
-      apiVersionName: ''
+      displayDetails: false
     }
   },
-  mixins: [mixins.authentication],
+  mixins: [mixins.authentication, mixins.version],
   methods: {
     canChangeEndpoint () {
       return DEV ? true : Platform.is.cordova
@@ -173,30 +171,11 @@ export default {
       } else {
         location.href = authUrl
       }
-    },
-    refreshVersionNames () {
-      const capabilities = this.$store.get('capabilities')
-      if (capabilities) {
-        if (capabilities.client) {
-          this.clientVersionName = capabilities.client.version
-          if (capabilities.client.buildNumber) {
-            this.clientVersionName += ' (' + capabilities.client.buildNumber + ')'
-          }
-        }
-        if (capabilities.api) {
-          this.apiVersionName = capabilities.api.version
-          if (capabilities.api.buildNumber) {
-            this.apiVersionName += ' (' + capabilities.api.buildNumber + ')'
-          }
-        }
-      }
     }
   },
   created () {
     // Retrieve the availalbe providers
     this.providers = this.$config('login.providers', [])
-    this.refreshVersionNames()
-    Events.$on('capabilities-api-changed', this.refreshVersionNames)
   }
 }
 </script>
