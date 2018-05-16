@@ -46,7 +46,10 @@ let baseFieldMixin = {
       return !_.isEmpty(this.error)
     },
     errorLabel () {
-      return this.error
+      // Check for overriden error label
+      const error = _.get(this.properties.field, 'errorLabel', '')
+      // If not use default validator error messages
+      return (error ? this.$t(error) : this.error)
     }
   },
   data () {
