@@ -61,6 +61,8 @@
     "EMAIL_FIELD_HELPER": "$t(KAuthentication.EMAIL_FIELD_HELPER)",
     "PASSWORD_FIELD_HELPER": "Enter a password",
     "CONFIRM_PASSWORD_FIELD_HELPER": "Confirm your password",
+    "ACCEPT_TERMS_HELPER": "I accept terms and conditions",
+    "ACCEPT_TERMS_ERROR_LABEL": "You must accept terms and conditions to register",
     "APPLY_BUTTON": "Register",
     "ALREADY_HAVE_AN_ACCOUNT_LINK": "Already have an account ?",
     "CHANGE_ENDPOINT_LINK_LINK": "$t(KAuthentication.CHANGE_ENDPOINT_LINK)",

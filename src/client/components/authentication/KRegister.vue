@@ -82,9 +82,21 @@ export default {
               'component': 'form/KPasswordField',
               'helper': 'KRegister.CONFIRM_PASSWORD_FIELD_HELPER'
             }
+          },
+          'consentTerms': {
+            'type': 'boolean',
+            'default': false,
+            'enum': [ true ],
+            'field': {
+              'component': 'form/KToggleField',
+              'helper': 'KRegister.ACCEPT_TERMS_HELPER',
+              'errorLabel': 'KRegister.ACCEPT_TERMS_ERROR_LABEL',
+              'checked-icon': 'check',
+              'unchecked-icon': 'clear'
+            }
           }
         },
-        'required': ['name', 'email', 'password', 'confirmPassword']
+        'required': ['name', 'email', 'password', 'confirmPassword', 'consentTerms']
       }
     }
   },
