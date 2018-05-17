@@ -147,3 +147,21 @@ export function setAsDeleted (hook) {
   replaceItems(hook, isArray ? items : items[0])
   return hook
 }
+
+export function setExpireAfter (delayInSeconds) {
+  return function (hook) {
+    if (hook.type !== 'before') {
+      throw new Error(`The 'setExpireAfter' hook should only be used as a 'before' hook.`)
+    }
+    // Retrieve the items from the hook
+    let items = getItems(hook)
+    const isArray = Array.isArray(items)
+    items = (isArray ? items : [items])
+    // Apply the rules for each item
+    let date = new Date(Date.now() + 1000 * delayInSeconds)
+    items.forEach(item => _.set(item, 'expireAt', date))
+    // Replace the items within the hook
+    replaceItems(hook, isArray ? items : items[0])
+    return hook
+  }
+}

@@ -19,7 +19,7 @@ function marshallComparisonFieldsInQuery (queryObject) {
         // try for dates as well
         let date = moment.utc(value)
         if (date.isValid()) {
-          queryObject[key] = new Date(date.format())
+          queryObject[key] = date.toDate()
         }
       }
     }
