@@ -32,7 +32,9 @@ let baseFieldMixin = {
     },
     label () {
       if (this.display.label) {
-        return this.$t(_.get(this.properties.field, 'label', ''))
+        // Check if we have a translation key or directly the label content
+        const label = _.get(this.properties.field, 'label', '')
+        return (this.$i18n.i18next.exists(label) ? this.$t(label) : label)
       }
       return ''
     },
@@ -40,7 +42,9 @@ let baseFieldMixin = {
       return _.get(this.display, 'labelWidth', 3)
     },
     helper () {
-      return this.$t(_.get(this.properties.field, 'helper', ''))
+      // Check if we have a translation key or directly the helper content
+      const helper = _.get(this.properties.field, 'helper', '')
+      return (this.$i18n.i18next.exists(helper) ? this.$t(helper) : helper)
     },
     hasError () {
       return !_.isEmpty(this.error)
@@ -49,7 +53,9 @@ let baseFieldMixin = {
       // Check for overriden error label
       const error = _.get(this.properties.field, 'errorLabel', '')
       // If not use default validator error messages
-      return (error ? this.$t(error) : this.error)
+      if (!error) return this.error
+      // Else check if we have a translation key or directly the error content
+      return (this.$i18n.i18next.exists(error) ? this.$t(error) : error)
     }
   },
   data () {

@@ -6,7 +6,7 @@
           Register form
         -->
         <div>
-          <k-form ref="form" :schema="schema" />
+          <k-form ref="form" :schema="getSchema()" />
         </div>
         <div class="self-center">
           <q-btn id="register" color="primary" loader @click="onRegister">{{$t('KRegister.APPLY_BUTTON')}}</q-btn>
@@ -42,9 +42,10 @@ export default {
     KForm,
     KScreen
   },
-  data () {
-    return {
-      schema: {
+  mixins: [mixins.authentication],
+  methods: {
+    getSchema () {
+      return {
         '$schema': 'http://json-schema.org/draft-06/schema#',
         '$id': 'http://kalisio.xyz/schemas/register.json#',
         'title': 'Registration Form',
@@ -89,8 +90,8 @@ export default {
             'enum': [ true ],
             'field': {
               'component': 'form/KToggleField',
-              'helper': 'KRegister.ACCEPT_TERMS_HELPER',
-              'errorLabel': 'KRegister.ACCEPT_TERMS_ERROR_LABEL',
+              'helper': this.$t('KRegister.ACCEPT_TERMS_HELPER', { domain: this.$config('domain') }),
+              'errorLabel': this.$t('KRegister.ACCEPT_TERMS_ERROR_LABEL', { domain: this.$config('domain') }),
               'checked-icon': 'check',
               'unchecked-icon': 'clear'
             }
@@ -98,10 +99,7 @@ export default {
         },
         'required': ['name', 'email', 'password', 'confirmPassword', 'consentTerms']
       }
-    }
-  },
-  mixins: [mixins.authentication],
-  methods: {
+    },
     canChangeEndpoint () {
       return DEV ? true : Platform.is.cordova
     },
