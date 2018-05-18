@@ -7,9 +7,12 @@ import compress from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
 import bodyParser from 'body-parser'
+import { RateLimiter as SocketLimiter } from 'limiter'
+import HttpLimiter from 'express-rate-limit'
 import feathers from 'feathers'
 import configuration from 'feathers-configuration'
 import hooks from 'feathers-hooks'
+import { TooManyRequests } from 'feathers-errors'
 import { merge } from 'feathers-commons'
 import rest from 'feathers-rest'
 import socketio from 'feathers-socketio'
@@ -25,10 +28,15 @@ import { ObjectID } from 'mongodb'
 import { Database } from './db'
 
 const debug = makeDebug('kalisio:kCore:application')
+const debugLimiter = makeDebug('kalisio:kCore:application:limiter')
 
 function auth () {
   const app = this
   const config = app.get('authentication')
+  const limiter = config.limiter
+  if (limiter && limiter.http) {
+    app.use(config.path, new HttpLimiter(limiter.http))
+  }
   // Store availalbe OAuth2 providers
   app.authenticationProviders = []
   // Get access to password validator if a policy is defined
@@ -295,6 +303,74 @@ function setupLogger (logsConfig) {
   })
 }
 
+function setupSockets (app) {
+  const apiLimiter = app.get('apiLimiter')
+  const authConfig = app.get('authentication')
+  const authLimiter = authConfig.limiter
+
+  return io => {
+    // By default EventEmitters will print a warning if more than 10 listeners are added for a particular event.
+    // The value can be set to Infinity (or 0) to indicate an unlimited number of listeners.
+    io.sockets.setMaxListeners(0)
+
+    io.on('connection', socket => {
+      debug('New socket connection', socket.id, socket.conn.remoteAddress)
+      socket.on('disconnect', () => {
+        debug('Socket disconnection', socket.id, socket.conn.remoteAddress)
+      })
+      /* For debug purpose: trace all data received
+      socket.use((packet, next) => {
+        console.log(packet)
+        next()
+      })
+      */
+      if (apiLimiter && apiLimiter.websocket) {
+        const { tokensPerInterval, interval } = apiLimiter.websocket
+        const socketLimiter = new SocketLimiter(tokensPerInterval, interval)
+        socket.use((packet, next) => {
+          if (packet.length > 0) {
+            let pathAndMethod = packet[0].split('::')
+            if (pathAndMethod.length > 0) {
+              const servicePath = pathAndMethod[0]
+              // Message are formatted like this 'service_path::service_method'
+              debugLimiter(socketLimiter.getTokensRemaining() + ' remaining API token for socket', socket.id, socket.conn.remoteAddress)
+              if (!socketLimiter.tryRemoveTokens(1)) { // if exceeded
+                const message = 'Too many requests in a given amount of time (rate limiting)'
+                debug(message)
+                const error = new TooManyRequests(message, { translation: { key: 'RATE_LIMITING' } })
+                // FIXME: calling this causes a client timeout
+                // next(error)
+                // Trying to send error like in https://github.com/feathersjs/transport-commons/blob/auk/src/events.js#L103
+                // does not work either (also generates a client timeout)
+                socket.emit(`${servicePath} error`, error.toJSON())
+                return
+              }
+            }
+          }
+          next()
+        })
+      }
+
+      if (authLimiter && authLimiter.websocket) {
+        const { tokensPerInterval, interval } = authLimiter.websocket
+        const authSocketLimiter = new SocketLimiter(tokensPerInterval, interval)
+        socket.on('authenticate', (data) => {
+          // We only limit password guessing
+          if (data.strategy === 'local') {
+            debugLimiter(authSocketLimiter.getTokensRemaining() + ' remaining authentication token for socket', socket.id, socket.conn.remoteAddress)
+            if (!authSocketLimiter.tryRemoveTokens(1)) { // if exceeded
+              const message = 'Too many authentication requests in a given amount of time (rate limiting)'
+              debug(message)
+              // Force disconnecting
+              socket.disconnect()
+            }
+          }
+        })
+      }
+    })
+  }
+}
+
 export function kalisio () {
   let app = feathers()
   // By default EventEmitters will print a warning if more than 10 listeners are added for a particular event.
@@ -332,6 +408,10 @@ export function kalisio () {
     await fn.call(this)
     return this
   }
+  const apiLimiter = app.get('apiLimiter')
+  if (apiLimiter && apiLimiter.http) {
+    app.use(app.get('apiPath'), new HttpLimiter(apiLimiter.http))
+  }
 
   // Enable CORS, security, compression, and body parsing
   app.use(cors())
@@ -343,9 +423,7 @@ export function kalisio () {
   // Set up plugins and providers
   app.configure(hooks())
   app.configure(rest())
-  app.configure(socketio({
-    path: app.get('apiPath') + 'ws'
-  }))
+  app.configure(socketio({ path: app.get('apiPath') + 'ws' }, setupSockets(app)))
 
   app.configure(auth)
 

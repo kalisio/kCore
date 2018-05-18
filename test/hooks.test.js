@@ -4,7 +4,6 @@ import { hooks } from '../src'
 import { ObjectID } from 'mongodb'
 
 describe('kCore:hooks', () => {
-
   before(() => {
     chailint(chai, util)
   })
@@ -62,6 +61,25 @@ describe('kCore:hooks', () => {
     expect(typeof hook.params.query.date.$lte).to.equal('object')
     expect(hook.params.query.date.$gte.getTime()).to.equal(now.getTime())
     expect(hook.params.query.date.$lte.getTime()).to.equal(now.getTime())
+  })
+
+  it('rate limiting', (done) => {
+    const limiter = hooks.rateLimit({ tokensPerInterval: 2, interval: 60 * 1000, method: 'create', service: 'service' }) // 2 per minute
+    let hook = { type: 'before', method: 'create', data: {}, params: {}, service: { name: 'service' } }
+    try {
+      limiter(hook)
+      hook.n = 1
+      limiter(hook)
+      hook.n = 2
+      // Should rise after 2 calls
+      limiter(hook)
+      hook.n = 3
+    } catch (error) {
+      expect(error).toExist()
+      expect(error.name).to.equal('TooManyRequests')
+      expect(hook.n).to.equal(2)
+      done()
+    }
   })
 
   // Cleanup

@@ -39,7 +39,7 @@ export default {
     }
   },
   methods: {
-    async processMarkdown() {
+    async processMarkdown () {
       let markdown = this.markdown
       let converter = new showdown.Converter(this.options)
       converter.setFlavor('github')
