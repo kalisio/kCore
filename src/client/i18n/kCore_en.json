@@ -25,6 +25,8 @@
     "503": "Operation cannot be performed: service unavailable",
     "RETRY": "Please try again later or modify your parameters",
     "RATE_LIMITING": "Too many API requests in a given amount of time (rate limiting)",
+    "RATE_LIMITING_AUTHENTICATION": "Too many authentication requests in a given amount of time (rate limiting)",
+    "RATE_LIMITING_CONCURRENCY": "Too many concurrent connections (rate limiting)",
     "WEAK_PASSWORD": "The provided password does not comply our password policy",
     "WEAK_PASSWORD_MIN": "Minimum length of {{minLength}} characters",
     "WEAK_PASSWORD_MAX": "Maximum length of {{maxLength}} characters",

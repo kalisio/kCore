@@ -8,7 +8,7 @@ import rxjs from 'rxjs'
 import config from 'config'
 import { permissions } from '../common'
 import { Store } from './store'
-import { Platform } from 'quasar'
+import { Platform, Events } from 'quasar'
 
 function getBaseUrlStorageKey () {
   return config.appName + '-baseUrl'
@@ -144,6 +144,8 @@ export function kalisio () {
       path: config.apiPath + 'ws'
     })
     api.configure(feathers.socketio(api.socket, { timeout: config.apiTimeout || 10000 }))
+    // Retrieve our specific errors on rate-limiting
+    api.socket.on('rate-limit', (error) => Events.$emit('error', error))
   }
   api.configure(feathers.authentication({
     storage: window.localStorage,

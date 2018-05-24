@@ -303,21 +303,60 @@ function setupLogger (logsConfig) {
   })
 }
 
+function tooManyRequests (socket, message, key) {
+  debug(message)
+  const error = new TooManyRequests(message, { translation: { key } })
+  socket.emit('rate-limit', error)
+  // Add a timeout so that error message is correctly handled
+  setTimeout(() => socket.disconnect(true), 3000)
+}
+
 function setupSockets (app) {
   const apiLimiter = app.get('apiLimiter')
   const authConfig = app.get('authentication')
   const authLimiter = authConfig.limiter
+  let connections = {}
+  let nbConnections = 0
 
   return io => {
     // By default EventEmitters will print a warning if more than 10 listeners are added for a particular event.
     // The value can be set to Infinity (or 0) to indicate an unlimited number of listeners.
     io.sockets.setMaxListeners(0)
-
+    const maxConnections = _.get(apiLimiter, 'websocket.maxConcurrency', 0)
+    const maxIpConnections = _.get(apiLimiter, 'websocket.concurrency', 0)
+      
     io.on('connection', socket => {
-      debug('New socket connection', socket.id, socket.conn.remoteAddress)
+      nbConnections++
+      debug('New socket connection', socket.id, socket.conn.remoteAddress, nbConnections)
+      // Setup disconnect handler first
       socket.on('disconnect', () => {
-        debug('Socket disconnection', socket.id, socket.conn.remoteAddress)
+        nbConnections--
+        debug('Socket disconnection', socket.id, socket.conn.remoteAddress, nbConnections)
+        if (maxIpConnections > 0) {
+          const nbIpConnections = _.get(connections, socket.conn.remoteAddress) - 1
+          debug('Total number of connections for', socket.id, socket.conn.remoteAddress, nbIpConnections)
+          _.set(connections, socket.conn.remoteAddress, nbIpConnections)
+        }
       })
+      if (maxConnections > 0) {
+        if (nbConnections > maxConnections) {
+          tooManyRequests(socket, 'Too many concurrent connections (rate limiting)', 'RATE_LIMITING_CONCURRENCY')
+          return
+        }
+      }
+      if (maxIpConnections > 0) {
+        if (_.has(connections, socket.conn.remoteAddress)) {
+          const nbIpConnections = _.get(connections, socket.conn.remoteAddress) + 1
+          debug('Total number of connections for', socket.id, socket.conn.remoteAddress, nbConnections)
+          _.set(connections, socket.conn.remoteAddress, nbIpConnections)
+          if (nbIpConnections > maxIpConnections) {
+            tooManyRequests(socket, 'Too many concurrent connections (rate limiting)', 'RATE_LIMITING_CONCURRENCY')
+            return
+          }
+        } else {
+          _.set(connections, socket.conn.remoteAddress, 1)
+        }
+      }
       /* For debug purpose: trace all data received
       socket.use((packet, next) => {
         console.log(packet)
@@ -326,23 +365,25 @@ function setupSockets (app) {
       */
       if (apiLimiter && apiLimiter.websocket) {
         const { tokensPerInterval, interval } = apiLimiter.websocket
-        const socketLimiter = new SocketLimiter(tokensPerInterval, interval)
+        socket.socketLimiter = new SocketLimiter(tokensPerInterval, interval)
         socket.use((packet, next) => {
           if (packet.length > 0) {
+            // Message are formatted like this 'service_path::service_method'
             let pathAndMethod = packet[0].split('::')
             if (pathAndMethod.length > 0) {
               const servicePath = pathAndMethod[0]
-              // Message are formatted like this 'service_path::service_method'
-              debugLimiter(socketLimiter.getTokensRemaining() + ' remaining API token for socket', socket.id, socket.conn.remoteAddress)
-              if (!socketLimiter.tryRemoveTokens(1)) { // if exceeded
-                const message = 'Too many requests in a given amount of time (rate limiting)'
-                debug(message)
-                const error = new TooManyRequests(message, { translation: { key: 'RATE_LIMITING' } })
+              debugLimiter(socket.socketLimiter.getTokensRemaining() + ' remaining API token for socket', socket.id, socket.conn.remoteAddress)
+              if (!socket.socketLimiter.tryRemoveTokens(1)) { // if exceeded
+                tooManyRequests(socket, 'Too many requests in a given amount of time (rate limiting)', 'RATE_LIMITING')
                 // FIXME: calling this causes a client timeout
-                // next(error)
+                //next(error)
+                // Need to normalize the error object as JSON
+                //let result = {}
+                //Object.getOwnPropertyNames(error).forEach(key => (result[key] = error[key]))
                 // Trying to send error like in https://github.com/feathersjs/transport-commons/blob/auk/src/events.js#L103
                 // does not work either (also generates a client timeout)
-                socket.emit(`${servicePath} error`, error.toJSON())
+                //socket.emit(`${servicePath} error`, result)
+                //socket.emit(result)
                 return
               }
             }
@@ -353,16 +394,13 @@ function setupSockets (app) {
 
       if (authLimiter && authLimiter.websocket) {
         const { tokensPerInterval, interval } = authLimiter.websocket
-        const authSocketLimiter = new SocketLimiter(tokensPerInterval, interval)
+        socket.authSocketLimiter = new SocketLimiter(tokensPerInterval, interval)
         socket.on('authenticate', (data) => {
           // We only limit password guessing
           if (data.strategy === 'local') {
-            debugLimiter(authSocketLimiter.getTokensRemaining() + ' remaining authentication token for socket', socket.id, socket.conn.remoteAddress)
-            if (!authSocketLimiter.tryRemoveTokens(1)) { // if exceeded
-              const message = 'Too many authentication requests in a given amount of time (rate limiting)'
-              debug(message)
-              // Force disconnecting
-              socket.disconnect()
+            debugLimiter(socket.authSocketLimiter.getTokensRemaining() + ' remaining authentication token for socket', socket.id, socket.conn.remoteAddress)
+            if (!socket.authSocketLimiter.tryRemoveTokens(1)) { // if exceeded
+              tooManyRequests(socket, 'Too many authentication requests in a given amount of time (rate limiting)', 'RATE_LIMITING_AUTHENTICATION')
             }
           }
         })
