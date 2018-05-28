@@ -194,7 +194,7 @@ export default function baseEditorMixin (formRefs) {
             this.$emit('applied', response)
             if (done) done()
           }
-          const query = this.getBaseQuery()
+          const query = this.getBaseQuery(object)
           // Update the item
           if (this.getMode() === 'update') {
             // Editing mode => patch the item
