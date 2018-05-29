@@ -23,7 +23,7 @@ let baseContextMixin = {
     // This method could be overriden in app for more dynamic behaviour
     // default one is to get the action list from the configuration and set it in app bar
     getActionsForContext (context) {
-      let actions = this.$store.get('config.context.actions', [])
+      let actions = this.$config('context.actions', [])
       // Update actions to use current context
       actions.forEach(action => { action.route.params['contextId'] = this.contextId })
       return actions
