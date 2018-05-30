@@ -53,7 +53,10 @@ export async function attachToResource (hook) {
   await resourcesService.patch(resource._id.toString(), {
     [attachmentField]: attachments
   }, {
-    user: hook.params.user
+    user: hook.params.user,
+    // Forward query so that any update param could be processed as usual on resource
+    // Delete own parameters from query otherwise it will be used to filter items
+    query: _.omit(query, ['resource', 'resourcesService'])
   })
   debug('Attached file on resource ' + resource._id.toString(), attachment)
   return hook
@@ -89,7 +92,10 @@ export async function detachFromResource (hook) {
   await resourcesService.patch(resource._id.toString(), {
     [attachmentField]: attachments
   }, {
-    user: hook.params.user
+    user: hook.params.user,
+    // Forward query so that any update param could be processed as usual on resource
+    // Delete own parameters from query otherwise it will be used to filter items
+    query: _.omit(query, ['resource', 'resourcesService'])
   })
   debug('Detached file on resource ' + resource._id.toString(), attachment)
   return hook

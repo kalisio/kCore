@@ -30,6 +30,10 @@ export default {
       type: String,
       default: ''
     },
+    baseQuery: {
+      type: Object,
+      default: () => {}
+    },
     options: {
       type: Object,
       default: () => {}
@@ -83,7 +87,7 @@ export default {
         // When processing uploads on-the-fly we need to remove from server
         if (this.autoProcessQueue()) {
           this.storageService().remove(this.files[index]._id, {
-            query: { resource: this.resource, resourcesService: this.resourcesService() }
+            query: Object.assign({ resource: this.resource, resourcesService: this.resourcesService() }, this.baseQuery)
           })
           // Thumbnail as well
           this.storageService().remove(this.files[index]._id + '.thumbnail')
@@ -132,6 +136,9 @@ export default {
         formData.set('resource', this.resource)
         formData.set('resourcesService', this.resourcesService())
       }
+      _.forOwn(this.baseQuery, (value, key) => {
+        formData.set(key, value)
+      })
       // When not processing uploads on-the-fly send thumbnail to the server along with the file
       // Check if it does exist however because it is processed asynchronously
       if (file.thumbnail) {

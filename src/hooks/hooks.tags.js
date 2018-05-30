@@ -193,7 +193,10 @@ export function tagResource (hook) {
     return resourcesService.patch(resource._id.toString(), {
       tags: resource.tags
     }, {
-      user: hook.params.user
+      user: hook.params.user,
+      // Forward query so that any update param could be processed as usual on resource
+      // Delete own parameters from query otherwise it will be used to filter items
+      query: _.omit(query, ['resource', 'resourcesService'])
     })
     .then(subject => {
       debug('Tag ' + tag.value + ' set on resource ' + resource._id.toString() + ' with scope ' + tag.scope)
@@ -219,7 +222,10 @@ export function untagResource (hook) {
     return resourcesService.patch(resource._id.toString(), {
       tags: resource.tags
     }, {
-      user: hook.params.user
+      user: hook.params.user,
+      // Forward query so that any update param could be processed as usual on resource
+      // Delete own parameters from query otherwise it will be used to filter items
+      query: _.omit(query, ['resource', 'resourcesService'])
     })
     .then(subject => {
       debug('Tag ' + tag.value + ' unset on resource ' + resource._id.toString() + ' with scope ' + tag.scope)
