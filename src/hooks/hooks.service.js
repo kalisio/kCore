@@ -1,4 +1,4 @@
-import { TooManyRequests } from 'feathers-errors'
+import { TooManyRequests, Forbidden } from 'feathers-errors'
 import { RateLimiter } from 'limiter'
 import makeDebug from 'debug'
 
@@ -30,3 +30,39 @@ export function rateLimit (options) {
     return hook
   }
 }
+
+export function countLimit (options) {
+  return function (hook) {
+    if (hook.type !== 'before') {
+      throw new Error(`The 'countLimit' hook should only be used as a 'before' hook.`)
+    }
+    let app = hook.app
+    let count = options.max
+    // Either we build a count request using a service or the caller has its own count routine
+    const customCount = (typeof options.count === 'function')
+    if (!customCount) {
+      let service
+      if (typeof options.service === 'function') {
+        service = options.service(hook)
+      } else {
+        service = app.getService(options.service, hook.service.context)
+      }
+      // Indicate we'd only like to count
+      let query = { $limit: 0 }
+      if (typeof options.query === 'function') {
+        Object.assign(query, options.query(hook))
+      } else {
+        Object.assign(query, options.query)
+      }
+      count = service.find({ query }).total
+    } else {
+      count = options.count(hook)
+    }
+    
+    if (count >= options.max) {
+      throw new Forbidden('Resource quota exceeded (count limiting) on service ' + options.service, { translation: { key: 'COUNT_LIMITING' } })
+    }
+    return hook
+  }
+}
+

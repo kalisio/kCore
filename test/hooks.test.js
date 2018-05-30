@@ -82,6 +82,25 @@ describe('kCore:hooks', () => {
     }
   })
 
+  it('count limiting', (done) => {
+    const limiter = hooks.countLimit({ count: (hook) => hook.n, max: 2 })
+    let hook = { type: 'before', method: 'create', data: {}, params: {}, service: { name: 'service' }, n: 0 }
+    try {
+      limiter(hook)
+      hook.n = 1
+      limiter(hook)
+      hook.n = 2
+      // Should rise after 2 calls
+      limiter(hook)
+      hook.n = 3
+    } catch (error) {
+      expect(error).toExist()
+      expect(error.name).to.equal('Forbidden')
+      expect(hook.n).to.equal(2)
+      done()
+    }
+  })
+
   // Cleanup
   after(async () => {
   })
