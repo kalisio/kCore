@@ -176,9 +176,11 @@ export function tagResource (hook) {
     throw new Error(`The 'tagResource' hook should only be used as a 'after' hook.`)
   }
   const tag = hook.result
+  const params = hook.params
+  const query = params.query
   const context = hook.service.context
-  const resourcesService = hook.params.resourcesService
-  let resource = hook.params.resource
+  const resourcesService = params.resourcesService
+  let resource = params.resource
   // If not already tagged
   if (!_.find(resource.tags, resourceTag => isTagEqual(resourceTag, tag))) {
     // Initialize on first tag
@@ -213,8 +215,10 @@ export function untagResource (hook) {
   }
 
   const tag = hook.result
-  const resourcesService = hook.params.resourcesService
-  let resource = hook.params.resource
+  const params = hook.params
+  const query = params.query
+  const resourcesService = params.resourcesService
+  let resource = params.resource
   // If already tagged
   const tagIndex = _.findIndex(resource.tags, resourceTag => isTagEqual(resourceTag, tag))
   if (tagIndex >= 0) {
@@ -222,7 +226,7 @@ export function untagResource (hook) {
     return resourcesService.patch(resource._id.toString(), {
       tags: resource.tags
     }, {
-      user: hook.params.user,
+      user: params.user,
       // Forward query so that any update param could be processed as usual on resource
       // Delete own parameters from query otherwise it will be used to filter items
       query: _.omit(query, ['resource', 'resourcesService'])
