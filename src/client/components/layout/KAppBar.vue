@@ -18,7 +18,7 @@
     <!--
       Toolbar section
      -->
-    <template v-for="action in appBar.toolbar">
+    <template v-if="hasToolbar" v-for="action in appBar.toolbar">
       <q-btn :id ="action.name" :key="action.name" flat @click="onActionTriggered(action)">
         <q-icon :name="action.icon" />
       </q-btn>
@@ -26,7 +26,7 @@
     <!--
       Menu section
      -->
-    <template v-if="appBar.menu && appBar.menu.length > 0">
+    <template v-if="hasMenu">
       <q-btn id="overflow-menu-entry" flat>
         <q-popover id="overflow-menu" ref="menu">
           <q-list>
@@ -73,9 +73,17 @@ export default {
       appBar: this.$store.get('appBar')
     }
   },
+  computed: {
+    hasToolbar () {
+      return this.appBar.toolbar && this.appBar.toolbar.length > 0
+    },
+    hasMenu () {
+      return this.appBar.menu && this.appBar.menu.length > 0
+    }
+  },
   methods: {
     onActionTriggered (action) {
-      this.$refs.menu.close()
+      if (this.hasMenu) this.$refs.menu.close()
       // If a handler is given call it
       if (action.handler) action.handler()
       // If a route is given activate it
