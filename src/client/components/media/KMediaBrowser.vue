@@ -1,7 +1,7 @@
 <template>
   <k-modal ref="modal" :toolbar="[]" :buttons="[]" :options="{ padding: '0px', maximized: true }">
     <div slot="modal-content" >
-      <q-carousel ref="carousel" actions arrows dots infinite fullscreen v-show="hasMedia && !zoomedMedia" @slide="onViewMedia">
+      <q-carousel ref="carousel" actions arrows dots infinite v-show="hasMedia && !zoomedMedia" @slide="onViewMedia">
         <div v-for="media in medias" :key="media._id" slot="slide" class="flex-center row">
           <img v-if="media.uri" style="max-width: 100%; max-height: 100%; object-fit: content;" :src="media.uri" />
           <div v-if="!media.uri">
