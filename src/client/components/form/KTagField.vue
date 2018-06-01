@@ -86,7 +86,7 @@ export default {
           data: {
             value: pattern,
             scope: this.properties.scope,
-            icon: { name: 'label', color: 'dark' }
+            icon: { name: '', color: 'dark' }
           }
         })
       }

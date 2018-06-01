@@ -3,8 +3,7 @@
     <div slot="modal-content" class="column sm-gutter">
       <div class="row justify-center items-center sm-gutter">
         <template v-for="icon in iconsPage">
-          <q-icon class="col-1" style="margin:4px" :key="icon" v-if="icon !== selectedIcon.name" :name="icon" size="2rem" color="grey-7" @click="onIconSelected(icon)" />
-          <q-icon class="col-1" style="margin:4px" :key="icon" v-else :name="icon" size="2rem" :color="selectedIcon.color" />
+          <q-icon class="col-1" style="margin:4px" :key="icon" :color="icon !== selectedIcon.name ? 'grey-7' : selectedIcon.color" :name="icon" size="2rem" @click="onIconSelected(icon)" />
         </template>
       </div>
       <div class="row justify-center items-center">
@@ -83,7 +82,12 @@ export default {
       this.$refs.modal.close()
     },
     onIconSelected (icon) {
-      this.selectedIcon.name = icon
+      // When clicking again on the icon we remove it
+      if (this.selectedIcon.name === icon) {
+        this.selectedIcon.name = ''
+      } else {
+        this.selectedIcon.name = icon
+      }
     }
   },
   created () {

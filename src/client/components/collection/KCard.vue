@@ -41,10 +41,10 @@
           <div v-if="tags && tags.length > 0">
             <div class="row justify-start items-center">
               <template v-for="tag in tags">
-                <q-chip v-if="options.tags && options.tags === 'chip'" :key="key(tag, 'value')" small :color="tag.icon.color" :icon="tag.icon.name" class="tag">
+                <q-chip v-if="options.tags && options.tags === 'chip'" :key="key(tag, 'value')" small :color="tag.icon.color" :icon="tag.icon.name" class="card-tag-chip">
                   {{tag.value}}
                 </q-chip>
-                <q-icon v-else :key="key(tag, 'value')" size="24px" :color="tag.icon.color" class="tag" :name="tag.icon.name">
+                <q-icon v-else :key="key(tag, 'value')" size="24px" :color="tag.icon.color" class="card-tag-chip" :name="tag.icon.name">
                   <q-tooltip>{{tag.value}}</q-tooltip>
                 </q-icon>
               </template>
@@ -171,7 +171,7 @@ export default {
 </script>
 
 <style>
-.tag {
-  margin: 8px;
+.card-tag-chip {
+  margin: 4px;
 }
 </style>

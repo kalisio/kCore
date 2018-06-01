@@ -2,7 +2,7 @@
   <div class="row justify-start sm-gutter full-width">
     <template v-for="(color, index) in colors">
       <div :key="index">
-        <q-btn :key="index" :round="shape === 'round'" small :color="color" @click="$emit('input', color)">
+        <q-btn :key="index" :round="shape === 'round'" :icon="value === color ? 'done' : ''" small :color="color" @click="$emit('input', color)">
         </q-btn>
       </div>
     </template>
