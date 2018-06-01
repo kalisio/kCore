@@ -18,6 +18,7 @@
 
 <script>
 import _ from 'lodash'
+import logger from 'loglevel'
 import Ajv from 'ajv'
 import AjvLocalize from 'ajv-i18n'
 import mixins from '../../mixins'
@@ -47,6 +48,10 @@ export default {
     schema: {
       type: Object,
       default: null
+    },
+    clearOnCreate: {
+      type: Boolean,
+      default: true
     },
     display: {
       type: Object,
@@ -136,6 +141,7 @@ export default {
     },
     build () {
       if (!this.schema) throw Error('Cannot build the form without schema')
+      logger.debug('Building form', this.schema.$id)
       // Test in cache first
       this.validator = this.ajv.getSchema(this.schema.$id)
       if (!this.validator) {
@@ -145,30 +151,30 @@ export default {
       }
       return this.buildFields()
     },
-    fill (values) {
+    fill (values, skipValidate) {
+      logger.debug('Filling form', this.schema.$id, values)
       if (!this.loadRefs().isFulfilled()) throw Error('Cannot fill the form while not ready')
       this.fields.forEach(field => {
-        let value = _.get(values, field.name)
-        if (value) {
-          // Override the default value in order to use this value when reseting the form
-          _.set(field, 'default', value)
-          this.getField(field.name).fill(value)
+        if (_.has(values, field.name)) {
+          this.getField(field.name).fill(_.get(values, field.name))
         } else {
           // The field has no value, then assign a default one
           this.getField(field.name).clear()
         }
       })
-      this.validate()
+      if (!skipValidate) this.validate()
     },
     values () {
       return this.fields.reduce((values, field) => Object.assign(values, { [field.name]: this.getField(field.name).value() }), {})
     },
     clear () {
+      logger.debug('Clearing form', this.schema.$id)
       if (!this.loadRefs().isFulfilled()) throw Error('Cannot clear the form while not ready')
       this.fields.forEach(field => this.getField(field.name).clear())
     },
     validate () {
       if (!this.loadRefs().isFulfilled()) throw Error('Cannot validate the form while not ready')
+      logger.debug('Validating form', this.schema.$id)
       let result = {
         isValid: false,
         values: this.values()
@@ -217,10 +223,12 @@ export default {
     // If a schema is already registered automatially build the form
     // otherwise the parent component would have to manually
     // FIXME: cannot know when the form is built => should be done by the parent or need to emit an event
+    logger.debug('Creating form', this.schema ? this.schema.$id : 'without schema')
     if (this.schema) {
+      logger.debug('Initializing form', this.schema.$id)
       this.build()
       .then(() => {
-        this.clear()
+        if (this.clearOnCreate) this.clear()
         this.$emit('form-ready', this)
       })
     }
