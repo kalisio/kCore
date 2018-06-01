@@ -87,11 +87,13 @@ export default {
       this.$router.push({name: 'login'})
     }
   },
-  async created () {
-    await this.loadRefs()
-    await this.$refs.form.build()
-    this.$refs.form.fill({
-      baseUrl: this.$api.getBaseUrl()
+  created () {
+    this.loadRefs()
+    .then(() => this.$refs.form.build())
+    .then(() => {
+      this.$refs.form.fill({
+        baseUrl: this.$api.getBaseUrl()
+      })
     })
   }
 }
