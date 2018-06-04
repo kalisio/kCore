@@ -208,14 +208,15 @@ describe('kCore', () => {
       return userService.get(userObject._id.toString())
     })
     .then(user => {
+      userObject = user
       expect(user.authorisations).toExist()
       expect(user.authorisations.length > 0).beTrue()
       expect(user.authorisations[0].permissions).to.deep.equal('manager')
     })
   })
 
-  it('cannot escalate an authorisation', (done) => {
-    authorisationService.create({
+  it('cannot escalate an authorisation when creating', () => {
+    return authorisationService.create({
       scope: 'authorisations',
       permissions: 'owner',
       subjects: userObject._id.toString(),
@@ -226,9 +227,36 @@ describe('kCore', () => {
       user: userObject,
       checkEscalation: true
     })
+    .then(authorisation => {
+      expect(authorisation).toExist()
+      return userService.get(userObject._id.toString())
+    })
+    .then(user => {
+      userObject = user
+      expect(user.authorisations).toExist()
+      expect(user.authorisations.length > 0).beTrue()
+      expect(user.authorisations[0].permissions).to.deep.equal('manager')
+    })
+  })
+
+  it('cannot escalate an authorisation when removing', (done) => {
+    // Fake lower permission level
+    userObject.authorisations[0].permissions = 'member'
+    authorisationService.remove(tagObject._id, {
+      query: {
+        scope: 'authorisations',
+        subjects: userObject._id.toString(),
+        subjectsService: 'users',
+        resourcesService: 'tags'
+      },
+      user: userObject,
+      checkEscalation: true
+    })
     .catch(error => {
       expect(error).toExist()
       expect(error.name).to.equal('Forbidden')
+      // Restore permission level
+      userObject.authorisations[0].permissions = 'manager'
       done()
     })
   })
@@ -240,9 +268,7 @@ describe('kCore', () => {
         subjects: userObject._id.toString(),
         subjectsService: 'users',
         resourcesService: 'tags'
-      }
-    }, {
-      user: userObject,
+      },user: userObject,
       checkEscalation: true
     })
     .then(authorisation => {

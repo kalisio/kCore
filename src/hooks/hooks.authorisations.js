@@ -54,23 +54,40 @@ export function preventEscalation (hook) {
     // Then user permission level
     const permissions = (resource ? resource.permissions : null)
     const role = (permissions ? Roles[permissions] : null)
-    let authorisationRole
-    if (data.permissions) {
-      authorisationRole = Roles[data.permissions]
-    } else if (query.permissions) {
-      authorisationRole = Roles[query.permissions]
-    }
-    if (!role || !authorisationRole) {
-      if (!role) debug('Role for authorisation not found on user for scope ' + scopeName)
-      else debug('Role to authorise not found for scope ' + scopeName)
+    if (!role) {
+      debug('Role for authorisation not found on user for scope ' + scopeName)
       throw new Forbidden(`You are not allowed to change authorisation on resource`)
     }
+
     // Check if privilege escalation might occur, if so clamp to user permission level
-    if (authorisationRole > role) {
+    if (hook.method === 'remove') {
+      // Input subjects need to be checked for remove since no input permissions are given
+      params.subjects = params.subjects.filter(subject => {
+        const subjectScope = _.get(subject, scopeName, [])
+        const subjectResource = _.find(subjectScope, resource => resource._id && (resource._id.toString() === params.resource._id.toString()))
+        const subjectPermissions = (subjectResource ? subjectResource.permissions : null)
+        const subjectRole = (subjectPermissions ? Roles[subjectPermissions] : null)
+        return (subjectRole && (subjectRole <= role))
+      })
+    } else {
+      // Input permissions for create
+      let authorisationRole
       if (data.permissions) {
-        data.permissions = permissions
+        authorisationRole = Roles[data.permissions]
       } else if (query.permissions) {
-        query.permissions = permissions
+        authorisationRole = Roles[query.permissions]
+      }
+      if (authorisationRole) {
+        if (authorisationRole > role) {
+          if (data.permissions) {
+            data.permissions = permissions
+          } else if (query.permissions) {
+            query.permissions = permissions
+          }
+        }
+      } else {
+        debug('Role to authorise not found for scope ' + scopeName)
+        throw new Forbidden(`You are not allowed to change authorisation on resource`)
       }
     }
   }
