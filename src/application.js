@@ -324,7 +324,7 @@ function setupSockets (app) {
     io.sockets.setMaxListeners(0)
     const maxConnections = _.get(apiLimiter, 'websocket.maxConcurrency', 0)
     const maxIpConnections = _.get(apiLimiter, 'websocket.concurrency', 0)
-      
+
     io.on('connection', socket => {
       nbConnections++
       debug('New socket connection', socket.id, socket.conn.remoteAddress, nbConnections)
@@ -371,19 +371,19 @@ function setupSockets (app) {
             // Message are formatted like this 'service_path::service_method'
             let pathAndMethod = packet[0].split('::')
             if (pathAndMethod.length > 0) {
-              const servicePath = pathAndMethod[0]
+              // const servicePath = pathAndMethod[0]
               debugLimiter(socket.socketLimiter.getTokensRemaining() + ' remaining API token for socket', socket.id, socket.conn.remoteAddress)
               if (!socket.socketLimiter.tryRemoveTokens(1)) { // if exceeded
                 tooManyRequests(socket, 'Too many requests in a given amount of time (rate limiting)', 'RATE_LIMITING')
                 // FIXME: calling this causes a client timeout
-                //next(error)
+                // next(error)
                 // Need to normalize the error object as JSON
-                //let result = {}
-                //Object.getOwnPropertyNames(error).forEach(key => (result[key] = error[key]))
+                // let result = {}
+                // Object.getOwnPropertyNames(error).forEach(key => (result[key] = error[key]))
                 // Trying to send error like in https://github.com/feathersjs/transport-commons/blob/auk/src/events.js#L103
                 // does not work either (also generates a client timeout)
-                //socket.emit(`${servicePath} error`, result)
-                //socket.emit(result)
+                // socket.emit(`${servicePath} error`, result)
+                // socket.emit(result)
                 return
               }
             }

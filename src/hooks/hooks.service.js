@@ -58,11 +58,10 @@ export function countLimit (options) {
     } else {
       count = options.count(hook)
     }
-    
+
     if (count >= options.max) {
       throw new Forbidden('Resource quota exceeded (count limiting) on service ' + options.service, { translation: { key: 'COUNT_LIMITING' } })
     }
     return hook
   }
 }
-

@@ -45,6 +45,10 @@ describe('kCore', () => {
     expect(tagService).toExist()
     authorisationService = app.getService('authorisations')
     expect(authorisationService).toExist()
+    // Register escalation hooks
+    authorisationService.hooks({
+      before: { create: hooks.preventEscalation, remove: hooks.preventEscalation }
+    })
     // Now app is configured launch the server
     server = app.listen(port)
     server.once('listening', _ => done())
@@ -181,15 +185,17 @@ describe('kCore', () => {
     })
     .then(users => {
       expect(users.data.length > 0).beTrue()
-      expect(users.data[0].tags).toExist()
-      expect(users.data[0].tags.length === 2).beTrue()
+      userObject = users.data[0]
+      expect(userObject.tags).toExist()
+      expect(userObject.tags.length === 2).beTrue()
+      expect(userObject.tags[1]._id).toExist()
     })
   })
 
-  it('creates an authorization', () => {
+  it('creates an authorisation', () => {
     return authorisationService.create({
-      scope: 'authorizations',
-      permissions: 'update',
+      scope: 'authorisations',
+      permissions: 'manager',
       subjects: userObject._id.toString(),
       subjectsService: 'users',
       resource: tagObject._id.toString(),
@@ -202,30 +208,50 @@ describe('kCore', () => {
       return userService.get(userObject._id.toString())
     })
     .then(user => {
-      expect(user.authorizations).toExist()
-      expect(user.authorizations.length > 0).beTrue()
-      expect(user.authorizations[0].permissions).to.deep.equal('update')
+      expect(user.authorisations).toExist()
+      expect(user.authorisations.length > 0).beTrue()
+      expect(user.authorisations[0].permissions).to.deep.equal('manager')
     })
   })
 
-  it('removes an authorization', () => {
+  it('cannot escalate an authorisation', (done) => {
+    authorisationService.create({
+      scope: 'authorisations',
+      permissions: 'owner',
+      subjects: userObject._id.toString(),
+      subjectsService: 'users',
+      resource: tagObject._id.toString(),
+      resourcesService: 'tags'
+    }, {
+      user: userObject,
+      checkEscalation: true
+    })
+    .catch(error => {
+      expect(error).toExist()
+      expect(error.name).to.equal('Forbidden')
+      done()
+    })
+  })
+
+  it('removes an authorisation', () => {
     return authorisationService.remove(tagObject._id, {
       query: {
-        scope: 'authorizations',
+        scope: 'authorisations',
         subjects: userObject._id.toString(),
         subjectsService: 'users',
         resourcesService: 'tags'
       }
     }, {
-      user: userObject
+      user: userObject,
+      checkEscalation: true
     })
     .then(authorisation => {
       expect(authorisation).toExist()
       return userService.get(userObject._id.toString())
     })
     .then(user => {
-      expect(user.authorizations).toExist()
-      expect(user.authorizations.length === 0).beTrue()
+      expect(user.authorisations).toExist()
+      expect(user.authorisations.length === 0).beTrue()
     })
   })
 

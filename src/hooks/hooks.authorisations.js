@@ -4,7 +4,7 @@ import { getItems } from 'feathers-hooks-common'
 import { Forbidden } from 'feathers-errors'
 import { populateObject, populateObjects } from './hooks.query'
 import { objectifyIDs } from '../db'
-import { hasServiceAbilities, hasResourceAbilities, getQueryForAbilities } from '../common/permissions'
+import { hasServiceAbilities, hasResourceAbilities, getQueryForAbilities, Roles } from '../common/permissions'
 import makeDebug from 'debug'
 
 const debug = makeDebug('kalisio:kCore:authorisations:hooks')
@@ -23,6 +23,59 @@ export function populateResource (hook) {
   }
 
   return populateObject({ serviceField: 'resourcesService', idField: 'resource', throwOnNotFound: true })(hook)
+}
+
+export function preventEscalation (hook) {
+  if (hook.type !== 'before') {
+    throw new Error(`The 'preventEscalation' hook should only be used as a 'before' hook.`)
+  }
+
+  let params = hook.params
+  // If called internally we skip authorisation
+  let checkEscalation = params.hasOwnProperty('provider')
+  debug('Escalation check ' + (checkEscalation ? 'enabled' : 'disabled') + ' for provider')
+  // If explicitely asked to perform/skip, override defaults
+  if (params.hasOwnProperty('checkEscalation')) {
+    checkEscalation = params.checkEscalation
+    debug('Escalation check ' + (checkEscalation ? 'forced' : 'unforced'))
+  }
+
+  if (checkEscalation) {
+    const user = params.user
+    // Make hook usable on remove as well
+    let data = hook.data || {}
+    // Make hook usable with query params as well
+    let query = params.query || {}
+    let scopeName = data.scope || query.scope // Get scope name first
+    // Retrieve the right scope on the user
+    let scope = _.get(user, scopeName, [])
+    // Then the target resource
+    let resource = _.find(scope, resource => resource._id && (resource._id.toString() === params.resource._id.toString()))
+    // Then user permission level
+    const permissions = (resource ? resource.permissions : null)
+    const role = (permissions ? Roles[permissions] : null)
+    let authorisationRole
+    if (data.permissions) {
+      authorisationRole = Roles[data.permissions]
+    } else if (query.permissions) {
+      authorisationRole = Roles[query.permissions]
+    }
+    if (!role || !authorisationRole) {
+      if (!role) debug('Role for authorisation not found on user for scope ' + scopeName)
+      else debug('Role to authorise not found for scope ' + scopeName)
+      throw new Forbidden(`You are not allowed to change authorisation on resource`)
+    }
+    // Check if privilege escalation might occur, if so clamp to user permission level
+    if (authorisationRole > role) {
+      if (data.permissions) {
+        data.permissions = permissions
+      } else if (query.permissions) {
+        query.permissions = permissions
+      }
+    }
+  }
+
+  return hook
 }
 
 export function authorise (hook) {
@@ -98,7 +151,7 @@ export function authorise (hook) {
     // Some specific services might not expose a get function, in this case we cannot check for authorisation
     // this has to be implemented by the service itself
     } else if (typeof hook.service.get === 'function') {
-      // In this case (single get/update/patch) we need to fetch the item first
+      // In this case (single get/update/patch/remove) we need to fetch the item first
       return hook.service.get(hook.id, Object.assign({ checkAuthorisation: false }, _.omit(hook.params, ['provider'])))
       .then(resource => {
         debug('Target resource is', resource)
