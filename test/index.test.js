@@ -215,8 +215,8 @@ describe('kCore', () => {
     })
   })
 
-  it('cannot escalate an authorisation when creating', () => {
-    return authorisationService.create({
+  it('cannot escalate an authorisation when creating', (done) => {
+    authorisationService.create({
       scope: 'authorisations',
       permissions: 'owner',
       subjects: userObject._id.toString(),
@@ -227,15 +227,10 @@ describe('kCore', () => {
       user: userObject,
       checkEscalation: true
     })
-    .then(authorisation => {
-      expect(authorisation).toExist()
-      return userService.get(userObject._id.toString())
-    })
-    .then(user => {
-      userObject = user
-      expect(user.authorisations).toExist()
-      expect(user.authorisations.length > 0).beTrue()
-      expect(user.authorisations[0].permissions).to.deep.equal('manager')
+    .catch(error => {
+      expect(error).toExist()
+      expect(error.name).to.equal('Forbidden')
+      done()
     })
   })
 
@@ -268,7 +263,8 @@ describe('kCore', () => {
         subjects: userObject._id.toString(),
         subjectsService: 'users',
         resourcesService: 'tags'
-      },user: userObject,
+      },
+      user: userObject,
       checkEscalation: true
     })
     .then(authorisation => {

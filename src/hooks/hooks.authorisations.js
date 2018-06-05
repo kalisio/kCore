@@ -60,7 +60,7 @@ export function preventEscalation (hook) {
     }
 
     // Check if privilege escalation might occur, if so clamp to user permission level
-    
+
     // Input subjects need to be checked:
     // - you should not be able to remove permissions on others having higher permissions than yourself
     // (e.g. cannot remove a owner when you are a manager)
@@ -91,9 +91,6 @@ export function preventEscalation (hook) {
         debug('Cannot escalate with higher permissions level for scope ' + scopeName)
         throw new Forbidden(`You are not allowed to change authorisation on resource`)
       }
-    } else {
-      debug('Role to authorise not found for scope ' + scopeName)
-      throw new Forbidden(`You are not allowed to change authorisation on resource`)
     }
   }
 
