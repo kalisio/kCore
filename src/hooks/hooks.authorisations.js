@@ -52,8 +52,8 @@ export function preventEscalation (hook) {
     // Then the target resource
     let resource = _.find(scope, resource => resource._id && (resource._id.toString() === params.resource._id.toString()))
     // Then user permission level
-    const permissions = (resource ? resource.permissions : null)
-    const role = (permissions ? Roles[permissions] : null)
+    const permissions = (resource ? resource.permissions : undefined)
+    const role = (permissions ? Roles[permissions] : undefined)
     if (_.isUndefined(role)) {
       debug('Role for authorisation not found on user for scope ' + scopeName)
       throw new Forbidden(`You are not allowed to change authorisation on resource`)
@@ -69,8 +69,8 @@ export function preventEscalation (hook) {
     const subjects = params.subjects.filter(subject => {
       const subjectScope = _.get(subject, scopeName, [])
       const subjectResource = _.find(subjectScope, resource => resource._id && (resource._id.toString() === params.resource._id.toString()))
-      const subjectPermissions = (subjectResource ? subjectResource.permissions : null)
-      const subjectRole = (subjectPermissions ? Roles[subjectPermissions] : null)
+      const subjectPermissions = (subjectResource ? subjectResource.permissions : undefined)
+      const subjectRole = (subjectPermissions ? Roles[subjectPermissions] : undefined)
       const hasRole = !_.isUndefined(subjectRole)
       if (hook.method === 'create') {
         return (!hasRole || (subjectRole <= role)) // The first time no authorisation can be found
