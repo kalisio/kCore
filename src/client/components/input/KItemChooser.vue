@@ -47,7 +47,7 @@ export default {
   },
   watch: {
     defaultItems: function () {
-      this.items = this.defaultItems
+      this.items = _.clone(this.defaultItems)
     },
     services: function () {
       this.clear()
@@ -61,12 +61,13 @@ export default {
   },
   methods: {
     itemIcon (item) {
-      if (item.icon && item.icon.name) return item.icon.name
-      return item.icon
+      const icon = _.get(item, 'icon', '')
+      if (typeof icon === 'object') return icon.name
+      else return icon
     },
     itemName (item) {
       if (item.value) return item.value
-      return item.name
+      else return item.name
     },
     clear () {
       this.items = []
