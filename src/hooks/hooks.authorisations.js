@@ -62,19 +62,24 @@ export function preventEscalation (hook) {
     // Check if privilege escalation might occur, if so clamp to user permission level
 
     // Input subjects need to be checked:
-    // - you should not be able to remove permissions on others having higher permissions than yourself
-    // (e.g. cannot remove a owner when you are a manager)
     // - on create you should not be able to change permissions on others having higher permissions than yourself
     // (e.g. cannot change a owner into a manager when you are a manager)
+    // - on remove you should not be able to remove permissions on others having higher permissions than yourself
+    // (e.g. cannot remove a owner when you are a manager)
     const subjects = params.subjects.filter(subject => {
       const subjectScope = _.get(subject, scopeName, [])
       const subjectResource = _.find(subjectScope, resource => resource._id && (resource._id.toString() === params.resource._id.toString()))
       const subjectPermissions = (subjectResource ? subjectResource.permissions : null)
       const subjectRole = (subjectPermissions ? Roles[subjectPermissions] : null)
-      return (subjectRole && (subjectRole <= role))
+      const hasRole = !_.isUndefined(subjectRole)
+      if (hook.method === 'create') {
+        return (!hasRole || (subjectRole <= role)) // The first time no authorisation can be found
+      } else {
+        return (hasRole && (subjectRole <= role)) // Authorisation must be found on remove
+      }
     })
     if (subjects.length < params.subjects.length) {
-      debug('Subjects with higher permissions level found for scope ' + scopeName)
+      debug(`${(params.subjects.length - subjects.length)} subjects with higher permissions level found for scope ${scopeName}`)
       throw new Forbidden(`You are not allowed to change authorisation on subject(s)`)
     }
     // Input permissions needs to be checked since:
