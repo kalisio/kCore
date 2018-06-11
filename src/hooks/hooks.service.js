@@ -32,7 +32,7 @@ export function rateLimit (options) {
 }
 
 export function countLimit (options) {
-  return function (hook) {
+  return async function (hook) {
     if (hook.type !== 'before') {
       throw new Error(`The 'countLimit' hook should only be used as a 'before' hook.`)
     }
@@ -43,7 +43,7 @@ export function countLimit (options) {
     if (!customCount) {
       let service
       if (typeof options.service === 'function') {
-        service = options.service(hook)
+        service = await options.service(hook)
       } else {
         service = app.getService(options.service, hook.service.context)
       }
@@ -56,11 +56,11 @@ export function countLimit (options) {
       }
       count = service.find({ query }).total
     } else {
-      count = options.count(hook)
+      count = await options.count(hook)
     }
 
     const customMax = (typeof options.max === 'function')
-    const max = (customMax ? options.max(hook) : options.max)
+    const max = (customMax ? await options.max(hook) : options.max)
     if (count >= max) {
       throw new Forbidden('Resource quota exceeded (count limiting) on service ' + options.service, { translation: { key: 'COUNT_LIMITING' } })
     }
