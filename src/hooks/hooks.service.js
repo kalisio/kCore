@@ -61,7 +61,7 @@ export function countLimit (options) {
 
     const customMax = (typeof options.max === 'function')
     const max = (customMax ? await options.max(hook) : options.max)
-    if (count >= max) {
+    if (count > max) {
       throw new Forbidden('Resource quota exceeded (count limiting) on service ' + options.service, { translation: { key: 'COUNT_LIMITING' } })
     }
     return hook

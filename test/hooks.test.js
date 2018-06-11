@@ -83,7 +83,7 @@ describe('kCore:hooks', () => {
   })
 
   it('count limiting', (done) => {
-    const limiter = hooks.countLimit({ count: (hook) => hook.n, max: 2 })
+    const limiter = hooks.countLimit({ count: (hook) => hook.n, max: 1 })
     let hook = { type: 'before', method: 'create', data: {}, params: {}, service: { name: 'service' }, n: 0 }
     limiter(hook)
     .then(() => {
