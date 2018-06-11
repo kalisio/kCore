@@ -228,7 +228,10 @@ export default function baseEditorMixin (formRefs) {
         ])
         // We finally build the forms then fill it
         .then(() => Promise.all(formRefs.map(name => this.$refs[name].build())))
-        .then(() => this.fillEditor())
+        .then(() => {
+          this.fillEditor()
+          this.$emit('editor-ready', this)
+        })
       }
     }
   }
