@@ -196,23 +196,27 @@ export default function baseEditorMixin (formRefs) {
           }
           const query = this.getBaseQuery(object)
           // Update the item
-          if (this.getMode() === 'update') {
-            // Editing mode => patch the item
-            if (this.perspective !== '') {
-              let data = {}
-              data[this.perspective] = object
-              this.servicePatch(this.objectId, data, { query })
-              .then(onServiceResponse)
+          try {
+            if (this.getMode() === 'update') {
+              // Editing mode => patch the item
+              if (this.perspective !== '') {
+                let data = {}
+                data[this.perspective] = object
+                let response = await this.servicePatch(this.objectId, data, { query })
+                onServiceResponse(response)
+              } else {
+                let response = await this.servicePatch(this.objectId, object, { query })
+                onServiceResponse(response)
+              }
+            } else if (this.getMode() === 'create') {
+              // Creation mode => create the item
+              let response = await this.serviceCreate(object, { query })
+              onServiceResponse(response)
             } else {
-              this.servicePatch(this.objectId, object, { query })
-              .then(onServiceResponse)
+              logger.warn('Invalid editor mode')
+              if (done) done()
             }
-          } else if (this.getMode() === 'create') {
-            // Creation mode => create the item
-            this.serviceCreate(object, { query })
-            .then(onServiceResponse)
-          } else {
-            logger.warn('Invalid editor mode')
+          } catch (error) {
             if (done) done()
           }
         }
