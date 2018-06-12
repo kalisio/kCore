@@ -14,7 +14,7 @@
       :radio="properties.field.radio ? properties.field.radio : false"
       :chips="properties.field.chips ? properties.field.chips : false"
       v-model="model"
-      :options="properties.field.options"
+      :options="options"
       @change="onChanged"
       @blur="onChanged" />
   </q-field>
@@ -32,6 +32,15 @@ export default {
     QSelect
   },
   mixins: [mixins.baseField],
+  computed: {
+    options () {
+      return this.properties.field.options.map(option => {
+        // Check if we have a translation key or directly the label content
+        const label = _.get(option, 'label', '')
+        return Object.assign({}, option, { label: (this.$i18n.i18next.exists(label) ? this.$t(label) : label) })
+      })
+    }
+  },
   methods: {
     emptyModel () {
       let multiple = _.get(this.properties, 'field.multiple', false)
