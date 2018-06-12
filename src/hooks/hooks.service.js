@@ -37,32 +37,35 @@ export function countLimit (options) {
       throw new Error(`The 'countLimit' hook should only be used as a 'before' hook.`)
     }
     let app = hook.app
-    let count = options.max
-    // Either we build a count request using a service or the caller has its own count routine
-    const customCount = (typeof options.count === 'function')
-    if (!customCount) {
-      let service
-      if (typeof options.service === 'function') {
-        service = await options.service(hook)
-      } else {
-        service = app.getService(options.service, hook.service.context)
-      }
-      // Indicate we'd only like to count
-      let query = { $limit: 0 }
-      if (typeof options.query === 'function') {
-        Object.assign(query, options.query(hook))
-      } else {
-        Object.assign(query, options.query)
-      }
-      count = service.find({ query }).total
-    } else {
-      count = await options.count(hook)
-    }
-
     const customMax = (typeof options.max === 'function')
     const max = (customMax ? await options.max(hook) : options.max)
-    if (count > max) {
-      throw new Forbidden('Resource quota exceeded (count limiting) on service ' + options.service, { translation: { key: 'COUNT_LIMITING' } })
+    // -1 means no limit
+    if (max >= 0) {
+      let count = options.max
+      // Either we build a count request using a service or the caller has its own count routine
+      const customCount = (typeof options.count === 'function')
+      if (!customCount) {
+        let service
+        if (typeof options.service === 'function') {
+          service = await options.service(hook)
+        } else {
+          service = app.getService(options.service, hook.service.context)
+        }
+        // Indicate we'd only like to count
+        let query = { $limit: 0 }
+        if (typeof options.query === 'function') {
+          Object.assign(query, options.query(hook))
+        } else {
+          Object.assign(query, options.query)
+        }
+        count = service.find({ query }).total
+      } else {
+        count = await options.count(hook)
+      }
+
+      if (count > max) {
+        throw new Forbidden('Resource quota exceeded (count limiting) on service ' + options.service, { translation: { key: 'COUNT_LIMITING' } })
+      }
     }
     return hook
   }
