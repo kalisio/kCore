@@ -80,17 +80,18 @@ export default {
       }
     },
     removeFile (removedFile) {
-      // Possible on max files exceeded
-      if (removedFile.status === 'error') return
       const index = _.findIndex(this.files, file => file.name === removedFile.name)
       if (index >= 0) {
         // When processing uploads on-the-fly we need to remove from server
         if (this.autoProcessQueue()) {
-          this.storageService().remove(this.files[index]._id, {
-            query: Object.assign({ resource: this.resource, resourcesService: this.resourcesService() }, this.baseQuery)
-          })
-          // Thumbnail as well
-          this.storageService().remove(this.files[index]._id + '.thumbnail')
+          // Possible on max files exceeded
+          if (removedFile.status !== 'error') {
+            this.storageService().remove(this.files[index]._id, {
+              query: Object.assign({ resource: this.resource, resourcesService: this.resourcesService() }, this.baseQuery)
+            })
+            // Thumbnail as well
+            this.storageService().remove(this.files[index]._id + '.thumbnail')
+          }
         }
         _.pullAt(this.files, index)
         this.$emit('file-selection-changed', this.files)
@@ -183,6 +184,9 @@ export default {
       return this.$refs.dropZone.dropzone
     },
     updateDropZoneOptions () {
+      const options = _.omit(this.options, ['service', 'storagePath'])
+      // We change interpolation tags to avoid interpolation by i18n next since drop zone will do it
+      const dictionary = this.$t('KUploader.dropZone', { returnObjects: true, interpolation: { prefix: '[[', suffix: '[[' } })
       // Setup upload URL, credentials, etc. from input options
       this.dropZoneOptions = Object.assign({
         addRemoveLinks: true,
@@ -195,9 +199,7 @@ export default {
         params: {
           isArray: this.isMultiple()
         }
-      },
-      _.omit(this.options, ['service', 'storagePath']),
-      this.$t('KUploader.dropZone', { returnObjects: true }))
+      }, options, dictionary)
       this.dropZoneOptions.url = this.$api.getBaseUrl() + '/' + this.storageService().path
       // This is used to ensure the request will be authenticated by Feathers
       this.dropZoneOptions.headers = { Authorization: window.localStorage.getItem('feathers-jwt') }

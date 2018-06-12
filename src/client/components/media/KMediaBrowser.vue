@@ -6,7 +6,7 @@
           <img v-if="media.uri" style="max-width: 100%; max-height: 100%; object-fit: content;" :src="media.uri" />
           <div v-if="!media.uri">
             <q-spinner-cube size="4em"/>
-            <span style="font-size: 2em;">Loading...&nbsp;</span>
+            <span style="font-size: 2em;">{{ $t('KMediaBrowser.LOADING') }}</span>
           </div>
         </div>
         <q-icon slot="action" @click="doClose" class="fixed-top-right" name="close" />
@@ -18,7 +18,7 @@
           <q-btn flat big color="white" @click="doZoomOut" icon="zoom_out" />
         </q-fixed-position>
       </div>
-      <div v-show="!hasMedia" class="text-center"><big>There is nothing to show, please add medias first !</big></div>
+      <div v-show="!hasMedia" class="text-center"><big>{{ $t('KMediaBrowser.NO_MEDIA') }}</big></div>
     </div>
   </k-modal>
 </template>
