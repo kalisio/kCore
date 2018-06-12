@@ -4,7 +4,7 @@
       Form section
     -->
     <div>
-      <k-form ref="form" :schema="schema" :contextId="contextId" :objectId="objectId"/>
+      <k-form ref="form" :schema="schema" :contextId="contextId" :objectId="objectId" @field-changed="onFieldChanged"/>
     </div>
     <!--
       Buttons section
@@ -41,6 +41,11 @@ export default {
     '$route' (to, from) {
       // React to route changes but reusing the same component as this one is generic
       this.refresh()
+    }
+  },
+  methods: {
+    onFieldChanged (field, value) {
+      this.$emit('field-changed', field, value)
     }
   },
   created () {
