@@ -43,8 +43,15 @@ export default {
       this.defaultItems = _.clone(value)
     },
     updateModel (items) {
-      // filter rendering properties only
-      this.model = items.map(function (item) { return _.omit(item, ['value', 'label', 'icon']) })
+      // filter rendering properties only if not used as data model properties
+      const renderingProperties = ['value', 'label', 'icon']
+      this.model = items.map(function (item) {
+        let filteredProperties = []
+        renderingProperties.forEach(property => {
+          if (!_.has(item, property)) filteredProperties.push(property)
+        })
+        return _.omit(item, filteredProperties)
+      })
       this.onChanged()
     }
   }
