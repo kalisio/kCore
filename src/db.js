@@ -108,6 +108,7 @@ export class MongoDatabase extends Database {
       return this._db
     } catch (error) {
       logger.error('Could not connect to ' + this.app.get('db').adapter + ' database, please check your configuration')
+      throw error
     }
   }
 
