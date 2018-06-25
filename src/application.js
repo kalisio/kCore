@@ -268,7 +268,8 @@ export function createService (name, app, options = {}) {
     return path
   }
   service.getContextId = function () {
-    return (typeof this.context === 'object' ? this.context._id.toString() : this.context)
+    if (typeof this.context === 'object') return (ObjectID.isValid(this.context) ? this.context.toString() : this.context._id.toString())
+    else return this.context // As string
   }
 
   debug(service.name + ' service registration completed')
