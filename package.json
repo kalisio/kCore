@@ -77,7 +77,7 @@
     "debug": "^2.6.4",
     "express-rate-limit": "^2.11.0",
     "feathers": "^2.1.4",
-    "feathers-authentication": "^1.2.2",
+    "feathers-authentication": "^1.2.7",
     "feathers-authentication-jwt": "^0.3.1",
     "feathers-authentication-local": "^0.4.3",
     "feathers-authentication-oauth2": "^0.2.5",
