@@ -1,5 +1,5 @@
 import { serialize, updateAbilities, populatePreviousObject, enforcePasswordPolicy, storePreviousPassword } from '../../hooks'
-const { hashPassword } = require('feathers-authentication-local').hooks
+const { hashPassword } = require('@feathersjs/authentication-local').hooks
 const commonHooks = require('feathers-hooks-common')
 
 module.exports = {

@@ -5,7 +5,7 @@ import request from 'superagent'
 import chai, { util, expect } from 'chai'
 import chailint from 'chai-lint'
 import core, { kalisio, hooks, permissions } from '../src'
-const { hashPassword } = require('feathers-authentication-local').hooks
+const { hashPassword } = require('@feathersjs/authentication-local').hooks
 
 describe('kCore', () => {
   let app, server, port, baseUrl, accessToken,
@@ -89,6 +89,8 @@ describe('kCore', () => {
       })
     })
   })
+  // Let enough time to process
+  .timeout(5000)
 
   it('creates a user', () => {
     // Test password generation
@@ -147,7 +149,7 @@ describe('kCore', () => {
   })
 
   it('authenticated user can access services', () => {
-    return userService.find({}, { user: userObject, checkAuthorisation: true })
+    return userService.find({ query: {}, params: { user: userObject, checkAuthorisation: true } })
     .then(users => {
       expect(users.data.length === 1).beTrue()
     })

@@ -2,7 +2,7 @@ import _ from 'lodash'
 import generateRandomPassword from 'password-generator'
 import makeDebug from 'debug'
 import { getItems, replaceItems } from 'feathers-hooks-common'
-import { BadRequest } from 'feathers-errors'
+import { BadRequest } from '@feathersjs/errors'
 
 const debug = makeDebug('kalisio:kCore:users:hooks')
 

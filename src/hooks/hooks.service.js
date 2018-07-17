@@ -1,4 +1,4 @@
-import { TooManyRequests, Forbidden } from 'feathers-errors'
+import { TooManyRequests, Forbidden } from '@feathersjs/errors'
 import { RateLimiter } from 'limiter'
 import makeDebug from 'debug'
 

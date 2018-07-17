@@ -3,7 +3,7 @@ import logger from 'winston'
 import moment from 'moment'
 import makeDebug from 'debug'
 import mongodb, { ObjectID } from 'mongodb'
-import errors from 'feathers-errors'
+import errors from '@feathersjs/errors'
 
 const debug = makeDebug('kalisio:kCore:db')
 

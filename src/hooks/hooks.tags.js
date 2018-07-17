@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { BadRequest } from 'feathers-errors'
+import { BadRequest } from '@feathersjs/errors'
 import { getItems } from 'feathers-hooks-common'
 import { populateObject } from './hooks.query'
 import makeDebug from 'debug'

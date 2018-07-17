@@ -9,17 +9,17 @@ import helmet from 'helmet'
 import bodyParser from 'body-parser'
 import { RateLimiter as SocketLimiter } from 'limiter'
 import HttpLimiter from 'express-rate-limit'
-import feathers from 'feathers'
-import configuration from 'feathers-configuration'
-import hooks from 'feathers-hooks'
-import { TooManyRequests } from 'feathers-errors'
-import { merge } from 'feathers-commons'
-import rest from 'feathers-rest'
-import socketio from 'feathers-socketio'
-import authentication from 'feathers-authentication'
-import jwt from 'feathers-authentication-jwt'
-import local from 'feathers-authentication-local'
-import oauth2 from 'feathers-authentication-oauth2'
+import feathers from '@feathersjs/feathers'
+import configuration from '@feathersjs/configuration'
+import { TooManyRequests } from '@feathersjs/errors'
+import { merge } from '@feathersjs/commons'
+import express from '@feathersjs/express'
+import rest from '@feathersjs/express/rest'
+import socketio from '@feathersjs/socketio'
+import authentication from '@feathersjs/authentication'
+import jwt from '@feathersjs/authentication-jwt'
+import local from '@feathersjs/authentication-local'
+import oauth2 from '@feathersjs/authentication-oauth2'
 import GithubStrategy from 'passport-github'
 import GoogleStrategy from 'passport-google-oauth20'
 import OAuth2Verifier from './verifier'
@@ -130,21 +130,6 @@ export function configureService (name, service, servicesPath) {
       debug(error)
     }
     // As this is optionnal this require has to fail silently
-  }
-
-  if (service.filter) {
-    try {
-      const filters = require(path.join(servicesPath, name, name + '.filters'))
-      service.filter(filters)
-      debug(name + ' service filters configured on path ' + servicesPath)
-    } catch (error) {
-      debug('No ' + name + ' service filters configured on path ' + servicesPath)
-      if (error.code !== 'MODULE_NOT_FOUND') {
-        // Log error in this case as this might be linked to a syntax error in required file
-        debug(error)
-      }
-      // As this is optionnal this require has to fail silently
-    }
   }
 
   return service
@@ -411,7 +396,7 @@ function setupSockets (app) {
 }
 
 export function kalisio () {
-  let app = feathers()
+  let app = express(feathers())
   // By default EventEmitters will print a warning if more than 10 listeners are added for a particular event.
   // The value can be set to Infinity (or 0) to indicate an unlimited number of listeners.
   app.setMaxListeners(0)
@@ -460,7 +445,6 @@ export function kalisio () {
   app.use(bodyParser.urlencoded({ extended: true }))
 
   // Set up plugins and providers
-  app.configure(hooks())
   app.configure(rest())
   app.configure(socketio({ path: app.get('apiPath') + 'ws' }, setupSockets(app)))
 
