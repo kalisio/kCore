@@ -133,7 +133,6 @@ export function kalisio () {
   } else {
     logger.setLevel('info')
   }
-  api.configure(feathersHooks())
   let origin = api.getBaseUrl()
   if (config.transport === 'http') {
     api.configure(feathers.rest(origin).fetch(window.fetch.bind(window)))
