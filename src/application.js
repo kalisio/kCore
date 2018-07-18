@@ -25,6 +25,7 @@ import OAuth2Verifier from './verifier'
 import PasswordValidator from 'password-validator'
 import { ObjectID } from 'mongodb'
 import { Database } from './db'
+import channels from './channels'
 
 const debug = makeDebug('kalisio:kCore:application')
 const debugLimiter = makeDebug('kalisio:kCore:application:limiter')
@@ -448,6 +449,8 @@ export function kalisio () {
   app.configure(socketio({ path: app.get('apiPath') + 'ws' }, setupSockets(app)))
 
   app.configure(auth)
+  // Set up real-time event channels
+  app.configure(channels)
 
   // Initialize DB
   app.db = Database.create(app)
