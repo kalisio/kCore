@@ -12,7 +12,6 @@ import HttpLimiter from 'express-rate-limit'
 import feathers from '@feathersjs/feathers'
 import configuration from '@feathersjs/configuration'
 import { TooManyRequests } from '@feathersjs/errors'
-import { merge } from '@feathersjs/commons'
 import express from '@feathersjs/express'
 import rest from '@feathersjs/express/rest'
 import socketio from '@feathersjs/socketio'
@@ -143,7 +142,7 @@ export function createProxyService (options) {
       if (options.params === 'function') {
         proxiedParams = options.params(params)
       } else {
-        proxiedParams = merge(params, options.params)
+        proxiedParams = _.merge(params, options.params)
       }
       return proxiedParams
     } else return params

@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import { merge } from '@feathersjs/commons'
 import { getItems } from 'feathers-hooks-common'
 import { Forbidden } from '@feathersjs/errors'
 import { populateObject, populateObjects } from './hooks.query'
@@ -166,7 +165,7 @@ export function authorise (hook) {
         const dbQuery = objectifyIDs(getQueryForAbilities(abilities, operation, resourceType))
         if (dbQuery) {
           debug('Target resource conditions are ', dbQuery)
-          merge(hook.params.query, dbQuery)
+          _.merge(hook.params.query, dbQuery)
         } else {
           hook.result = { total: 0, skip: 0, data: [] }
         }
