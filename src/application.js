@@ -428,7 +428,7 @@ export function kalisio () {
   // Override Feathers configure that do not manage async operations,
   // here we also simply call the function given as parameter but await for it
   app.configure = async function (fn) {
-    await fn.call(this)
+    await fn.call(this, this)
     return this
   }
   const apiLimiter = app.get('apiLimiter')
