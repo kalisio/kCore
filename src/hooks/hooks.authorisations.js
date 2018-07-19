@@ -175,7 +175,7 @@ export function authorise (hook) {
     // this has to be implemented by the service itself
     } else if (typeof hook.service.get === 'function') {
       // In this case (single get/update/patch/remove) we need to fetch the item first
-      return hook.service.get(hook.id, Object.assign({ checkAuthorisation: false }, _.omit(hook.params, ['provider'])))
+      return hook.service.get(hook.id, Object.assign({ checkAuthorisation: false }, hook.params))
       .then(resource => {
         debug('Target resource is', resource)
         // Then check against the object we'd like to manage
