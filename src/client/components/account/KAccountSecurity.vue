@@ -12,7 +12,7 @@
           :action="$t('KAccountSecurity.PASSWORD_BLOCK_ACTION')"
           @action-triggered="onChangePassword" />
       </div>
-       <!-- 
+      <!-- 
         Change email 
       -->
       <div class="col-12">
@@ -23,7 +23,14 @@
           :action="$t('KAccountSecurity.EMAIL_BLOCK_ACTION')"
           @action-triggered="onChangeEmail" />
       </div>
+      <!-- 
+        Devices
+      -->
+      <div class="col-12" v-if="hasDevices">
+        <k-account-devices />
+      </div>
     </div>
+    
   </div>
 </template>
 
@@ -41,6 +48,11 @@ export default {
       default: ''
     }
   },
+  data () {
+    return {
+      hasDevices: false
+    }
+  },
   methods: {
     onChangePassword () {
       this.$router.push({name: 'change-password'})
@@ -48,6 +60,17 @@ export default {
     onChangeEmail () {
       this.$router.push({name: 'send-change-identity'})
     }
+  },
+  created () {
+    // Load the required components
+    this.$load('account/KAccountDevices')()
+    .then(component => {
+      this.hasDevices = true
+      this.$options.components['k-account-devices'] = component
+    })
+    .catch(error => {
+      this.hasDevices = false
+    })
   }
 }
 </script>
