@@ -68,7 +68,7 @@ export default {
       this.hasDevices = true
       this.$options.components['k-account-devices'] = component
     })
-    .catch(error => {
+    .catch(() => {
       this.hasDevices = false
     })
   }
