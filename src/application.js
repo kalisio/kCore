@@ -25,7 +25,6 @@ import OAuth2Verifier from './verifier'
 import PasswordValidator from 'password-validator'
 import { ObjectID } from 'mongodb'
 import { Database } from './db'
-import channels from './channels'
 
 const debug = makeDebug('kalisio:kCore:application')
 const debugLimiter = makeDebug('kalisio:kCore:application:limiter')
@@ -132,6 +131,22 @@ export function configureService (name, service, servicesPath) {
     // As this is optionnal this require has to fail silently
   }
 
+  try {
+    const channels = require(path.join(servicesPath, name, name + '.channels'))
+    _.forOwn(channels, (publisher, event) => {
+      if (event === 'all') service.publish(publisher)
+      else service.publish(event, publisher)
+    })
+    debug(name + ' service channels configured on path ' + servicesPath)
+  } catch (error) {
+    debug('No ' + name + ' service channels configured on path ' + servicesPath)
+    if (error.code !== 'MODULE_NOT_FOUND') {
+      // Log error in this case as this might be linked to a syntax error in required file
+      debug(error)
+    }
+    // As this is optionnal this require has to fail silently
+  }
+
   return service
 }
 
@@ -212,12 +227,14 @@ export function createService (name, app, options = {}) {
 
   // Get our initialized service so that we can register hooks and filters
   let servicePath = options.path || name
+  let contextId
   if (options.context) {
-    if (typeof options.context === 'object') servicePath = options.context._id.toString() + '/' + servicePath
-    else servicePath = options.context + '/' + servicePath
+    contextId = (typeof options.context === 'object' ? 
+      (ObjectID.isValid(options.context) ? options.context.toString() : options.context._id.toString()) : options.context)
+    servicePath = contextId + '/' + servicePath
   }
   service = declareService(servicePath, app, service, options.middlewares)
-  // Register hooks and filters
+  // Register hooks and event filters
   service = configureService(name, service, options.servicesPath)
   // Optionnally a specific service mixin can be provided, apply it
   if (dbService && options.servicesPath) {
@@ -253,8 +270,7 @@ export function createService (name, app, options = {}) {
     return path
   }
   service.getContextId = function () {
-    if (typeof this.context === 'object') return (ObjectID.isValid(this.context) ? this.context.toString() : this.context._id.toString())
-    else return this.context // As string
+    return contextId // As string
   }
 
   debug(service.name + ' service registration completed')
@@ -447,10 +463,7 @@ export function kalisio () {
   // Set up plugins and providers
   app.configure(rest())
   app.configure(socketio({ path: app.get('apiPath') + 'ws' }, setupSockets(app)))
-
   app.configure(auth)
-  // Set up real-time event channels
-  app.configure(channels)
 
   // Initialize DB
   app.db = Database.create(app)
