@@ -6,6 +6,7 @@
     :error-label="errorLabel"
     :label-width="labelWidth"
     :error="hasError"
+    :disabled="disabled"
   >
     <q-chip  v-for="file in files" :key="file.name" color="primary" @close="onFileRemoved(file)" closable>
       {{fileName(file)}}

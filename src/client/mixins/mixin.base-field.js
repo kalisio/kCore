@@ -56,6 +56,9 @@ let baseFieldMixin = {
       if (!error) return this.error
       // Else check if we have a translation key or directly the error content
       return (this.$i18n.i18next.exists(error) ? this.$t(error) : error)
+    },
+    disabled () {
+      return _.get(this.properties.field, 'disabled', false)
     }
   },
   data () {

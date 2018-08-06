@@ -6,6 +6,7 @@
     :error-label="errorLabel"
     :label-width="labelWidth"
     :error="hasError"
+    :disabled="disabled"
   >
     <q-input
       :id="properties.name + '-field'"

@@ -7,6 +7,7 @@
       :error-label="errorLabel"
       :label-width="labelWidth"
       :error="hasError"
+      :disabled="disabled"
     >
       <div class="row justify-between items-center">
         <div class="col-4">
