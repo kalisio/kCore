@@ -23,6 +23,6 @@ The [kDocs](https://kalisio.gitbooks.io/kalisio/) are loaded with awesome stuff 
 
 ## License
 
-Copyright (c) 2017 Kalisio
+Copyright (c) 2017-2018 Kalisio
 
 Licensed under the [MIT license](LICENSE).
