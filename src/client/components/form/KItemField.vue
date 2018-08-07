@@ -37,22 +37,29 @@ export default {
   },
   methods: {
     emptyModel () {
-      return []
+      if (this.properties.multiselect) return []
+      return null
     },
     fill (value) {
       this.model = value
-      this.defaultItems = _.clone(value)
+      if (this.properties.multiselect) {
+        this.defaultItems =  _.clone(value) 
+      }
+      else if (_.isNil(value)) this.defaultItems = []
+      else this.defaultItems = [_.clone(value)]
     },
     updateModel (items) {
       // filter rendering properties only if not used as data model properties
       const renderingProperties = ['value', 'label', 'icon']
-      this.model = items.map(function (item) {
+      let filteredItems = items.map(function (item) {
         let filteredProperties = []
         renderingProperties.forEach(property => {
           if (!_.has(item, property)) filteredProperties.push(property)
         })
         return _.omit(item, filteredProperties)
       })
+      if (this.properties.multiselect) this.model = filteredItems
+      else this.model = filteredItems.length > 0 ? filteredItems[0]: null
       this.onChanged()
     }
   }
