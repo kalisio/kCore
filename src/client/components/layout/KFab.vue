@@ -22,7 +22,7 @@
      <!-- 
       Render a modal grid action if more than 8 actions are provided
      -->
-    <q-btn v-if="fab.actions.length > 3" 
+    <q-btn v-if="fab.actions.length > expandableLimit" 
       id="modal"
       color="secondary"
       class="fixed"
@@ -82,6 +82,12 @@ export default {
     QFab,
     QFabAction,
     QTooltip
+  },
+  props: {
+    expandableLimit: {
+      type: Number,
+      default: 8
+    }
   },
   data () {
     return {
