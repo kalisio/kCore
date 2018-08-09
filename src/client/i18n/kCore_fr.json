@@ -145,5 +145,8 @@
   "KMediaBrowser": {
     "LOADING": "Chargement...&nbsp;",
     "NO_MEDIA": "Il n'y a rien à voir, ajoutez des médias!"
+  },
+  "KFab": {
+    "CLOSE_ACTION": "$t(CLOSE)"
   }
 }

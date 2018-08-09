@@ -145,5 +145,8 @@
   "KMediaBrowser": {
     "LOADING": "Loading...&nbsp;",
     "NO_MEDIA": "There is nothing to show, please add medias first!"
+  },
+  "KFab": {
+    "CLOSE_ACTION": "$t(CLOSE)"
   }
 }

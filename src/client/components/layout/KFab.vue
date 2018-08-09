@@ -1,9 +1,40 @@
 <template>
   <div>
+    <k-modal ref="modal" :toolbar="getModalToolbar()" :buttons="getModalButtons()" :options="getModalOptions()" :route="false">
+      <div slot="modal-content">
+        <div class="row sm-gutter full-width">
+          <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 col-xl-2" align="center" v-for="action in fab.actions" :key="action.id">
+            <q-btn
+              :id="action.id"
+              color="secondary"
+              round
+              @click="closeModal(action)">
+              <q-icon :name="action.icon" />
+            </q-btn>
+            <br/>
+            <p>
+              {{action.label}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </k-modal>
      <!-- 
-      Render an expandable fab if multiple actions are provided
+      Render a modal grid action if more than 8 actions are provided
      -->
-    <q-fab v-if="fab.actions.length > 1" 
+    <q-btn v-if="fab.actions.length > 3" 
+      id="modal"
+      color="secondary"
+      class="fixed"
+      style="right: 18px; bottom: 18px"
+      round
+      @click="openModal()">
+      <q-icon name="keyboard_arrow_up" />
+    </q-btn>
+    <!-- 
+      Render an expandable fab if more than one action is provided
+     -->
+    <q-fab v-else-if="fab.actions.length > 1" 
       icon="keyboard_arrow_up"
       class="fixed"
       style="right: 18px; bottom: 18px" 
@@ -24,7 +55,7 @@
     <!-- 
       Render a non expandable fab if a single action is provided
      -->
-    <q-btn v-else-if="fab.actions.length === 1" 
+    <q-btn v-else-if="fab.actions.length > 0"
       :id="fab.actions[0].id"
       color="secondary"
       class="fixed"
@@ -41,6 +72,7 @@
 
 <script>
 import { QBtn, QIcon, QFab, QFabAction, QTooltip } from 'quasar'
+import _ from 'lodash'
 
 export default {
   name: 'k-fab',
@@ -57,12 +89,38 @@ export default {
     }
   },
   methods: {
+    getModalToolbar () {
+      return [
+        { name: 'close-action', label: this.$t('KFab.CLOSE_ACTION'), icon: 'close', handler: () => this.closeModal() }
+      ]
+    },
+    getModalButtons () {
+      return []
+    },
+    getModalOptions () {
+      return { 
+        padding: '4px', 
+        minWidth: '60vw',
+        minHeight: '20vh'
+      }
+    },
+    openModal () {
+      this.$refs.modal.open()
+    },
+    closeModal (action) {
+      if (!_.isNil(action)) this.$refs.modal.close(this.onActionTriggered(action))
+      this.$refs.modal.close()
+    },
     onActionTriggered (action) {
       // If a handler is given call it
       if (action.handler) action.handler.call(this)
       // If a route is given activate it
       else if (action.route) this.$router.push(action.route)
     }
+  },
+   created () {
+    // Load the required components
+    this.$options.components['k-modal'] = this.$load('frame/KModal')
   }
 }
 </script>
