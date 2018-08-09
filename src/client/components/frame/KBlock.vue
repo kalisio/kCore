@@ -1,5 +1,5 @@
 <template>
-  <q-card>
+  <q-card class="k-block">
     <!-- 
       Title section
      -->
@@ -10,17 +10,13 @@
       Frame section
       -->
     <q-card-main>
-      <div id="k-block-main" class="row justify-between items-center">
-        <!-- Content -->
-        <div :class="textWidth" v-html="text" />
+      <div class="row justify-between k-block-content">
+        <!-- Text -->
+        <div class="col-xs-12 col-sm-10 k-block-text" v-html="text" />
         <!-- Action -->
-        <template v-if="action !== ''">
-          <div :class="buttonWidth">
-            <div class="row justify-center">
-              <q-btn @click="$emit('action-triggered', action)" :color="color" :disable="disable">{{action}}</q-btn>
-            </div>
-          </div>
-        </template>
+        <div v-if="action !== ''" class="col-xs-12 col-sm-2 self-center" align="right">
+          <q-btn @click="$emit('action-triggered', action)" :color="color" :disabled="disabled">{{action}}</q-btn>
+        </div>
       </div>
     </q-card-main>
   </q-card>
@@ -54,7 +50,7 @@ export default {
       type: String,
       default: ''
     },
-    disable: {
+    disabled: {
       type: Boolean,
       default: false
     }
@@ -62,19 +58,19 @@ export default {
   computed: {
     titleColors () {
       return ['text-' + this.color, 'bg-' + this.color + '-2']
-    },
-    textWidth () {
-      return this.action === '' ? 'col-12' : 'col-9'
-    },
-    buttonWidth () {
-      return 'col-2'
     }
   }
 }
 </script>
 
 <style>
-#k-block-main {
+.k-block {
+  padding: 8px;
+}
+.k-block-content {
+  margin: 8px;
+}
+.k-block-text {
   padding: 8px;
 }
 </style>
