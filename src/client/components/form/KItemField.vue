@@ -43,9 +43,8 @@ export default {
     fill (value) {
       this.model = value
       if (this.properties.multiselect) {
-        this.defaultItems =  _.clone(value) 
-      }
-      else if (_.isNil(value)) this.defaultItems = []
+        this.defaultItems = _.clone(value)
+      } else if (_.isNil(value)) this.defaultItems = []
       else this.defaultItems = [_.clone(value)]
     },
     updateModel (items) {
@@ -59,7 +58,7 @@ export default {
         return _.omit(item, filteredProperties)
       })
       if (this.properties.multiselect) this.model = filteredItems
-      else this.model = filteredItems.length > 0 ? filteredItems[0]: null
+      else this.model = filteredItems.length > 0 ? filteredItems[0] : null
       this.onChanged()
     }
   }

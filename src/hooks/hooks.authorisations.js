@@ -111,7 +111,7 @@ export function authorise (hook) {
   if (hook.params.user) debug('User is', hook.params.user)
   debug('Operation is', operation)
   if (resourceType) debug('Resource type is', resourceType)
-  
+
   // If called internally we skip authorisation
   let checkAuthorisation = hook.params.hasOwnProperty('provider')
   debug('Access check ' + (checkAuthorisation ? 'enabled' : 'disabled') + ' for provider')

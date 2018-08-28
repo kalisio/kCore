@@ -104,8 +104,8 @@ export default {
       return []
     },
     getModalOptions () {
-      return { 
-        padding: '4px', 
+      return {
+        padding: '4px',
         minWidth: '60vw',
         minHeight: '20vh'
       }
@@ -124,7 +124,7 @@ export default {
       else if (action.route) this.$router.push(action.route)
     }
   },
-   created () {
+  created () {
     // Load the required components
     this.$options.components['k-modal'] = this.$load('frame/KModal')
   }
