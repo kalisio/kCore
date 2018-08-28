@@ -97,13 +97,17 @@ export function populateObject (options) {
       if (options.throwOnNotFound) throw new Error(`Cannot find the ${options.idField} to dynamically populate.`)
       else return Promise.resolve(hook)
     }
+    // Then the perspective if any
+    let perspective = _.get(data, options.perspectiveField) || _.get(query, options.perspectiveField)
 
     debug(`Populating ${idProperty} with ID ${id}`)
     // Set the retrieved service on the same field or given one in hook params
     _.set(params, serviceProperty, service)
     // Let it work with id string or real object
     if (typeof id === 'string' || ObjectID.isValid(id)) {
-      return service.get(id.toString(), { user: hook.params.user }).then(object => {
+      let args = { user: hook.params.user }
+      if (perspective) args = Object.assign(args, { query: { $select: [perspective] } })
+      return service.get(id.toString(), args).then(object => {
         if (!object) {
           if (options.throwOnNotFound) throw new Error(`Cannot find object with id ${id} to dynamically populate.`)
           else return hook
