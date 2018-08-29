@@ -124,6 +124,20 @@ export function populateObject (options) {
   }
 }
 
+export function unpopulateObject (options) {
+  return function (hook) {
+    let params = hook.params
+    const idProperty = options.nameIdAs || options.idField
+    const serviceProperty = options.nameServiceAs || options.serviceField
+
+    // Check if not already done
+    _.unset(params, idProperty)
+    _.unset(params, serviceProperty)
+
+    return hook
+  }
+}
+
 export function populateObjects (options) {
   return function (hook) {
     let app = hook.app
@@ -193,4 +207,9 @@ export function populateObjects (options) {
       }
     }
   }
+}
+
+export function unpopulateObjects (options) {
+  // These are similar behaviour
+  return unpopulateObject(options)
 }

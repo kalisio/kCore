@@ -223,6 +223,8 @@ export function createService (name, app, options = {}) {
     if (typeof service === 'function') {
       service = service(name, app, options)
     }
+    // Need to set this manually for services not using class inheritance or default adapters
+    if (options.events) service.events = options.events
   }
 
   // Get our initialized service so that we can register hooks and filters

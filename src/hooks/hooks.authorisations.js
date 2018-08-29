@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { getItems } from 'feathers-hooks-common'
 import { Forbidden } from '@feathersjs/errors'
-import { populateObject, populateObjects } from './hooks.query'
+import { populateObject, unpopulateObject, populateObjects, unpopulateObjects } from './hooks.query'
 import { objectifyIDs } from '../db'
 import { hasServiceAbilities, hasResourceAbilities, getQueryForAbilities, Roles } from '../common/permissions'
 import makeDebug from 'debug'
@@ -16,12 +16,28 @@ export function populateSubjects (hook) {
   return populateObjects({ serviceField: 'subjectsService', idField: 'subjects', throwOnNotFound: true })(hook)
 }
 
+export function unpopulateSubjects (hook) {
+  if (hook.type !== 'after') {
+    throw new Error(`The 'unpopulateSubjects' hook should only be used as a 'after' hook.`)
+  }
+
+  return unpopulateObjects({ serviceField: 'subjectsService', idField: 'subjects' })(hook)
+}
+
 export function populateResource (hook) {
   if (hook.type !== 'before') {
     throw new Error(`The 'populateResource' hook should only be used as a 'before' hook.`)
   }
 
   return populateObject({ serviceField: 'resourcesService', idField: 'resource', throwOnNotFound: true })(hook)
+}
+
+export function unpopulateResource (hook) {
+  if (hook.type !== 'after') {
+    throw new Error(`The 'unpopulateResource' hook should only be used as a 'after' hook.`)
+  }
+
+  return unpopulateObject({ serviceField: 'resourcesService', idField: 'resource' })(hook)
 }
 
 export function preventEscalation (hook) {

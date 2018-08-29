@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { populateObject } from './hooks.query'
+import { populateObject, unpopulateObject } from './hooks.query'
 import makeDebug from 'debug'
 
 const debug = makeDebug('kalisio:kCore:storage:hooks')
@@ -15,6 +15,14 @@ export function populateAttachmentResource (hook) {
 
   // Avoid populating any target resource when resource parameters are not present
   return populateObject({ serviceField: 'resourcesService', idField: 'resource', throwOnNotFound: false })(hook)
+}
+
+export function unpopulateAttachmentResource (hook) {
+  if (hook.type !== 'after') {
+    throw new Error(`The 'unpopulateAttachmentResource' hook should only be used as a 'after' hook.`)
+  }
+
+  return unpopulateObject({ serviceField: 'resourcesService', idField: 'resource' })(hook)
 }
 
 export async function attachToResource (hook) {
