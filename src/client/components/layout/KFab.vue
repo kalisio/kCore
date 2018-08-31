@@ -1,36 +1,38 @@
 <template>
   <div>
-    <k-modal ref="modal" :toolbar="getModalToolbar()" :buttons="getModalButtons()" :options="getModalOptions()" :route="false">
-      <div slot="modal-content">
-        <div class="row sm-gutter full-width">
-          <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 col-xl-2" align="center" v-for="action in fab.actions" :key="action.id">
-            <q-btn
-              :id="action.id"
-              color="secondary"
-              round
-              @click="closeModal(action)">
-              <q-icon :name="action.icon" />
-            </q-btn>
-            <br/>
-            <p>
-              {{action.label}}
-            </p>
+    <!-- 
+        Render a modal grid action if more than 8 actions are provided
+      -->
+    <div v-if="fab.actions.length > expandableLimit">
+      <k-modal ref="modal" :toolbar="getModalToolbar()" :buttons="getModalButtons()" :options="getModalOptions()" :route="false">
+        <div slot="modal-content">
+          <div class="row sm-gutter full-width">
+            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 col-xl-2" align="center" v-for="action in fab.actions" :key="action.id">
+              <q-btn
+                :id="action.id"
+                color="secondary"
+                round
+                @click="closeModal(action)">
+                <q-icon :name="action.icon" />
+              </q-btn>
+              <br/>
+              <p>
+                {{action.label}}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </k-modal>
-     <!-- 
-      Render a modal grid action if more than 8 actions are provided
-     -->
-    <q-btn v-if="fab.actions.length > expandableLimit" 
-      id="modal"
-      color="secondary"
-      class="fixed"
-      style="right: 18px; bottom: 18px"
-      round
-      @click="openModal()">
-      <q-icon name="keyboard_arrow_up" />
-    </q-btn>
+      </k-modal>
+      <q-btn  
+        id="modal"
+        color="secondary"
+        class="fixed"
+        style="right: 18px; bottom: 18px"
+        round
+        @click="openModal()">
+        <q-icon name="keyboard_arrow_up" />
+      </q-btn>
+    </div>
     <!-- 
       Render an expandable fab if more than one action is provided
      -->
