@@ -85,7 +85,6 @@ export default {
   },
   beforeDestroy () {
     Events.$off('user-abilities-changed', this.refreshCollection)
-    Events.$off('search-bar-changed', this.handleSearch)
   }
 }
 </script>
