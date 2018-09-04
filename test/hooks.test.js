@@ -49,7 +49,7 @@ describe('kCore:hooks', () => {
     expect(hook.params.query._id.$in[0].toString()).to.equal(id.toString())
   })
 
-  it('marshalls queries', () => {
+  it('marshalls comparison queries', () => {
     const now = new Date()
     let hook = { type: 'before', params: { query: { number: { $gt: '0', $lt: '10' }, date: { $gte: now.toISOString(), $lte: now.toISOString() } } } }
     hooks.marshallComparisonQuery(hook)
@@ -61,6 +61,30 @@ describe('kCore:hooks', () => {
     expect(typeof hook.params.query.date.$lte).to.equal('object')
     expect(hook.params.query.date.$gte.getTime()).to.equal(now.getTime())
     expect(hook.params.query.date.$lte.getTime()).to.equal(now.getTime())
+  })
+
+  it('marshalls geometry queries', () => {
+    const now = new Date()
+    let hook = { type: 'before', params: { query: { geometry:
+      { $near: { $geometry: { type: 'Point', coordinates: ['56', '0.3'] }, $maxDistance: '1000.50', } }
+    } } }
+    hooks.marshallGeometryQuery(hook)
+    expect(typeof hook.params.query.geometry.$near.$geometry.coordinates[0]).to.equal('number')
+    expect(typeof hook.params.query.geometry.$near.$geometry.coordinates[1]).to.equal('number')
+    expect(hook.params.query.geometry.$near.$geometry.coordinates[0]).to.equal(56)
+    expect(hook.params.query.geometry.$near.$geometry.coordinates[1]).to.equal(0.3)
+    expect(typeof hook.params.query.geometry.$near.$maxDistance).to.equal('number')
+    expect(hook.params.query.geometry.$near.$maxDistance).to.equal(1000.5)
+  })
+
+  it('marshalls collation queries', () => {
+    const now = new Date()
+    let hook = { type: 'before', params: { query: { locale: 'fr' } } }
+    hooks.marshallCollationQuery(hook)
+    expect(hook.params.collation).toExist()
+    expect(hook.query.locale).beUndefined()
+    expect(typeof hook.params.collation).to.equal('object')
+    expect(hook.params.collation.locale).to.equal('fr')
   })
 
   it('rate limiting', (done) => {

@@ -57,6 +57,20 @@ export function marshallGeometryQuery (hook) {
   }
 }
 
+export function marshallCollationQuery (hook) {
+  let query = hook.params.query
+  if (!query) return
+  // Locale shortcut or whole query provided
+  if (query.locale) {
+    hook.params.collation = { locale: query.locale }
+    delete query.locale
+  } else if (query.collation) {
+    hook.params.collation = query.collation
+    delete query.collation
+  }
+  return hook
+}
+
 export function populateObject (options) {
   return function (hook) {
     let app = hook.app
