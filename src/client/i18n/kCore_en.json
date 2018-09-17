@@ -73,7 +73,7 @@
     "EMAIL_ALREADY_TAKEN": "Email already taken !"
   },
   "KChangeEndpoint": {
-    "TITLE": "Changer endpoint",
+    "TITLE": "Change endpoint",
     "BASE_URL_FIELD_HELPER": "Enter the address of the server to be used",
     "APPLY_BUTTON": "Apply",
     "RESET_BUTTON": "Reset",
@@ -102,10 +102,10 @@
   "KAccountSecurity": {
     "PASSWORD_BLOCK_TITLE": "Change your password ?",
     "PASSWORD_BLOCK_TEXT": "Your password protect your account.<br>Change it carefully.",
-    "PASSWORD_BLOCK_ACTION": "Change password",
+    "PASSWORD_BLOCK_ACTION": "Change",
     "EMAIL_BLOCK_TITLE": "Change your email ?",
     "EMAIL_BLOCK_TEXT": "Your email secures changes to your account credentials, change it carefully.<br>Current email address: <b>{{email}}</b>",
-    "EMAIL_BLOCK_ACTION": "Change email"
+    "EMAIL_BLOCK_ACTION": "Change"
   },
   "KGrid": {
     "EMPTY_GRID": "No elements found"
