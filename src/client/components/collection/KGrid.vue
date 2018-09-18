@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <div v-if="items.length > 0" class="column justify-center">
+    <div v-if="items.length > 0">
       <div class="row">
         <template v-for="item in items">
           <component :id="item._id" :key="item._id" :item="item" :contextId="contextId" :is="renderer.component" v-bind="renderer.props" />
