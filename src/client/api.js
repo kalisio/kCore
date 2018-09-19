@@ -3,7 +3,6 @@ import _ from 'lodash'
 import feathers from '@feathersjs/client'
 import io from 'socket.io-client'
 import reactive from 'feathers-reactive'
-import rxjs from 'rxjs'
 import config from 'config'
 import { permissions } from '../common'
 import { Store } from './store'
@@ -152,7 +151,7 @@ export function kalisio () {
     storageKey: 'feathers-jwt',
     path: config.apiPath + '/authentication'
   }))
-  api.configure(reactive(rxjs, {
+  api.configure(reactive({
     idField: '_id'
   }))
   // Object used to store configuration options for services
