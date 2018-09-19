@@ -79,10 +79,10 @@ describe('kCore:hooks', () => {
 
   it('marshalls collation queries', () => {
     const now = new Date()
-    let hook = { type: 'before', params: { query: { locale: 'fr' } } }
+    let hook = { type: 'before', params: { query: { $locale: 'fr' } } }
     hooks.marshallCollationQuery(hook)
     expect(hook.params.collation).toExist()
-    expect(hook.params.query.locale).beUndefined()
+    expect(hook.params.query.$locale).beUndefined()
     expect(typeof hook.params.collation).to.equal('object')
     expect(hook.params.collation.locale).to.equal('fr')
   })
