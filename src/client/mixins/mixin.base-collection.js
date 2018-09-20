@@ -19,7 +19,7 @@ let baseCollectionMixin = {
     subscribe (query) {
       // Remove previous listener if any
       this.unsubscribe()
-      this.itemListener = this.loadService().watch({ listStrategy: 'always' })
+      this.itemListener = this.loadService().watch({ listStrategy: this.listStrategy || 'always' })
       .find({ query })
       .subscribe(response => {
         this.items = response.data

@@ -54,6 +54,9 @@ export default {
       default: function () {
         return {}
       }
+    },
+    listStrategy: {
+      type: String
     }
   },
   watch: {
