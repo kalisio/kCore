@@ -331,11 +331,11 @@ function setupSockets (app) {
 
     io.on('connection', socket => {
       nbConnections++
-      debug('New socket connection', socket.id, socket.conn.remoteAddress, nbConnections)
+      debug(`New socket connection on server with pid ${process.pid}`, socket.id, socket.conn.remoteAddress, nbConnections)
       // Setup disconnect handler first
       socket.on('disconnect', () => {
         nbConnections--
-        debug('Socket disconnection', socket.id, socket.conn.remoteAddress, nbConnections)
+        debug(`Socket disconnection on server with pid ${process.pid}`, socket.id, socket.conn.remoteAddress, nbConnections)
         if (maxIpConnections > 0) {
           const nbIpConnections = _.get(connections, socket.conn.remoteAddress) - 1
           debug('Total number of connections for', socket.id, socket.conn.remoteAddress, nbIpConnections)
