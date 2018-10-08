@@ -58,7 +58,8 @@
       "PROD",
       "fetch",
       "cordova",
-      "location"
+      "location",
+      "FileReader"
     ]
   },
   "directories": {

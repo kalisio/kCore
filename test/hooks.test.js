@@ -64,7 +64,6 @@ describe('kCore:hooks', () => {
   })
 
   it('marshalls geometry queries', () => {
-    const now = new Date()
     let hook = { type: 'before',
       params: { query: { geometry:
       { $near: { $geometry: { type: 'Point', coordinates: ['56', '0.3'] }, $maxDistance: '1000.50' } }
@@ -79,7 +78,6 @@ describe('kCore:hooks', () => {
   })
 
   it('marshalls collation queries', () => {
-    const now = new Date()
     let hook = { type: 'before', params: { query: { $locale: 'fr' } } }
     hooks.marshallCollationQuery(hook)
     expect(hook.params.collation).toExist()
