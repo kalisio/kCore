@@ -18,30 +18,30 @@ export default {
     QInput
   },
   props: {
-     mimeTypes: {
+    mimeTypes: {
       type: Array,
       required: true
     }
   },
   data () {
     return {
-      fileName: ""
+      fileName: ''
     }
   },
   methods: {
     onChanged (newFileName) {
-      if (newFileName === "") {
+      if (newFileName === '') {
         this.$emit('cleared')
       } else {
-        let file = document.getElementById("input").files[0]
+        let file = document.getElementById('input').files[0]
         if (!this.mimeTypes.includes(file.type)) this.$emit('rejected')
         else {
           let reader = new FileReader()
           reader.addEventListener('loadend', () => this.$emit('loaded', reader.result))
           reader.addEventListener('error', () => this.$emit('failed'))
-          reader.readAsText(file)      
-        }   
-      } 
+          reader.readAsText(file)
+        }
+      }
     }
   },
   mounted () {
