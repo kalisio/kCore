@@ -1,6 +1,6 @@
 {
-  "name": "@kalisio/kCore",
-  "description": "Basic utils to support Kalisio applications and services",
+  "name": "@kalisio/kdk-core",
+  "description": "Module to provide core utilities for Kalisio applications and services",
   "version": "0.1.0",
   "homepage": "https://github.com/kalisio/kCore",
   "main": "lib/",
@@ -30,9 +30,9 @@
   "scripts": {
     "prepublish": "npm run compile",
     "publish": "git push origin --tags && npm run changelog && git push origin",
-    "release:patch": "npm version patch && npm publish",
-    "release:minor": "npm version minor && npm publish",
-    "release:major": "npm version major && npm publish",
+    "release:patch": "npm version patch && npm publish --access=public",
+    "release:minor": "npm version minor && npm publish --access=public",
+    "release:major": "npm version major && npm publish --access=public",
     "changelog": "github_changelog_generator -u kalisio -p kCore && git add CHANGELOG.md && git commit -am \"Updating changelog\"",
     "compile": "shx rm -rf lib/ && babel -d lib/ src/ -s --copy-files",
     "watch:js": "babel --watch -d lib/ src/ --copy-files",
