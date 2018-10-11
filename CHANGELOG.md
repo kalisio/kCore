@@ -1,0 +1,85 @@
+# Changelog
+
+## [v1.0.0](https://github.com/kalisio/kCore/tree/v1.0.0) (2018-10-11)
+
+[Full Changelog](https://github.com/kalisio/kCore/compare/af3dd08e84a92ba1b047875185205a198db16e4c...v1.0.0)
+
+**Implemented enhancements:**
+
+- Allow to disable fields within a form [\#78](https://github.com/kalisio/kCore/issues/78)
+- Configure default sort order on service [\#68](https://github.com/kalisio/kCore/issues/68)
+- Allow KTagField to only use text and no icon [\#67](https://github.com/kalisio/kCore/issues/67)
+- Media Browser does not allow pictures to be seen in full resolution [\#66](https://github.com/kalisio/kCore/issues/66)
+- Add a refresh button on mobile apps [\#55](https://github.com/kalisio/kCore/issues/55)
+- Upgrade feathers-blob [\#49](https://github.com/kalisio/kCore/issues/49)
+- Create a KUploader [\#44](https://github.com/kalisio/kCore/issues/44)
+- Custom avatar [\#43](https://github.com/kalisio/kCore/issues/43)
+- Avoid unecessary base64 encoding on file upload [\#42](https://github.com/kalisio/kCore/issues/42)
+- Create a storage service [\#41](https://github.com/kalisio/kCore/issues/41)
+- Extend permission system to manage quotas [\#40](https://github.com/kalisio/kCore/issues/40)
+- Make description truncatable in KCard [\#39](https://github.com/kalisio/kCore/issues/39)
+- Make a generic KSearch [\#25](https://github.com/kalisio/kCore/issues/25)
+- Limit log retention [\#6](https://github.com/kalisio/kCore/issues/6)
+
+**Fixed bugs:**
+
+- Search bar does not work correctly after changing activity [\#82](https://github.com/kalisio/kCore/issues/82)
+- Enhanced FAB behavior [\#80](https://github.com/kalisio/kCore/issues/80)
+- KItemField'model should be of type of object when multiselect is disabled [\#79](https://github.com/kalisio/kCore/issues/79)
+- Uploader keeps track of file when max file size is exceeded [\#71](https://github.com/kalisio/kCore/issues/71)
+- Failing updates make the loading indicator to remain active in editor [\#70](https://github.com/kalisio/kCore/issues/70)
+- Authorisation service should not allow privilege escalation [\#69](https://github.com/kalisio/kCore/issues/69)
+- Truncate dots not visible in text area with multiline content [\#64](https://github.com/kalisio/kCore/issues/64)
+- Recurrent app logout on some mobiles [\#61](https://github.com/kalisio/kCore/issues/61)
+- Login form autocomplete does not work on mobiles [\#60](https://github.com/kalisio/kCore/issues/60)
+- Tags not correctly updated when tagging a member [\#58](https://github.com/kalisio/kCore/issues/58)
+- Font Awesome icons not correctly displayed in icon chooser [\#57](https://github.com/kalisio/kCore/issues/57)
+- Authentication fails when mobile app goes from background to foreground [\#56](https://github.com/kalisio/kCore/issues/56)
+- Avatar not correctly retrieved in identity panel [\#54](https://github.com/kalisio/kCore/issues/54)
+- KMediaBrowser does not work correctly on mobile devices [\#53](https://github.com/kalisio/kCore/issues/53)
+- Disabled forms are not taken into account by new apply/submitted methods [\#52](https://github.com/kalisio/kCore/issues/52)
+- Opening the uploader multiple times generate doublons [\#50](https://github.com/kalisio/kCore/issues/50)
+- Virtual properties conflict with perspectives [\#47](https://github.com/kalisio/kCore/issues/47)
+- Add context to tags when added to the target user [\#38](https://github.com/kalisio/kCore/issues/38)
+- OAuth2 does not work in mobile application [\#37](https://github.com/kalisio/kCore/issues/37)
+- Tags not removed when updating an object [\#36](https://github.com/kalisio/kCore/issues/36)
+- KModalEditor form randomly not correctly filled [\#35](https://github.com/kalisio/kCore/issues/35)
+- KAutocomplete erase original properties with its own [\#33](https://github.com/kalisio/kCore/issues/33)
+- OAuth2 failure should be graceful [\#31](https://github.com/kalisio/kCore/issues/31)
+- KTabBar do not handle the default tab when refreshed [\#29](https://github.com/kalisio/kCore/issues/29)
+- Non members query is no more working [\#28](https://github.com/kalisio/kCore/issues/28)
+- Updating only specific fields of a perspective remove others [\#27](https://github.com/kalisio/kCore/issues/27)
+- Cannot select a field from a perspective [\#10](https://github.com/kalisio/kCore/issues/10)
+- Empty fields in forms are not correctly updated [\#9](https://github.com/kalisio/kCore/issues/9)
+- Popup editor closes on create even if a required field is missing in form [\#8](https://github.com/kalisio/kCore/issues/8)
+- No management for account from providers [\#7](https://github.com/kalisio/kCore/issues/7)
+- Make endpoint URL configurable in mobile apps [\#4](https://github.com/kalisio/kCore/issues/4)
+- Check whether the email entered when registrating already exist [\#3](https://github.com/kalisio/kCore/issues/3)
+- Problem when patching an object and listening to the service event [\#2](https://github.com/kalisio/kCore/issues/2)
+
+**Closed issues:**
+
+- Async configure needed for what exactly? [\#75](https://github.com/kalisio/kCore/issues/75)
+- Pdf docs are not up-to-date [\#74](https://github.com/kalisio/kCore/issues/74)
+- Tags? Perspectives? [\#73](https://github.com/kalisio/kCore/issues/73)
+- Make tag service linked to a context [\#24](https://github.com/kalisio/kCore/issues/24)
+- Migrate kClient to kCore [\#22](https://github.com/kalisio/kCore/issues/22)
+- Enhance KCollection [\#21](https://github.com/kalisio/kCore/issues/21)
+- Collection refactoring [\#20](https://github.com/kalisio/kCore/issues/20)
+- Implement a ProfileActivity to manage user profile [\#19](https://github.com/kalisio/kCore/issues/19)
+- Manage tags [\#18](https://github.com/kalisio/kCore/issues/18)
+- Update KForm in order to be able to manager either a schema objet or a schema name [\#17](https://github.com/kalisio/kCore/issues/17)
+- Add tag management [\#16](https://github.com/kalisio/kCore/issues/16)
+- Refactor KGrid in order to extract a mixin.base-collection.js  [\#15](https://github.com/kalisio/kCore/issues/15)
+- Add icon to tags [\#14](https://github.com/kalisio/kCore/issues/14)
+- Make the context management hidden behind the API interface when getting a service [\#13](https://github.com/kalisio/kCore/issues/13)
+- Integrate voice recognition https://github.com/TalAter/annyang [\#12](https://github.com/kalisio/kCore/issues/12)
+- Integrate OAuth2 providers, implement GitHub/Google. [\#11](https://github.com/kalisio/kCore/issues/11)
+
+**Merged pull requests:**
+
+- \[Snyk Update\] New fixes for 1 vulnerable dependency path [\#51](https://github.com/kalisio/kCore/pull/51) ([snyk-bot](https://github.com/snyk-bot))
+
+
+
+\* *This Changelog was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*
