@@ -12,9 +12,9 @@
 ## Installation
 
 ```
-npm install kCore --save
+npm install @kalisio/kdk-core --save
 // Or with Yarn
-yarn add kCore
+yarn add @kalisio/kdk-core
 ```
 
 ## Documentation
