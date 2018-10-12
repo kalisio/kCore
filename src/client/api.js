@@ -1,5 +1,6 @@
 import logger from 'loglevel'
 import _ from 'lodash'
+import sift from 'sift'
 import feathers from '@feathersjs/client'
 import io from 'socket.io-client'
 import reactive from 'feathers-reactive'
@@ -10,6 +11,20 @@ import { Platform, Events } from 'quasar'
 
 function getBaseUrlStorageKey () {
   return config.appName + '-baseUrl'
+}
+
+function siftMatcher (originalQuery) {
+  // Filter out Feathers specific operators like $limit, $skip, etc.
+  // (copied from https://github.com/feathersjs-ecosystem/feathers-reactive)
+  const keysToOmit = Object.keys(originalQuery).filter(key => key.charCodeAt(0) === 36)
+  const query = _.omit(originalQuery, ...keysToOmit)
+  // Compatibility with fuzzy search that use $search query syntax
+  _.forOwn(query, (value, key) => {
+    if ((typeof value === 'object') && _.has(value, '$search')) {
+      query[key] = { $regex: new RegExp(_.get(value, '$search'), 'i') }
+    }
+  })
+  return sift(query)
 }
 
 export function kalisio () {
@@ -152,7 +167,8 @@ export function kalisio () {
     path: config.apiPath + '/authentication'
   }))
   api.configure(reactive({
-    idField: '_id'
+    idField: '_id',
+    matcher: siftMatcher // Our custom matcher to handle fuzzy search
   }))
   // Object used to store configuration options for services
   api.serviceOptions = {}
