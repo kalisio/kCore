@@ -143,7 +143,7 @@
     "ADD_TAG": "Add \"{{tag}}\" tag"
   },
   "KMediaBrowser": {
-    "LOADING": "Loading...&nbsp;",
+    "LOADING": "Loading... ",
     "NO_MEDIA": "There is nothing to show, please add medias first!"
   },
   "KFab": {
