@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.0.1](https://github.com/kalisio/kCore/tree/v1.0.1) (2018-10-15)
+
+[Full Changelog](https://github.com/kalisio/kCore/compare/v1.0.0...v1.0.1)
+
+**Fixed bugs:**
+
+- Search bar does not work anymore [\#85](https://github.com/kalisio/kCore/issues/85)
+
 ## [v1.0.0](https://github.com/kalisio/kCore/tree/v1.0.0) (2018-10-11)
 
 [Full Changelog](https://github.com/kalisio/kCore/compare/af3dd08e84a92ba1b047875185205a198db16e4c...v1.0.0)
