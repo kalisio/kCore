@@ -32,6 +32,7 @@ const debugLimiter = makeDebug('kalisio:kCore:application:limiter')
 function auth () {
   const app = this
   const config = app.get('authentication')
+  if (!config) return
   const limiter = config.limiter
   if (limiter && limiter.http) {
     app.use(config.path, new HttpLimiter(limiter.http))
