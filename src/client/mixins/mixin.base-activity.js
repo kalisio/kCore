@@ -68,10 +68,17 @@ let baseActivityMixin = {
       // Patch all fields to reset search
       this.$store.patch('searchBar', { field: '', pattern: '', services: [], items: [] })
     },
+    setRightPanelContent (component) {
+      this.$store.patch('rightPanel', { content: component })
+    },
+    clearRightPanelContent () {
+      this.$store.patch('rightPanel', { content: '' })
+    },
     clearActivity () {
       this.clearTitle()
       this.clearSearchBar()
       this.clearActions()
+      this.clearRightPanelContent()
     },
     refreshActivity () {
       // This method should be overriden in activities

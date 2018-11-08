@@ -3,7 +3,7 @@
     <!--
       SideNav toggle
      -->
-    <q-btn id="side-nav-toggle" flat @click="$emit('menu-clicked')">
+    <q-btn id="side-nav-toggle" flat @click="$emit('side-nav-toggled')">
       <q-icon name="menu" />
     </q-btn>
     <!-- 
