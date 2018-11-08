@@ -96,7 +96,7 @@ export default async function () {
     })
     app.createService('authorisations', { servicesPath })
   }
-  
+
   // We have a global tag/storage service and one by context if app requires it
   app.createService('tags', { modelsPath, servicesPath })
 }
