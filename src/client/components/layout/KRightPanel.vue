@@ -20,6 +20,11 @@ export default {
     QBtn,
     QIcon
   },
+  watch: {
+    content: function () {
+      this.$options.components['k-right-panel-content'] = this.$load(this.content)   
+    }
+  },
   props: {
     content: {
       type: String,
