@@ -1,9 +1,13 @@
 <template>
   <div class="row">
-    <q-btn id="right-panel-close" flat @click="$emit('right-panel-toggled')">
-      <q-icon name="close" />
-    </q-btn>
-    <k-right-panel-content class="col-12" />
+    <div class="col-12">
+      <q-btn id="right-panel-close" flat @click="$emit('right-panel-toggled')">
+        <q-icon name="close" />
+      </q-btn>
+    </div>
+    <div class="col-12">
+      <k-right-panel-content v-bind="options" />
+    </div>
   </div>
 </template>
 
@@ -20,6 +24,10 @@ export default {
     content: {
       type: String,
       required: true
+    },
+    options: {
+      type: Array,
+      default: () => []
     }
   },
   created () {

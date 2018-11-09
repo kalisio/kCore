@@ -36,7 +36,7 @@ export default function init () {
   Store.set('tabBar', tabBar)
   let fab = { actions: [] }
   Store.set('fab', fab)
-  let rightPanel = { content: '' }
+  let rightPanel = { content: '', options: [] }
   Store.set('rightPanel', rightPanel)
 
   // Listen to the 'patched' event on the users

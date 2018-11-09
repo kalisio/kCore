@@ -16,7 +16,11 @@
       The right pane
     -->
     <div v-if="rightPanel.content" slot="right">
-      <k-right-panel id="right-panel" :content="rightPanel.content" @right-panel-toggled="onRightPanelToggled" />
+      <k-right-panel 
+        id="right-panel" 
+        :content="rightPanel.content" 
+        :options="rightPanel.options" 
+        @right-panel-toggled="onRightPanelToggled" />
     </div>
     <!--
       The TabBar
