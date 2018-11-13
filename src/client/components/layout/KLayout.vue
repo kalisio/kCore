@@ -15,12 +15,8 @@
      <!--
       The right pane
     -->
-    <div v-if="rightPanel.content" slot="right">
-      <k-right-panel 
-        id="right-panel" 
-        :content="rightPanel.content" 
-        :options="rightPanel.options" 
-        @right-panel-toggled="onRightPanelToggled" />
+    <div slot="right">
+      <k-right-panel id="right-panel" @right-panel-toggled="onRightPanelToggled" />
     </div>
     <!--
       The TabBar
@@ -50,11 +46,6 @@ export default {
   name: 'k-layout',
   components: {
     QLayout
-  },
-  data () {
-    return {
-      rightPanel: this.$store.get('rightPanel')
-    }
   },
   methods: {
     onSideNavToggled () {

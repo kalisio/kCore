@@ -68,11 +68,11 @@ let baseActivityMixin = {
       // Patch all fields to reset search
       this.$store.patch('searchBar', { field: '', pattern: '', services: [], items: [] })
     },
-    setRightPanelContent (component, options) {
-      this.$store.patch('rightPanel', { content: component, options: options })
+    setRightPanelContent (component, content) {
+      this.$store.patch('rightPanel', { component: component, content: content })
     },
     clearRightPanelContent () {
-      this.$store.patch('rightPanel', { content: '', options: [] })
+      this.$store.patch('rightPanel', { component: '', content: {} })
     },
     clearActivity () {
       this.clearTitle()
