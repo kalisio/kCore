@@ -1,5 +1,5 @@
 <template>
-  <q-layout ref="layout" view="lHh LpR lFf">
+  <q-layout ref="layout" v-bind="options">
     <!--
       The AppBar
     -->
@@ -40,12 +40,18 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { QLayout, Events } from 'quasar'
 
 export default {
   name: 'k-layout',
   components: {
     QLayout
+  },
+  data () {
+    return {
+      options: {}
+    }
   },
   methods: {
     onSideNavToggled () {
@@ -56,12 +62,13 @@ export default {
     }
   },
   created () {
-    this.$options.components['k-app-bar'] = this.$load(this.$config('layout.appBar', 'layout/KAppBar'))
-    this.$options.components['k-side-nav'] = this.$load(this.$config('layout.sideNav', 'layout/KSideNav'))
-    this.$options.components['k-right-panel'] = this.$load(this.$config('layout.rigthPanel', 'layout/KRightPanel'))
-    this.$options.components['k-search-bar'] = this.$load(this.$config('layout.searchBar', 'layout/KSearchBar'))
-    this.$options.components['k-tab-bar'] = this.$load(this.$config('layout.tabBar', 'layout/KTabBar'))
-    this.$options.components['k-fab'] = this.$load(this.$config('layout.fab', 'layout/KFab'))
+    this.options = this.$config('layout')
+    this.$options.components['k-app-bar'] = this.$load(_.get(this.options, 'appBar', 'layout/KAppBar'))
+    this.$options.components['k-side-nav'] = this.$load(_.get(this.options, 'sideNav', 'layout/KSideNav'))
+    this.$options.components['k-right-panel'] = this.$load(_.get(this.options, 'rigthPanel', 'layout/KRightPanel'))
+    this.$options.components['k-search-bar'] = this.$load(_.get(this.options, 'searchBar', 'layout/KSearchBar'))
+    this.$options.components['k-tab-bar'] = this.$load(_.get(this.options, 'tabBar', 'layout/KTabBar'))
+    this.$options.components['k-fab'] = this.$load(_.get(this.options, 'fab', 'layout/KFab'))
   },
   mounted () {
     Events.$on('speech-recognition', phrases => {
