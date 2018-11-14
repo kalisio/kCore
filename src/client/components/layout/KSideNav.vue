@@ -40,6 +40,7 @@ export default {
       sideNav: this
     }
   },
+  inject: ['layout'],
   props: {
     closable: {
       type: Boolean,
