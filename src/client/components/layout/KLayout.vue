@@ -1,22 +1,26 @@
 <template>
-  <q-layout ref="layout" v-bind="options">
+  <q-layout ref="layout" 
+    v-model="sides"
+    v-bind="options" 
+    @left-breakpoint="onSideNavBreakpoint" 
+    @right-breakpoint="onRightPanelBreakpoint">
     <!--
       The AppBar
     -->
     <div slot="header">
-      <k-app-bar id="app-bar" @side-nav-toggled="onSideNavToggled" />
+      <k-app-bar id="app-bar" :has-side-nav-toggle="!sides.left" @side-nav-toggled="onSideNavToggled" />
     </div>
     <!--
       The SideNav
     -->
     <div slot="left">
-      <k-side-nav id="side-nav" />
+      <k-side-nav id="side-nav" :closable="sides.left" @side-nav-toggled="onSideNavToggled" />
     </div>
      <!--
       The right pane
     -->
     <div slot="right">
-      <k-right-panel id="right-panel" @right-panel-toggled="onRightPanelToggled" />
+      <k-right-panel id="right-panel" :closable="sides.right" @right-panel-toggled="onRightPanelToggled" />
     </div>
     <!--
       The TabBar
@@ -50,6 +54,10 @@ export default {
   },
   data () {
     return {
+      sides: {
+        left: false,
+        right: false
+      },
       options: {}
     }
   },
@@ -57,9 +65,15 @@ export default {
     onSideNavToggled () {
       this.$refs.layout.toggleLeft()
     },
+    onSideNavBreakpoint (toggle) {
+      this.sides.left = toggle
+    },
     onRightPanelToggled () {
       this.$refs.layout.toggleRight()
-    }
+    },
+    onRightPanelBreakpoint (toggle) {
+      this.sides.right = toggle
+    },
   },
   created () {
     this.options = this.$config('layout')

@@ -1,9 +1,9 @@
 <template>
-  <q-toolbar>
+  <q-toolbar v-if="appBar.title!=''">
     <!--
       SideNav toggle
      -->
-    <q-btn id="side-nav-toggle" flat @click="$emit('side-nav-toggled')">
+    <q-btn id="side-nav-toggle" v-if="hasSideNavToggle" flat @click="$emit('side-nav-toggled')">
       <q-icon name="menu" />
     </q-btn>
     <!-- 
@@ -43,16 +43,11 @@
         <q-icon name="more_vert"></q-icon>
       </q-btn>
     </template>
-    <!-- 
-      Voice ?
-     -->
-    <!--k-voice v-if="appBar.isVoiceEnabled" /-->
   </q-toolbar>
 </template>
 
 <script>
 import { QToolbar, QToolbarTitle, QBtn, QIcon, QList, QItem, QItemSide, QItemMain, QPopover } from 'quasar'
-import KVoice from './KVoice.vue'
 
 export default {
   name: 'k-app-bar',
@@ -65,8 +60,13 @@ export default {
     QItem,
     QItemSide,
     QItemMain,
-    QPopover,
-    KVoice
+    QPopover
+  },
+  props: {
+    hasSideNavToggle: {
+      type: Boolean,
+      required: true
+    }
   },
   data () {
     return {
@@ -89,10 +89,6 @@ export default {
       // If a route is given activate it
       else if (action.route) this.$router.push(action.route)
     }
-  },
-  created () {
-    // Load the required components
-    this.appBar.title = this.$config('appName')
   }
 }
 </script>

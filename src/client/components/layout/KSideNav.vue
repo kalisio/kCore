@@ -1,23 +1,49 @@
 <template>
-  <div>
-    <div v-if="banner != ''" class="row justify-center items-center">
+  <div class="col">
+     <!--
+     Close action
+    -->
+    <div v-if="closable" class="row justify-end">
+      <q-btn id="left-panel-close" flat color="secondary" @click="$emit('side-nav-toggled')">
+        <q-icon name="chevron_left" />
+      </q-btn>
+    </div>
+    <!--
+      Banner
+     -->
+    <div v-if="banner != ''" class="row justify-center">
       <img :src="banner">
     </div>
-    <template v-for="component in components">
-      <component :key="component.name" :is="component.renderer" :name="component.name" />
-    </template>
+    <!-- 
+      Components
+     -->
+    <div class="row justify-start">
+      <template v-for="component in components">
+        <component class="col-12" :key="component.name" :is="component.renderer" :name="component.name" />
+      </template>
+    </div>
   </div>
 </template>
 
 <script>
 import _ from 'lodash'
+import { QBtn, QIcon } from 'quasar'
 
 export default {
   name: 'k-side-nav',
-  inject: ['layout'],
+  components: {
+    QBtn,
+    QIcon
+  },
   provide () {
     return {
       sideNav: this
+    }
+  },
+  props: {
+    closable: {
+      type: Boolean,
+      required: true
     }
   },
   data () {
@@ -38,7 +64,6 @@ export default {
     // A component is defined with
     //   - the renderer: the Vue component to be used for the rendering
     //   - the name: the key to retrieve the configuration
-
     let content = this.$config('sideNav.components', {})
     Object.entries(content).forEach(element => {
       // Setup the component

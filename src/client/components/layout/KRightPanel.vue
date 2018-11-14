@@ -1,10 +1,9 @@
 <template>
-  <div v-if="component!==''" class="row">
-    <q-window-resize-observable @resize="onWindowResized" />
+  <div v-if="component!==''" class="col">
     <!--
      Close action
     -->
-    <div v-if="closable" class="col-12">
+    <div v-if="closable" class="row justify-start">
       <q-btn id="right-panel-close" flat color="secondary" @click="$emit('right-panel-toggled')">
         <q-icon name="chevron_right" />
       </q-btn>
@@ -12,7 +11,7 @@
     <!--
      The child component
     -->
-    <div class="col-12">
+    <div class="row">
       <component :is="component" v-bind="content" />
     </div>
   </div>
@@ -20,16 +19,20 @@
 
 <script>
 import _ from 'lodash'
-import { QBtn, QIcon, QWindowResizeObservable  } from 'quasar'
+import { QBtn, QIcon } from 'quasar'
 
 export default {
   name: 'k-right-panel',
   components: {
     QBtn,
-    QIcon,
-    QWindowResizeObservable 
+    QIcon 
   },
-  inject: ['layout'],
+  props: {
+    closable: {
+      type: Boolean,
+      required: true
+    }
+  },
   computed: {
     component () {
       if (this.rightPanel.component === '') return ''
@@ -43,14 +46,7 @@ export default {
   },
   data () {
     return {
-      closable: false,
       rightPanel: this.$store.get('rightPanel')
-    }
-  },
-  methods: {
-    onWindowResized (size) {
-      if (size.width > this.layout.$options.propsData.rightBreakpoint) this.closable = true
-      else this.closable = false
     }
   }
 }
