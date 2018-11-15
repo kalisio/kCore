@@ -25,7 +25,7 @@ export default {
   name: 'k-right-panel',
   components: {
     QBtn,
-    QIcon 
+    QIcon
   },
   props: {
     closable: {

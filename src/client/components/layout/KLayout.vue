@@ -73,7 +73,7 @@ export default {
     },
     onRightPanelBreakpoint (toggle) {
       this.sides.right = toggle
-    },
+    }
   },
   created () {
     this.options = this.$config('layout')
