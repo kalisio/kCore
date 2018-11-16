@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { QChip, colors } from 'quasar'
+import { QChip } from 'quasar'
 import moment from 'moment'
 
 export default {
@@ -36,6 +36,9 @@ export default {
   mounted () {
     window.addEventListener('mouseup', this.stopDrag)
   },
+  destroyed () {
+    window.removeEventListener('mouseup', this.stopDrag);
+  },  
   computed: {
     pointerStyle () {
       return {
@@ -51,7 +54,6 @@ export default {
     },
     pointerLabel () {
       // Formats the label value for the time interval, taking into account the interval type (hour, day, week etc)
-      // and the available display space (intervalDisplayWidth)
 
       const value = new Date(this.time)
       const type = this.timeInterval.type
@@ -60,8 +62,10 @@ export default {
 
       if (type === 'h' || type === 'm') {
         label = moment(value).format('hh:mm')
+
       } else if (type === 'd') {
         label = moment(value).format('dddd D')
+
       } else {
         label = ''
       }
@@ -107,6 +111,7 @@ export default {
     padding-right: 8px;
     cursor: grab;
     height: 26px;
+    white-space: nowrap;
   }
 
   .k-interval-pointer::after {

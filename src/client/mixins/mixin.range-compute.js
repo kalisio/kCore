@@ -11,9 +11,6 @@ let rangeComputeMixin = {
     }
   },
   computed: {
-    position () {
-      return this.calculatePosition(this.currentValue, this.min, this.max, this.componentWidth)
-    },
     position: {
       get: function () {
         return this.calculatePosition(this.currentValue, this.min, this.max, this.componentWidth)
@@ -25,7 +22,7 @@ let rangeComputeMixin = {
       }
     },
     timeIntervals () {
-      let intervalValues = this.computeIntervals(this.min, this.max, this.timeInterval.length)
+      let intervalValues = this.calculateIntervals(this.min, this.max, this.timeInterval.length)
       let timeIntervals = []
 
       for (let i = 0, len = intervalValues.length - 1; i < len; i++) {
@@ -51,7 +48,7 @@ let rangeComputeMixin = {
       return Math.round(rangeStart + position / componentWidth * (rangeEnd - rangeStart))
     },
     calculateTimeInterval (rangeStart, rangeEnd) {
-      // Determine if the time range is to be divided into minute, hour, day, week or month intervals
+      // Determine if the time range is to be divided into minute, hour, day or week intervals
 
       // length of the time range in minutes, hours and days
       const minutes = (rangeEnd - rangeStart) / 60000
@@ -68,7 +65,7 @@ let rangeComputeMixin = {
         return {type: 'd', length: 24 * 60 * 60000}
       }
 
-      if (hours > 48) {
+      if (minutes > 120) {
         // choose hour intervals
         return {type: 'h', length: 60 * 60000}
       }
@@ -76,7 +73,7 @@ let rangeComputeMixin = {
       // choose minute intervals
       return {type: 'm', length: 60000}
     },
-    computeIntervals (rangeStart, rangeEnd, intervalLength) {
+    calculateIntervals (rangeStart, rangeEnd, intervalLength) {
       let startValue = rangeStart
 
       let multiple = startValue / intervalLength
