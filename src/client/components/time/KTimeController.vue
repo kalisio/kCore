@@ -99,7 +99,7 @@ export default {
       }
     },
     intervalDisplayWidth () {
-      return this.componentWidth / this.timeIntervals.length
+      return this.componentWidth * this.timeInterval.length / (this.max - this.min)
     }
   },
   methods: {

@@ -22,9 +22,10 @@ let rangeComputeMixin = {
       }
     },
     timeIntervals () {
-      let intervalValues = this.calculateIntervals(this.min, this.max, this.timeInterval.length)
+      let intervalValues = this.calculateIntervals(this.min, this.max, this.timeInterval)
       let timeIntervals = []
 
+      // Push the time intervals; note that the number of intervals is one less than the number of values
       for (let i = 0, len = intervalValues.length - 1; i < len; i++) {
         const value = intervalValues[i]
         const nextValue = intervalValues[i + 1]
@@ -32,7 +33,7 @@ let rangeComputeMixin = {
         timeIntervals.push(
             this.getTimeInterval(value, nextValue, this.timeInterval.type,
               this.min, this.max, this.componentWidth,
-              i = 0, i = len - 1
+              i === 0, i === len - 1
             )
         )
       }
@@ -47,53 +48,80 @@ let rangeComputeMixin = {
     calculateValue (position, rangeStart, rangeEnd, componentWidth) {
       return Math.round(rangeStart + position / componentWidth * (rangeEnd - rangeStart))
     },
-    calculateTimeInterval (rangeStart, rangeEnd) {
-      // Determine if the time range is to be divided into minute, hour, day or week intervals
+    calculateTimeInterval(rangeStart, rangeEnd) {
+      // Determine if the time range is to be divided into hour or day intervals
 
       // length of the time range in minutes, hours and days
       const minutes = (rangeEnd - rangeStart) / 60000
       const hours = minutes / 60
-      const days = hours / 24
 
-      if (days > 30) {
-        // choose week intervals
-        return {type: 'w', length: 7 * 24 * 60 * 60000}
-      }
-
-      if (hours > 48) {
+      if (hours >= 24) {
         // choose day intervals
-        return {type: 'd', length: 24 * 60 * 60000}
+        return { type: 'd', length: 24 * 60 * 60000 }
       }
 
-      if (minutes > 120) {
-        // choose hour intervals
-        return {type: 'h', length: 60 * 60000}
-      }
-
-      // choose minute intervals
-      return {type: 'm', length: 60000}
+      // choose hour intervals
+      return { type: 'h', length: 60 * 60000 }
     },
-    calculateIntervals (rangeStart, rangeEnd, intervalLength) {
-      let startValue = rangeStart
-
-      let multiple = startValue / intervalLength
-      let intvalue = Math.trunc(multiple)
-
-      if (multiple > intvalue) {
-        startValue = (intvalue + 1) * intervalLength
-      }
+    calculateIntervals(rangeStart, rangeEnd, timeInterval) {
+      const intervalLength = timeInterval.length
+      const intervalType = timeInterval.type
 
       let intervals = []
-      let value = startValue
+      let value = this.getIntervalStartValue(rangeStart, timeInterval.type)
 
-      while (value <= rangeEnd) {
+      while (value <= rangeEnd+timeInterval.length) {
         intervals.push(value)
-        value += intervalLength
+        value += timeInterval.length
       }
 
       return intervals
     },
+    getIntervalStartValue (rangeStart, intervalType) {
+      const startTime = new Date(rangeStart)
+
+      const year = startTime.getFullYear()
+      const month = startTime.getMonth()
+      const day = startTime.getDate()
+      const hour = startTime.getHours()
+      const minute = startTime.getMinutes()
+
+      let startValue
+
+      switch (intervalType) {
+        case 'd':
+          // range starts on a day (ignoring seconds)
+          if (hour == 0 && minute == 0) {
+            startValue = rangeStart
+
+          } else {
+            let startOfDay = new Date(year, month, day, 0, 0, 0)
+            startOfDay.setDate(startOfDay.getDate() + 1)
+
+            startValue = startOfDay.getTime()
+          } 
+          break
+        case 'h':
+          // range starts on an hour (ignoring seconds)
+          if (minute == 0) {
+            startValue = rangeStart
+
+          } else {
+            let startOfHour = new Date(year, month, day, 0, 0, 0)
+            startOfHour.setHours(startOfHour.getHours() + 1)
+
+            startValue = startOfHour.getTime()
+          } 
+          break
+        default:
+          startValue = rangeStart
+          break
+      }
+
+      return startValue
+    },
     getTimeInterval (value, nextValue, type, rangeStart, rangeEnd, componentWidth, isFirstValue, isLastValue) {
+
       return {
         value,
         nextValue,
