@@ -104,7 +104,7 @@ export default {
 <style>
   .k-interval-pointer {
     position: absolute;
-    bottom: 6px;
+    bottom: 19px;
     border-radius: 7px;
     font-size: 12px;
     padding-bottom: 6px;

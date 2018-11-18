@@ -1,6 +1,6 @@
 <template>
 
-  <div class="k-timecontroller-container">
+  <div class="k-timecontroller-container" @click="onTimelineClick">
 
     <div v-bind:style="pointerContainerStyle"
          class="k-interval-pointer-container"
@@ -19,6 +19,7 @@
     </div>
 
     <div class="k-timecontroller-activebar" v-bind:style="activeBarStyle"></div>
+
     <div class="k-timecontroller-bar" v-bind:style="barStyle" ref="timeControllerBar">
       <q-resize-observable @resize="onResize" />
     </div>
@@ -126,6 +127,18 @@ export default {
     },
     onChangePosition (newPosition) {
       this.position = newPosition
+    },
+    onTimelineClick (event) {
+      let newPosition = event.clientX - this.componentLeft
+
+      // Don't allow a position out of bounds
+      if (newPosition < 0) {
+        newPosition = 0
+      } else if (newPosition > this.componentWidth) {
+        newPosition = this.componentWidth
+      }
+
+      this.onChangePosition(newPosition)
     }
   }
 }
@@ -134,14 +147,16 @@ export default {
 <style>
   .k-timecontroller-container {
     width: 100%;
+    padding-top: 12px;
+    padding-bottom: 12px;
     background-color: transparent;
     position: relative;
+    cursor: pointer;
   }
 
   .k-timecontroller-activebar, .k-timecontroller-bar {
     position: absolute;
-    top: 0;
-    cursor: pointer;
+    top: 12px;
   }
 
   .k-timecontroller-activebar {
