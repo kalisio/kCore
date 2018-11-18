@@ -38,8 +38,8 @@ export default {
     window.addEventListener('mousemove', this.doDrag)
   },
   destroyed () {
-    window.removeEventListener('mouseup', this.stopDrag);
-    window.removeEventListener('mousemove', this.doDrag);
+    window.removeEventListener('mouseup', this.stopDrag)
+    window.removeEventListener('mousemove', this.doDrag)
   },  
   computed: {
     pointerStyle () {
@@ -63,10 +63,10 @@ export default {
       let label
 
       if (type === 'h' || type === 'm') {
-        label = moment(value).format('hh:mm')
+        label = moment(value).format('h:mm A')
 
       } else if (type === 'd') {
-        label = moment(value).format('dddd D')
+        label = moment(value).format('dddd D - h A')
 
       } else {
         label = ''

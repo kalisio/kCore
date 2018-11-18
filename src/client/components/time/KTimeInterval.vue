@@ -59,9 +59,9 @@ export default {
       let label
 
       if (type === 'h' || type === 'm') {
-        label = moment(value).format('hh:mm')
+        label = moment(value).format('h:mm A')
       } else if (type === 'd') {
-        if (width >= 80) {
+        if (width >= 110) {
           label = moment(value).format('dddd D')
         } else {
           label = moment(value).format('ddd')
