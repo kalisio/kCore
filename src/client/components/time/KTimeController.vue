@@ -13,6 +13,7 @@
         :componentWidth="componentWidth"        
         :pointerColor="pointerColor"
         :pointerTextColor="pointerTextColor"
+        :labelFontSize="labelFontSize"
         @change="onChangePosition"
       />
     </div>
@@ -56,7 +57,8 @@ export default {
     color: { type: String, default: 'black' },
     activeColor: { type: String, default: 'white' },
     pointerColor: { type: String, default: 'orange' },
-    pointerTextColor: { type: String, default: 'white' }
+    pointerTextColor: { type: String, default: 'white' },
+    labelFontSize: { type: Number, default: 12 }
   },
   data () {
     return {

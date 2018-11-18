@@ -2,7 +2,7 @@
   <div>
     <div class="k-interval-pointer"
          v-bind:style="pointerStyle"
-         @mousedown="startDrag" @mousemove="doDrag"
+         @mousedown="startDrag"
     >
       {{pointerLabel}}
     </div>
@@ -35,9 +35,11 @@ export default {
   },
   mounted () {
     window.addEventListener('mouseup', this.stopDrag)
+    window.addEventListener('mousemove', this.doDrag)
   },
   destroyed () {
     window.removeEventListener('mouseup', this.stopDrag);
+    window.removeEventListener('mousemove', this.doDrag);
   },  
   computed: {
     pointerStyle () {

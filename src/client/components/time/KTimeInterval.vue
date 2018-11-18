@@ -20,7 +20,8 @@ export default {
   props: {
     timeInterval: null,
     intervalDisplayWidth: null,
-    color: null
+    color: null,
+    labelFontSize: null
   },
   data () {
     return {
@@ -43,7 +44,8 @@ export default {
       return {
         left: this.timeInterval.position + 'px',
         width: this.intervalDisplayWidth + 'px',
-        color: this.color
+        color: this.color,
+        fontSize: this.labelFontSize + 'px'
       }
     },
     intervalLabel () {
@@ -89,7 +91,6 @@ export default {
     top: 3px;
     height: 100%;
     text-align: center;
-    font-size: 12px;
     opacity: 0.5;
   }
 </style>
