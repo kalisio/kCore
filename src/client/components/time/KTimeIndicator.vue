@@ -1,8 +1,7 @@
 <template>
   <div>
-    <div class="k-interval-pointer"
+    <div class="k-time-pointer"
          v-bind:style="pointerStyle"
-         @mousedown="startDrag"
     >
       {{pointerLabel}}
     </div>
@@ -13,43 +12,35 @@
 import moment from 'moment'
 
 export default {
-  name: 'k-time-pointer',
+  name: 'k-time-indicator',
   components: {
   },
   props: {
     position: null,
     time: null,
+    visible: null,
     componentLeft: null,
     componentWidth: null,
     timeInterval: null,
-    pointerColor: null,
-    pointerTextColor: null
+    color: null,
+    textColor: null
   },
   data () {
     return {
-      // Dragging of the pointer
-      dragging: false
     }
   },
-  mounted () {
-    window.addEventListener('mouseup', this.stopDrag)
-    window.addEventListener('mousemove', this.doDrag)
-  },
-  destroyed () {
-    window.removeEventListener('mouseup', this.stopDrag)
-    window.removeEventListener('mousemove', this.doDrag)
-  },  
   computed: {
     pointerStyle () {
       return {
         // Put the "tip" of the pointer's downward pointing arrow at the right place. We need an offset
         // of 25px, this is the distance of the downward "arrow" from the left side of the label box.
         left: this.position - 25 + 'px',
-        color: this.pointerTextColor,
-        backgroundColor: this.pointerColor,
+        color: this.textColor,
+        visibility: this.visible ? 'visible' : 'hidden',
+        backgroundColor: this.color,
         // Set a CSS var that gets used in the ::after pseudo-element,
         // see: https://forum.vuejs.org/t/style-binding-on-pseudo-selector/5544/7
-        '--pointerColor': this.pointerColor
+        '--pointerColor': this.color
       }
     },
     pointerLabel () {
@@ -58,49 +49,18 @@ export default {
       const value = new Date(this.time)
       const type = this.timeInterval.type
 
-      let label
-
-      if (type === 'h' || type === 'm') {
-        label = moment(value).format('h:mm A')
-
-      } else if (type === 'd') {
-        label = moment(value).format('dddd D - h A')
-
-      } else {
-        label = ''
-      }
+      let label = moment(value).format('h:mm A')
 
       return label
     }
   },
   methods: {
-    // Dragging of the pointer
-    startDrag () {
-      this.dragging = true
-    },
-    stopDrag () {
-      this.dragging = false
-    },
-    doDrag (event) {
-      if (this.dragging) {
-        let newPosition = event.clientX - this.componentLeft
-
-        // Don't allow a position out of bounds
-        if (newPosition < 0) {
-          newPosition = 0
-        } else if (newPosition > this.componentWidth) {
-          newPosition = this.componentWidth
-        }
-
-        this.$emit('change', newPosition)
-      }
-    }
   }
 }
 </script>
 
 <style>
-  .k-interval-pointer {
+  .k-time-pointer {
     position: absolute;
     bottom: 19px;
     border-radius: 7px;
@@ -115,7 +75,7 @@ export default {
     user-select: none;
   }
 
-  .k-interval-pointer::after {
+  .k-time-pointer::after {
     position: absolute;
     top: 100%;
     left: 25px;

@@ -1,6 +1,7 @@
 <template>
 
-  <div class="k-timecontroller-container" @click="onTimelineClick">
+  <div class="k-timecontroller-container"
+       @click="onTimelineClick" @mouseover="onTimelineMouseOver" @mouseout="onTimelineMouseOut">
 
     <div v-bind:style="pointerContainerStyle"
          class="k-interval-pointer-container"
@@ -13,8 +14,18 @@
         :componentWidth="componentWidth"        
         :pointerColor="pointerColor"
         :pointerTextColor="pointerTextColor"
-        :labelFontSize="labelFontSize"
         @change="onChangePosition"
+      />
+
+      <k-time-indicator
+        :position="timeIndicatorPosition"
+        :time="timeIndicatorValue"
+        :visible="timeIndicatorIsVisible"
+        :timeInterval="timeInterval"
+        :componentLeft="componentLeft"
+        :componentWidth="componentWidth"        
+        :color="color"
+        :textColor="pointerTextColor"
       />
     </div>
 
@@ -32,6 +43,7 @@
         :color="color"
         :timeInterval="timeInterval"
         :intervalDisplayWidth="intervalDisplayWidth"
+        :labelFontSize="labelFontSize"
       />
     </div>
 
@@ -44,13 +56,15 @@ import { QResizeObservable } from 'quasar'
 import mixins from '../../mixins'
 import KTimeInterval from './KTimeInterval'
 import KTimePointer from './KTimePointer'
+import KTimeIndicator from './KTimeIndicator'
 
 export default {
   name: 'k-time-controller',
   components: {
     QResizeObservable,
     KTimeInterval,
-    KTimePointer
+    KTimePointer,
+    KTimeIndicator
   },
   mixins: [mixins.rangeCompute],
   props: {
@@ -59,12 +73,15 @@ export default {
     activeColor: { type: String, default: 'white' },
     pointerColor: { type: String, default: 'orange' },
     pointerTextColor: { type: String, default: 'white' },
-    labelFontSize: { type: Number, default: 12 }
+    labelFontSize: { type: Number, default: 16 }
   },
   data () {
     return {
       componentLeft: null,
-      componentWidth: null
+      componentWidth: null,
+      timeIndicatorPosition: null,
+      timeIndicatorValue: null,
+      timeIndicatorIsVisible: false
     }
   },
   mounted () {
@@ -139,6 +156,16 @@ export default {
       }
 
       this.onChangePosition(newPosition)
+    },
+    onTimelineMouseOut (event) {
+      this.timeIndicatorIsVisible = false
+    },
+    onTimelineMouseOver (event) {
+      let newPosition = event.clientX - this.componentLeft
+
+      this.timeIndicatorIsVisible = true
+      this.timeIndicatorPosition = newPosition
+      this.timeIndicatorValue = this.calculateValue(newPosition, this.min, this.max, this.componentWidth)
     }
   }
 }
