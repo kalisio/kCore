@@ -114,6 +114,7 @@ export default {
     cursor: grab;
     height: 26px;
     white-space: nowrap;
+    user-select: none;
   }
 
   .k-interval-pointer::after {
