@@ -1,10 +1,8 @@
 <template>
-  <div>
-    <div class="k-time-pointer"
-         v-bind:style="pointerStyle"
-    >
-      {{pointerLabel}}
-    </div>
+  <div class="k-time-pointer"
+        v-bind:style="pointerStyle"
+  >
+    {{pointerLabel}}
   </div>
 </template>
 

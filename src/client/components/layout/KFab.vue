@@ -24,7 +24,7 @@
         </div>
       </k-modal>
       <q-btn  
-        id="modal"
+        id="modal-action"
         color="secondary"
         class="fixed"
         style="right: 18px; bottom: 18px"
@@ -109,6 +109,7 @@ export default {
       return {
         padding: '4px',
         minWidth: '60vw',
+        maxWidth: '80vw',
         minHeight: '20vh'
       }
     },
@@ -116,8 +117,8 @@ export default {
       this.$refs.modal.open()
     },
     closeModal (action) {
-      if (!_.isNil(action)) this.$refs.modal.close(this.onActionTriggered(action))
-      this.$refs.modal.close()
+      if (!_.isNil(action)) this.$refs.modal.close(() => this.onActionTriggered(action))
+      else this.$refs.modal.close()
     },
     onActionTriggered (action) {
       // If a handler is given call it

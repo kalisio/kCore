@@ -3,6 +3,8 @@
   <div class="k-timecontroller-container"
        @click="onTimelineClick" @mouseover="onTimelineMouseOver" @mouseout="onTimelineMouseOut">
 
+    <q-resize-observable @resize="onResize" />
+
     <div v-bind:style="pointerContainerStyle"
          class="k-interval-pointer-container"
     >
@@ -32,10 +34,7 @@
     <div class="k-timecontroller-currenttime" v-bind:style="currentTimeStyle"></div>
 
     <div class="k-timecontroller-activebar" v-bind:style="activeBarStyle"></div>
-
-    <div class="k-timecontroller-bar" v-bind:style="barStyle" ref="timeControllerBar">
-      <q-resize-observable @resize="onResize" />
-    </div>
+    <div class="k-timecontroller-bar" v-bind:style="barStyle" ref="timeControllerBar"></div>
 
     <div v-bind:style="tickContainerStyle"
          class="k-interval-ticks-container"

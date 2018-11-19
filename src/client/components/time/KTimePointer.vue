@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <div class="k-interval-pointer"
-         v-bind:style="pointerStyle"
-         @mousedown="startDrag"
-    >
-      {{pointerLabel}}
-    </div>
+  <div class="k-interval-pointer"
+        v-bind:style="pointerStyle"
+        @mousedown="startDrag"
+  >
+    {{pointerLabel}}
   </div>
 </template>
 
