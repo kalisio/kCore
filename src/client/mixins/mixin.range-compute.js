@@ -1,12 +1,14 @@
 let rangeComputeMixin = {
-  props: {
-    min: null,
-    max: null,
-    value: null
-  },
+  props: [
+    'min',    // min value: time from
+    'max',    // max value: time until
+    'step',   // step (granularity): 'h' (hour) or 'm' (minute)
+    'value'   // value: initial time
+  ],
   data () {
     return {
       currentValue: this.value,
+      previousValue: null,
       timeInterval: this.calculateTimeInterval(this.min, this.max)
     }
   },
@@ -18,7 +20,11 @@ let rangeComputeMixin = {
       set: function (newPosition) {
         this.currentValue = this.calculateValue(newPosition, this.min, this.max, this.componentWidth)
 
-        this.$emit('change', this.currentValue)
+        if (this.valueChanged(this.currentValue, this.previousValue, this.step)) {
+          this.previousValue = this.currentValue
+
+          this.$emit('change', this.currentValue)
+        }
       }
     },
     timeIntervals () {
@@ -133,6 +139,33 @@ let rangeComputeMixin = {
         displayFirstTick: value > rangeStart,
         displayNextTick: isLastValue && nextValue < rangeEnd
       }
+    },
+    valueChanged (value, previousValue, step) {
+      let changed = true
+
+      if (step !== null) {
+        changed = false
+
+        if (previousValue === null) {
+          changed = true
+
+        } else {
+          const difference = Math.abs(value - previousValue)
+
+          switch (step) {
+            case 'h':
+              changed = (difference >= 60 * 60000)
+              break
+            case 'm':
+              changed = (difference >= 60000)   
+              break
+            default:
+              changed = true
+          }
+        }
+      }
+
+      return changed
     }
   }
 }

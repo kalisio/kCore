@@ -16,15 +16,15 @@ export default {
   name: 'k-time-pointer',
   components: {
   },
-  props: {
-    position: null,
-    time: null,
-    componentLeft: null,
-    componentWidth: null,
-    timeInterval: null,
-    pointerColor: null,
-    pointerTextColor: null
-  },
+  props: [
+    'position',
+    'time',
+    'componentLeft',
+    'componentWidth',
+    'timeInterval',
+    'pointerColor',
+    'pointerTextColor'
+  ],
   data () {
     return {
       // Dragging of the pointer

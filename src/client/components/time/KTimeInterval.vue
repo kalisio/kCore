@@ -17,12 +17,12 @@ export default {
   name: 'k-time-interval',
   components: {
   },
-  props: {
-    timeInterval: null,
-    intervalDisplayWidth: null,
-    color: null,
-    labelFontSize: null
-  },
+  props: [
+    'timeInterval',
+    'intervalDisplayWidth',
+    'color',
+    'labelFontSize'
+  ],
   data () {
     return {
     }

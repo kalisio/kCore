@@ -15,16 +15,16 @@ export default {
   name: 'k-time-indicator',
   components: {
   },
-  props: {
-    position: null,
-    time: null,
-    visible: null,
-    componentLeft: null,
-    componentWidth: null,
-    timeInterval: null,
-    color: null,
-    textColor: null
-  },
+  props: [
+    'position',
+    'time',
+    'visible',
+    'componentLeft',
+    'componentWidth',
+    'timeInterval',
+    'color',
+    'textColor'
+  ],
   data () {
     return {
     }
