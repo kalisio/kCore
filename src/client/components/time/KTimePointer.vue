@@ -35,7 +35,7 @@ export default {
     window.addEventListener('mouseup', this.stopDrag)
     window.addEventListener('mousemove', this.doDrag)
   },
-  destroyed () {
+  beforeDestroy () {
     window.removeEventListener('mouseup', this.stopDrag)
     window.removeEventListener('mousemove', this.doDrag)
   },  
@@ -113,6 +113,7 @@ export default {
     height: 26px;
     white-space: nowrap;
     user-select: none;
+    z-index: 300;
   }
 
   .k-interval-pointer::after {

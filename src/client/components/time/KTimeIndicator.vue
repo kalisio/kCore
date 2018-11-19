@@ -73,6 +73,7 @@ export default {
     height: 26px;
     white-space: nowrap;
     user-select: none;
+    z-index: 200;
   }
 
   .k-time-pointer::after {

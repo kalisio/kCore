@@ -29,6 +29,8 @@
       />
     </div>
 
+    <div class="k-timecontroller-currenttime" v-bind:style="currentTimeStyle"></div>
+
     <div class="k-timecontroller-activebar" v-bind:style="activeBarStyle"></div>
 
     <div class="k-timecontroller-bar" v-bind:style="barStyle" ref="timeControllerBar">
@@ -81,11 +83,20 @@ export default {
       componentWidth: null,
       timeIndicatorPosition: null,
       timeIndicatorValue: null,
-      timeIndicatorIsVisible: false
+      timeIndicatorIsVisible: false,
+      timeNow: null,
+      timeUpdater: null
     }
   },
   mounted () {
     this.updateComponentDimensions()
+
+    // update current time immediately, and then every 30 seconds
+    this.updateTime()
+    this.timeUpdater = setInterval(this.updateTime, 30000)
+  },
+  beforeDestroy() {
+    clearInterval(this.timeUpdater)
   },
   computed: {
     barStyle () {
@@ -104,6 +115,16 @@ export default {
         width: activeBarWidth,
         backgroundColor: this.activeColor,
         borderRadius: activeBarWidth === '100%' ? '2px' : '2px 0 0 2px'
+      }
+    },
+    currentTimeStyle () {
+      const timeNowPosition = this.calculatePosition(this.timeNow, this.min, this.max, this.componentWidth)
+
+      return {
+        marginLeft: timeNowPosition + 'px',
+        height: this.barHeight(),
+        width: '6px',
+        backgroundColor: this.pointerColor
       }
     },
     tickContainerStyle () {
@@ -166,7 +187,10 @@ export default {
       this.timeIndicatorIsVisible = true
       this.timeIndicatorPosition = newPosition
       this.timeIndicatorValue = this.calculateValue(newPosition, this.min, this.max, this.componentWidth)
-    }
+    },
+    updateTime() {
+      this.timeNow = Date.now()
+    }    
   }
 }
 </script>
@@ -181,13 +205,17 @@ export default {
     cursor: pointer;
   }
 
-  .k-timecontroller-activebar, .k-timecontroller-bar {
+  .k-timecontroller-activebar, .k-timecontroller-bar, .k-timecontroller-currenttime {
     position: absolute;
     top: 12px;
   }
 
   .k-timecontroller-activebar {
     z-index: 100;
+  }
+
+  .k-timecontroller-currenttime {
+    z-index: 200;
   }
 
   .k-interval-ticks-container, .k-interval-pointer-container {
