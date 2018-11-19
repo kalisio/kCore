@@ -21,6 +21,9 @@
     <template v-if="hasToolbar" v-for="action in appBar.toolbar">
       <q-btn :id ="action.name" :key="action.name" flat @click="onActionTriggered(action)">
         <q-icon :name="action.icon" />
+        <q-tooltip>
+          {{ action.label }}
+        </q-tooltip>
       </q-btn>
     </template>
     <!--
@@ -51,7 +54,7 @@
 </template>
 
 <script>
-import { QToolbar, QToolbarTitle, QBtn, QIcon, QList, QItem, QItemSide, QItemMain, QPopover } from 'quasar'
+import { QToolbar, QToolbarTitle, QBtn, QIcon, QList, QItem, QItemSide, QItemMain, QTooltip, QPopover } from 'quasar'
 import KVoice from './KVoice.vue'
 
 export default {
@@ -66,6 +69,7 @@ export default {
     QItemSide,
     QItemMain,
     QPopover,
+    QTooltip,
     KVoice
   },
   data () {
