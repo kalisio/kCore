@@ -64,8 +64,7 @@ export default {
     QItemSide,
     QItemMain,
     QPopover,
-    QTooltip,
-    KVoice
+    QTooltip
   },
   props: {
     hasSideNavToggle: {
