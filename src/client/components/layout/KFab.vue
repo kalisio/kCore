@@ -117,7 +117,6 @@ export default {
       this.$refs.modal.open()
     },
     closeModal (action) {
-      console.log(this.$refs.modal)
       if (!_.isNil(action)) this.$refs.modal.close(() => this.onActionTriggered(action))
       else this.$refs.modal.close()
     },
