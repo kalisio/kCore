@@ -7,10 +7,6 @@
 **Implemented enhancements:**
 
 - Display tooltips on AppBar actions [\#92](https://github.com/kalisio/kCore/issues/92)
-- Make the AppBar visible/invisible [\#90](https://github.com/kalisio/kCore/issues/90)
-- Allow the right panel can hide automatically [\#89](https://github.com/kalisio/kCore/issues/89)
-- Allow to add a right pane dynamically into the layout [\#88](https://github.com/kalisio/kCore/issues/88)
-- Extend fields [\#23](https://github.com/kalisio/kCore/issues/23)
 
 **Fixed bugs:**
 
