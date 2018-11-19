@@ -21,6 +21,9 @@
     <template v-if="hasToolbar" v-for="action in appBar.toolbar">
       <q-btn :id ="action.name" :key="action.name" flat @click="onActionTriggered(action)">
         <q-icon :name="action.icon" />
+        <q-tooltip>
+          {{ action.label }}
+        </q-tooltip>
       </q-btn>
     </template>
     <!--
@@ -47,7 +50,7 @@
 </template>
 
 <script>
-import { QToolbar, QToolbarTitle, QBtn, QIcon, QList, QItem, QItemSide, QItemMain, QPopover } from 'quasar'
+import { QToolbar, QToolbarTitle, QBtn, QIcon, QList, QItem, QItemSide, QItemMain, QTooltip, QPopover } from 'quasar'
 
 export default {
   name: 'k-app-bar',
@@ -60,7 +63,9 @@ export default {
     QItem,
     QItemSide,
     QItemMain,
-    QPopover
+    QPopover,
+    QTooltip,
+    KVoice
   },
   props: {
     hasSideNavToggle: {
