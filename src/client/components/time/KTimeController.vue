@@ -11,7 +11,7 @@
       <k-time-pointer
         :position="position"
         :time="currentValue"
-        :timeInterval="timeInterval"
+        :formatter="timeFormatter"
         :componentLeft="componentLeft"
         :componentWidth="componentWidth"        
         :pointerColor="pointerColor"
@@ -23,7 +23,7 @@
         :position="timeIndicatorPosition"
         :time="timeIndicatorValue"
         :visible="timeIndicatorIsVisible"
-        :timeInterval="timeInterval"
+        :formatter="timeFormatter"
         :componentLeft="componentLeft"
         :componentWidth="componentWidth"        
         :color="color"
@@ -40,9 +40,10 @@
          class="k-interval-ticks-container"
     >
       <k-time-interval
-        v-for="timeInterval in timeIntervals" :key="timeInterval.value"
+        v-for="interval in timeIntervals" :key="interval.value"
         :color="color"
-        :timeInterval="timeInterval"
+        :interval="interval"
+        :formatter="timeFormatter"
         :intervalDisplayWidth="intervalDisplayWidth"
         :labelFontSize="labelFontSize"
       />

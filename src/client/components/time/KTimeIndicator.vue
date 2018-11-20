@@ -7,8 +7,6 @@
 </template>
 
 <script>
-import moment from 'moment'
-
 export default {
   name: 'k-time-indicator',
   components: {
@@ -19,7 +17,7 @@ export default {
     'visible',
     'componentLeft',
     'componentWidth',
-    'timeInterval',
+    'formatter',
     'color',
     'textColor'
   ],
@@ -42,14 +40,7 @@ export default {
       }
     },
     pointerLabel () {
-      // Formats the label value for the time interval, taking into account the interval type (hour, day, week etc)
-
-      const value = new Date(this.time)
-      const type = this.timeInterval.type
-
-      let label = moment(value).format('h:mm A')
-
-      return label
+      return this.formatter.format(this.time, 'indicator')
     }
   },
   methods: {

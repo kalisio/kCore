@@ -2,24 +2,26 @@
   <div class="k-interval-pointer"
         v-bind:style="pointerStyle"
         @mousedown="startDrag"
+        v-touch-pan.nomouse.horizontal="doPan"
   >
     {{pointerLabel}}
   </div>
 </template>
 
 <script>
-import moment from 'moment'
+import { TouchPan } from 'quasar'
 
 export default {
   name: 'k-time-pointer',
-  components: {
+  directives: {
+    TouchPan
   },
   props: [
     'position',
     'time',
     'componentLeft',
     'componentWidth',
-    'timeInterval',
+    'formatter',
     'pointerColor',
     'pointerTextColor'
   ],
@@ -51,24 +53,7 @@ export default {
       }
     },
     pointerLabel () {
-      // Formats the label value for the time interval, taking into account the interval type (hour, day, week etc)
-
-      const value = new Date(this.time)
-      const type = this.timeInterval.type
-
-      let label
-
-      if (type === 'h' || type === 'm') {
-        label = moment(value).format('h:mm A')
-
-      } else if (type === 'd') {
-        label = moment(value).format('dddd D - h A')
-
-      } else {
-        label = ''
-      }
-
-      return label
+      return this.formatter.format(this.time, 'pointer')
     }
   },
   methods: {
@@ -81,17 +66,23 @@ export default {
     },
     doDrag (event) {
       if (this.dragging) {
-        let newPosition = event.clientX - this.componentLeft
-
-        // Don't allow a position out of bounds
-        if (newPosition < 0) {
-          newPosition = 0
-        } else if (newPosition > this.componentWidth) {
-          newPosition = this.componentWidth
-        }
-
-        this.$emit('change', newPosition)
+        this.doMove(event.clientX)
       }
+    },
+    doPan (obj) {
+      this.doMove(obj.position.left)
+    },
+    doMove (targetPosition) {
+      let newPosition = targetPosition - this.componentLeft
+
+      // Don't allow a position out of bounds
+      if (newPosition < 0) {
+        newPosition = 0
+      } else if (newPosition > this.componentWidth) {
+        newPosition = this.componentWidth
+      }
+
+      this.$emit('change', newPosition)
     }
   }
 }
