@@ -19,13 +19,7 @@ let rangeComputeMixin = {
         return this.calculatePosition(this.currentValue, this.min, this.max, this.componentWidth)
       },
       set: function (newPosition) {
-        this.currentValue = this.calculateValue(newPosition, this.min, this.max, this.componentWidth)
-
-        if (this.valueChanged(this.currentValue, this.previousValue, this.step)) {
-          this.previousValue = this.currentValue
-
-          this.$emit('change', this.currentValue)
-        }
+        this.changePosition(newPosition, false)
       }
     },
     timeIntervals () {
@@ -49,6 +43,15 @@ let rangeComputeMixin = {
     }
   },
   methods: {
+    changePosition (newPosition, final) {
+      this.currentValue = this.calculateValue(newPosition, this.min, this.max, this.componentWidth)
+
+      if (final || this.valueChanged(this.currentValue, this.previousValue, this.step)) {
+        this.previousValue = this.currentValue
+
+        this.$emit('change', {value: this.currentValue, final})
+      }
+    },
     calculatePosition (value, rangeStart, rangeEnd, componentWidth) {
       return Math.round(componentWidth * (value - rangeStart) / (rangeEnd - rangeStart))
     },

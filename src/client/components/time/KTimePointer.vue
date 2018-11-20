@@ -61,18 +61,21 @@ export default {
     startDrag () {
       this.dragging = true
     },
-    stopDrag () {
+    stopDrag (event) {
+      if (this.dragging) {
+        this.doMove(event.clientX, true)
+      }
       this.dragging = false
     },
     doDrag (event) {
       if (this.dragging) {
-        this.doMove(event.clientX)
+        this.doMove(event.clientX, false)
       }
     },
     doPan (obj) {
-      this.doMove(obj.position.left)
+      this.doMove(obj.position.left, obj.isFinal)
     },
-    doMove (targetPosition) {
+    doMove (targetPosition, final) {
       let newPosition = targetPosition - this.componentLeft
 
       // Don't allow a position out of bounds
@@ -82,7 +85,7 @@ export default {
         newPosition = this.componentWidth
       }
 
-      this.$emit('change', newPosition)
+      this.$emit('change', {value: newPosition, final})
     }
   }
 }
