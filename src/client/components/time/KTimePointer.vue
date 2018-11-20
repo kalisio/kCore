@@ -2,6 +2,7 @@
   <div class="k-interval-pointer"
         v-bind:style="pointerStyle"
         @mousedown="startDrag"
+        v-touch-pan.nomouse.horizontal="doPan"
   >
     {{pointerLabel}}
   </div>
@@ -9,10 +10,12 @@
 
 <script>
 import moment from 'moment'
+import { TouchPan } from 'quasar'
 
 export default {
   name: 'k-time-pointer',
-  components: {
+  directives: {
+    TouchPan
   },
   props: [
     'position',
@@ -81,17 +84,23 @@ export default {
     },
     doDrag (event) {
       if (this.dragging) {
-        let newPosition = event.clientX - this.componentLeft
-
-        // Don't allow a position out of bounds
-        if (newPosition < 0) {
-          newPosition = 0
-        } else if (newPosition > this.componentWidth) {
-          newPosition = this.componentWidth
-        }
-
-        this.$emit('change', newPosition)
+        this.doMove(event.clientX)
       }
+    },
+    doPan (obj) {
+      this.doMove(obj.position.left)
+    },
+    doMove (targetPosition) {
+      let newPosition = targetPosition - this.componentLeft
+
+      // Don't allow a position out of bounds
+      if (newPosition < 0) {
+        newPosition = 0
+      } else if (newPosition > this.componentWidth) {
+        newPosition = this.componentWidth
+      }
+
+      this.$emit('change', newPosition)
     }
   }
 }
