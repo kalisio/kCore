@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { TouchPan } from 'quasar'
 
 export default {
@@ -22,7 +21,7 @@ export default {
     'time',
     'componentLeft',
     'componentWidth',
-    'timeInterval',
+    'formatter',
     'pointerColor',
     'pointerTextColor'
   ],
@@ -54,24 +53,7 @@ export default {
       }
     },
     pointerLabel () {
-      // Formats the label value for the time interval, taking into account the interval type (hour, day, week etc)
-
-      const value = new Date(this.time)
-      const type = this.timeInterval.type
-
-      let label
-
-      if (type === 'h' || type === 'm') {
-        label = moment(value).format('h:mm A')
-
-      } else if (type === 'd') {
-        label = moment(value).format('dddd D - h A')
-
-      } else {
-        label = ''
-      }
-
-      return label
+      return this.formatter.format(this.time, 'pointer')
     }
   },
   methods: {
