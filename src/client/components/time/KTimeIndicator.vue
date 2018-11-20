@@ -58,7 +58,7 @@ export default {
     padding-top: 6px;
     padding-left: 8px;
     padding-right: 8px;
-    cursor: grab;
+    cursor: pointer;
     height: 26px;
     white-space: nowrap;
     user-select: none;

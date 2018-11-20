@@ -1,7 +1,7 @@
 <template>
 
   <div class="k-timecontroller-container"
-       @click="onTimelineClick" @mouseover="onTimelineMouseOver" @mouseout="onTimelineMouseOut">
+       @click="onTimelineClick" @mousemove="onTimelineMouseMove" @mouseout="onTimelineMouseOut">
 
     <q-resize-observable @resize="onResize" />
 
@@ -163,8 +163,8 @@ export default {
     onResize (size) {
       this.updateComponentDimensions()
     },
-    onChangePosition (newPosition) {
-      this.position = newPosition
+    onChangePosition (event) {
+      this.changePosition(event.value, event.final)
     },
     onTimelineClick (event) {
       let newPosition = event.clientX - this.componentLeft
@@ -176,12 +176,12 @@ export default {
         newPosition = this.componentWidth
       }
 
-      this.onChangePosition(newPosition)
+      this.onChangePosition({value: newPosition, final: true})
     },
     onTimelineMouseOut (event) {
       this.timeIndicatorIsVisible = false
     },
-    onTimelineMouseOver (event) {
+    onTimelineMouseMove (event) {
       let newPosition = event.clientX - this.componentLeft
 
       this.timeIndicatorIsVisible = true
