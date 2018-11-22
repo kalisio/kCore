@@ -34,29 +34,6 @@ export function marshallComparisonQuery (hook) {
   }
 }
 
-export function marshallGeometryQuery (hook) {
-  let query = hook.params.query
-  if (!query) return
-
-  if (typeof query.geometry === 'object') {
-    // Geospatial operators begin with $
-    let geoOperator = _.keys(query.geometry).find(key => key.startsWith('$'))
-    geoOperator = query.geometry[geoOperator]
-    _.forOwn(geoOperator, (value, key) => {
-      // Geospatial parameters begin with $
-      if (key.startsWith('$')) {
-        // Some target coordinates
-        if (!_.isNil(value.coordinates)) {
-          value.coordinates = value.coordinates.map(coordinate => _.toNumber(coordinate))
-        } else {
-          // Other simple values
-          geoOperator[key] = _.toNumber(value)
-        }
-      }
-    })
-  }
-}
-
 export function marshallCollationQuery (hook) {
   let query = hook.params.query
   if (!query) return
