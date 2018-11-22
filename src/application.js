@@ -195,15 +195,17 @@ export function createService (name, app, options = {}) {
     paginate
   }, options)
   // For DB services a model has to be provided
+  let fileName = options.fileName || name
+
   let dbService = false
   try {
     if (options.modelsPath) {
-      const configureModel = require(path.join(options.modelsPath, name + '.model.' + app.db.adapter))
+      const configureModel = require(path.join(options.modelsPath, fileName + '.model.' + app.db.adapter))
       configureModel(app, serviceOptions)
       dbService = true
     }
   } catch (error) {
-    debug('No ' + name + ' service model configured on path ' + options.modelsPath)
+    debug('No ' + fileName + ' service model configured on path ' + options.modelsPath)
     if (error.code !== 'MODULE_NOT_FOUND') {
       // Log error in this case as this might be linked to a syntax error in required file
       debug(error)
@@ -219,7 +221,7 @@ export function createService (name, app, options = {}) {
     service = createProxyService(options.proxy)
   } else {
     // Otherwise we expect the service to be provided as a Feathers service interface
-    service = require(path.join(options.servicesPath, name, name + '.service'))
+    service = require(path.join(options.servicesPath, fileName, fileName + '.service'))
     // If we get a function try to call it assuming it will return the service object
     if (typeof service === 'function') {
       service = service(name, app, options)
@@ -238,18 +240,18 @@ export function createService (name, app, options = {}) {
   }
   service = declareService(servicePath, app, service, options.middlewares)
   // Register hooks and event filters
-  service = configureService(name, service, options.servicesPath)
+  service = configureService(fileName, service, options.servicesPath)
   // Optionnally a specific service mixin can be provided, apply it
   if (dbService && options.servicesPath) {
     try {
-      let serviceMixin = require(path.join(options.servicesPath, name, name + '.service'))
+      let serviceMixin = require(path.join(options.servicesPath, fileName, fileName + '.service'))
       // If we get a function try to call it assuming it will return the mixin object
       if (typeof serviceMixin === 'function') {
-        serviceMixin = serviceMixin(name, app, options)
+        serviceMixin = serviceMixin(fileName, app, options)
       }
       service.mixin(serviceMixin)
     } catch (error) {
-      debug('No ' + name + ' service mixin configured on path ' + options.servicesPath)
+      debug('No ' + fileName + ' service mixin configured on path ' + options.servicesPath)
       if (error.code !== 'MODULE_NOT_FOUND') {
         // Log error in this case as this might be linked to a syntax error in required file
         debug(error)

@@ -95,7 +95,7 @@ export default {
     this.updateTime()
     this.timeUpdater = setInterval(this.updateTime, 30000)
   },
-  beforeDestroy() {
+  beforeDestroy () {
     clearInterval(this.timeUpdater)
   },
   computed: {
@@ -188,9 +188,9 @@ export default {
       this.timeIndicatorPosition = newPosition
       this.timeIndicatorValue = this.calculateValue(newPosition, this.min, this.max, this.componentWidth)
     },
-    updateTime() {
+    updateTime () {
       this.timeNow = Date.now()
-    }    
+    }
   }
 }
 </script>

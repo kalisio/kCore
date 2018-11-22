@@ -7,6 +7,7 @@ export * from './services'
 export * as hooks from './hooks'
 export * from './db'
 export * from './application'
+export * from './marshall'
 export * from './common'
 
 const debug = makeDebug('kalisio:kCore')

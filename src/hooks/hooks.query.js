@@ -1,36 +1,43 @@
-import moment from 'moment'
+
 import _ from 'lodash'
+import { marshallComparisonFields, marshallTime, unmarshallTime } from '../marshall'
+import { getItems, replaceItems } from 'feathers-hooks-common'
 import { ObjectID } from 'mongodb'
 import makeDebug from 'debug'
 
 const debug = makeDebug('kalisio:kCore:query:hooks')
 
-function marshallComparisonFieldsInQuery (queryObject) {
-  _.forOwn(queryObject, (value, key) => {
-    // Process current attributes or  recurse
-    if (typeof value === 'object') {
-      marshallComparisonFieldsInQuery(value)
-    } else if ((key === '$lt') || (key === '$lte') || (key === '$gt') || (key === '$gte')) {
-      let number = _.toNumber(value)
-      // Update from query string to number if required
-      if (!Number.isNaN(number)) {
-        queryObject[key] = number
-      } else {
-        // try for dates as well
-        let date = moment.utc(value)
-        if (date.isValid()) {
-          queryObject[key] = date.toDate()
-        }
-      }
-    }
+// Need to convert from server side types (moment dates) to basic JS types when "writing" to DB adapters
+export function marshallTimeQuery (hook) {
+  let items = getItems(hook)
+  const isArray = Array.isArray(items)
+  items = (isArray ? items : [items])
+
+  items.forEach(item => {
+    marshallTime(item, 'time')
   })
+
+  replaceItems(hook, isArray ? items : items[0])
+}
+
+// Need to convert back to server side types (moment dates) from basic JS types when "reading" from DB adapters
+export function unmarshallTimeQuery (hook) {
+  let items = getItems(hook)
+  const isArray = Array.isArray(items)
+  items = (isArray ? items : [items])
+
+  items.forEach(item => {
+    unmarshallTime(item, 'time')
+  })
+
+  replaceItems(hook, isArray ? items : items[0])
 }
 
 export function marshallComparisonQuery (hook) {
   let query = hook.params.query
   if (query) {
     // Complex queries might have nested objects so we call a recursive function to handle this
-    marshallComparisonFieldsInQuery(query)
+    marshallComparisonFields(query)
   }
 }
 

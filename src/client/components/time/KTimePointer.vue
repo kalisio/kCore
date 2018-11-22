@@ -38,7 +38,7 @@ export default {
   beforeDestroy () {
     window.removeEventListener('mouseup', this.stopDrag)
     window.removeEventListener('mousemove', this.doDrag)
-  },  
+  },
   computed: {
     pointerStyle () {
       return {

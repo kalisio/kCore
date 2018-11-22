@@ -58,7 +58,7 @@ let rangeComputeMixin = {
     calculateValue (position, rangeStart, rangeEnd, componentWidth) {
       return Math.round(rangeStart + position / componentWidth * (rangeEnd - rangeStart))
     },
-    calculateIntervals(rangeStart, rangeEnd, timeInterval) {
+    calculateIntervals (rangeStart, rangeEnd, timeInterval) {
       let intervals = []
       let value = timeInterval.getIntervalStartValue(rangeStart)
 
@@ -70,7 +70,6 @@ let rangeComputeMixin = {
       return intervals
     },
     getTimeInterval (value, nextValue, rangeStart, rangeEnd, componentWidth, isFirstValue, isLastValue) {
-
       return {
         value,
         nextValue,
