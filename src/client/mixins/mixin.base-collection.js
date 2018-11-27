@@ -44,6 +44,10 @@ let baseCollectionMixin = {
       return {}
     },
     refreshCollection () {
+      this.currentPage = 1
+      this.updateCurrentPage()
+    },
+    updateCurrentPage () {
       // Add locale to perform sorting (i.e. collation) correctly w.r.t. user's language
       let fullQuery = Object.assign({ $locale: getLocale() }, this.getCollectionBaseQuery(), this.getCollectionFilterQuery())
       // Sets the number of items to be loaded
@@ -57,7 +61,7 @@ let baseCollectionMixin = {
       this.subscribe(fullQuery)
     },
     onPageChanged () {
-      this.refreshCollection()
+      this.updateCurrentPage()
     }
   },
   beforeDestroy () {

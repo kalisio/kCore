@@ -5,39 +5,25 @@
         Title section
       -->
       <slot name="card-title"> 
-        <div v-if="options.avatar">
-          <q-card-media>
-            <div class="row justify-center" style="padding:8px">
-              <avatar v-if="name" :username="name" :size="options.avatar.size" />
-            </div>
-            <q-card-title slot="overlay">
-              {{name}}
-              <div slot="subtitle">
-                <k-text-area :text="description" />
-              </div>
-              <div slot="right">
-                <slot name="card-icon"></slot>
-              </div>
-            </q-card-title>
-          </q-card-media>
-        </div>
-        <div v-else>
-          <q-card-title>
-            {{name}}
-            <div slot="subtitle">
-              <k-text-area :text="description" />
-            </div>
-            <div slot="right">
-              <slot name="card-icon"></slot>
-            </div>
-          </q-card-title>
-        </div>
+        <q-item>
+          <q-item-side v-if="options.avatar">
+            <avatar v-if="name" :username="name" :size="options.avatar.size" />
+          </q-item-side>
+          <q-item-main>
+            <q-item-tile label>{{name}}</q-item-tile>
+            <q-item-tile sublabel><small>{{description}}</small></q-item-tile>
+          </q-item-main>
+          <q-item-side right>
+            <slot name="card-icon"></slot>
+          </q-item-side>
+        </q-item>
+        <q-card-separator />
       </slot>
       <!--
         Content section
       -->
       <q-card-main>
-        <slot nanem="card-tags">
+        <slot name="card-tags">
           <div v-if="tags && tags.length > 0">
             <div class="row justify-start items-center">
               <template v-for="tag in tags">
@@ -91,7 +77,7 @@
 
 <script>
 import _ from 'lodash'
-import { QCard, QCardTitle, QCardActions, QCardSeparator, QCardMain, QCardMedia, QBtn, QIcon, QPopover, QList, QItem, QItemSide, QItemMain, QTooltip, QChip } from 'quasar'
+import { QCard, QCardTitle, QCardActions, QCardSeparator, QCardMain, QCardMedia, QBtn, QIcon, QPopover, QList, QItem, QItemSide, QItemMain, QItemTile, QTooltip, QChip } from 'quasar'
 import { Avatar } from 'vue-avatar'
 import { KTextArea } from '../frame'
 
@@ -108,6 +94,7 @@ export default {
     QItem,
     QItemSide,
     QItemMain,
+    QItemTile,
     QBtn,
     QIcon,
     QPopover,
