@@ -1,10 +1,37 @@
 import _ from 'lodash'
 import moment from 'moment'
 import { objectifyIDs, toObjectIDs } from '../db'
+import { marshallTime, unmarshallTime } from '../marshall'
 import { discard, disallow, getItems, replaceItems } from 'feathers-hooks-common'
 import makeDebug from 'debug'
 
 const debug = makeDebug('kalisio:kCore:model:hooks')
+
+// Need to convert from server side types (moment dates) to basic JS types when "writing" to DB adapters
+export function processTime (hook) {
+  let items = getItems(hook)
+  const isArray = Array.isArray(items)
+  items = (isArray ? items : [items])
+
+  items.forEach(item => {
+    marshallTime(item, 'time')
+  })
+
+  replaceItems(hook, isArray ? items : items[0])
+}
+
+// Need to convert back to server side types (moment dates) from basic JS types when "reading" from DB adapters
+export function unprocessTime (hook) {
+  let items = getItems(hook)
+  const isArray = Array.isArray(items)
+  items = (isArray ? items : [items])
+
+  items.forEach(item => {
+    unmarshallTime(item, 'time')
+  })
+
+  replaceItems(hook, isArray ? items : items[0])
+}
 
 export function processPerspectives (hook) {
   let params = hook.params

@@ -7,30 +7,12 @@ import makeDebug from 'debug'
 
 const debug = makeDebug('kalisio:kCore:query:hooks')
 
-// Need to convert from server side types (moment dates) to basic JS types when "writing" to DB adapters
 export function marshallTimeQuery (hook) {
-  let items = getItems(hook)
-  const isArray = Array.isArray(items)
-  items = (isArray ? items : [items])
-
-  items.forEach(item => {
-    marshallTime(item, 'time')
-  })
-
-  replaceItems(hook, isArray ? items : items[0])
-}
-
-// Need to convert back to server side types (moment dates) from basic JS types when "reading" from DB adapters
-export function unmarshallTimeQuery (hook) {
-  let items = getItems(hook)
-  const isArray = Array.isArray(items)
-  items = (isArray ? items : [items])
-
-  items.forEach(item => {
-    unmarshallTime(item, 'time')
-  })
-
-  replaceItems(hook, isArray ? items : items[0])
+  let query = hook.params.query
+  if (query) {
+    // Need to convert from client/server side types : string or moment dates
+    marshallTime(query, 'time')
+  }
 }
 
 export function marshallComparisonQuery (hook) {
