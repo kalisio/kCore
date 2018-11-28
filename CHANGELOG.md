@@ -1,5 +1,17 @@
 # Changelog
 
+## [v1.0.2](https://github.com/kalisio/kCore/tree/v1.0.2) (2018-11-19)
+
+[Full Changelog](https://github.com/kalisio/kCore/compare/v1.0.1...v1.0.2)
+
+**Implemented enhancements:**
+
+- Display tooltips on AppBar actions [\#92](https://github.com/kalisio/kCore/issues/92)
+
+**Fixed bugs:**
+
+- FAB action blocked if open twice when expandable limit is exceeded [\#91](https://github.com/kalisio/kCore/issues/91)
+
 ## [v1.0.1](https://github.com/kalisio/kCore/tree/v1.0.1) (2018-10-15)
 
 [Full Changelog](https://github.com/kalisio/kCore/compare/v1.0.0...v1.0.1)
