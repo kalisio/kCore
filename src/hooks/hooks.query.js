@@ -1,7 +1,6 @@
 
 import _ from 'lodash'
-import { marshallComparisonFields, marshallTime, unmarshallTime } from '../marshall'
-import { getItems, replaceItems } from 'feathers-hooks-common'
+import { marshallComparisonFields, marshallTime } from '../marshall'
 import { ObjectID } from 'mongodb'
 import makeDebug from 'debug'
 
