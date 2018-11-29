@@ -66,9 +66,11 @@ export default {
     },
     baseQuery: function () {
       this.refreshCollection()
+      this.currentPage = 1
     },
     filterQuery: function () {
       this.refreshCollection()
+      this.currentPage = 1
     }
   },
   methods: {
