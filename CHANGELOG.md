@@ -7,8 +7,6 @@
 **Implemented enhancements:**
 
 - Simplify the kCard title section [\#95](https://github.com/kalisio/kCore/issues/95)
-- Integrate time relative hooks/marshall functions from weacast-core [\#94](https://github.com/kalisio/kCore/issues/94)
-- Allow to create a service using other model/service files than the default resolved ones [\#93](https://github.com/kalisio/kCore/issues/93)
 
 **Fixed bugs:**
 
