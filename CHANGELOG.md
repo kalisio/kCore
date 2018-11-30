@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.0.4](https://github.com/kalisio/kCore/tree/v1.0.4) (2018-11-30)
+
+[Full Changelog](https://github.com/kalisio/kCore/compare/v1.0.3...v1.0.4)
+
+**Fixed bugs:**
+
+- Search bar does not work properly  [\#96](https://github.com/kalisio/kCore/issues/96)
+
 ## [v1.0.3](https://github.com/kalisio/kCore/tree/v1.0.3) (2018-11-29)
 
 [Full Changelog](https://github.com/kalisio/kCore/compare/v1.0.2...v1.0.3)
@@ -7,10 +15,8 @@
 **Implemented enhancements:**
 
 - Simplify the kCard title section [\#95](https://github.com/kalisio/kCore/issues/95)
-
-**Fixed bugs:**
-
-- Search bar does not work properly  [\#96](https://github.com/kalisio/kCore/issues/96)
+- Integrate time relative hooks/marshall functions from weacast-core [\#94](https://github.com/kalisio/kCore/issues/94)
+- Allow to create a service using other model/service files than the default resolved ones [\#93](https://github.com/kalisio/kCore/issues/93)
 
 ## [v1.0.2](https://github.com/kalisio/kCore/tree/v1.0.2) (2018-11-19)
 
