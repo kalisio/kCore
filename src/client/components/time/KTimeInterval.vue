@@ -59,7 +59,7 @@ export default {
 <style>
   .k-interval-tick {
     position: absolute;
-    top: 11px;
+    top: 0;
     width: 1px;
     height: 100%;
     opacity: 0.5;
@@ -67,7 +67,7 @@ export default {
 
   .k-interval-label {
     position: absolute;
-    top: 15px;
+    top: 3px;
     height: 100%;
     text-align: center;
     opacity: 0.5;

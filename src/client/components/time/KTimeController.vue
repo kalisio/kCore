@@ -198,7 +198,7 @@ export default {
 <style>
   .k-timecontroller-container {
     width: 100%;
-    padding-top: 12px;
+    padding-top: 0;
     padding-bottom: 12px;
     background-color: transparent;
     position: relative;
@@ -207,7 +207,7 @@ export default {
 
   .k-timecontroller-activebar, .k-timecontroller-bar, .k-timecontroller-currenttime {
     position: absolute;
-    top: 12px;
+    top: 0;
   }
 
   .k-timecontroller-activebar {
