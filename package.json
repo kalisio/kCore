@@ -1,7 +1,7 @@
 {
   "name": "@kalisio/kdk-core",
   "description": "Module to provide core utilities for Kalisio applications and services",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "homepage": "https://github.com/kalisio/kCore",
   "main": "lib/",
   "browser": {
