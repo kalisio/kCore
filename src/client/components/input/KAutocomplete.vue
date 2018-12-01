@@ -1,5 +1,5 @@
 <template>
-  <q-search v-model="pattern" @change="onChanged">
+  <q-search v-model="pattern" @change="onChanged" :placeholder="$t('KAutocomplete.PLACEHOLDER')">
     <q-autocomplete @search="onSearch" @selected="onSelected" />
   </q-search>
 </template>
