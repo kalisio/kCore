@@ -1,5 +1,6 @@
 <template>
   <div class="k-time-pointer"
+        ref="timeIndicator"
         v-bind:style="pointerStyle"
   >
     {{pointerLabel}}
@@ -19,7 +20,10 @@ export default {
     'componentWidth',
     'formatter',
     'color',
-    'textColor'
+    'textColor',
+    'timePointerLeft',
+    'timePointerRight',
+    'timePointerHeight'
   ],
   data () {
     return {
@@ -31,6 +35,7 @@ export default {
         // Put the "tip" of the pointer's downward pointing arrow at the right place. We need an offset
         // of 25px, this is the distance of the downward "arrow" from the left side of the label box.
         left: this.position - 25 + 'px',
+        bottom: this.calculateBottom(this.timePointerLeft, this.timePointerRight, this.timePointerHeight) + 'px',
         color: this.textColor,
         visibility: this.visible ? 'visible' : 'hidden',
         backgroundColor: this.color,
@@ -44,6 +49,46 @@ export default {
     }
   },
   methods: {
+    calculateBottom (timePointerLeft, timePointerRight, timePointerHeight) {
+      let bottom = 19   // default 19px
+
+      if (this.timeIndicatorOverlapsTimePointer(this.$refs.timeIndicator, timePointerLeft, timePointerRight)) {
+        bottom += timePointerHeight
+      }
+
+      return bottom
+    },
+    timeIndicatorOverlapsTimePointer (timeIndicatorRef, timePointerLeft, timePointerRight) {
+      // If the time indicator ref or the time pointer rect are not defined (yet): return overlaps = false
+      if (!timeIndicatorRef || !timePointerLeft) {
+        return false
+      }
+
+      const timeIndicatorRect = timeIndicatorRef.getBoundingClientRect()
+
+      // If the left side of the time indicator is "within" the time pointer: return overlaps = true
+      if (
+            timeIndicatorRect.x < timePointerRight
+              &&
+            timeIndicatorRect.x > timePointerLeft
+         )
+      {
+        return true
+      }
+
+      // If the right side of the time indicator is "within" the time pointer: return overlaps = true
+      if (
+            timeIndicatorRect.x + timeIndicatorRect.width > timePointerLeft
+              &&
+            timeIndicatorRect.x + timeIndicatorRect.width < timePointerRight
+         )
+      {
+        return true
+      }
+
+      // If the time indicator is completely "outside" the time pointer: return overlaps = false
+      return false
+    }
   }
 }
 </script>
@@ -51,7 +96,6 @@ export default {
 <style>
   .k-time-pointer {
     position: absolute;
-    bottom: 19px;
     border-radius: 7px;
     font-size: 12px;
     padding-bottom: 6px;

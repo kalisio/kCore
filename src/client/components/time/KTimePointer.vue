@@ -1,5 +1,6 @@
 <template>
   <div class="k-interval-pointer"
+        ref="timePointer"
         v-bind:style="pointerStyle"
         @mousedown="startDrag"
         v-touch-pan.nomouse.horizontal="doPan"
@@ -34,6 +35,10 @@ export default {
   mounted () {
     window.addEventListener('mouseup', this.stopDrag)
     window.addEventListener('mousemove', this.doDrag)
+  },
+  updated () {
+    // initial change-pointer event
+    this.emitChangePointer()
   },
   beforeDestroy () {
     window.removeEventListener('mouseup', this.stopDrag)
@@ -86,6 +91,14 @@ export default {
       }
 
       this.$emit('change', {value: newPosition, final})
+      this.emitChangePointer()
+    },
+    emitChangePointer () {
+      const componentRef = this.$refs.timePointer
+
+      if (componentRef) {
+        this.$emit('changePointer', componentRef.getBoundingClientRect())
+      }
     }
   }
 }
