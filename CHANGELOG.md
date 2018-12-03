@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.0.5](https://github.com/kalisio/kCore/tree/v1.0.5) (2018-12-03)
+
+[Full Changelog](https://github.com/kalisio/kCore/compare/v1.0.4...v1.0.5)
+
+**Fixed bugs:**
+
+- Filling a form causes validation to occur [\#97](https://github.com/kalisio/kCore/issues/97)
+
 ## [v1.0.4](https://github.com/kalisio/kCore/tree/v1.0.4) (2018-11-30)
 
 [Full Changelog](https://github.com/kalisio/kCore/compare/v1.0.3...v1.0.4)
