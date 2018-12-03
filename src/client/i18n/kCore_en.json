@@ -3,6 +3,7 @@
   "UPDATE": "Update",
   "CREATE": "Create",
   "CLOSE": "Close",
+  "SEARCH": "Search",  
   "DONE": "Done",
   "CLIENT_VERSION": "Client version",
   "API_VERSION": "API version",
@@ -134,6 +135,9 @@
     },
     "CLOSE_ACTION": "$t(CLOSE)",
     "DONE_BUTTON": "$t(DONE)"
+  },
+  "KAutocomplete": {
+    "PLACEHOLDER": "$t(SEARCH)"
   },
   "KIconChooser": {
     "CLOSE_ACTION": "$t(CANCEL)",

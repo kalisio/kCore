@@ -151,7 +151,7 @@ export default {
       }
       return this.buildFields()
     },
-    fill (values, skipValidate) {
+    fill (values) {
       logger.debug('Filling form', this.schema.$id, values)
       if (!this.loadRefs().isFulfilled()) throw Error('Cannot fill the form while not ready')
       this.fields.forEach(field => {
@@ -162,7 +162,6 @@ export default {
           this.getField(field.name).clear()
         }
       })
-      if (!skipValidate) this.validate()
     },
     values () {
       return this.fields.reduce((values, field) => Object.assign(values, { [field.name]: this.getField(field.name).value() }), {})
