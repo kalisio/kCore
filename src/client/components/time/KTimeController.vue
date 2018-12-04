@@ -17,6 +17,7 @@
         :pointerColor="pointerColor"
         :pointerTextColor="pointerTextColor"
         @change="onChangePosition"
+        @changePointer="onChangePointer"
       />
 
       <k-time-indicator
@@ -28,6 +29,9 @@
         :componentWidth="componentWidth"        
         :color="color"
         :textColor="pointerTextColor"
+        :timePointerLeft="timePointerLeft"
+        :timePointerRight="timePointerRight"
+        :timePointerHeight="timePointerHeight"
       />
     </div>
 
@@ -85,7 +89,10 @@ export default {
       timeIndicatorValue: null,
       timeIndicatorIsVisible: false,
       timeNow: null,
-      timeUpdater: null
+      timeUpdater: null,
+      timePointerLeft: null,
+      timePointerRight: null,
+      timePointerHeight: null
     }
   },
   mounted () {
@@ -165,6 +172,11 @@ export default {
     },
     onChangePosition (event) {
       this.changePosition(event.value, event.final)
+    },
+    onChangePointer (rect) {
+      this.timePointerLeft = rect.x
+      this.timePointerRight = rect.x + rect.width
+      this.timePointerHeight = rect.height
     },
     onTimelineClick (event) {
       let newPosition = event.clientX - this.componentLeft

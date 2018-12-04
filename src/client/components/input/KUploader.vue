@@ -198,7 +198,9 @@ export default {
         parallelUploads: 1,
         params: {
           isArray: this.isMultiple()
-        }
+        },
+        // Uploading can require a long time
+        timeout: 60*60*1000 // 1h should be sufficient since we also have size limits
       }, options, dictionary)
       this.dropZoneOptions.url = this.$api.getBaseUrl() + '/' + this.storageService().path
       // This is used to ensure the request will be authenticated by Feathers
