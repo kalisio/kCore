@@ -5,6 +5,7 @@
       :anchor-click="false" 
       anchor="center middle" 
       :self="currentSelf" 
+      max-height="100%"
       :style="currentCss">
         <!-- 
          Toolbar section 
@@ -54,7 +55,7 @@ export default {
       type: Object,
       default: () => {
         return {
-          minimized: [18, 60],
+          minimized: [0, 0],
           maximized: [0, 0]
         }
       }
@@ -64,7 +65,7 @@ export default {
       default: () => {
         return {
           minimized: 'width:40vw',
-          maximized: 'width:100vw'
+          maximized: 'width:100vw;height:100vw'
         }
       }
     }
