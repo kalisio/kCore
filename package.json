@@ -59,7 +59,8 @@
       "fetch",
       "cordova",
       "location",
-      "FileReader"
+      "FileReader",
+      "Event"
     ]
   },
   "directories": {
