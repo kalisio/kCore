@@ -183,7 +183,8 @@ export default {
       // Access underlying dropzone object
       return this.$refs.dropZone.dropzone
     },
-    updateDropZoneOptions () {
+    async updateDropZoneOptions () {
+      const accessToken = await this.$api.passport.getJWT()
       const options = _.omit(this.options, ['service', 'storagePath'])
       // We change interpolation tags to avoid interpolation by i18n next since drop zone will do it
       const dictionary = this.$t('KUploader.dropZone', { returnObjects: true, interpolation: { prefix: '[[', suffix: '[[' } })
@@ -204,7 +205,7 @@ export default {
       }, options, dictionary)
       this.dropZoneOptions.url = this.$api.getBaseUrl() + '/' + this.storageService().path
       // This is used to ensure the request will be authenticated by Feathers
-      this.dropZoneOptions.headers = { Authorization: window.localStorage.getItem('feathers-jwt') }
+      this.dropZoneOptions.headers = { Authorization: accessToken }
     },
     processQueue () {
       if (this.dropZone().getQueuedFiles().length === 0) {
