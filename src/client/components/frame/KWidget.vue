@@ -65,7 +65,7 @@ export default {
       default: () => {
         return {
           minimized: 'width:40vw',
-          maximized: 'width:100vw;height:100vw'
+          maximized: 'width:100vw;height:100vh'
         }
       }
     }
@@ -124,6 +124,13 @@ export default {
     },
     close (onClose) {
       this.$refs.popover.close(onClose)
+    },
+    toggle (onClose) {
+      if (!this.$refs.widget.opened) {
+        this.open()
+      } else {
+        this.close(onClose)
+      }
     }
   }
 }
