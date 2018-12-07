@@ -126,7 +126,7 @@ export default {
       this.$refs.popover.close(onClose)
     },
     toggle (onClose) {
-      if (!this.$refs.widget.opened) {
+      if (!this.$refs.popover.opened) {
         this.open()
       } else {
         this.close(onClose)
