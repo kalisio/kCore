@@ -19,6 +19,11 @@ let Store = {
       this.set(path, previousValue)
     }
   },
+  unset (path) {
+    _.unset(this, path)
+    let eventName = _.kebabCase(`${path}-changed`)
+    Events.$emit(eventName, undefined)
+  },
   has (path) {
     return _.has(this, path)
   }
