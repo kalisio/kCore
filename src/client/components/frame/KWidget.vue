@@ -1,7 +1,7 @@
 <template>
   <q-fixed-position :corner="currentCorner" :offset="currentOffset">
     <q-popover 
-      ref="popover" 
+      ref="popover" @open="onOpen" @close="onClose"
       :anchor-click="false" 
       anchor="center middle" 
       :self="currentSelf" 
@@ -17,6 +17,14 @@
               <q-tooltip v-if="action.label">{{action.label}}</q-tooltip>
             </q-btn>
           </template>
+        </div>
+        <!-- 
+          Title section
+        -->
+        <div class="row justify-start" style="margin-left: 18px">
+          <div class="modal-title">
+            {{title}}
+          </div>
         </div>
         <!-- 
           Content section 
@@ -42,6 +50,10 @@ export default {
     QTooltip
   },
   props: {
+    title: {
+      type: String,
+      default: ''
+    },
     corner: {
       type: Object,
       default: () => {
@@ -106,12 +118,15 @@ export default {
     }
   },
   methods: {
-    toggleMode () {
+    async toggleMode () {
       if (this.mode === 'minimized') this.mode = 'maximized'
       else this.mode = 'minimized'
-      window.dispatchEvent(new Event('resize')) 
+      window.dispatchEvent(new Event('resize'))
+      // We need to force a refresh so that the style is correctly updated by Vuejs
+      await this.$nextTick()
+      this.$emit('state-changed', this.mode)
     },
-    open () {
+    open (fn) {
       if (!this.$refs.popover.opened) {
         // Quasar popover is not persistent and closes when clicking outside
         // We manually remove event listeners so that it becomes persistent
@@ -120,10 +135,10 @@ export default {
           document.body.removeEventListener('touchstart', this.$refs.popover.close, true)
         }, 1000)
       }
-      this.$refs.popover.open()
+      this.$refs.popover.open(fn)
     },
-    close (onClose) {
-      this.$refs.popover.close(onClose)
+    close (fn) {
+      this.$refs.popover.close(fn)
     },
     toggle (onClose) {
       if (!this.$refs.popover.opened) {
@@ -131,7 +146,22 @@ export default {
       } else {
         this.close(onClose)
       }
+    },
+    onOpen () {
+      this.$emit('state-changed', this.mode)
+    },
+    onClose () {
+      this.$emit('state-changed', 'closed')
     }
   }
 }
 </script>
+
+<style>
+.modal-title {
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 2rem
+}
+</style>
