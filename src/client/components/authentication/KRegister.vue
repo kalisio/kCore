@@ -2,9 +2,6 @@
   <k-screen :title="$t('KRegister.TITLE')" :links="links">
     <div slot="screen-content">
       <div class="column justify-center sm-gutter">
-        <!--
-          Register form
-        -->
         <div>
           <k-form ref="form" :schema="getSchema()" />
         </div>
@@ -17,7 +14,7 @@
 </template>
 
 <script>
-import { QBtn, Platform } from 'quasar'
+import { QBtn } from 'quasar'
 import { KScreen } from '../frame'
 import { KForm } from '../form'
 import mixins from '../../mixins'

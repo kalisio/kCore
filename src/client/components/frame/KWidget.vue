@@ -62,7 +62,7 @@ export default {
           maximized: 'top-left'
         }
       }
-    },  
+    },
     offset: {
       type: Object,
       default: () => {
@@ -97,17 +97,17 @@ export default {
     },
     toolbar () {
       return [
-        { 
-          name: 'change-mode', 
-          label: this.$t(this.mode === 'minimized' ? 'KWidget.MINIMIZE_ACTION' : 'KWidget.MAXIMIZE_ACTION'), 
-          icon: this.mode === 'minimized' ? 'fullscreen' : 'fullscreen_exit', 
-          handler: () => this.toggleMode() 
+        {
+          name: 'change-mode',
+          label: this.$t(this.mode === 'minimized' ? 'KWidget.MINIMIZE_ACTION' : 'KWidget.MAXIMIZE_ACTION'),
+          icon: this.mode === 'minimized' ? 'fullscreen' : 'fullscreen_exit',
+          handler: () => this.toggleMode()
         },
-        { 
-          name: 'close-action', 
-          label: this.$t('KWidget.CLOSE_ACTION'), 
-          icon: 'close', 
-          handler: () => this.close() 
+        {
+          name: 'close-action',
+          label: this.$t('KWidget.CLOSE_ACTION'),
+          icon: 'close',
+          handler: () => this.close()
         }
       ]
     }

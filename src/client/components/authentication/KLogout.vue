@@ -2,9 +2,6 @@
   <k-screen :title="$t('KLogout.TITLE')" :links="links">
     <div slot="screen-content">
       <div class="column justify-center">
-        <!--
-          Quote
-        -->
         <div>
           <blockquote class="text-right">
             <p>{{$t('KLogout.SIGN_OFF_LABEL')}}&nbsp;<cite>{{appName}}</cite>.</p>

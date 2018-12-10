@@ -7,7 +7,11 @@
         -->
         <div v-if="canLogWith()">
           <div class="row justify-around" style="padding: 18px">
-            <q-btn v-for="provider in providers" :icon="'fa-' + provider" :id="provider" @click="onLogWith(provider)" :key="provider">{{provider}}</q-btn>
+            <template v-for="provider in providers">
+              <q-btn :icon="'fa-' + provider" :id="provider" @click="onLogWith(provider)" :key="provider">
+                {{provider}}
+              </q-btn>
+            </template>
           </div>
           <div class="row items-center"> 
             <div class="col-1"><h6>{{ $t('KLogin.OR_LABEL') }}</h6></div>
@@ -21,7 +25,9 @@
           <k-form ref="form" :schema="schema" @form-ready="onFormReady"/>
         </div>
         <div class="self-center">
-          <q-btn color="primary" loader id="local" @click="onLogin">{{$t('KLogin.APPLY_BUTTON')}}</q-btn>
+          <q-btn color="primary" loader id="local" @click="onLogin">
+            {{ $t('KLogin.APPLY_BUTTON') }}
+          </q-btn>
         </div>
       </div>
     </div>

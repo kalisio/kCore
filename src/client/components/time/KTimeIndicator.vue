@@ -68,21 +68,17 @@ export default {
 
       // If the left side of the time indicator is "within" the time pointer: return overlaps = true
       if (
-            timeIndicatorRect.x < timePointerRight
-              &&
+            timeIndicatorRect.x < timePointerRight &&
             timeIndicatorRect.x > timePointerLeft
-         )
-      {
+         ) {
         return true
       }
 
       // If the right side of the time indicator is "within" the time pointer: return overlaps = true
       if (
-            timeIndicatorRect.x + timeIndicatorRect.width > timePointerLeft
-              &&
+            timeIndicatorRect.x + timeIndicatorRect.width > timePointerLeft &&
             timeIndicatorRect.x + timeIndicatorRect.width < timePointerRight
-         )
-      {
+         ) {
         return true
       }
 

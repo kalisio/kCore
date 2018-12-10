@@ -14,9 +14,8 @@
     Version
     -->
     <div class="row justify-center">
-      <small v-if="clientVersionName"><cite>{{$t('KScreen.CLIENT_VERSION')}} {{ clientVersionName }}</cite></small>
-      &nbsp;-&nbsp;
-      <small v-if="apiVersionName"><cite>{{$t('KScreen.API_VERSION')}} {{ apiVersionName }}</cite></small>
+      <small v-if="clientVersionName"><cite>{{ $t('KScreen.CLIENT_VERSION') }} {{ clientVersionName }}</cite></small>
+      <small v-if="apiVersionName"><cite>&nbsp;-&nbsp;{{ $t('KScreen.API_VERSION') }} {{ apiVersionName }}</cite></small>
     </div>
     <!--
       KDK

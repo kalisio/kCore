@@ -2,9 +2,6 @@
   <k-screen :title="$t('KChangeEndpoint.TITLE')" :links="links">
     <div slot="screen-content">
       <div class="column justify-center sm-gutter">
-         <!-- 
-          Change endpoint form
-        -->
         <div>
           <k-form ref="form" :schema="schema" />
         </div>
