@@ -1,5 +1,5 @@
 <template>
-  <k-screen :title="$t('KLogin.TITLE')">
+  <k-screen :title="canLogWith() ? $t('KLogin.TITLE') : ''" :links="links">
     <div slot="screen-content">
       <div class="column justify-center sm-gutter">
         <!-- 
@@ -22,27 +22,6 @@
         </div>
         <div class="self-center">
           <q-btn color="primary" loader id="local" @click="onLogin">{{$t('KLogin.APPLY_BUTTON')}}</q-btn>
-        </div>
-        <!-- 
-          Additionnal links
-        -->
-        <div class="self-center">
-          <a id="reset-password-link" @click="$router.push({name: 'send-reset-password'})">
-            {{$t('KLogin.FORGOT_YOUR_PASSWORD_LINK')}}
-          </a>
-          &nbsp;&nbsp;
-          <a id="register-link" @click="$router.push({name: 'register'})">
-            {{$t('KLogin.DONT_HAVE_AN_ACCOUNT_LINK')}}
-          </a>
-          &nbsp;&nbsp;
-          <a  v-if="canChangeEndpoint()" id="change-endpoint-link" @click="$router.push({name: 'change-endpoint'})">
-            {{$t('KLogin.CHANGE_ENDPOINT_LINK')}}
-          </a>
-        </div>
-        <div class="text-right">
-          <small v-if="displayDetails && clientVersionName"><cite>{{$t('KLogin.CLIENT_VERSION')}} {{clientVersionName}}</cite></small>
-          <small v-if="displayDetails && apiVersionName"><cite>- {{$t('KLogin.API_VERSION')}} {{apiVersionName}}</cite></small>
-          <q-icon name="info" size="1.5rem" @click="displayDetails = !displayDetails"/>
         </div>
       </div>
     </div>
@@ -93,14 +72,12 @@ export default {
         'required': ['email', 'password']
       },
       providers: [],
+      links: [],
       displayDetails: false
     }
   },
   mixins: [mixins.authentication, mixins.version],
   methods: {
-    canChangeEndpoint () {
-      return DEV ? true : Platform.is.cordova
-    },
     canLogWith () {
       if (this.providers.length === 0) return false
       else return DEV ? true : !Platform.is.cordova
@@ -174,8 +151,15 @@ export default {
     }
   },
   created () {
-    // Retrieve the availalbe providers
-    this.providers = this.$config('login.providers', [])
+    // Configure this screen
+    this.providers = this.$config('screens.login.providers', [])
+    this.links = this.$config('screens.login.links', [])
   }
 }
 </script>
+
+<style>
+  .link {
+    padding: 8px;
+  }
+</style>

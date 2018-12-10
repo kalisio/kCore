@@ -5,8 +5,6 @@
   "CLOSE": "Close",
   "SEARCH": "Search",  
   "DONE": "Done",
-  "CLIENT_VERSION": "Client version",
-  "API_VERSION": "API version",
   "errors": {
     "400": "Operation cannot be performed: bad parameters",
     "401": "Operation cannot be performed: authentication required",
@@ -43,34 +41,35 @@
     "AVATAR_FIELD_HELPER": "Select an avatar",
     "NAME_FIELD_HELPER": "Enter your name"
   },
-  "KAuthentication": {
+  "KScreen": {
+    "CLIENT_VERSION": "Client version",
+    "API_VERSION": "API version",
     "EMAIL_FIELD_HELPER": "Enter your email address",
-    "CHANGE_ENDPOINT_LINK": "Change endpoint ?"    
+    "CHANGE_ENDPOINT_LINK": "Change endpoint" ,
+    "DEVELOPMENT_VERSION": "DEVELOPMENT VERSION",
+    "TESTING_VERSION": "TESTING VERSION",   
+    "KDK_POWERED": "Powered by KDK (Kalisio's Development Kit)"
   },
   "KLogin": {
-    "CLIENT_VERSION": "$t(CLIENT_VERSION)",
-    "API_VERSION": "$t(API_VERSION)",
     "TITLE": "Log in with",
     "OR_LABEL": "Or",
-    "EMAIL_FIELD_HELPER": "$t(KAuthentication.EMAIL_FIELD_HELPER)",
+    "EMAIL_FIELD_HELPER": "$t(KScreen.EMAIL_FIELD_HELPER)",
     "PASSWORD_FIELD_HELPER": "Enter your password",
     "APPLY_BUTTON": "Log in",
     "FORGOT_YOUR_PASSWORD_LINK": "Forgot your password ?",
     "DONT_HAVE_AN_ACCOUNT_LINK": "Dont't have an account ?",
-    "CHANGE_ENDPOINT_LINK": "$t(KAuthentication.CHANGE_ENDPOINT_LINK)",
     "LOGIN_ERROR": "Wrong credentials or service unavailable, please try again"
   },
   "KRegister": {
     "TITLE": "Register",
     "NAME_FIELD_HELPER": "$t(schemas.NAME_FIELD_HELPER)",
-    "EMAIL_FIELD_HELPER": "$t(KAuthentication.EMAIL_FIELD_HELPER)",
+    "EMAIL_FIELD_HELPER": "$t(KScreen.EMAIL_FIELD_HELPER)",
     "PASSWORD_FIELD_HELPER": "Enter a password",
     "CONFIRM_PASSWORD_FIELD_HELPER": "Confirm your password",
     "ACCEPT_TERMS_HELPER": "I accept <a href='{{domain}}/#/terms' target='_blank'>terms and policies</a>",
     "ACCEPT_TERMS_ERROR_LABEL": "You must accept our <a href='{{domain}}/#/terms' target='_blank'>terms and policies</a> to register",
     "APPLY_BUTTON": "Register",
     "ALREADY_HAVE_AN_ACCOUNT_LINK": "Already have an account ?",
-    "CHANGE_ENDPOINT_LINK_LINK": "$t(KAuthentication.CHANGE_ENDPOINT_LINK)",
     "EMAIL_ALREADY_TAKEN": "Email already taken !"
   },
   "KChangeEndpoint": {
@@ -82,8 +81,6 @@
     "DONT_HAVE_AN_ACCOUNT_LINK": "Dont't have an account ?"
   },  
   "KLogout": {
-    "CLIENT_VERSION": "$t(CLIENT_VERSION)",
-    "API_VERSION": "$t(API_VERSION)",
     "TITLE": "Your are now logged out",
     "SIGN_OFF_LABEL": "Thank you for using",
     "LOG_IN_AGAIN_LINK": "Log in again ?"

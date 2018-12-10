@@ -1,5 +1,5 @@
 <template>
-  <k-screen :title="$t('KChangeEndpoint.TITLE')">
+  <k-screen :title="$t('KChangeEndpoint.TITLE')" :links="links">
     <div slot="screen-content">
       <div class="column justify-center sm-gutter">
          <!-- 
@@ -13,18 +13,6 @@
             <q-btn color="primary" @click="onReset">{{$t('KChangeEndpoint.RESET_BUTTON')}}</q-btn>
             <q-btn color="primary" @click="onApplied">{{$t('KChangeEndpoint.APPLY_BUTTON')}}</q-btn>
           </div>
-        </div>
-        <!--
-            Additionnal links
-          -->
-        <div class="self-center">
-          <a id="login-link" @click="$router.push({name: 'login'})">
-            {{$t('KChangeEndpoint.LOGIN_LINK')}}
-          </a>
-          &nbsp;&nbsp;
-          <a id="register-link" @click="$router.push({name: 'register'})">
-            {{$t('KChangeEndpoint.DONT_HAVE_AN_ACCOUNT_LINK')}}
-          </a>
         </div>
       </div>
     </div>
@@ -49,6 +37,7 @@ export default {
   ],
   data () {
     return {
+      links: [],
       schema: {
         '$schema': 'http://json-schema.org/draft-06/schema#',
         '$id': 'http://kalisio.xyz/schemas/change-endpoint.json#',
@@ -88,6 +77,8 @@ export default {
     }
   },
   created () {
+    // configure this screen
+    this.links = this.$config('screens.changeEndpoint.links', [])
     this.loadRefs()
     .then(() => this.$refs.form.build())
     .then(() => {
