@@ -11,8 +11,8 @@
     <!--
       Banner
      -->
-    <div v-if="banner != ''" class="row justify-center">
-      <img :src="banner">
+    <div v-if="banner != ''" class="row justify-center items-center banner-container">
+      <img class="banner-image" :src="banner">
     </div>
     <!-- 
       Components
@@ -81,3 +81,16 @@ export default {
   }
 }
 </script>
+
+<style>
+  .banner-container {
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
+  }
+  .banner-image {
+    max-width: 300px;
+    max-height: 100px;
+    width: auto;
+    height: auto;
+  }
+</style>
