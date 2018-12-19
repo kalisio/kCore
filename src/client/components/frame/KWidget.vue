@@ -147,6 +147,9 @@ export default {
         this.close(onClose)
       }
     },
+    isOpen () {
+      return this.$refs.popover.opened
+    },
     onOpen () {
       this.$emit('state-changed', this.mode)
     },
