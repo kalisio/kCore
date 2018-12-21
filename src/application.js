@@ -321,7 +321,7 @@ function tooManyRequests (socket, message, key) {
 function setupSockets (app) {
   const apiLimiter = app.get('apiLimiter')
   const authConfig = app.get('authentication')
-  const authLimiter = authConfig.limiter
+  const authLimiter = (authConfig ? authConfig.limiter : null)
   let connections = {}
   let nbConnections = 0
 
