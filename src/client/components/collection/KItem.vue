@@ -49,6 +49,32 @@ export default {
     QBtn,
     QIcon,
     QPopover
+  },
+  props: {
+    item: {
+      type: Object,
+      required: true
+    },
+    itemActions: {
+      type: Object,
+      required: true
+    },
+    options: {
+      type: Object,
+      default: function () {
+        return {}
+      }
+    }
+  },
+  computed: {
+    name () {
+      // Check for custom name field
+      return (this.options.nameField ? _.get(this.item, this.options.nameField, '') : this.item.name)
+    },
+    description () {
+      // Check for custom description field
+      return this.options.descriptionField ? _.get(this.item, this.options.descriptionField, '') : this.item.description
+    }
   }
 }
 </script>
