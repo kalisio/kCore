@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { QList, QItem, QItemSide, QItemMain, QItemTile, QBtn, QIcon, QPopover } from 'quasar'
 import mixins from '../../mixins'
 
