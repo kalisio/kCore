@@ -1,6 +1,7 @@
 import moment from 'moment'
 import _ from 'lodash'
 
+// Helper function to convert comparison operator values to numbers or dates
 export function marshallComparisonFields (queryObject) {
   _.forOwn(queryObject, (value, key) => {
     // Process current attributes or  recurse
@@ -17,6 +18,22 @@ export function marshallComparisonFields (queryObject) {
         if (date.isValid()) {
           queryObject[key] = date.toDate()
         }
+      }
+    }
+  })
+}
+
+// Helper function to convert sort operator values to numbers
+export function marshallSortFields (queryObject) {
+  _.forOwn(queryObject, (value, key) => {
+    // Process current attributes or  recurse
+    if (typeof value === 'object') {
+      marshallSortFields(value)
+    } else {
+      let number = _.toNumber(value)
+      // Update from query string to number if required
+      if (!Number.isNaN(number)) {
+        queryObject[key] = number
       }
     }
   })

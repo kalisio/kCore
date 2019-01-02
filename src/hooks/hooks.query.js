@@ -1,6 +1,6 @@
 
 import _ from 'lodash'
-import { marshallComparisonFields, marshallTime } from '../marshall'
+import { marshallComparisonFields, marshallSortFields, marshallTime } from '../marshall'
 import { ObjectID } from 'mongodb'
 import makeDebug from 'debug'
 
@@ -19,6 +19,14 @@ export function marshallComparisonQuery (hook) {
   if (query) {
     // Complex queries might have nested objects so we call a recursive function to handle this
     marshallComparisonFields(query)
+  }
+}
+
+export function marshallSortQuery (hook) {
+  let query = hook.params.query
+  if (query) {
+    // Complex queries might have nested objects so we call a recursive function to handle this
+    marshallSortFields(query)
   }
 }
 
