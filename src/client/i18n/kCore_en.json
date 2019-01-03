@@ -5,6 +5,7 @@
   "CLOSE": "Close",
   "SEARCH": "Search",  
   "DONE": "Done",
+  "EMPTY": "No elements found",
   "errors": {
     "400": "Operation cannot be performed: bad parameters",
     "401": "Operation cannot be performed: authentication required",
@@ -106,7 +107,10 @@
     "EMAIL_BLOCK_ACTION": "Change"
   },
   "KGrid": {
-    "EMPTY_GRID": "No elements found"
+    "EMPTY_GRID": "$t(EMPTY)"
+  },
+  "KList": {
+    "EMPTY_LIST": "$t(EMPTY)"
   },
   "KUploader": {
     "dropZone": {
