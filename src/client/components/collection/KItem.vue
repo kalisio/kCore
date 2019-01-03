@@ -10,16 +10,18 @@
       <q-item-side v-if="options.avatar" :avatar="options.avatar" />
     </slot>
     <!--
-      Text section
+      Content section
     -->
-    <q-item-main>
-      <slot name="item-label">
-        <q-item-tile label>{{ name }}</q-item-tile>
-      </slot>
-      <slot name="item-sublabel">
-        <q-item-tile sublabel>{{ description }}</q-item-tile>
-      </slot>
-    </q-item-main>
+    <slot name="item-content">
+      <q-item-main>
+        <slot name="item-label">
+          <q-item-tile label>{{ name }}</q-item-tile>
+        </slot>
+        <slot name="item-sublabel">
+          <q-item-tile sublabel>{{ description }}</q-item-tile>
+        </slot>
+      </q-item-main>
+    </slot>
     <!--
       Actions section
     -->
