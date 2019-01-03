@@ -28,7 +28,7 @@ export function objectifyIDs (object) {
   _.forOwn(object, (value, key) => {
     // Process current attributes or recurse
     // Take care to nested fields like 'field._id'
-    if (key === '_id' || key.endsWith('._id')) {
+    if (key === '_id' || key.endsWith('._id') || key === '$ne') {
       if (typeof value === 'string') {
         debug('Objectify ID ' + key)
         const id = createObjectID(value)
@@ -41,7 +41,9 @@ export function objectifyIDs (object) {
       } else if ((typeof value === 'object') && !isObjectID(value)) objectifyIDs(value) // Avoid jumping inside an already transformed ObjectID
     } else if (['$in', '$nin'].includes(key)) {
       debug('Objectify ID array ' + key)
-      object[key] = value.map(id => createObjectID(id)).filter(id => id)
+      const ids = value.map(id => createObjectID(id)).filter(id => id)
+      // Take care that $in/$nin can be used for others types than Object IDs so conversion might fail
+      if (ids.length > 0) object[key] = ids
     } else if (key === '$or') {
       value.forEach(entry => objectifyIDs(entry))
       // Avoid jumping inside an already transformed ObjectID
