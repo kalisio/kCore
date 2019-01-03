@@ -1,25 +1,29 @@
 <template>
-  <q-item>
+  <q-item @click="onItemSelected">
     <!--
       Avatar section
     -->
-    <slot name="avatar">
+    <slot name="item-icon">
+      <q-item-side v-if="options.icon" :icon="options.icon" :color="options.color"/>
+    </slot>
+    <slot name="item-avatar">
+      <q-item-side v-if="options.avatar" :avatar="options.avatar" />
     </slot>
     <!--
       Text section
     -->
     <q-item-main>
-      <slot name="label">
+      <slot name="item-label">
         <q-item-tile label>{{ name }}</q-item-tile>
       </slot>
-      <slot name="sublabel">
+      <slot name="item-sublabel">
         <q-item-tile sublabel>{{ description }}</q-item-tile>
       </slot>
     </q-item-main>
     <!--
       Actions section
     -->
-    <slot name="actions">
+    <slot name="item-actions">
       <q-item-side v-if="actions.length > 1" right icon="more_vert">
         <q-popover>
           <q-list link>
@@ -75,6 +79,11 @@ export default {
     description () {
       // Check for custom description field
       return this.options.descriptionField ? _.get(this.item, this.options.descriptionField, '') : this.item.description
+    }
+  },
+  methods: {
+    onItemSelected () {
+      this.$emit('item-selected', this.item)
     }
   }
 }

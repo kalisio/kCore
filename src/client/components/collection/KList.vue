@@ -1,7 +1,7 @@
 <template>
   <q-list highlight separator v-if="items.length > 0">
     <template v-for="item in items">
-      <component :id="item._id" :key="item._id" :item="item" :contextId="contextId" :is="renderer.component" v-bind="renderer.props" />
+      <component :id="item._id" :key="item._id" :item="item" :contextId="contextId" :is="renderer.component" v-bind="renderer.props" @item-selected="onItemSelected(item)"/>
     </template>
     <div class="self-center" v-if="nbPages > 1">
       <q-pagination v-model="currentPage" :max="nbPages" style="padding: 18px" @input="onPageChanged" />
@@ -77,6 +77,10 @@ export default {
     },
     getCollectionFilterQuery () {
       return this.filterQuery
+    },
+    onItemSelected (item) {
+      // FIXME: support multi-selection
+      this.$emit('selection-changed', item)
     }
   },
   created () {
