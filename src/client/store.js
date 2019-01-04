@@ -4,9 +4,10 @@ import { Events } from 'quasar'
 // Export singleton
 let Store = {
   set (path, value) {
+    const previousValue = this.get(path)
     _.set(this, path, value)
     let eventName = _.kebabCase(`${path}-changed`)
-    Events.$emit(eventName, value)
+    Events.$emit(eventName, value, previousValue)
   },
   get (path, defaultValue) {
     return _.get(this, path, defaultValue)
