@@ -24,9 +24,9 @@ export function marshallComparisonQuery (hook) {
 
 export function marshallSortQuery (hook) {
   let query = hook.params.query
-  if (query) {
+  if (query && query.$sort) {
     // Complex queries might have nested objects so we call a recursive function to handle this
-    marshallSortFields(query)
+    marshallSortFields(query.$sort)
   }
 }
 

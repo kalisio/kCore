@@ -27,7 +27,7 @@ export function marshallComparisonFields (queryObject) {
 export function marshallSortFields (queryObject) {
   _.forOwn(queryObject, (value, key) => {
     // Process current attributes or  recurse
-    if ((typeof value === 'object') && (key === '$sort')) {
+    if (typeof value === 'object') {
       marshallSortFields(value)
     } else {
       let number = _.toNumber(value)
