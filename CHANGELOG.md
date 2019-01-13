@@ -1,7 +1,7 @@
 # Changelog
 
-## [v1.2.3](https://github.com/kalisio/kCore/tree/v1.2.3) (2019-01-10)
-[Full Changelog](https://github.com/kalisio/kCore/compare/v1.0.5...v1.2.3)
+## [v1.0.6](https://github.com/kalisio/kCore/tree/v1.0.6) (2019-01-13)
+[Full Changelog](https://github.com/kalisio/kCore/compare/v1.0.5...v1.0.6)
 
 **Fixed bugs:**
 
