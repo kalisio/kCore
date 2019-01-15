@@ -54,7 +54,7 @@ export default {
       this.$refs.popover.toggle()
     },
     onKDKClicked () {
-      openURL('https://github.com/kalisio/kdk')
+      openURL('https://kalisio.github.io/kdk/')
     }
   }
 }
