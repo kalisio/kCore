@@ -86,6 +86,12 @@ export default {
   methods: {
     onItemSelected () {
       this.$emit('item-selected', this.item)
+    },
+    onActionTriggered (action, item) {
+      // If a handler is given call it
+      if (action.handler) action.handler.call(this, item)
+      // If a route is given activate it
+      else if (action.route) this.$router.push(action.route)
     }
   }
 }
