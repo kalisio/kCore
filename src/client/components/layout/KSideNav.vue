@@ -59,7 +59,8 @@ export default {
     }
   },
   created () {
-    this.banner = this.$load(this.$config('sideNav.banner', 'kalisio-banner.png'), 'asset')
+    this.banner = this.$config('sideNav.banner', 'kalisio-banner.png')
+    if (this.banner) this.banner = this.$load(this.banner, 'asset')
     // Setup the components structure
     // We build an array of components using the SideNav properties
     // A component is defined with
