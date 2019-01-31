@@ -459,9 +459,9 @@ export function kalisio () {
   }
 
   // Enable CORS, security, compression, and body parsing
-  app.use(cors())
-  app.use(helmet())
-  app.use(compress())
+  app.use(cors(app.get('cors')))
+  app.use(helmet(app.get('helmet')))
+  app.use(compress(app.get('compression')))
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
 
