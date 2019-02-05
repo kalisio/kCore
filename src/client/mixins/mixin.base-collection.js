@@ -2,16 +2,23 @@ import { Events } from 'quasar'
 import { getLocale } from '../utils'
 
 let baseCollectionMixin = {
+  props: {
+    // This value can be overriden in activities if they want to manage pagination by themselves
+    // nbItemsPerPage = 0 means that the client does not handle pagination and server defaults will be used
+    nbItemsPerPage: {
+      type: Number,
+      default: 12
+    }
+  },
   computed: {
     nbPages () {
-      return Math.ceil(this.nbTotalItems / this.nbItemsPerPage)
+      return (this.nbItemsPerPage > 0 ? Math.ceil(this.nbTotalItems / this.nbItemsPerPage) : 1)
     }
   },
   data () {
     return {
       items: [],
       nbTotalItems: 0,
-      nbItemsPerPage: 12,
       currentPage: 1
     }
   },
