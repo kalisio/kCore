@@ -26,10 +26,10 @@
       Actions section
     -->
     <slot name="item-actions">
-      <q-item-side v-if="actions.length > 1" right icon="more_vert">
+      <q-item-side v-if="itemActions.length > 0" right icon="more_vert">
         <q-popover>
           <q-list link>
-            <q-item v-for="action in itemActions" :key="action">
+            <q-item v-for="action in itemActions" :key="key(action, 'label')">
               <q-item-main :label="action.label" @click="onActionTriggered(action, item)" />
             </q-item>
           </q-list>
@@ -63,8 +63,8 @@ export default {
       required: true
     },
     itemActions: {
-      type: Object,
-      required: true
+      type: Array,
+      default: () => { return [] }
     },
     options: {
       type: Object,
@@ -84,6 +84,9 @@ export default {
     }
   },
   methods: {
+    key (object, property) {
+      return this.item._id + '-' + object[property]
+    },
     onItemSelected () {
       this.$emit('item-selected', this.item)
     },

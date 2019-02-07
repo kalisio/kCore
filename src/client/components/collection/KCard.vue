@@ -110,7 +110,12 @@ export default {
     },
     itemActions: {
       type: Object,
-      required: true
+      default: function () {
+        return {
+          pane: [],
+          menu: []
+        }
+      }
     },
     options: {
       type: Object,
