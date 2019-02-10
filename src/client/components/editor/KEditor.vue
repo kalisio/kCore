@@ -4,7 +4,7 @@
       Form section
     -->
     <div>
-      <k-form ref="form" :schema="schema" :contextId="contextId" :objectId="objectId" @field-changed="onFieldChanged"/>
+      <k-form ref="form" :schema="schema" @field-changed="onFieldChanged"/>
     </div>
     <!--
       Buttons section

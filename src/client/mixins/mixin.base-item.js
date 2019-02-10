@@ -3,10 +3,6 @@ import { Events } from 'quasar'
 
 let baseItemMixin = {
   props: {
-    contextId: {
-      type: String,
-      default: ''
-    },
     item: {
       type: Object,
       required: true

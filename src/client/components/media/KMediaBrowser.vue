@@ -42,10 +42,6 @@ export default {
     mixins.refsResolver(['modal', 'carousel'])
   ],
   props: {
-    contextId: {
-      type: String,
-      default: ''
-    },
     options: {
       type: Object,
       default: () => {}
@@ -78,7 +74,7 @@ export default {
       let media = this.medias[index]
       // Download image the first time
       if (!media.uri) {
-        this.$api.getService('storage', this.contextId).get(media._id)
+        this.$api.getService('storage').get(media._id)
         // Required to use $set when modifying an object inside an array to make it reactive
         .then(data => this.$set(this.medias, index, Object.assign(media, { uri: data.uri })))
       }

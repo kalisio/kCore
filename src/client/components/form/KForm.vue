@@ -2,8 +2,6 @@
   <div class="column">
     <template v-for="field in fields">
       <component
-        :contextId="contextId"
-        :objectId="objectId"
         :key="field.name"
         :is="field.componentKey"
         :ref="field.name"
@@ -37,14 +35,6 @@ export default {
     mixins.refsResolver()
   ],
   props: {
-    contextId: {
-      type: String,
-      default: ''
-    },
-    objectId: {
-      type: String,
-      default: ''
-    },
     schema: {
       type: Object,
       default: null
@@ -70,10 +60,6 @@ export default {
     }
   },
   methods: {
-    getMode () {
-      if (this.objectId) return 'update'
-      return 'create'
-    },
     getField (field) {
       return this.$refs[field][0]
     },

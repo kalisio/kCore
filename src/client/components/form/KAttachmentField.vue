@@ -14,8 +14,6 @@
     <q-icon :id="properties.name + '-field'" v-show="files.length < maxFiles" name="fa-cloud-upload fa-2x" @click="onUpload"/>
     <k-uploader 
       ref="uploader" 
-      :contextId="contextId" 
-      :objectId="objectId" 
       :resource="resource" 
       @file-selection-changed="updateFiles" 
       :options="properties.field"/>
@@ -56,7 +54,7 @@ export default {
       return _.get(this.properties, 'field.autoProcessQueue', true)
     },
     storageService () {
-      return this.$api.getService(this.properties.service || 'storage', this.contextId)
+      return this.$api.getService(this.properties.service || 'storage')
     },
     resourcesService () {
       return _.get(this.properties, 'field.resourcesService', '')
@@ -77,14 +75,20 @@ export default {
       }
     },
     async apply (object, field) {
+      this.objectId = object._id
       // If not processing uploads on-the-fly upload when the form is being submitted on update
       // because we already have the object ID that might be required to build the storage path
       if (!this.autoProcessQueue()) {
-        if (this.getMode() === 'update') {
+        // On create we don't send the attachment field because it will be
+        // updated as a postprocess when attaching files on the newly created object
+        if (this.objectId) {
+          this.resource = this.objectId
+          // We need to force a refresh so that the prop is correctly updated by Vuejs in child component
+          await this.$nextTick()
           await this.$refs.uploader.processQueue()
-          // On create we don't send the attachment field because it will be
-          // updated as a postprocess when attaching files on the newly created object
           _.set(object, field, this.value())
+        } else {
+          this.create = true
         }
       } else {
         _.set(object, field, this.value())
@@ -95,8 +99,8 @@ export default {
       // so that we have the object ID available that might be required to build the storage path
       if (!this.autoProcessQueue()) {
         // On update the files are created before updating the object
-        if (this.getMode() === 'create') {
-          this.resource = object._id
+        if (!this.objectId) {
+          this.resource = this.objectId
           // We need to force a refresh so that the prop is correctly updated by Vuejs in child component
           await this.$nextTick()
           await this.$refs.uploader.processQueue()

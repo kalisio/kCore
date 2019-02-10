@@ -43,6 +43,7 @@
 <script>
 import _ from 'lodash'
 import { QField, QChip, QIcon } from 'quasar'
+import { Store } from '../../store'
 import { KAutocomplete, KIconChooser } from '../input'
 import mixins from '../../mixins'
 
@@ -74,7 +75,7 @@ export default {
     fill (value) {
       this.model = value
       // Update tags as well
-      this.partition = _.partition(this.model, { context: this.contextId })
+      this.partition = _.partition(this.model, { context: Store.get('context') })
       this.tags = this.partition[0]
     },
     processResults (pattern, results) {

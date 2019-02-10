@@ -32,7 +32,7 @@ let objectProxyMixin = {
         this.objectPromise = createQuerablePromise((resolve, reject) => {
           let params = {}
           if (this.perspective) {
-            params = { query: { $select: [this.perspective] } }
+            params = { query: { $select: ['_id', this.perspective] } }
           }
           this.loadService()
           .get(this.objectId, params)

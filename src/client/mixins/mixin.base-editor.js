@@ -160,6 +160,8 @@ export default function baseEditorMixin (formRefs) {
         const baseObject = this.getObject() || this.baseObject
         if (this.perspective !== '') {
           Object.assign(object, _.get(baseObject, this.perspective))
+          // Keep track of ID as it is used to know if we update or create
+          if (baseObject._id) object._id = baseObject._id
         } else {
           Object.assign(object, baseObject)
         }
@@ -170,7 +172,7 @@ export default function baseEditorMixin (formRefs) {
         let query = {}
         Object.assign(query, this.baseQuery)
         if ((this.getMode() === 'update') && (this.perspective !== '')) {
-          Object.assign(query, { $select: [this.perspective] })
+          Object.assign(query, { $select: ['_id', this.perspective] })
         }
         return query
       },
@@ -201,8 +203,10 @@ export default function baseEditorMixin (formRefs) {
               // Editing mode => patch the item
               if (this.perspective !== '') {
                 let data = {}
-                data[this.perspective] = object
+                data[this.perspective] = _.omit(object, ['_id'])
                 let response = await this.servicePatch(this.objectId, data, { query })
+                // Keep track of ID as it is used to know if we update or create
+                if (object._id) response._id = object._id
                 onServiceResponse(response)
               } else {
                 let response = await this.servicePatch(this.objectId, object, { query })

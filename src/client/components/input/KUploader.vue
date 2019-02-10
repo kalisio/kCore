@@ -18,14 +18,6 @@ export default {
     DropZone
   },
   props: {
-    contextId: {
-      type: String,
-      default: ''
-    },
-    objectId: {
-      type: String,
-      default: ''
-    },
     resource: {
       type: String,
       default: ''
@@ -122,11 +114,11 @@ export default {
       // otherwise it will be stored at the root level with a generated hash
       if (idTemplate) {
         // Inject useful properties such as current object ID, file, etc.
-        let environment = { id: this.objectId || this.resource, file }
+        let environment = { id: this.resource, file }
         // The template generates the final ID for the file in storage
         return _.template(idTemplate)(environment)
       } else {
-        return this.objectId || this.resource
+        return this.resource
       }
     },
     onFileSending (file, xhr, formData) {
@@ -173,7 +165,7 @@ export default {
       this.$refs.modal.close()
     },
     storageService () {
-      return this.$api.getService(this.options.service || 'storage', this.contextId)
+      return this.$api.getService(this.options.service || 'storage')
     },
     dropZone () {
       // Access vue drop zone
