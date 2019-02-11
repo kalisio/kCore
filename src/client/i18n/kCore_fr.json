@@ -5,6 +5,7 @@
   "CLOSE": "Fermer",
   "SEARCH": "Rechercher",
   "DONE": "Ok",
+  "EMPTY": "Aucun élément",
   "CLIENT_VERSION": "Version du client",
   "API_VERSION": "Version de l'API",
   "errors": {
