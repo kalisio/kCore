@@ -5,7 +5,7 @@
   "CLOSE": "Fermer",
   "SEARCH": "Rechercher",
   "DONE": "Ok",
-  "EMPTY": "No elements found",
+  "EMPTY": "Aucun élément",
   "errors": {
     "400": "Cette opération ne peut être réalisée: paramètres incorrects",
     "401": "Cette opération ne peut être réalisée: vous devez être authentifié",
