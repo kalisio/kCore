@@ -74,7 +74,7 @@ export default {
       let media = this.medias[index]
       // Download image the first time
       if (!media.uri) {
-        this.$api.getService('storage').get(media._id)
+        this.storageService().get(media._id)
         // Required to use $set when modifying an object inside an array to make it reactive
         .then(data => this.$set(this.medias, index, Object.assign(media, { uri: data.uri })))
       }
@@ -92,6 +92,9 @@ export default {
       if (this.medias.length > 0) {
         this.$refs.carousel.goToSlide(0)
       }
+    },
+    storageService () {
+      return this.$api.getService(this.options.service || 'storage')
     }
   },
   created () {
