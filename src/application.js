@@ -224,7 +224,7 @@ export function createService (name, app, options = {}) {
     service = require(path.join(options.servicesPath, fileName, fileName + '.service'))
     // If we get a function try to call it assuming it will return the service object
     if (typeof service === 'function') {
-      service = service(name, app, options)
+      service = service(name, app, serviceOptions)
     }
     // Need to set this manually for services not using class inheritance or default adapters
     if (options.events) service.events = options.events
