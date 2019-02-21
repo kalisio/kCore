@@ -13,7 +13,7 @@ let Store = {
     return _.get(this, path, defaultValue)
   },
   patch (path, value) {
-    // PAtching should not change the obejct reference to maintain reactivity
+    // Patching should not change the obejct reference to maintain reactivity
     let previousValue = this.get(path)
     if (previousValue) {
       Object.assign(previousValue, value)
