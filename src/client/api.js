@@ -7,7 +7,16 @@ import reactive from 'feathers-reactive'
 import config from 'config'
 import { permissions } from '../common'
 import { Store } from './store'
+import Vue from 'vue'
 import { Platform, Events } from 'quasar'
+
+// Register some global filters for case conversions
+Vue.filter('kebabCase', (value) => _.kebabCase(value))
+Vue.filter('camelCase', (value) => _.camelCase(value))
+Vue.filter('lowerCase', (value) => _.lowerCase(value))
+Vue.filter('snakeCase', (value) => _.snakeCase(value))
+Vue.filter('startCase', (value) => _.startCase(value))
+Vue.filter('upperCase', (value) => _.upperCase(value))
 
 function getBaseUrlStorageKey () {
   return config.appName + '-baseUrl'
