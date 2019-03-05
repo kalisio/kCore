@@ -53,7 +53,7 @@ export default {
       toolbar: [{
         name: 'close',
         icon: 'close',
-        handler: () => this.close(this.router ? _ => this.$router.push(this.router.onDismiss) : null)
+        handler: () => this.close(this.router ? _ => this.$router.push(this.router.onDismiss) : this.$emit('closed'))
       }]
     }
   },
