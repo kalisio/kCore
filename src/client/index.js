@@ -1,5 +1,6 @@
 import logger from 'loglevel'
 import { Store } from './store'
+import services from './services'
 
 // We faced a bug in babel so that transform-runtime with export * from 'x' generates import statements in transpiled code
 // Tracked here : https://github.com/babel/babel/issues/2877
@@ -15,15 +16,13 @@ export * from '../common'
 export * as utils from './utils'
 export * as mixins from './mixins'
 export * as hooks from './hooks'
+export * from './services'
 
 export default function init () {
   const api = this
 
   logger.debug('Initializing kalisio core')
-
-  api.declareService('users')
-  api.declareService('authorisations')
-  api.declareService('tags', { context: true })
+  api.configure(services)
 
   // Create the models listened by the main layout components
   // You must use the patch method on the store to update those models
