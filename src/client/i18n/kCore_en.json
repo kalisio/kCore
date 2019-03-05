@@ -39,6 +39,7 @@
     "WEAK_PASSWORD_PREVIOUS": "Not one of your {{history}} last passwords"
   },
   "schemas": {
+    "OBJECT_NAME": "{{ object.name }}",
     "AVATAR_FIELD_HELPER": "Select an avatar",
     "NAME_FIELD_HELPER": "Enter your name"
   },

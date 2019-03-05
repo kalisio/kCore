@@ -30,8 +30,7 @@ export default function baseEditorMixin (formRefs) {
         // Retuns the schema title
         if (this.getSchema()) {
           let schemaTitle = this.getSchema().title
-          if (this.getMode() === 'create') return this.$t(schemaTitle)
-          if (this.getObject()) return _.template(schemaTitle)({ object: this.getObject() })
+          return this.$t(schemaTitle, { object: this.getObject() })
         }
         return ''
       }

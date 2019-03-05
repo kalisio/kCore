@@ -39,6 +39,7 @@
     "WEAK_PASSWORD_PREVIOUS": "Différents de vos {{history}} derniers mots de passe"
   },
   "schemas": {
+    "OBJECT_NAME": "{{ object.name }}",
     "AVATAR_FIELD_HELPER": "Choisissez un avatar",
     "NAME_FIELD_HELPER": "Saisissez votre nom"
   },

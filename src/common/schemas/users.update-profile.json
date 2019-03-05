@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "http://kalisio.xyz/schemas/users.update-profile.json#",
-  "title": "<%= object.name %>",
+  "title": "schemas.OBJECT_NAME",
   "description": "User profile perspective",
   "type": "object",
   "properties": {
