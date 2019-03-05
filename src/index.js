@@ -15,6 +15,6 @@ const debug = makeDebug('kalisio:kCore')
 export default function init () {
   const app = this
 
-  debug('Initializing kalisio')
+  debug('Initializing kalisio core')
   app.configure(services)
 }
