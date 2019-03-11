@@ -190,8 +190,8 @@ export function kalisio () {
   api.configure(feathers.authentication({
     storage: window.localStorage,
     // FIXME: customize cookie/key name
-    cookie: 'feathers-jwt',
-    storageKey: 'feathers-jwt',
+    cookie: config.apiJwt || 'feathers-jwt',
+    storageKey: config.apiJwt || 'feathers-jwt',
     path: config.apiPath + '/authentication'
   }))
   api.configure(reactive({
