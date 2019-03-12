@@ -5,7 +5,9 @@ let authenticationMixin = {
     restoreUser (accessToken) {
       return this.$api.passport.verifyJWT(accessToken)
       .then(payload => {
-        return this.$api.getService('users').get(payload.userId)
+        // Anonymous user or service account ?
+        if (!payload.userId) return { name: this.$t('ANONYMOUS'), anonymous: true }
+        else return this.$api.getService('users').get(payload.userId)
       })
       .then(user => {
         this.$store.set('user', user)

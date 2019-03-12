@@ -7,6 +7,7 @@
   "SEARCH": "Rechercher",
   "DONE": "Ok",
   "EMPTY": "Aucun élément",
+  "ANONYMOUS": "Anonyme",
   "errors": {
     "400": "Cette opération ne peut être réalisée: paramètres incorrects",
     "401": "Cette opération ne peut être réalisée: vous devez être authentifié",
