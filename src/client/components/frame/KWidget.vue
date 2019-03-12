@@ -118,13 +118,15 @@ export default {
     }
   },
   methods: {
-    async toggleMode () {
-      if (this.mode === 'minimized') this.mode = 'maximized'
-      else this.mode = 'minimized'
+    async setMode (mode) {
+      this.mode = mode
       window.dispatchEvent(new Event('resize'))
       // We need to force a refresh so that the style is correctly updated by Vuejs
       await this.$nextTick()
       this.$emit('state-changed', this.mode)
+    },
+    async toggleMode () {
+      await this.setMode(this.mode === 'minimized' ? 'maximized' : 'minimized')
     },
     open (fn) {
       if (!this.$refs.popover.opened) {
