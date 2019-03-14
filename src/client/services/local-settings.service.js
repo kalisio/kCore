@@ -37,7 +37,7 @@ export default function (name, api, options) {
     restoreSettings () {
       let settings = window.localStorage.getItem(settingsKey)
       if (!settings) return
-        settings = JSON.parse(settings)
+      settings = JSON.parse(settings)
       _.forOwn(mapping, (value, key) => {
         if (_.has(settings, key)) {
           Store.set(value, _.get(settings, key))
