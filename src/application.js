@@ -195,17 +195,17 @@ export function createService (name, app, options = {}) {
     paginate
   }, options)
   // For DB services a model has to be provided
-  let fileName = options.fileName || name
+  let fileName = serviceOptions.fileName || name
 
   let dbService = false
   try {
-    if (options.modelsPath) {
-      const configureModel = require(path.join(options.modelsPath, fileName + '.model.' + app.db.adapter))
+    if (serviceOptions.modelsPath) {
+      const configureModel = require(path.join(serviceOptions.modelsPath, fileName + '.model.' + app.db.adapter))
       configureModel(app, serviceOptions)
       dbService = true
     }
   } catch (error) {
-    debug('No ' + fileName + ' service model configured on path ' + options.modelsPath)
+    debug('No ' + fileName + ' service model configured on path ' + serviceOptions.modelsPath)
     if (error.code !== 'MODULE_NOT_FOUND') {
       // Log error in this case as this might be linked to a syntax error in required file
       debug(error)
@@ -217,41 +217,44 @@ export function createService (name, app, options = {}) {
   let service
   if (dbService) {
     service = createFeathersService(serviceOptions)
-  } else if (options.proxy) {
-    service = createProxyService(options.proxy)
+  } else if (serviceOptions.proxy) {
+    service = createProxyService(serviceOptions.proxy)
   } else {
     // Otherwise we expect the service to be provided as a Feathers service interface
-    service = require(path.join(options.servicesPath, fileName, fileName + '.service'))
+    service = require(path.join(serviceOptions.servicesPath, fileName, fileName + '.service'))
     // If we get a function try to call it assuming it will return the service object
     if (typeof service === 'function') {
       service = service(name, app, serviceOptions)
     }
     // Need to set this manually for services not using class inheritance or default adapters
-    if (options.events) service.events = options.events
+    if (serviceOptions.events) service.events = serviceOptions.events
   }
 
   // Get our initialized service so that we can register hooks and filters
-  let servicePath = options.path || name
+  let servicePath = serviceOptions.path || name
   let contextId
-  if (options.context) {
-    contextId = (typeof options.context === 'object'
-      ? (ObjectID.isValid(options.context) ? options.context.toString() : options.context._id.toString()) : options.context)
+  if (serviceOptions.context) {
+    contextId = (typeof serviceOptions.context === 'object'
+      ? (ObjectID.isValid(serviceOptions.context) ?
+        serviceOptions.context.toString() :
+        serviceOptions.context._id.toString()) :
+      serviceOptions.context)
     servicePath = contextId + '/' + servicePath
   }
-  service = declareService(servicePath, app, service, options.middlewares)
+  service = declareService(servicePath, app, service, serviceOptions.middlewares)
   // Register hooks and event filters
-  service = configureService(fileName, service, options.servicesPath)
+  service = configureService(fileName, service, serviceOptions.servicesPath)
   // Optionnally a specific service mixin can be provided, apply it
-  if (dbService && options.servicesPath) {
+  if (dbService && serviceOptions.servicesPath) {
     try {
-      let serviceMixin = require(path.join(options.servicesPath, fileName, fileName + '.service'))
+      let serviceMixin = require(path.join(serviceOptions.servicesPath, fileName, fileName + '.service'))
       // If we get a function try to call it assuming it will return the mixin object
       if (typeof serviceMixin === 'function') {
-        serviceMixin = serviceMixin(fileName, app, options)
+        serviceMixin = serviceMixin(fileName, app, serviceOptions)
       }
       service.mixin(serviceMixin)
     } catch (error) {
-      debug('No ' + fileName + ' service mixin configured on path ' + options.servicesPath)
+      debug('No ' + fileName + ' service mixin configured on path ' + serviceOptions.servicesPath)
       if (error.code !== 'MODULE_NOT_FOUND') {
         // Log error in this case as this might be linked to a syntax error in required file
         debug(error)
@@ -262,9 +265,9 @@ export function createService (name, app, options = {}) {
   // Then configuration
   service.name = name
   service.app = app
-  service.options = options
+  service.options = serviceOptions
   service.path = servicePath
-  service.context = options.context
+  service.context = serviceOptions.context
 
   // Add some utility functions
   service.getPath = function (withApiPrefix) {
