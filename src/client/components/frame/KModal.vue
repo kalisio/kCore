@@ -90,6 +90,7 @@ export default {
       this.$refs.modal.close(onClose)
       this.$nextTick(() => {
         this.$refs.modal.toggleInProgress = false
+        this.$refs.modal.active = false
       })
     }
   },
