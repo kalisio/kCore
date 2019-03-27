@@ -6,6 +6,10 @@ let schemaProxyMixin = {
     schemaName: {
       type: String,
       default: ''
+    },
+    schemaJson: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -29,6 +33,24 @@ let schemaProxyMixin = {
       }
       return schemaName
     },
+    async loadSchemaFromResource (schemaName) {
+      try {
+        this.schema = await this.$load(schemaName, 'schema')
+        return this.schema
+      } catch (error) {
+        Events.$emit('error', error)
+        throw error
+      }
+    },
+    async loadSchemaFromJson (json) {
+      try {
+        this.schema = JSON.parse(json)
+        return this.schema
+      } catch (error) {
+        Events.$emit('error', error)
+        throw error
+      }
+    },
     loadSchema () {
       // Create a new mixin promise if required
       // In the JSON schema file we use a $id like 'http:/www.kalisio.xyz/schemas/service.operation-perspective.json#'
@@ -36,19 +58,9 @@ let schemaProxyMixin = {
       const schemaChanged = schemaName && !this.getSchemaId().includes(schemaName + '.json')
       if (!this.schemaPromise || schemaChanged) {
         // We need to load the schema now
-        this.schemaPromise = createQuerablePromise(
-          this.$load(schemaName, 'schema')
-          .then(schema => {
-            this.schema = schema
-            // We need to force a refresh so that the schema is correctly
-            // transfered to child component by Vuejs
-            return this.$nextTick().then(() => schema)
-          })
-          .catch(error => {
-            Events.$emit('error', error)
-            throw error
-          })
-        )
+        this.schemaPromise = createQuerablePromise(this.schemaJson ?
+          this.loadSchemaFromJson(this.schemaJson) :
+          this.loadSchemaFromResource(schemaName))
       }
       return this.schemaPromise
     }
