@@ -195,7 +195,10 @@ export default {
         // Uploading can require a long time
         timeout: 60 * 60 * 1000 // 1h should be sufficient since we also have size limits
       }, options, dictionary)
-      this.dropZoneOptions.url = this.$api.getBaseUrl() + '/' + this.storageService().path
+      // Depending on the transport the path starts or not with '/'
+      let servicePath = this.storageService().path
+      if (!servicePath.startsWith('/')) servicePath = '/' + servicePath
+      this.dropZoneOptions.url = this.$api.getBaseUrl() + servicePath
       // This is used to ensure the request will be authenticated by Feathers
       this.dropZoneOptions.headers = { Authorization: accessToken }
     },
