@@ -142,7 +142,7 @@ export default {
       if (!this.loadRefs().isFulfilled()) throw Error('Cannot fill the form while not ready')
       this.fields.forEach(field => {
         if (_.has(values, field.name)) {
-          this.getField(field.name).fill(_.get(values, field.name))
+          this.getField(field.name).fill(_.get(values, field.name), values)
         } else {
           // The field has no value, then assign a default one
           this.getField(field.name).clear()

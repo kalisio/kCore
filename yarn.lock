@@ -3510,6 +3510,11 @@ jsesc@~0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-0.5.0.tgz#e7dee66e35d6fc16f710fe91d5cf69f70f08911d"
 
+json-loader@^0.5.4:
+  version "0.5.7"
+  resolved "https://registry.yarnpkg.com/json-loader/-/json-loader-0.5.7.tgz#dca14a70235ff82f0ac9a3abeb60d337a365185d"
+  integrity sha512-QLPs8Dj7lnf3e3QYS1zkCo+4ZwqOiF9d/nZnYozTISxXWCfNs9yuky5rJw4/W34s7POaNlbZmQGaB5NiXCbP4w==
+
 json-schema-traverse@^0.3.0:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/json-schema-traverse/-/json-schema-traverse-0.3.1.tgz#349a6d44c53a51de89b40805c5d5e59b417d3340"
@@ -3872,6 +3877,14 @@ mime-db@~1.27.0:
 mime-db@~1.33.0:
   version "1.33.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.33.0.tgz#a3492050a5cb9b63450541e39d9788d2272783db"
+
+mime-types-browser@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/mime-types-browser/-/mime-types-browser-0.0.3.tgz#b56b41f436db6220568d558276eac466ba2f40dd"
+  integrity sha1-tWtB9DbbYiBWjVWCdurEZrovQN0=
+  dependencies:
+    json-loader "^0.5.4"
+    mime-types "^2.1.12"
 
 mime-types@^2.0.0, mime-types@^2.1.10, mime-types@~2.1.18:
   version "2.1.18"
