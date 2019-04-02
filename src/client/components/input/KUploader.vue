@@ -83,7 +83,7 @@ export default {
               query: Object.assign({ resource: this.resource, resourcesService: this.resourcesService() }, this.baseQuery)
             })
             // Thumbnail as well
-            const mimeType = mime.lookup(file.name)
+            const mimeType = mime.lookup(removedFile.name)
             // We only store thumbnails for images
             if (mimeType.startsWith('image/')) this.storageService().remove(this.files[index]._id + '.thumbnail')
           }
