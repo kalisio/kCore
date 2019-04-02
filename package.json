@@ -60,6 +60,10 @@
       "cordova",
       "location",
       "FileReader",
+      "mime",
+      "atob",
+      "URL",
+      "Blob",
       "Event"
     ]
   },
