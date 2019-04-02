@@ -3,7 +3,7 @@
   <div class="k-timecontroller-container"
        @click="onTimelineClick" @mousemove="onTimelineMouseMove" @mouseout="onTimelineMouseOut">
 
-    <q-resize-observable @resize="onResize" />
+    <q-resize-observer @resize="onResize" />
 
     <div v-bind:style="pointerContainerStyle"
          class="k-interval-pointer-container"
@@ -13,7 +13,7 @@
         :time="currentValue"
         :formatter="timeFormatter"
         :componentLeft="componentLeft"
-        :componentWidth="componentWidth"        
+        :componentWidth="componentWidth"
         :pointerColor="pointerColor"
         :pointerTextColor="pointerTextColor"
         @change="onChangePosition"
@@ -26,7 +26,7 @@
         :visible="timeIndicatorIsVisible"
         :formatter="timeFormatter"
         :componentLeft="componentLeft"
-        :componentWidth="componentWidth"        
+        :componentWidth="componentWidth"
         :color="color"
         :textColor="pointerTextColor"
         :timePointerLeft="timePointerLeft"
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { QResizeObservable } from 'quasar'
+import { QResizeObserver } from 'quasar'
 import mixins from '../../mixins'
 import KTimeInterval from './KTimeInterval'
 import KTimePointer from './KTimePointer'
@@ -67,7 +67,7 @@ import KTimeIndicator from './KTimeIndicator'
 export default {
   name: 'k-time-controller',
   components: {
-    QResizeObservable,
+    QResizeObserver,
     KTimeInterval,
     KTimePointer,
     KTimeIndicator

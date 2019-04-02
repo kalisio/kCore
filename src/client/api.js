@@ -8,7 +8,8 @@ import config from 'config'
 import { permissions } from '../common'
 import { Store } from './store'
 import Vue from 'vue'
-import { Platform, Events } from 'quasar'
+import { Platform } from 'quasar'
+import { Events } from './events'
 
 // Register some global filters for case conversions
 Vue.filter('kebabCase', (value) => _.kebabCase(value))

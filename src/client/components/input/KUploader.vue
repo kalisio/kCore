@@ -8,9 +8,8 @@
 
 <script>
 import _ from 'lodash'
-import 'vue2-dropzone/dist/vue2Dropzone.css'
+import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import DropZone from 'vue2-dropzone'
-import { Events } from 'quasar'
 
 export default {
   name: 'k-uploader',
@@ -155,7 +154,7 @@ export default {
       // This is required if we don't want the file to be viewed
       this.dropZone().removeFile(file)
       // The error message is already translated using the DropZone dictionary
-      Events.$emit('error', { message: error })
+      this.$events.$emit('error', { message: error })
     },
     doDone (event, done) {
       done()

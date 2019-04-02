@@ -1,4 +1,3 @@
-import { Events } from 'quasar'
 import { getLocale } from '../utils'
 
 let baseCollectionMixin = {
@@ -33,7 +32,7 @@ let baseCollectionMixin = {
         this.nbTotalItems = response.total
         this.$emit('collection-refreshed')
       }, error => {
-        Events.$emit('error', error)
+        this.$events.$emit('error', error)
       })
     },
     unsubscribe () {

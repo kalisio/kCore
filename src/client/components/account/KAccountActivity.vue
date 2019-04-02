@@ -10,14 +10,13 @@
       <k-account-dz :objectId="objectId" :name="name" />
     </div>
     <div v-else>
-      <!-- Error -->  
+      <!-- Error -->
     </div>
   </div>
 </template>
 
 <script>
 import mixins from '../../mixins'
-import { Events } from 'quasar'
 
 export default {
   name: 'k-account-activity',
@@ -76,10 +75,10 @@ export default {
     this.$options.components['k-account-dz'] = this.$load('account/KAccountDZ')
     // Refresh this component
     this.refreshAccount()
-    Events.$on('user-changed', this.refreshAccount)
+    this.$events.$on('user-changed', this.refreshAccount)
   },
   beforeDestroy () {
-    Events.$off('user-changed', this.refreshAccount)
+    this.$events.$off('user-changed', this.refreshAccount)
   }
 }
 </script>

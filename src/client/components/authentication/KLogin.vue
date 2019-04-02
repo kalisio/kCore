@@ -2,7 +2,7 @@
   <k-screen :title="canLogWith() ? $t('KLogin.TITLE') : ''" :links="links">
     <div slot="screen-content">
       <div class="column justify-center sm-gutter">
-        <!-- 
+        <!--
           Login providers
         -->
         <div v-if="canLogWith()">
@@ -13,13 +13,13 @@
               </q-btn>
             </template>
           </div>
-          <div class="row items-center"> 
+          <div class="row items-center">
             <div class="col-1"><h6>{{ $t('KLogin.OR_LABEL') }}</h6></div>
             <div class="col-11"><hr></div>
           </div>
         </div>
-        <!-- 
-          Login form 
+        <!--
+          Login form
         -->
         <div>
           <k-form ref="form" :schema="schema" @form-ready="onFormReady"/>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { QIcon, QList, QItem, QItemMain, QBtn, Toast, Platform } from 'quasar'
+import { QBtn, Platform } from 'quasar'
 import { KScreen } from '../frame'
 import { KForm } from '../form'
 import mixins from '../../mixins'
@@ -43,10 +43,6 @@ import mixins from '../../mixins'
 export default {
   name: 'k-login',
   components: {
-    QIcon,
-    QList,
-    QItem,
-    QItemMain,
     QBtn,
     KForm,
     KScreen
@@ -112,8 +108,9 @@ export default {
           done()
         })
         .catch(() => {
-          Toast.create.negative({
-            html: this.$t('KLogin.LOGIN_ERROR'),
+          this.$q.notify({
+            type: 'negative',
+            message: this.$t('KLogin.LOGIN_ERROR'),
             timeout: 5000
           })
           done()

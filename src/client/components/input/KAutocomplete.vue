@@ -1,18 +1,21 @@
 <template>
-  <q-search v-model="pattern" @change="onChanged" :placeholder="$t('KAutocomplete.PLACEHOLDER')">
+  <!-- TODO Quasar v1 migration --><div>TODO TEMP REMOVE ME</div>
+  <!-- <q-search v-model="pattern" @change="onChanged" :placeholder="$t('KAutocomplete.PLACEHOLDER')">
     <q-autocomplete @search="onSearch" @selected="onSelected" />
-  </q-search>
+  </q-search> -->
 </template>
 
 <script>
 import _ from 'lodash'
-import { QSearch, QAutocomplete } from 'quasar'
+// TODO Quasar v1 migration
+// import { QSearch, QAutocomplete } from 'quasar'
 
 export default {
   name: 'k-autocomplete',
   components: {
-    QSearch,
-    QAutocomplete
+// TODO Quasar v1 migration
+    // QSearch,
+    // QAutocomplete
   },
   props: {
     services: {

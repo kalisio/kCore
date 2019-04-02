@@ -1,15 +1,15 @@
 <template>
   <q-card class="k-block">
-    <!-- 
+    <!--
       Title section
      -->
-    <q-card-title v-if="title !== ''" :class="titleColors">
+    <q-card-section v-if="title !== ''" :class="titleColors">
       {{title}}
-    </q-card-title>
-    <!-- 
+    </q-card-section>
+    <!--
       Frame section
       -->
-    <q-card-main>
+    <q-card-section>
       <div class="row justify-between k-block-content">
         <!-- Text -->
         <div class="col-xs-12 col-sm-10 k-block-text" v-html="text" />
@@ -18,19 +18,18 @@
           <q-btn @click="$emit('action-triggered', action)" :color="color" :disabled="disabled">{{action}}</q-btn>
         </div>
       </div>
-    </q-card-main>
+    </q-card-section>
   </q-card>
 </template>
 
 <script>
-import { QCard, QCardTitle, QCardMain, QBtn } from 'quasar'
+import { QCard, QCardSection, QBtn } from 'quasar'
 
 export default {
   name: 'k-block',
   components: {
     QCard,
-    QCardTitle,
-    QCardMain,
+    QCardSection,
     QBtn
   },
   props: {

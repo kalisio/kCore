@@ -1,7 +1,8 @@
 <template>
-  <q-modal ref="modal" no-esc-dismiss no-backdrop-dismiss :content-css="options" @open="$emit('opened')" @close="$emit('closed')" :maximized="options.maximized">
+  <q-dialog ref="modal" no-esc-dismiss no-backdrop-dismiss :content-css="options"
+           @show="$emit('opened')" @hide="$emit('closed')" :maximized="options.maximized">
     <div class="column">
-      <!-- 
+      <!--
          Toolbar section
        -->
       <div class="row justify-end">
@@ -12,7 +13,7 @@
           </q-btn>
         </template>
       </div>
-      <!-- 
+      <!--
         Title section
       -->
       <div class="row justify-start" style="margin-left: 18px">
@@ -20,11 +21,11 @@
           {{title}}
         </div>
       </div>
-      <!-- 
+      <!--
         Content section
        -->
       <div style="padding: 16px">
-        <slot name="modal-content" /> 
+        <slot name="modal-content" />
       </div>
       <!--
         Buttons section
@@ -41,16 +42,16 @@
         </slot>
       </div>
     </div>
-  </q-modal>
+  </q-dialog>
 </template>
 
 <script>
-import { QModal, QBtn, QIcon, QTooltip } from 'quasar'
+import { QDialog, QBtn, QIcon, QTooltip } from 'quasar'
 
 export default {
   name: 'k-modal',
   components: {
-    QModal,
+    QDialog,
     QBtn,
     QIcon,
     QTooltip
@@ -81,13 +82,16 @@ export default {
   },
   methods: {
     open () {
-      this.$refs.modal.open()
+      this.$refs.modal.show()
     },
     close (onClose) {
       // FIXME: du to https://github.com/quasarframework/quasar/issues/994
       // we force the toggleInProgress property to false in order to close the modal
       // There is still a bug as it is needed to click twice on close the modal
-      this.$refs.modal.close(onClose)
+
+      // TODO is this still relevant after migration to Quasar v1 ?  What does the "onClose" event do?
+      this.$refs.modal.hide(onClose)
+      // TODO is this workaround still needed  after migration to Quasar v1 ?
       this.$nextTick(() => {
         this.$refs.modal.toggleInProgress = false
       })

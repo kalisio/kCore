@@ -1,14 +1,16 @@
 <template>
-  <q-fixed-position :corner="currentCorner" :offset="currentOffset">
-    <q-popover 
-      ref="popover" @open="onOpen" @close="onClose"
-      :anchor-click="false" 
-      anchor="center middle" 
-      :self="currentSelf" 
+  <q-page-sticky :position="currentCorner" :offset="currentOffset">
+    <q-menu
+      ref="popover" @show="onOpen" @hide="onClose"
+      :anchor-click="false"
+      anchor="center middle"
+      :self="currentSelf"
       max-height="100%"
-      :style="currentCss">
-        <!-- 
-         Toolbar section 
+      :style="currentCss"
+      v-model="menuOpened"
+    >
+        <!--
+         Toolbar section
         -->
         <div class="row justify-end">
           <template v-for="action in toolbar">
@@ -18,7 +20,7 @@
             </q-btn>
           </template>
         </div>
-        <!-- 
+        <!--
           Title section
         -->
         <div class="row justify-start" style="margin-left: 18px">
@@ -26,25 +28,25 @@
             {{title}}
           </div>
         </div>
-        <!-- 
-          Content section 
+        <!--
+          Content section
         -->
         <div style="padding: 16px">
-          <slot name="widget-content" /> 
+          <slot name="widget-content" />
         </div>
-    </q-popover>
-  </q-fixed-position>
+    </q-menu>
+  </q-page-sticky>
 </template>
 
 <script>
 import _ from 'lodash'
-import { QPopover, QFixedPosition, QBtn, QIcon, QTooltip } from 'quasar'
+import { QMenu, QPageSticky, QBtn, QIcon, QTooltip } from 'quasar'
 
 export default {
   name: 'k-k-widget',
   components: {
-    QPopover,
-    QFixedPosition,
+    QMenu,
+    QPageSticky,
     QBtn,
     QIcon,
     QTooltip
@@ -80,6 +82,11 @@ export default {
           maximized: 'width:100vw;height:100vh'
         }
       }
+    }
+  },
+  data () {
+    return {
+      menuOpened: false
     }
   },
   computed: {
@@ -129,28 +136,30 @@ export default {
       await this.setMode(this.mode === 'minimized' ? 'maximized' : 'minimized')
     },
     open (fn) {
-      if (!this.$refs.popover.opened) {
+      if (!this.menuOpened) {
         // Quasar popover is not persistent and closes when clicking outside
         // We manually remove event listeners so that it becomes persistent
+
+        // TODO is this still relevant after migration to Quasar v1 ?
         setTimeout(() => {
-          document.body.removeEventListener('click', this.$refs.popover.close, true)
-          document.body.removeEventListener('touchstart', this.$refs.popover.close, true)
+          document.body.removeEventListener('click', this.$refs.popover.hide, true)
+          document.body.removeEventListener('touchstart', this.$refs.popover.hide, true)
         }, 1000)
       }
-      this.$refs.popover.open(fn)
+      this.$refs.popover.show(fn)
     },
     close (fn) {
-      this.$refs.popover.close(fn)
+      this.$refs.popover.hide(fn)
     },
     toggle (onClose) {
-      if (!this.$refs.popover.opened) {
+      if (!this.menuOpened) {
         this.open()
       } else {
         this.close(onClose)
       }
     },
     isOpen () {
-      return this.$refs.popover.opened
+      return this.menuOpened
     },
     onOpen () {
       this.$emit('state-changed', this.mode)

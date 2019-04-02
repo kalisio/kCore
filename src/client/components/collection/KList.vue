@@ -6,7 +6,6 @@
     <div class="self-center" v-if="nbPages > 1">
       <q-pagination v-model="currentPage" :max="nbPages" style="padding: 18px" @input="onPageChanged" />
     </div>
-  </div>
   </q-list>
   <q-list v-else class="column items-center">
     <div>
@@ -19,7 +18,7 @@
 </template>
 
 <script>
-import { QList, QIcon, QPagination, Events } from 'quasar'
+import { QList, QIcon, QPagination } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
@@ -88,10 +87,10 @@ export default {
     this.$options.components[this.renderer.component] = this.$load(this.renderer.component)
     this.refreshCollection()
     // Whenever the user abilities are updated, update collection as well
-    Events.$on('user-abilities-changed', this.refreshCollection)
+    this.$events.$on('user-abilities-changed', this.refreshCollection)
   },
   beforeDestroy () {
-    Events.$off('user-abilities-changed', this.refreshCollection)
+    this.$events.$off('user-abilities-changed', this.refreshCollection)
   }
 }
 </script>

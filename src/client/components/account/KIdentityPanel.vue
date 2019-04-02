@@ -12,17 +12,24 @@
     -->
     <div>
       <q-list highlight no-border>
-        <q-side-link id="account" item :to="{ name: 'account-activity', params: { perspective: 'profile' }}">
-          <q-item-main :label="name" />
-          <q-item-side icon="perm_identity" right />
-        </q-side-link>
+        <q-item id="account" @click="onClickAccount" clickable v-ripple>
+          <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below may be incorrect -->
+          <q-item-section>
+            <q-item-label>{{ name }}</q-item-label> />
+          </q-item-section>
+          <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below may be incorrect -->
+          <!-- <q-item-side icon="perm_identity" right /> -->
+          <q-item-section avatar >
+              <q-icon name="perm_identity" />
+          </q-item-section>
+        </q-item>
       </q-list>
     </div>
   </div>
 </template>
 
 <script>
-import { Events, QList, QItem, QSideLink, QItemSide, QItemMain, QItemSeparator } from 'quasar'
+import { QList, QItem, QItemSection, QItemLabel } from 'quasar'
 import { Avatar } from 'vue-avatar'
 
 export default {
@@ -30,10 +37,8 @@ export default {
   components: {
     QList,
     QItem,
-    QSideLink,
-    QItemSide,
-    QItemMain,
-    QItemSeparator,
+    QItemSection,
+    QItemLabel,
     Avatar: Avatar
   },
   data () {
@@ -57,14 +62,17 @@ export default {
       } else {
         this.avatarImage = ''
       }
+    },
+    onClickAccount () {
+      this.$router.push({ name: 'account-activity', params: { perspective: 'profile' }})
     }
   },
   created () {
     this.refreshIdentity()
-    Events.$on('user-changed', this.refreshIdentity)
+    this.$events.$on('user-changed', this.refreshIdentity)
   },
   beforeDestroy () {
-    Events.$off('user-changed', this.refreshIdentity)
+    this.$events.$off('user-changed', this.refreshIdentity)
   }
 }
 </script>

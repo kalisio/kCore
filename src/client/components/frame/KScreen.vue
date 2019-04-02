@@ -18,13 +18,13 @@
       </slot>
       <!-- Frame -->
       <q-card>
-        <q-card-title>
+        <q-card-section>
           <!-- Title -->
           <slot name="screen-title">
             {{ title }}
           </slot>
-        </q-card-title>
-        <q-card-main>
+        </q-card-section>
+        <q-card-section>
           <div class="col">
             <!-- Content -->
             <slot name="screen-content" />
@@ -39,7 +39,7 @@
               </div>
             </slot>
           </div>
-        </q-card-main>
+        </q-card-section>
       </q-card>
       <!-- Extra links -->
       <slot name="screen-extra-links">
@@ -64,14 +64,13 @@
 </template>
 
 <script>
-import { QCard, QCardTitle, QCardMain, openURL } from 'quasar'
+import { QCard, QCardSection, openURL } from 'quasar'
 
 export default {
   name: 'k-screen',
   components: {
     QCard,
-    QCardTitle,
-    QCardMain
+    QCardSection
   },
   props: {
     title: {

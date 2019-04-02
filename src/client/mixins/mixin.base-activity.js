@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { uid, Events } from 'quasar'
+import { uid } from 'quasar'
 
 let baseActivityMixin = {
   data () {
@@ -105,12 +105,12 @@ let baseActivityMixin = {
     // Register the actions
     this.refreshActivity()
     // Whenever the user abilities are updated, update activity as well
-    Events.$on('user-abilities-changed', this.refreshActivity)
-    Events.$on('search-bar-changed', this.handleSearch)
+    this.$events.$on('user-abilities-changed', this.refreshActivity)
+    this.$events.$on('search-bar-changed', this.handleSearch)
   },
   beforeDestroy () {
-    Events.$off('user-abilities-changed', this.refreshActivity)
-    Events.$off('search-bar-changed', this.handleSearch)
+    this.$events.$off('user-abilities-changed', this.refreshActivity)
+    this.$events.$off('search-bar-changed', this.handleSearch)
   }
 }
 

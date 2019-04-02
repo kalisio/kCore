@@ -6,7 +6,7 @@
     <q-btn id="side-nav-toggle" v-if="hasSideNavToggle" flat @click="$emit('side-nav-toggled')">
       <q-icon name="menu" />
     </q-btn>
-    <!-- 
+    <!--
       Title/subtitle section
      -->
     <q-toolbar-title id="app-bar-title">
@@ -18,31 +18,37 @@
     <!--
       Toolbar section
      -->
-    <template v-if="hasToolbar" v-for="action in appBar.toolbar">
-      <q-btn :id ="action.name" :key="action.name" flat @click="onActionTriggered(action)">
-        <q-icon :name="action.icon" />
-        <q-tooltip>
-          {{ action.label }}
-        </q-tooltip>
-      </q-btn>
+    <template v-if="hasToolbar">
+      <template v-for="action in appBar.toolbar">
+        <q-btn :id ="action.name" :key="action.name" flat @click="onActionTriggered(action)">
+          <q-icon :name="action.icon" />
+          <q-tooltip>
+            {{ action.label }}
+          </q-tooltip>
+        </q-btn>
+      </template>
     </template>
     <!--
       Menu section
      -->
     <template v-if="hasMenu">
       <q-btn id="overflow-menu-entry" flat>
-        <q-popover id="overflow-menu" ref="menu">
+        <q-menu id="overflow-menu" ref="menu">
           <q-list>
             <template v-for="action in appBar.menu">
               <q-item :id="action.name" :key="action.name" link @click="onActionTriggered(action)">
-                <q-item-side :icon="action.icon" />
-                <q-item-main>
+                <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below may be incorrect -->
+                <!-- <q-item-side :icon="action.icon" /> -->
+                <q-item-section avatar >
+                  <q-icon :name="action.icon" />
+                </q-item-section>
+                <q-item-label>
                   {{action.label}}
-                </q-item-main>
+                </q-item-label>
               </q-item>
             </template>
           </q-list>
-        </q-popover>
+        </q-menu>
         <q-icon name="more_vert"></q-icon>
       </q-btn>
     </template>
@@ -50,7 +56,7 @@
 </template>
 
 <script>
-import { QToolbar, QToolbarTitle, QBtn, QIcon, QList, QItem, QItemSide, QItemMain, QTooltip, QPopover } from 'quasar'
+import { QToolbar, QToolbarTitle, QBtn, QIcon, QList, QItem, QItemSection, QItemLabel, QTooltip, QMenu } from 'quasar'
 
 export default {
   name: 'k-app-bar',
@@ -61,9 +67,9 @@ export default {
     QIcon,
     QList,
     QItem,
-    QItemSide,
-    QItemMain,
-    QPopover,
+    QItemSection,
+    QItemLabel,
+    QMenu,
     QTooltip
   },
   props: {
@@ -87,7 +93,7 @@ export default {
   },
   methods: {
     onActionTriggered (action) {
-      if (this.hasMenu) this.$refs.menu.close()
+      if (this.hasMenu) this.$refs.menu.hide()
       // If a handler is given call it
       if (action.handler) action.handler()
       // If a route is given activate it

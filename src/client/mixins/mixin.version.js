@@ -1,5 +1,3 @@
-import { Events } from 'quasar'
-
 let versionMixin = {
   data () {
     return {
@@ -28,10 +26,10 @@ let versionMixin = {
   },
   created () {
     this.refreshVersionNames()
-    Events.$on('capabilities-api-changed', this.refreshVersionNames)
+    this.$events.$on('capabilities-api-changed', this.refreshVersionNames)
   },
   beforeDestroy () {
-    Events.$off('capabilities-api-changed', this.refreshVersionNames)
+    this.$events.$off('capabilities-api-changed', this.refreshVersionNames)
   }
 }
 

@@ -9,6 +9,7 @@ import services from './services'
 // FIXME: we don't build vue component anymore, they are processed by webpack in the application template
 // export * from './components'
 
+export * from './events'
 export * from './api'
 export * from './store'
 export * from './guards'

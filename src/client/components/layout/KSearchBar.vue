@@ -1,14 +1,14 @@
 <template>
   <div v-show="isVisible" class="row full-width">
-    <k-item-chooser 
-      :multiselect="true" 
-      :services="services" 
+    <k-item-chooser
+      :multiselect="true"
+      :services="services"
       @changed="onItemsChanged" />
   </div>
 </template>
 
 <script>
-import { QBtn, QIcon, Events } from 'quasar'
+import { QBtn, QIcon } from 'quasar'
 
 export default {
   name: 'k-search-bar',
@@ -36,10 +36,10 @@ export default {
     // Load the required components
     this.$options.components['k-item-chooser'] = this.$load('input/KItemChooser')
     this.setupSearch()
-    Events.$on('search-bar-changed', this.setupSearch)
+    this.$events.$on('search-bar-changed', this.setupSearch)
   },
   beforeDestroy () {
-    Events.$off('search-bar-changed', this.setupSearch)
+    this.$events.$off('search-bar-changed', this.setupSearch)
   }
 }
 </script>

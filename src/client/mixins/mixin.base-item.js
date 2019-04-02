@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import { Events } from 'quasar'
 
 let baseItemMixin = {
   props: {
@@ -60,10 +59,10 @@ let baseItemMixin = {
     // Register the actions
     this.refreshActions()
     // Whenever the user abilities are updated, update actions as well
-    Events.$on('user-abilities-changed', this.refreshActions)
+    this.$events.$on('user-abilities-changed', this.refreshActions)
   },
   beforeDestroy () {
-    Events.$off('user-abilities-changed', this.refreshActions)
+    this.$events.$off('user-abilities-changed', this.refreshActions)
   }
 }
 

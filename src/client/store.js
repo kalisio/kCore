@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { Events } from 'quasar'
+import { Events } from './events'
 
 // Export singleton
 let Store = {

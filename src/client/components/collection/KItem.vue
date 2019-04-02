@@ -4,44 +4,55 @@
       Avatar section
     -->
     <slot name="item-icon">
-      <q-item-side v-if="options.icon" :icon="options.icon" :color="options.color"/>
+      <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below may be incorrect -->
+      <q-item-section avatar v-if="options.icon">
+         <q-icon :color="options.color" :name="options.icon" />
+      </q-item-section>
     </slot>
     <slot name="item-avatar">
-      <q-item-side v-if="options.avatar" :avatar="options.avatar" />
+      <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below may be incorrect -->
+      <q-item-section avatar v-if="options.avatar">
+         <q-avatar :icon="options.avatar" />
+      </q-item-section>
     </slot>
     <!--
       Content section
     -->
     <slot name="item-content">
-      <q-item-main>
+      <q-item-label>
         <slot name="item-label">
-          <q-item-tile label>{{ name }}</q-item-tile>
+          <q-item-label header>{{ name }}</q-item-label>
         </slot>
         <slot name="item-sublabel">
-          <q-item-tile sublabel>{{ description }}</q-item-tile>
+          <q-item-label caption>{{ description }}</q-item-label>
         </slot>
-      </q-item-main>
+      </q-item-label>
     </slot>
     <!--
       Actions section
     -->
     <slot name="item-actions">
-      <q-item-side v-if="itemActions.length > 0" right icon="more_vert">
-        <q-popover>
+      <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below are probably incorrect -->
+      <!-- <q-item-section v-if="itemActions.length > 0" right icon="more_vert"> -->
+      <q-item-section v-if="itemActions.length > 0" side >
+        <!-- TODO figure out how to 'translate' this to Quasar v1 -->
+        <q-icon name="more_vert" />
+
+        <q-menu>
           <q-list link>
             <q-item v-for="action in itemActions" :key="key(action, 'label')">
-              <q-item-main :label="action.label" @click="onActionTriggered(action, item)" />
+              <q-item-label @click="onActionTriggered(action, item)">{{ action.label }}</q-item-label>
             </q-item>
           </q-list>
-        </q-popover>
-      </q-item-side>
+        </q-menu>
+      </q-item-section>
     </slot>
   </q-item>
 </template>
 
 <script>
 import _ from 'lodash'
-import { QList, QItem, QItemSide, QItemMain, QItemTile, QBtn, QIcon, QPopover } from 'quasar'
+import { QList, QItem, QItemSection, QItemLabel, QIcon, QAvatar, QBtn, QMenu } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
@@ -50,12 +61,12 @@ export default {
   components: {
     QList,
     QItem,
-    QItemSide,
-    QItemMain,
-    QItemTile,
-    QBtn,
+    QItemSection,
+    QItemLabel,
     QIcon,
-    QPopover
+    QAvatar,
+    QBtn,
+    QMenu
   },
   props: {
     item: {

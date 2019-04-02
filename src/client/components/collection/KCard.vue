@@ -4,46 +4,61 @@
       <!--
         Title section
       -->
-      <slot name="card-title"> 
+      <slot name="card-title">
         <q-item>
-          <q-item-side v-if="options.avatar">
+          <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below may be incorrect -->
+          <!-- <q-item-side v-if="options.avatar">
             <avatar v-if="name" :username="name" :size="options.avatar.size" />
-          </q-item-side>
-          <q-item-main>
-            <q-item-tile label>{{name}}</q-item-tile>
-            <q-item-tile sublabel><small>{{description}}</small></q-item-tile>
-          </q-item-main>
-          <q-item-side right>
+          </q-item-side> -->
+          <q-item-section avatar v-if="options.avatar">
+            <avatar v-if="name" :username="name" :size="options.avatar.size" />
+          </q-item-section>
+          <q-item-label>
+            <q-item-label header>{{ name }}</q-item-label>
+            <q-item-label caption><small>{{ description }}</small></q-item-label>
+          </q-item-label>
+          <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below may be incorrect - what about "right" ? -->
+          <!-- <q-item-side right>
             <slot name="card-icon"></slot>
-          </q-item-side>
+          </q-item-side> -->
+          <q-item-section side>
+            <slot name="card-icon"></slot>
+          </q-item-section>
         </q-item>
-        <q-card-separator />
+        <q-separator />
       </slot>
       <!--
         Content section
       -->
-      <q-card-main>
+      <q-card-section>
         <slot name="card-tags">
           <div v-if="tags && tags.length > 0">
             <div class="row justify-start items-center">
               <template v-for="tag in tags">
-                <q-chip v-if="options.tags && options.tags === 'chip'" :key="key(tag, 'value')" small :color="tag.icon.color" :icon="tag.icon.name" class="card-tag-chip">
+                <!-- TODO 'small' attribute not supported by Quasar v1 ? -->
+                <q-chip v-if="options.tags && options.tags === 'chip'"
+                        :key="key(tag, 'value')"
+                        small
+                        :color="tag.icon.color" :icon="tag.icon.name" class="card-tag-chip">
                   {{tag.value}}
                 </q-chip>
-                <q-icon v-else :key="key(tag, 'value')" size="24px" :color="tag.icon.color" class="card-tag-chip" :name="tag.icon.name">
+                <q-icon v-else
+                        :key="key(tag, 'value')"
+                        size="24px"
+                        :color="tag.icon.color" class="card-tag-chip" :name="tag.icon.name">
                   <q-tooltip>{{tag.value}}</q-tooltip>
                 </q-icon>
               </template>
             </div>
-            <q-card-separator />
+            <q-separator />
           </div>
         </slot>
         <slot name="card-content"></slot>
-      </q-card-main>
+      </q-card-section>
       <!--
         Actions section
       -->
-      <q-card-separator />
+      <q-separator />
       <slot name="card-actions">
         <q-card-actions align="end">
           <!-- Pane -->
@@ -55,18 +70,23 @@
           </template>
           <!-- Menu -->
           <q-btn id="card-overflow-menu-entry" v-if="itemActions.menu && itemActions.menu.length > 0" flat small round>
-            <q-popover id="card-overflow-menu" ref="menu">
+            <q-menu id="card-overflow-menu" ref="menu">
               <q-list>
                 <template v-for="action in itemActions.menu">
-                  <q-item :id="action.name" link :key="key(action, 'name')" @click="$refs.menu.close(); onActionTriggered(action, item)">
-                    <q-item-side :icon="action.icon" />
-                    <q-item-main>
+                  <q-item :id="action.name" link :key="key(action, 'name')" @click="$refs.menu.hide(); onActionTriggered(action, item)">
+                    <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below may be incorrect -->
+                    <!-- <q-item-side :icon="action.icon" /> -->
+                    <q-item-section avatar >
+                      <q-icon :name="action.icon" />
+                    </q-item-section>
+
+                    <q-item-label>
                       {{action.label}}
-                    </q-item-main>
+                    </q-item-label>
                   </q-item>
                 </template>
               </q-list>
-            </q-popover>
+            </q-menu>
             <q-icon color="grey-7" name="more_vert"></q-icon>
           </q-btn>
         </q-card-actions>
@@ -77,7 +97,8 @@
 
 <script>
 import _ from 'lodash'
-import { QCard, QCardTitle, QCardActions, QCardSeparator, QCardMain, QCardMedia, QBtn, QIcon, QPopover, QList, QItem, QItemSide, QItemMain, QItemTile, QTooltip, QChip } from 'quasar'
+import { QCard, QCardSection, QCardActions, QSeparator, QBtn, QIcon,
+         QMenu, QList, QItem, QItemSection, QItemLabel, QTooltip, QChip } from 'quasar'
 import { Avatar } from 'vue-avatar'
 import { KTextArea } from '../frame'
 
@@ -85,19 +106,16 @@ export default {
   name: 'k-card',
   components: {
     QCard,
-    QCardTitle,
+    QCardSection,
     QCardActions,
-    QCardSeparator,
-    QCardMain,
-    QCardMedia,
+    QSeparator,
     QList,
     QItem,
-    QItemSide,
-    QItemMain,
-    QItemTile,
+    QItemSection,
+    QItemLabel,
     QBtn,
     QIcon,
-    QPopover,
+    QMenu,
     QTooltip,
     QChip,
     Avatar,

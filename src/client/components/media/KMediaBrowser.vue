@@ -14,9 +14,9 @@
       </q-carousel>
       <div v-if="zoomedMedia">
         <img :src="zoomedMedia.uri" />
-        <q-fixed-position corner="top-right" :offset="[0, -100]">
+        <q-page-sticky position="top-right" :offset="[0, -100]">
           <q-btn flat big color="white" @click="doZoomOut" icon="zoom_out" />
-        </q-fixed-position>
+        </q-page-sticky>
       </div>
       <div v-show="!hasMedia" class="text-center"><big>{{ $t('KMediaBrowser.NO_MEDIA') }}</big></div>
     </div>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { QCarousel, QSpinnerCube, QIcon, QFixedPosition, QBtn } from 'quasar'
+import { QCarousel, QSpinnerCube, QIcon, QPageSticky, QBtn } from 'quasar'
 import { KModal } from '../frame'
 import mixins from '../../mixins'
 
@@ -34,7 +34,7 @@ export default {
     QCarousel,
     QSpinnerCube,
     QIcon,
-    QFixedPosition,
+    QPageSticky,
     QBtn,
     KModal
   },

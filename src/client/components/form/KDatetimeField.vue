@@ -8,6 +8,7 @@
     :error="hasError"
     :disabled="disabled"
   >
+  <!-- TODO quasar v1: QDatetime is not supported anymore - split into QDate and QTime -->
     <q-datetime
       :id="properties.name + '-field'"
       v-model="model"
@@ -17,14 +18,17 @@
 </template>
 
 <script>
-import { QField, QDatetime } from 'quasar'
+// TODO quasar v1: QDatetime is not supported anymore - split into QDate and QTime
+import { QField } from 'quasar'
+//import { QField, QDatetime } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-datetime-field',
   components: {
-    QField,
-    QDatetime
+    QField
+    // TODO quasar v1: QDatetime is not supported anymore - split into QDate and QTime
+    // QDatetime
   },
   mixins: [mixins.baseField],
   methods: {

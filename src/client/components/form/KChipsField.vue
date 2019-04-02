@@ -8,23 +8,23 @@
     :error="hasError"
     :disabled="disabled"
   >
-    <q-chips-input
+    <q-select
       :id="properties.name + '-field'"
-      v-model="model" 
+      v-model="model"
       @change="onChanged"
       @blur="onChanged" />
   </q-field>
 </template>
 
 <script>
-import { QField, QChipsInput } from 'quasar'
+import { QField, QSelect } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-chips-field',
   components: {
     QField,
-    QChipsInput
+    QSelect
   },
   mixins: [mixins.baseField],
   methods: {

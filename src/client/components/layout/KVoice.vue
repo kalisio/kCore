@@ -4,7 +4,7 @@
 
 <script>
 import logger from 'loglevel'
-import { Toast, Events, QBtn } from 'quasar'
+import { QBtn } from 'quasar'
 import annyang from 'annyang'
 
 export default {
@@ -73,7 +73,7 @@ export default {
     })
     annyang.addCallback('resultNoMatch', (phrases) => {
       // Emit event for those who'd like to use voice recognition
-      Events.$emit('speech-recognition', phrases)
+      $this.events.$emit('speech-recognition', phrases)
     })
 
     annyang.addCallback('error', data => {
@@ -81,7 +81,10 @@ export default {
       if (data.error !== 'no-speech' && data.error !== 'aborted') {
         let message = 'Speech recognition failed'
         if (data.message) message += ': ' + data.message
-        Toast.create.negative(message)
+        this.$q.notify({
+          type: 'negative',
+          message
+        })
       }
     })
   },

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { QIcon, QPagination, Events } from 'quasar'
+import { QIcon, QPagination } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
@@ -86,10 +86,10 @@ export default {
     this.$options.components[this.renderer.component] = this.$load(this.renderer.component)
     this.refreshCollection()
     // Whenever the user abilities are updated, update collection as well
-    Events.$on('user-abilities-changed', this.refreshCollection)
+    this.$events.$on('user-abilities-changed', this.refreshCollection)
   },
   beforeDestroy () {
-    Events.$off('user-abilities-changed', this.refreshCollection)
+    this.$events.$off('user-abilities-changed', this.refreshCollection)
   }
 }
 </script>

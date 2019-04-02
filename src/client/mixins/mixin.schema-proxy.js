@@ -1,4 +1,3 @@
-import { Events } from 'quasar'
 import { createQuerablePromise } from '../utils'
 
 let schemaProxyMixin = {
@@ -45,7 +44,7 @@ let schemaProxyMixin = {
             return this.$nextTick().then(() => schema)
           })
           .catch(error => {
-            Events.$emit('error', error)
+            this.$events.$emit('error', error)
             throw error
           })
         )
