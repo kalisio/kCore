@@ -1,5 +1,5 @@
 <template>
-  <k-modal ref="modal" :toolbar="toolbar" :buttons="[]" :options="{ padding: '0px', maximized: (hasMedia ? true : false) }">
+  <k-modal ref="modal" :toolbar="toolbar" :buttons="[]" :options="{ 'background-color': '#000000', padding: '0px', maximized: (hasMedia ? true : false) }">
     <div slot="modal-content">
       <q-carousel ref="carousel" class="carousel text-white" actions arrows dots infinite v-show="hasMedia && !zoomedMedia" @slide="onViewMedia">
         <div v-for="media in medias" :key="media._id" slot="slide" class="flex-center row">
@@ -30,7 +30,7 @@
 
 <script>
 import 'mime-types-browser'
-import { QCarousel, QSpinnerCube, QIcon, QFixedPosition, QBtn } from 'quasar'
+import { Platform, QCarousel, QSpinnerCube, QIcon, QFixedPosition, QBtn } from 'quasar'
 import { KModal } from '../frame'
 import mixins from '../../mixins'
 
@@ -108,9 +108,20 @@ export default {
       for (let i = 0; i < buffer.length; i++) {
         buffer[i] = data.charCodeAt(i)
       }
-      this.currentDownloadLink = URL.createObjectURL(new Blob([buffer], { type: mimeType }))
+      const blob = new Blob([buffer], { type: mimeType })
+      this.currentDownloadLink = URL.createObjectURL(blob)
+      if (Platform.is.cordova) {
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, (fs) => {
+          fs.root.getFile(this.currentMedia.name, { create: true, exclusive: false }, (fileEntry) => {
+            fileEntry.createWriter((fileWriter) => {
+              fileWriter.write(blob)
+              cordova.plugins.fileOpener2.open(fileEntry.nativeURL, mimeType)
+            })
+          })
+        })
+      } 
       // We call Vue.nextTick() to let Vue update its DOM to get the download link ready
-      this.$nextTick(() => this.$refs.downloadLink.click())
+      else this.$nextTick(() => this.$refs.downloadLink.click())
     },
     async onViewMedia (index, direction) {
       let media = this.medias[index]
