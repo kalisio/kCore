@@ -119,9 +119,10 @@ export default {
             })
           })
         })
-      } 
-      // We call Vue.nextTick() to let Vue update its DOM to get the download link ready
-      else this.$nextTick(() => this.$refs.downloadLink.click())
+      } else {
+        // We call Vue.nextTick() to let Vue update its DOM to get the download link ready
+        this.$nextTick(() => this.$refs.downloadLink.click())
+      }
     },
     async onViewMedia (index, direction) {
       let media = this.medias[index]

@@ -60,6 +60,7 @@
       "cordova",
       "location",
       "FileReader",
+      "LocalFileSystem",
       "mime",
       "atob",
       "URL",
