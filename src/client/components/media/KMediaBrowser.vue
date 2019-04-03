@@ -10,7 +10,7 @@
           </div>
         </div>
         <div class="toolbar fixed-top-right">
-          <q-icon @click="doZoomIn" color="white" name="zoom_in" />
+          <q-icon v-if="!currentMediaIsFile" @click="doZoomIn" color="white" name="zoom_in" />
           <q-icon @click="doDownload" color="white" name="cloud_download" />
           <q-icon @click="doClose" color="white" name="close" />
           <a ref="downloadLink" v-show="false" :href="currentDownloadLink" :download="currentName"></a>
