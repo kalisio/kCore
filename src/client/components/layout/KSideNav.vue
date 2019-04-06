@@ -14,7 +14,7 @@
     <div v-if="banner != ''" class="row justify-center items-center banner-container">
       <img class="banner-image" :src="banner">
     </div>
-    <!-- 
+    <!--
       Components
      -->
     <div class="row justify-start">
@@ -55,6 +55,7 @@ export default {
   },
   methods: {
     navigate (route) {
+      // TODO fix this - Quasar v1 does not support "hideCurrentSide"
       this.layout.hideCurrentSide(() => this.$router.push(route))
     }
   },

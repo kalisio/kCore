@@ -12,12 +12,9 @@ export function processTime (hook) {
   let items = getItems(hook)
   const isArray = Array.isArray(items)
   items = (isArray ? items : [items])
-
-  items.forEach(item => {
-    marshallTime(item, 'time')
-  })
-
+  items.forEach(item => marshallTime(item, 'time'))
   replaceItems(hook, isArray ? items : items[0])
+  return hook
 }
 
 // Need to convert back to server side types (moment dates) from basic JS types when "reading" from DB adapters
@@ -25,12 +22,9 @@ export function unprocessTime (hook) {
   let items = getItems(hook)
   const isArray = Array.isArray(items)
   items = (isArray ? items : [items])
-
-  items.forEach(item => {
-    unmarshallTime(item, 'time')
-  })
-
+  items.forEach(item => unmarshallTime(item, 'time'))
   replaceItems(hook, isArray ? items : items[0])
+  return hook
 }
 
 export function processPerspectives (hook) {
@@ -107,8 +101,14 @@ export function serialize (rules, options = {}) {
 // The hook objectify allows to transform the value bound to an '_id' like key as a string
 // into a Mongo ObjectId on client queries
 export function processObjectIDs (hook) {
+  let items = getItems(hook)
+  const isArray = Array.isArray(items)
+  items = (isArray ? items : [items])
+  items.forEach(item => objectifyIDs(item))
+  replaceItems(hook, isArray ? items : items[0])
+
   if (hook.params.query) objectifyIDs(hook.params.query)
-  if (hook.data) objectifyIDs(hook.data)
+  
   return hook
 }
 
@@ -116,8 +116,14 @@ export function processObjectIDs (hook) {
 // into a Mongo ObjectId on client queries
 export function convertObjectIDs (properties) {
   return function (hook) {
+    let items = getItems(hook)
+    const isArray = Array.isArray(items)
+    items = (isArray ? items : [items])
+    items.forEach(item => toObjectIDs(item, properties))
+    replaceItems(hook, isArray ? items : items[0])
+
     if (hook.params.query) toObjectIDs(hook.params.query, properties)
-    if (hook.data) toObjectIDs(hook.data, properties)
+
     return hook
   }
 }
@@ -143,8 +149,13 @@ export function toDates (object, properties, asMoment) {
 // into a Date/Moment object on client queries
 export function convertDates (properties, asMoment) {
   return function (hook) {
+    let items = getItems(hook)
+    const isArray = Array.isArray(items)
+    items = (isArray ? items : [items])
+    items.forEach(item => toDates(item, properties, asMoment))
+    replaceItems(hook, isArray ? items : items[0])
+
     if (hook.params.query) toDates(hook.params.query, properties, asMoment)
-    if (hook.data) toDates(hook.data, properties, asMoment)
     return hook
   }
 }

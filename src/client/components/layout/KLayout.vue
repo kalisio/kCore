@@ -78,12 +78,14 @@ export default {
   },
   methods: {
     onSideNavToggled () {
+      // TODO fix this - Quasar v1 does not support "toggleLeft"
       this.$refs.layout.toggleLeft()
     },
     onSideNavBreakpoint (toggle) {
       this.sides.left = toggle
     },
     onRightPanelToggled () {
+      // TODO fix this - Quasar v1 does not support "toggleRight"
       this.$refs.layout.toggleRight()
     },
     onRightPanelBreakpoint (toggle) {

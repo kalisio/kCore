@@ -9,6 +9,7 @@
 <script>
 import _ from 'lodash'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+import 'mime-types-browser'
 import DropZone from 'vue2-dropzone'
 
 export default {
@@ -81,7 +82,9 @@ export default {
               query: Object.assign({ resource: this.resource, resourcesService: this.resourcesService() }, this.baseQuery)
             })
             // Thumbnail as well
-            this.storageService().remove(this.files[index]._id + '.thumbnail')
+            const mimeType = mime.lookup(removedFile.name)
+            // We only store thumbnails for images
+            if (mimeType.startsWith('image/')) this.storageService().remove(this.files[index]._id + '.thumbnail')
           }
         }
         _.pullAt(this.files, index)
@@ -89,6 +92,9 @@ export default {
       }
     },
     onThumbnailGenerated (thumbnailFile, dataUrl) {
+      const mimeType = mime.lookup(thumbnailFile.name)
+      // We only store thumbnails for images
+      if (!mimeType.startsWith('image/')) return
       const index = _.findIndex(this.files, file => file.name === thumbnailFile.name)
       if (index >= 0) {
         const id = this.generateFileId(thumbnailFile)
@@ -132,6 +138,9 @@ export default {
         formData.set(key, value)
       })
       // When not processing uploads on-the-fly send thumbnail to the server along with the file
+      const mimeType = mime.lookup(file.name)
+      // We only store thumbnails for images
+      if (!mimeType.startsWith('image/')) return
       // Check if it does exist however because it is processed asynchronously
       if (file.thumbnail) {
         this.storageService().create({ id: id + '.thumbnail', uri: file.thumbnail })
@@ -142,6 +151,11 @@ export default {
       this.addFile(_.pick(addedFile, ['name', 'size', '_id']))
       // Keep track of previews for cleanup
       this.previews.push(addedFile.previewElement)
+      const mimeType = mime.lookup(addedFile.name)
+      if (mimeType === 'application/pdf') {
+        // This is not an image, so Dropzone doesn't create a thumbnail.
+        this.dropZoneInstance().emit('thumbnail', addedFile, this.$load('pdf-icon.png', 'asset'))
+      }
     },
     onFileUploaded (addedFile, response) {
       // We update file list on successful upload
@@ -194,7 +208,10 @@ export default {
         // Uploading can require a long time
         timeout: 60 * 60 * 1000 // 1h should be sufficient since we also have size limits
       }, options, dictionary)
-      this.dropZoneOptions.url = this.$api.getBaseUrl() + '/' + this.storageService().path
+      // Depending on the transport the path starts or not with '/'
+      let servicePath = this.storageService().path
+      if (!servicePath.startsWith('/')) servicePath = '/' + servicePath
+      this.dropZoneOptions.url = this.$api.getBaseUrl() + servicePath
       // This is used to ensure the request will be authenticated by Feathers
       this.dropZoneOptions.headers = { Authorization: accessToken }
     },
@@ -236,16 +253,16 @@ export default {
     open (defaultFiles = []) {
       this.clear()
       // Then setup existing files on server
-      defaultFiles.forEach(file => {
+      defaultFiles.forEach(async file => {
         this.dropZoneInstance().emit('addedfile', file)
         // Make sure that there is no progress bar, etc...
         this.dropZoneInstance().emit('complete', file)
-        if (file._id) {
+        const mimeType = mime.lookup(file.name)
+        // We only generate thumbnails for images
+        if (file._id && mimeType.startsWith('image/')) {
           // Download thumbnail
-          this.storageService().get(file._id + '.thumbnail')
-          .then(image => {
-            this.dropZoneInstance().emit('thumbnail', file, image.uri)
-          })
+          const image = await this.storageService().get(file._id + '.thumbnail')
+          this.dropZoneInstance().emit('thumbnail', file, image.uri)
         }
       })
       // Because this is dynamic we need to modify the instance as the vue drop zone is not updated automatically

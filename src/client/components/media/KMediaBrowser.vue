@@ -1,7 +1,7 @@
 <template>
-  <k-modal ref="modal" :toolbar="[]" :buttons="[]" :options="{ padding: '0px', maximized: true }">
-    <div slot="modal-content" >
-      <q-carousel ref="carousel" actions arrows dots infinite v-show="hasMedia && !zoomedMedia" @slide="onViewMedia">
+  <k-modal ref="modal" :toolbar="toolbar" :buttons="[]" :options="{ 'background-color': '#000000', padding: '0px', maximized: (hasMedia ? true : false) }">
+    <div slot="modal-content">
+      <q-carousel ref="carousel" class="carousel text-white" actions arrows dots infinite v-show="hasMedia && !zoomedMedia" @slide="onViewMedia">
         <div v-for="media in medias" :key="media._id" slot="slide" class="flex-center row">
           <img v-if="media.uri" style="max-width: 100%; max-height: 100%; object-fit: content;" :src="media.uri" />
           <div v-if="!media.uri">
@@ -9,14 +9,27 @@
             <span style="font-size: 2em;">{{ $t('KMediaBrowser.LOADING') }}</span>
           </div>
         </div>
-        <q-icon slot="action" @click="doClose" class="fixed-top-right" name="close" />
-        <q-icon slot="action" @click="doZoomIn" name="zoom_in" />
+        <div class="toolbar fixed-top-right">
+          <q-icon v-if="!currentMediaIsFile" @click="doZoomIn" color="white" name="zoom_in" />
+          <q-icon @click="doDownload" color="white" name="cloud_download" />
+          <q-icon @click="doClose" color="white" name="close" />
+          <a ref="downloadLink" v-show="false" :href="currentDownloadLink" :download="currentName"></a>
+        </div>
+        <p v-if="currentMediaIsFile" class="fixed-top-left" style="top: 0px">{{currentName}}</p>
       </q-carousel>
-      <div v-if="zoomedMedia">
+      <div class="carousel" v-if="zoomedMedia" >
         <img :src="zoomedMedia.uri" />
+        <!-- TODO master branch has '<div class="toolbar fixed-top-right">' - reason? -->
+        <!-- <div class="toolbar fixed-top-right"> -->
         <q-page-sticky position="top-right" :offset="[0, -100]">
-          <q-btn flat big color="white" @click="doZoomOut" icon="zoom_out" />
+          <!-- TODO master branch has q-icon rather than q-btn -->
+          <!-- <q-btn flat big color="white" @click="doZoomOut" icon="zoom_out" /> -->
+          <q-icon @click="doZoomOut" color="white" name="zoom_out" />
         </q-page-sticky>
+
+        <q-fixed-position corner="top-right" :offset="[0, -100]">
+          <q-btn flat big color="white" @click="doZoomOut" icon="zoom_out" />
+        </q-fixed-position>
       </div>
       <div v-show="!hasMedia" class="text-center"><big>{{ $t('KMediaBrowser.NO_MEDIA') }}</big></div>
     </div>
@@ -24,7 +37,8 @@
 </template>
 
 <script>
-import { QCarousel, QSpinnerCube, QIcon, QPageSticky, QBtn } from 'quasar'
+import { Platform, QCarousel, QSpinnerCube, QIcon, QPageSticky, QBtn } from 'quasar'
+import 'mime-types-browser'
 import { KModal } from '../frame'
 import mixins from '../../mixins'
 
@@ -39,7 +53,7 @@ export default {
     KModal
   },
   mixins: [
-    mixins.refsResolver(['modal', 'carousel'])
+    mixins.refsResolver(['modal', 'carousel', 'downloadLink'])
   ],
   props: {
     options: {
@@ -50,12 +64,24 @@ export default {
   computed: {
     hasMedia () {
       return (this.medias.length > 0)
+    },
+    toolbar () {
+      return (this.hasMedia ? [] : [{
+        name: 'close',
+        icon: 'close',
+        handler: () => this.close()
+      }])
+    },
+    currentName () {
+      return (this.currentMedia ? this.currentMedia.name : '')
     }
   },
   data () {
     return {
       medias: [],
       currentMedia: null,
+      currentMediaIsFile: false,
+      currentDownloadLink: null,
       zoomedMedia: null
     }
   },
@@ -70,15 +96,60 @@ export default {
     doZoomOut () {
       this.zoomedMedia = null
     },
-    onViewMedia (index, direction) {
+    async doDownload () {
+      if (!this.currentMedia) return
+      const mimeType = mime.lookup(this.currentMedia.name)
+      let uri
+      // We already download images for visualization, simply reused data
+      if (mimeType.startsWith('image/')) {
+        uri = this.currentMedia.uri
+      } else {
+        // For files we need to download data first
+        const data = await this.storageService().get(this.currentMedia._id)
+        uri = data.uri
+      }
+      // Need to convert to blob otherwise some browsers complains when the data uri is too long
+      const typeAndData = uri.split(',')
+      if (typeAndData.length <= 1) throw Error(this.$t('errors.CANNOT_PROCESS_DOWNLOAD_DATA'))
+      const data = atob(typeAndData[1])
+      let buffer = new Uint8Array(data.length)
+      for (let i = 0; i < buffer.length; i++) {
+        buffer[i] = data.charCodeAt(i)
+      }
+      const blob = new Blob([buffer], { type: mimeType })
+      this.currentDownloadLink = URL.createObjectURL(blob)
+      if (Platform.is.cordova) {
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, (fs) => {
+          fs.root.getFile(this.currentMedia.name, { create: true, exclusive: false }, (fileEntry) => {
+            fileEntry.createWriter((fileWriter) => {
+              fileWriter.write(blob)
+              cordova.plugins.fileOpener2.open(fileEntry.nativeURL, mimeType)
+            })
+          })
+        })
+      } else {
+        // We call Vue.nextTick() to let Vue update its DOM to get the download link ready
+        this.$nextTick(() => this.$refs.downloadLink.click())
+      }
+    },
+    async onViewMedia (index, direction) {
       let media = this.medias[index]
+      const mimeType = mime.lookup(media.name)
+      this.currentMedia = media
+      this.currentMediaIsFile = !mimeType.startsWith('image/')
+      this.currentDownloadLink = null
       // Download image the first time
       if (!media.uri) {
-        this.storageService().get(media._id)
+        // We only download images
+        if (mimeType === 'application/pdf') {
+          Object.assign(media, { uri: this.$load('pdf-icon.png', 'asset') })
+        } else {
+          const data = await this.storageService().get(media._id)
+          Object.assign(media, { uri: data.uri })
+        }
         // Required to use $set when modifying an object inside an array to make it reactive
-        .then(data => this.$set(this.medias, index, Object.assign(media, { uri: data.uri })))
+        this.$set(this.medias, index, media)
       }
-      this.currentMedia = media
     },
     async open (medias = []) {
       this.medias = medias
@@ -93,6 +164,9 @@ export default {
         this.$refs.carousel.goToSlide(0)
       }
     },
+    close (onClose) {
+      this.$refs.modal.close(onClose)
+    },
     storageService () {
       return this.$api.getService(this.options.service || 'storage')
     }
@@ -101,3 +175,18 @@ export default {
   }
 }
 </script>
+
+<style>
+.carousel {
+  background-color: #000000;
+}
+.toolbar {
+  right: 20px;
+  font-size: 2rem;
+  cursor: pointer;
+}
+.title {
+  left: 20px;
+  font-size: 2rem;
+}
+</style>

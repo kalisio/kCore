@@ -15,7 +15,7 @@
           </q-item-section>
           <q-item-label>
             <q-item-label header>{{ name }}</q-item-label>
-            <q-item-label caption><small>{{ description }}</small></q-item-label>
+            <q-item-label caption><small><k-text-area :length="20" :text="description" /></small></q-item-label>
           </q-item-label>
           <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below may be incorrect - what about "right" ? -->
           <!-- <q-item-side right>

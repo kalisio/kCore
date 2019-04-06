@@ -11,7 +11,7 @@
     >
       <div class="row justify-start items-center">
         <div :class="inputClass">
-          <q-input type="text" v-model="input" :after="inputActions" />
+          <q-input type="text" v-model="input" :after="inputActions" @keyup.enter="onChipAdded()"/>
         </div>
         <div class="col-auto" v-if="chips.length > 0">
           <template v-for="(chip, index) in chips">

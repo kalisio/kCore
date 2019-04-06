@@ -38,7 +38,8 @@
     "WEAK_PASSWORD_DIGITS": "A least one digit",
     "WEAK_PASSWORD_SYMBOLS": "A least one special symbol like :;?!+-.,^@",
     "WEAK_PASSWORD_ONEOF": "Not known as one of the most common passwords",
-    "WEAK_PASSWORD_PREVIOUS": "Not one of your {{history}} last passwords"
+    "WEAK_PASSWORD_PREVIOUS": "Not one of your {{history}} last passwords",
+    "CANNOT_PROCESS_DOWNLOAD_DATA": "Invalid or incomplete data file"
   },
   "schemas": {
     "OBJECT_NAME": "{{ object.name }}",

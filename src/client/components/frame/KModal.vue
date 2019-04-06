@@ -94,6 +94,7 @@ export default {
       // TODO is this workaround still needed  after migration to Quasar v1 ?
       this.$nextTick(() => {
         this.$refs.modal.toggleInProgress = false
+        this.$refs.modal.active = false
       })
     }
   },
