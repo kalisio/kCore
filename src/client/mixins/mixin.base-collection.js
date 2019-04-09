@@ -50,17 +50,21 @@ let baseCollectionMixin = {
       // This method should be overriden in activities
       return {}
     },
+    getCollectionPaginationQuery () {
+      // This method can be overriden in activities
+      if (this.nbItemsPerPage > 0) return {
+        $limit: this.nbItemsPerPage,
+        $skip: (this.currentPage - 1) * this.nbItemsPerPage
+      }
+      else return {}
+    },
     refreshCollection () {
       // Add locale to perform sorting (i.e. collation) correctly w.r.t. user's language
-      let fullQuery = Object.assign({ $locale: getLocale() }, this.getCollectionBaseQuery(), this.getCollectionFilterQuery())
-      // Sets the number of items to be loaded
-      if (this.nbItemsPerPage > 0) {
-        Object.assign(fullQuery, {
-          $limit: this.nbItemsPerPage,
-          $skip: (this.currentPage - 1) * this.nbItemsPerPage
-        })
-      }
-      // find the desire items
+      let fullQuery = Object.assign({ $locale: getLocale() },
+        this.getCollectionBaseQuery(),
+        this.getCollectionFilterQuery(),
+        this.getCollectionPaginationQuery())
+      // Find the desired items
       this.subscribe(fullQuery)
     },
     onPageChanged () {
