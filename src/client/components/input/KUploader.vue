@@ -131,9 +131,10 @@ export default {
       const id = this.generateFileId(file)
       formData.set('id', id)
       // If we attach file to an existing resource add required parameters
-      if (this.resource) {
+      const resourcesService = this.resourcesService()
+      if (resourcesService && this.resource) {
         formData.set('resource', this.resource)
-        formData.set('resourcesService', this.resourcesService())
+        formData.set('resourcesService', resourcesService)
       }
       _.forOwn(this.baseQuery, (value, key) => {
         formData.set(key, value)

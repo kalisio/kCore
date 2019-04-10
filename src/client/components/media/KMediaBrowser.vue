@@ -23,7 +23,7 @@
         <q-icon @click="doZoomOut" color="white" name="zoom_out" />
         </div>
       </div>
-      <div v-show="!hasMedia" class="text-center"><big>{{ $t('KMediaBrowser.NO_MEDIA') }}</big></div>
+      <div v-show="!hasMedia" class="text-center text-white"><big>{{ $t('KMediaBrowser.NO_MEDIA') }}</big></div>
     </div>
   </k-modal>
 </template>

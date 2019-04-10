@@ -80,6 +80,8 @@ export default {
     async apply (object, field) {
       // If not processing uploads on-the-fly upload when the form is being submitted on update
       // because we already have the object ID that might be required to build the storage path
+      this.createAttachmentOnSubmit = false // Reset state
+      
       if (!this.autoProcessQueue()) {
         // On create we don't send the attachment field because it will be
         // updated as a postprocess when attaching files on the newly created object
@@ -90,7 +92,7 @@ export default {
           await this.$refs.uploader.processQueue()
           _.set(object, field, this.value())
         } else {
-          this.create = true
+          this.createAttachmentOnSubmit = true
         }
       } else {
         _.set(object, field, this.value())
@@ -101,7 +103,7 @@ export default {
       // so that we have the object ID available that might be required to build the storage path
       if (!this.autoProcessQueue()) {
         // On update the files are created before updating the object
-        if (object._id) {
+        if (this.createAttachmentOnSubmit) {
           this.resource = object._id
           // We need to force a refresh so that the prop is correctly updated by Vuejs in child component
           await this.$nextTick()
