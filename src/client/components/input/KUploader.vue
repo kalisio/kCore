@@ -1,7 +1,7 @@
 <template>
   <k-modal ref="modal" :toolbar="getToolbar()" :buttons="getButtons()">
     <div slot="modal-content" class="column sm-gutter">
-      <drop-zone ref="dropZone" id="dropZone" @vdropzone-file-added="onFileAdded" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" @vdropzone-thumbnail="onThumbnailGenerated" @vdropzone-error="onError" :options="dropZoneOptions"/>
+      <drop-zone v-if="dropZoneOptions" ref="dropZone" id="dropZone" @vdropzone-file-added="onFileAdded" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" @vdropzone-thumbnail="onThumbnailGenerated" @vdropzone-error="onError" :options="dropZoneOptions"/>
     </div>
   </k-modal>
 </template>
@@ -36,8 +36,7 @@ export default {
   },
   data () {
     return {
-      dropZoneOptions: {
-      },
+      dropZoneOptions: null,
       files: []
     }
   },
