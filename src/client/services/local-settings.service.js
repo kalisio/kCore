@@ -17,7 +17,7 @@ export default function (name, api, options) {
 
     async patch (id, data) {
       _.forOwn(data, (value, key) => {
-        if (mapping[key]) {
+        if (_.has(mapping, key)) {
           Store.set(mapping[key], value)
         }
       })
