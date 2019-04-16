@@ -1,40 +1,61 @@
 <template>
-  <small>
-    <div class="row justify-center">
-      <template v-for="link in links">
-        <div :key="link.label">
-          &nbsp;
-          <a @click="onLinkClicked(link)" >
-            {{$t(link.label)}}
-          </a>
-          &nbsp;
-        </div>
-      </template>
+  <div class="column justify-center xs-gutter">
+    <!--
+      Endpoint
+    -->    
+    <div v-if="canChangeEndpoint()" class="row justify-center">
+      <small>
+        <a id="change-endpoint-link" @click="$router.push({name: 'change-endpoint'})">
+          {{$t('KScreen.CHANGE_ENDPOINT_LINK')}}
+        </a>
+      </small>
     </div>
-  </small>
+    <!--
+    Version
+    -->
+    <div class="row justify-center">
+      <small v-if="clientVersionName"><cite>{{ $t('KScreen.CLIENT_VERSION') }} {{ clientVersionName }}</cite></small>
+      <small v-if="apiVersionName"><cite>&nbsp;-&nbsp;{{ $t('KScreen.API_VERSION') }} {{ apiVersionName }}</cite></small>
+    </div>
+    <!--
+      KDK
+    -->
+    <div class="row justify-center items-center xs-gutter">
+      <div>
+        <img :src="$load('kdk-icon.png', 'asset')" width="20" height="20" />
+      </div>
+      <div>
+        <small>
+          <a @click="onKDKClicked()">
+            {{ $t('KScreen.KDK_POWERED') }}
+          </a>
+        </small>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import { openURL } from 'quasar'
+import { openURL, Platform, QBtn, QIcon } from 'quasar'
+import mixins from '../../mixins'
 
 export default {
   name: 'k-screen-footer',
-  data () {
-    return {
-      links: []
-    }
+  components: {
+    QBtn,
+    QIcon
   },
+  mixins: [mixins.version],
   methods: {
-    onLinkClicked (link) {
-      if (link.url) {
-        openURL(link.url)
-      } else if (link.route) {
-        this.$router.push(link.route)
-      }
+    canChangeEndpoint () {
+      return DEV ? true : Platform.is.cordova
+    },
+    onPopoverClicked () {
+      this.$refs.popover.toggle()
+    },
+    onKDKClicked () {
+      openURL('https://kalisio.github.io/kdk/')
     }
-  },
-  created () {
-    this.links = this.$config('screen.footer', [])
   }
 }
 </script>

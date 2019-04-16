@@ -1,9 +1,9 @@
 <template>
   <div class="column">
+    <!-- Non-grouped fields first -->  
     <template v-for="field in fields">
       <component
-        :contextId="contextId"
-        :objectId="objectId"
+        v-if="!field.group"
         :key="field.name"
         :is="field.componentKey"
         :ref="field.name"
@@ -13,12 +13,30 @@
         @field-changed="onFieldChanged"
       />
     </template>
+    <!-- Grouped fields then -->  
+    <template v-for="group in groups">
+      <q-collapsible icon="wrap_text" :group="group" :label="$t(group)">
+        <template v-for="field in fields">
+          <component
+            v-if="field.group === group"
+            :key="field.name"
+            :is="field.componentKey"
+            :ref="field.name"
+            :required="field.required"
+            :properties="field"
+            :display="display"
+            @field-changed="onFieldChanged"
+          />
+        </template>
+      </q-collapsible>
+    </template>
   </div>
 </template>
 
 <script>
 import _ from 'lodash'
 import logger from 'loglevel'
+import { QCollapsible } from 'quasar'
 import Ajv from 'ajv'
 import AjvLocalize from 'ajv-i18n'
 import mixins from '../../mixins'
@@ -36,15 +54,10 @@ export default {
   mixins: [
     mixins.refsResolver()
   ],
+  components: {
+    QCollapsible
+  },
   props: {
-    contextId: {
-      type: String,
-      default: ''
-    },
-    objectId: {
-      type: String,
-      default: ''
-    },
     schema: {
       type: Object,
       default: null
@@ -66,14 +79,11 @@ export default {
   },
   data () {
     return {
-      fields: []
+      fields: [],
+      groups: []
     }
   },
   methods: {
-    getMode () {
-      if (this.objectId) return 'update'
-      return 'create'
-    },
     getField (field) {
       return this.$refs[field][0]
     },
@@ -113,6 +123,7 @@ export default {
     buildFields  () {
       // Clear the fields states
       this.fields = []
+      this.groups = []
       this.nbExpectedFields = Object.keys(this.schema.properties).length
       this.nbReadyFields = 0
       // Build the fields
@@ -128,6 +139,7 @@ export default {
         field['componentKey'] = componentKey
         // Adds the field to the list of fields to be rendered
         this.fields.push(field)
+        if (field.group && !this.groups.includes(field.group)) this.groups.push(field.group)
         // 3- load the component if not previously loaded
         if (!this.$options.components[componentKey]) {
           this.$options.components[componentKey] = this.$load(field.field.component)
@@ -156,7 +168,7 @@ export default {
       if (!this.loadRefs().isFulfilled()) throw Error('Cannot fill the form while not ready')
       this.fields.forEach(field => {
         if (_.has(values, field.name)) {
-          this.getField(field.name).fill(_.get(values, field.name))
+          this.getField(field.name).fill(_.get(values, field.name), values)
         } else {
           // The field has no value, then assign a default one
           this.getField(field.name).clear()

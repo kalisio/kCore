@@ -1,12 +1,13 @@
 {
+  "OK": "Ok",
   "CANCEL": "Cancel",
   "UPDATE": "Update",
   "CREATE": "Create",
   "CLOSE": "Close",
   "SEARCH": "Search",  
   "DONE": "Done",
-  "CLIENT_VERSION": "Client version",
-  "API_VERSION": "API version",
+  "EMPTY": "No elements found",
+  "ANONYMOUS": "Anonymous",
   "errors": {
     "400": "Operation cannot be performed: bad parameters",
     "401": "Operation cannot be performed: authentication required",
@@ -37,40 +38,43 @@
     "WEAK_PASSWORD_DIGITS": "A least one digit",
     "WEAK_PASSWORD_SYMBOLS": "A least one special symbol like :;?!+-.,^@",
     "WEAK_PASSWORD_ONEOF": "Not known as one of the most common passwords",
-    "WEAK_PASSWORD_PREVIOUS": "Not one of your {{history}} last passwords"
+    "WEAK_PASSWORD_PREVIOUS": "Not one of your {{history}} last passwords",
+    "CANNOT_PROCESS_DOWNLOAD_DATA": "Invalid or incomplete data file"
   },
   "schemas": {
+    "OBJECT_NAME": "{{ object.name }}",
     "AVATAR_FIELD_HELPER": "Select an avatar",
     "NAME_FIELD_HELPER": "Enter your name"
   },
-  "KAuthentication": {
+  "KScreen": {
+    "CLIENT_VERSION": "Client version",
+    "API_VERSION": "API version",
     "EMAIL_FIELD_HELPER": "Enter your email address",
-    "CHANGE_ENDPOINT_LINK": "Change endpoint ?"    
+    "CHANGE_ENDPOINT_LINK": "Change endpoint" ,
+    "DEVELOPMENT_VERSION": "DEVELOPMENT VERSION",
+    "TESTING_VERSION": "TESTING VERSION",   
+    "KDK_POWERED": "Powered by KDK (Kalisio's Development Kit)"
   },
   "KLogin": {
-    "CLIENT_VERSION": "$t(CLIENT_VERSION)",
-    "API_VERSION": "$t(API_VERSION)",
     "TITLE": "Log in with",
     "OR_LABEL": "Or",
-    "EMAIL_FIELD_HELPER": "$t(KAuthentication.EMAIL_FIELD_HELPER)",
+    "EMAIL_FIELD_HELPER": "$t(KScreen.EMAIL_FIELD_HELPER)",
     "PASSWORD_FIELD_HELPER": "Enter your password",
     "APPLY_BUTTON": "Log in",
     "FORGOT_YOUR_PASSWORD_LINK": "Forgot your password ?",
     "DONT_HAVE_AN_ACCOUNT_LINK": "Dont't have an account ?",
-    "CHANGE_ENDPOINT_LINK": "$t(KAuthentication.CHANGE_ENDPOINT_LINK)",
     "LOGIN_ERROR": "Wrong credentials or service unavailable, please try again"
   },
   "KRegister": {
     "TITLE": "Register",
     "NAME_FIELD_HELPER": "$t(schemas.NAME_FIELD_HELPER)",
-    "EMAIL_FIELD_HELPER": "$t(KAuthentication.EMAIL_FIELD_HELPER)",
+    "EMAIL_FIELD_HELPER": "$t(KScreen.EMAIL_FIELD_HELPER)",
     "PASSWORD_FIELD_HELPER": "Enter a password",
     "CONFIRM_PASSWORD_FIELD_HELPER": "Confirm your password",
     "ACCEPT_TERMS_HELPER": "I accept <a href='{{domain}}/#/terms' target='_blank'>terms and policies</a>",
     "ACCEPT_TERMS_ERROR_LABEL": "You must accept our <a href='{{domain}}/#/terms' target='_blank'>terms and policies</a> to register",
     "APPLY_BUTTON": "Register",
     "ALREADY_HAVE_AN_ACCOUNT_LINK": "Already have an account ?",
-    "CHANGE_ENDPOINT_LINK_LINK": "$t(KAuthentication.CHANGE_ENDPOINT_LINK)",
     "EMAIL_ALREADY_TAKEN": "Email already taken !"
   },
   "KChangeEndpoint": {
@@ -82,8 +86,6 @@
     "DONT_HAVE_AN_ACCOUNT_LINK": "Dont't have an account ?"
   },  
   "KLogout": {
-    "CLIENT_VERSION": "$t(CLIENT_VERSION)",
-    "API_VERSION": "$t(API_VERSION)",
     "TITLE": "Your are now logged out",
     "SIGN_OFF_LABEL": "Thank you for using",
     "LOG_IN_AGAIN_LINK": "Log in again ?"
@@ -109,7 +111,10 @@
     "EMAIL_BLOCK_ACTION": "Change"
   },
   "KGrid": {
-    "EMPTY_GRID": "No elements found"
+    "EMPTY_GRID": "$t(EMPTY)"
+  },
+  "KList": {
+    "EMPTY_LIST": "$t(EMPTY)"
   },
   "KUploader": {
     "dropZone": {
@@ -152,5 +157,10 @@
   },
   "KFab": {
     "CLOSE_ACTION": "$t(CLOSE)"
+  },
+  "KWidget": {
+    "CLOSE_ACTION": "$t(CLOSE)",
+    "MINIMIZE_ACTION": "Minimize",
+    "MAXIMIZE_ACTION": "Maximize"
   }
 }

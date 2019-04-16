@@ -2,14 +2,6 @@ import _ from 'lodash'
 
 let baseFieldMixin = {
   props: {
-    contextId: {
-      type: String,
-      default: ''
-    },
-    objectId: {
-      type: String,
-      default: ''
-    },
     properties: {
       type: Object,
       required: true
@@ -90,10 +82,6 @@ let baseFieldMixin = {
     },
     invalidate (error) {
       this.error = error
-    },
-    getMode () {
-      if (this.objectId) return 'update'
-      return 'create'
     },
     onChanged () {
       // Tell the form that this field has a new value.

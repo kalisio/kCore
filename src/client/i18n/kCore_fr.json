@@ -1,4 +1,5 @@
 {
+  "OK": "Ok",
   "CANCEL": "Annuler",
   "UPDATE": "Mettre à jour",
   "CREATE": "Créer",
@@ -8,6 +9,7 @@
   "EMPTY": "Aucun élément",
   "CLIENT_VERSION": "Version du client",
   "API_VERSION": "Version de l'API",
+  "ANONYMOUS": "Anonyme",
   "errors": {
     "400": "Cette opération ne peut être réalisée: paramètres incorrects",
     "401": "Cette opération ne peut être réalisée: vous devez être authentifié",
@@ -38,44 +40,47 @@
     "WEAK_PASSWORD_DIGITS": "Au moins un nombre",
     "WEAK_PASSWORD_SYMBOLS": "Au moins un caractère spécial comme :;?!+-.,^@",
     "WEAK_PASSWORD_ONEOF": "Non reconnu comme l'un des mots de passe les plus courants",
-    "WEAK_PASSWORD_PREVIOUS": "Différents de vos {{history}} derniers mots de passe"
+    "WEAK_PASSWORD_PREVIOUS": "Différents de vos {{history}} derniers mots de passe",
+    "CANNOT_PROCESS_DOWNLOAD_DATA": "Fichier invalide ou incomplet"
   },
   "schemas": {
+    "OBJECT_NAME": "{{ object.name }}",
     "AVATAR_FIELD_HELPER": "Choisissez un avatar",
     "NAME_FIELD_HELPER": "Saisissez votre nom"
   },
-  "KAuthentication": {
+  "KScreen": {
+    "CLIENT_VERSION": "Version du client",
+    "API_VERSION": "Version de l'API",
     "EMAIL_FIELD_HELPER": "Saisissez votre adresse mail",
-    "CHANGE_ENDPOINT_LINK": "Modifier l'adresse du serveur ?"
+    "CHANGE_ENDPOINT_LINK": "Modifier l'adresse du serveur",
+    "DEVELOPMENT_VERSION": "VERSION DE DEVELOPPEMENT",
+    "TESTING_VERSION": "VERSION DE TEST", 
+    "KDK_POWERED": "Réalisé avec KDK (Kalisio's Development Kit)"
   },
   "KLogin": {
-    "CLIENT_VERSION": "$t(CLIENT_VERSION)",
-    "API_VERSION": "$t(API_VERSION)",
     "TITLE": "Connectez vous avec",
     "OR_LABEL": "Ou",
-    "EMAIL_FIELD_HELPER": "$t(KAuthentication.EMAIL_FIELD_HELPER)",
+    "EMAIL_FIELD_HELPER": "$t(KScreen.EMAIL_FIELD_HELPER)",
     "PASSWORD_FIELD_HELPER": "Saisissez votre mot de passe",
     "APPLY_BUTTON": "Se connecter",
     "FORGOT_YOUR_PASSWORD_LINK": "Mot de passe oublié ?",
     "DONT_HAVE_AN_ACCOUNT_LINK": "Vous n'avez pas de compte ?",
-    "CHANGE_ENDPOINT_LINK": "$t(KAuthentication.CHANGE_ENDPOINT_LINK)",
     "LOGIN_ERROR": "Mauvais identifiants ou service indisponible, veuillez réessayer"
   },
   "KRegister": {
-    "TITLE": "S'enregistrer",
+    "TITLE": "Enregistrez vous",
     "NAME_FIELD_HELPER": "$t(schemas.NAME_FIELD_HELPER)",
-    "EMAIL_FIELD_HELPER": "$t(KAuthentication.EMAIL_FIELD_HELPER)",
+    "EMAIL_FIELD_HELPER": "$t(KScreen.EMAIL_FIELD_HELPER)",
     "PASSWORD_FIELD_HELPER": "Saisissez un mot de passe",
     "CONFIRM_PASSWORD_FIELD_HELPER": "Confirmez votre mot de passe",
     "ACCEPT_TERMS_HELPER": "J'accepte les <a href='{{domain}}/#/terms' target='_blank'>conditions générales</a>",
     "ACCEPT_TERMS_ERROR_LABEL": "Vous devez accepter nos <a href='{{domain}}/#/terms' target='_blank'>conditions générales</a> pour vous enregistrer",
     "APPLY_BUTTON": "S'enregistrer",
     "ALREADY_HAVE_AN_ACCOUNT_LINK": "Déjà un compte ?",
-    "CHANGE_ENDPOINT_LINK": "$t(KAuthentication.CHANGE_ENDPOINT_LINK)",
     "EMAIL_ALREADY_TAKEN": "Mail déjà pris !"
   },
   "KChangeEndpoint": {
-    "TITLE": "Changer l'adresse du serveur",
+    "TITLE": "Changer l'adresse du serveur ?",
     "BASE_URL_FIELD_HELPER": "Saisissez l'adresse du serveur à utiliser",
     "APPLY_BUTTON": "Appliquer",
     "RESET_BUTTON": "Réinitialiser",
@@ -83,8 +88,6 @@
     "DONT_HAVE_AN_ACCOUNT_LINK": "Vous n'avez pas de compte ?"
   },  
   "KLogout": {
-    "CLIENT_VERSION": "$t(CLIENT_VERSION)",
-    "API_VERSION": "$t(API_VERSION)",
     "TITLE": "Vous avez été déconnecté",
     "SIGN_OFF_LABEL": "Merci d'utiliser",
     "LOG_IN_AGAIN_LINK": "Se reconnecter ?"
@@ -110,7 +113,10 @@
     "EMAIL_BLOCK_ACTION": "Changer"
   },
   "KGrid": {
-    "EMPTY_GRID": "Aucun élément trouvé"
+    "EMPTY_GRID": "$t(EMPTY)"
+  },
+  "KList": {
+    "EMPTY_LIST": "$t(EMPTY)"
   },
   "KUploader": {
     "dropZone": {
@@ -153,5 +159,10 @@
   },
   "KFab": {
     "CLOSE_ACTION": "$t(CLOSE)"
+  },
+  "KWidget": {
+    "CLOSE_ACTION": "$t(CLOSE)",
+    "MINIMIZE_ACTION": "Aggrandir",
+    "MAXIMIZE_ACTION": "Réduire"
   }
 }

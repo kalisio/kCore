@@ -72,24 +72,31 @@ export function removeStorageService (context) {
 
 export default async function () {
   const app = this
-  const config = app.get('storage')
-  const client = new aws.S3({
-    accessKeyId: config.accessKeyId,
-    secretAccessKey: config.secretAccessKey
-  })
-  const bucket = config.bucket
-  debug('S3 core storage client created with config ', config)
+  const storeConfig = app.get('storage')
+  const authConfig = app.get('authentication')
 
-  app.createService('users', {
-    modelsPath,
-    servicesPath,
-    // Add required OAuth2 provider perspectives
-    perspectives: ['profile'].concat(app.authenticationProviders)
-  })
-  app.createService('authorisations', { servicesPath })
+  if (storeConfig) {
+    const client = new aws.S3({
+      accessKeyId: storeConfig.accessKeyId,
+      secretAccessKey: storeConfig.secretAccessKey
+    })
+    const bucket = storeConfig.bucket
+    debug('S3 core storage client created with config ', storeConfig)
+    const blobStore = store({ client, bucket })
+    const blobService = BlobService({ Model: blobStore, id: '_id' })
+    createStorageService.call(app, blobService)
+  }
+
+  if (authConfig) {
+    app.createService('users', {
+      modelsPath,
+      servicesPath,
+      // Add required OAuth2 provider perspectives
+      perspectives: ['profile'].concat(app.authenticationProviders)
+    })
+    app.createService('authorisations', { servicesPath })
+  }
+
   // We have a global tag/storage service and one by context if app requires it
   app.createService('tags', { modelsPath, servicesPath })
-  const blobStore = store({ client, bucket })
-  const blobService = BlobService({ Model: blobStore, id: '_id' })
-  createStorageService.call(app, blobService)
 }

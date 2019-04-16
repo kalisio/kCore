@@ -11,7 +11,7 @@
           </q-item-side>
           <q-item-main>
             <q-item-tile label>{{name}}</q-item-tile>
-            <q-item-tile sublabel><small>{{description}}</small></q-item-tile>
+            <q-item-tile sublabel><small><k-text-area :length="20" :text="description" /></small></q-item-tile>
           </q-item-main>
           <q-item-side right>
             <slot name="card-icon"></slot>
@@ -110,7 +110,12 @@ export default {
     },
     itemActions: {
       type: Object,
-      required: true
+      default: function () {
+        return {
+          pane: [],
+          menu: []
+        }
+      }
     },
     options: {
       type: Object,

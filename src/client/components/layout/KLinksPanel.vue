@@ -39,15 +39,19 @@ export default {
   },
   methods: {
     onLinkClicked (link) {
-      let resolvedParams = {}
+      let route = { name: link.route.name }
       if (link.route.params) {
-        Object.assign(resolvedParams, link.route.params)
+        let resolvedParams = Object.assign({}, link.route.params)
         if (resolvedParams.context) {
           let context = this.$store.get(resolvedParams.context)
           resolvedParams.context = context
         }
+        route.params = resolvedParams
       }
-      this.sideNav.navigate({ name: link.route.name, params: resolvedParams })
+      if (link.route.query) {
+        route.query = Object.assign({}, this.$route.query)
+      }
+      (this.sideNav ? this.sideNav.navigate(route) : this.$router.push(route))
     }
   },
   created () {

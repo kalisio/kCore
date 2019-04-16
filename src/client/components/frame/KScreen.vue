@@ -1,70 +1,131 @@
 <template>
   <div class="row justify-center items-center window-height window-width">
-    <div style="width: 540px">
-      <!--
-        Header section
+     <!--
+       Header section
       -->
-      <div>
-        <k-screen-header />
-      </div>
-      <!--
-        Frame section
+    <div class="col-12 self-start">
+      <k-screen-header class="screen-header" />
+    </div>
+     <!--
+       Content section
       -->
+    <div class="screen-frame">
+      <!-- Banner -->
+      <slot name="screen-banner">
+        <div v-if="banner" class="row justify-center">
+          <img class="screen-banner" :src="banner">
+        </div>
+      </slot>
+      <!-- Frame -->
       <q-card>
-        <!-- 
-          Title section 
-        -->
         <q-card-title>
+          <!-- Title -->
           <slot name="screen-title">
-            <h5>{{title}}</h5>
-          </slot>
-          <slot name="screen-subtitle">
-            <div>
-              {{subtitle}}
-            </div>
+            {{ title }}
           </slot>
         </q-card-title>
-        <!-- 
-          Content section 
-        -->
         <q-card-main>
-          <slot name="screen-content" />
+          <div class="col">
+            <!-- Content -->
+            <slot name="screen-content" />
+            <!-- links -->
+            <slot name="screen-links">
+              <div class="row justify-center xs-gutter screen-links">
+                <template v-for="link in links">
+                  <a class="link" :id="link.id" :key="link.id" @click="$router.push(link.route)">
+                    {{ $t(link.label) }}
+                  </a>
+                </template>
+              </div>
+            </slot>
+          </div>
         </q-card-main>
       </q-card>
-      <!-- 
-        Footer section
+      <!-- Extra links -->
+      <slot name="screen-extra-links">
+        <small>
+          <div class="row justify-center xs-gutter">
+            <template v-for="link in extraLinks">
+              <a class="link" :key="link.label" @click="onLinkClicked(link)">
+                {{ $t(link.label) }}
+              </a>
+            </template>
+          </div>
+        </small>
+      </slot>
+    </div>
+     <!--
+      Footer section
       -->
-      <div>
-        <k-screen-footer />
-      </div>
+    <div class="col-12 self-end">
+      <k-screen-footer class="screen-footer" />
     </div>
   </div>
 </template>
 
 <script>
-import { QCard, QCardTitle, QCardMain, QBtn } from 'quasar'
+import { QCard, QCardTitle, QCardMain, openURL } from 'quasar'
 
 export default {
   name: 'k-screen',
   components: {
     QCard,
     QCardTitle,
-    QCardMain,
-    QBtn
+    QCardMain
   },
   props: {
     title: {
       type: String,
       default: ''
     },
-    subtitle: {
-      type: String,
-      default: ''
+    links: {
+      type: Array,
+      default: () => []
+    }
+  },
+  data () {
+    return {
+      banner: null,
+      extraLinks: []
+    }
+  },
+  methods: {
+    onLinkClicked (link) {
+      if (link.url) {
+        openURL(link.url)
+      } else if (link.route) {
+        this.$router.push(link.route)
+      }
     }
   },
   created () {
+    // Configure this screen
+    this.banner = this.$load(this.$config('screens.banner', 'kalisio-banner.png'), 'asset')
+    this.extraLinks = this.$config('screens.extraLinks', [])
+    // load the required components
     this.$options.components['k-screen-header'] = this.$load('frame/KScreenHeader')
     this.$options.components['k-screen-footer'] = this.$load('frame/KScreenFooter')
   }
 }
 </script>
+
+<style>
+  .screen-header {
+    padding: 8px;
+  }
+  .screen-banner {
+    max-width: 270px;
+    max-height: 80px;
+    width: auto;
+    height: auto;
+  }
+  .screen-frame {
+    width: 540px;
+  }
+  .screen-links {
+    margin-top: 16px;
+  }
+  .screen-footer {
+    padding: 8px;
+  }
+</style>

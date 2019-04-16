@@ -1,19 +1,19 @@
 <template>
-  <div class="row justify-center items-center">
-    <img :src="banner">
+  <div class="row justify-center">
+    {{ $t(message) }}
   </div>
 </template>
 
 <script>
 export default {
   name: 'k-screen-header',
-  data () {
-    return {
-      banner: ''
+  computed: {
+    message () {
+      if (!process.env.NODE_APP_INSTANCE) return 'KScreen.DEVELOPMENT_VERSION'
+      if (process.env.NODE_APP_INSTANCE === 'dev') return 'KScreen.DEVELOPMENT_VERSION'
+      if (process.env.NODE_APP_INSTANCE === 'test') return 'KScreen.STAGING_VERSION'
+      return ''
     }
-  },
-  created () {
-    this.banner = this.$load(this.$config('screen.header', 'kalisio-banner.png'), 'asset')
   }
 }
 </script>

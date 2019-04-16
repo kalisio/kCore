@@ -45,7 +45,7 @@ module.exports = {
   },
   db: {
     adapter: 'mongodb',
-    url: (containerized ? 'mongodb://mongodb:27017/kalisio-test' : 'mongodb://127.0.0.1:27017/kalisio-test')
+    url: (containerized ? 'mongodb://mongodb:27017/kdk-test' : 'mongodb://127.0.0.1:27017/kdk-test')
   },
   storage: {
     accessKeyId: process.env.S3_ACCESS_KEY,

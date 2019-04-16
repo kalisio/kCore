@@ -1,27 +1,12 @@
 <template>
-  <k-screen :title="$t('KRegister.TITLE')">
+  <k-screen :title="$t('KRegister.TITLE')" :links="links">
     <div slot="screen-content">
       <div class="column justify-center sm-gutter">
-        <!--
-          Register form
-        -->
         <div>
           <k-form ref="form" :schema="getSchema()" />
         </div>
         <div class="self-center">
           <q-btn id="register" color="primary" loader @click="onRegister">{{$t('KRegister.APPLY_BUTTON')}}</q-btn>
-        </div>
-        <!--
-          Additionnal links
-        -->
-        <div class="self-center">
-          <a id="login-link" @click="$router.push({name: 'login'})">
-            {{$t('KRegister.ALREADY_HAVE_AN_ACCOUNT_LINK')}}
-          </a>
-          &nbsp;&nbsp;
-          <a v-if="canChangeEndpoint()" id="change-endpoint-link" @click="$router.push({name: 'change-endpoint'})">
-            {{$t('KRegister.CHANGE_ENDPOINT_LINK')}}
-          </a>
         </div>
       </div>
     </div>
@@ -29,7 +14,7 @@
 </template>
 
 <script>
-import { QBtn, Platform } from 'quasar'
+import { QBtn } from 'quasar'
 import { KScreen } from '../frame'
 import { KForm } from '../form'
 import mixins from '../../mixins'
@@ -43,6 +28,11 @@ export default {
     KScreen
   },
   mixins: [mixins.authentication],
+  data () {
+    return {
+      links: []
+    }
+  },
   methods: {
     getSchema () {
       return {
@@ -100,9 +90,6 @@ export default {
         'required': ['name', 'email', 'password', 'confirmPassword', 'consentTerms']
       }
     },
-    canChangeEndpoint () {
-      return DEV ? true : Platform.is.cordova
-    },
     onRegister (event, done) {
       let result = this.$refs.form.validate()
       if (result.isValid) {
@@ -119,6 +106,10 @@ export default {
         done()
       }
     }
+  },
+  created () {
+    // Configure this screen
+    this.links = this.$config('screens.register.links', [])
   }
 }
 </script>

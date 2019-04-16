@@ -1,7 +1,7 @@
 <template>
   <k-modal ref="modal" :toolbar="getToolbar()" :buttons="getButtons()">
     <div slot="modal-content" class="column sm-gutter">
-      <drop-zone ref="dropZone" id="dropZone" @vdropzone-file-added="onFileAdded" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" @vdropzone-thumbnail="onThumbnailGenerated" @vdropzone-error="onError" :options="dropZoneOptions"/>
+      <drop-zone v-if="dropZoneOptions" ref="dropZone" id="dropZone" @vdropzone-file-added="onFileAdded" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" @vdropzone-thumbnail="onThumbnailGenerated" @vdropzone-error="onError" :options="dropZoneOptions"/>
     </div>
   </k-modal>
 </template>
@@ -9,6 +9,7 @@
 <script>
 import _ from 'lodash'
 import 'vue2-dropzone/dist/vue2Dropzone.css'
+import 'mime-types-browser'
 import DropZone from 'vue2-dropzone'
 import { Events } from 'quasar'
 
@@ -18,14 +19,6 @@ export default {
     DropZone
   },
   props: {
-    contextId: {
-      type: String,
-      default: ''
-    },
-    objectId: {
-      type: String,
-      default: ''
-    },
     resource: {
       type: String,
       default: ''
@@ -43,8 +36,7 @@ export default {
   },
   data () {
     return {
-      dropZoneOptions: {
-      },
+      dropZoneOptions: null,
       files: []
     }
   },
@@ -90,7 +82,9 @@ export default {
               query: Object.assign({ resource: this.resource, resourcesService: this.resourcesService() }, this.baseQuery)
             })
             // Thumbnail as well
-            this.storageService().remove(this.files[index]._id + '.thumbnail')
+            const mimeType = mime.lookup(removedFile.name)
+            // We only store thumbnails for images
+            if (mimeType.startsWith('image/')) this.storageService().remove(this.files[index]._id + '.thumbnail')
           }
         }
         _.pullAt(this.files, index)
@@ -98,6 +92,9 @@ export default {
       }
     },
     onThumbnailGenerated (thumbnailFile, dataUrl) {
+      const mimeType = mime.lookup(thumbnailFile.name)
+      // We only store thumbnails for images
+      if (!mimeType.startsWith('image/')) return
       const index = _.findIndex(this.files, file => file.name === thumbnailFile.name)
       if (index >= 0) {
         const id = this.generateFileId(thumbnailFile)
@@ -122,25 +119,29 @@ export default {
       // otherwise it will be stored at the root level with a generated hash
       if (idTemplate) {
         // Inject useful properties such as current object ID, file, etc.
-        let environment = { id: this.objectId || this.resource, file }
+        let environment = { id: this.resource, file }
         // The template generates the final ID for the file in storage
         return _.template(idTemplate)(environment)
       } else {
-        return this.objectId || this.resource
+        return this.resource
       }
     },
     onFileSending (file, xhr, formData) {
       const id = this.generateFileId(file)
       formData.set('id', id)
       // If we attach file to an existing resource add required parameters
-      if (this.resource) {
+      const resourcesService = this.resourcesService()
+      if (resourcesService && this.resource) {
         formData.set('resource', this.resource)
-        formData.set('resourcesService', this.resourcesService())
+        formData.set('resourcesService', resourcesService)
       }
       _.forOwn(this.baseQuery, (value, key) => {
         formData.set(key, value)
       })
       // When not processing uploads on-the-fly send thumbnail to the server along with the file
+      const mimeType = mime.lookup(file.name)
+      // We only store thumbnails for images
+      if (!mimeType.startsWith('image/')) return
       // Check if it does exist however because it is processed asynchronously
       if (file.thumbnail) {
         this.storageService().create({ id: id + '.thumbnail', uri: file.thumbnail })
@@ -151,6 +152,11 @@ export default {
       this.addFile(_.pick(addedFile, ['name', 'size', '_id']))
       // Keep track of previews for cleanup
       this.previews.push(addedFile.previewElement)
+      const mimeType = mime.lookup(addedFile.name) 
+      if (mimeType === 'application/pdf') {
+        // This is not an image, so Dropzone doesn't create a thumbnail.
+        this.dropZoneInstance().emit('thumbnail', addedFile, this.$load('pdf-icon.png', 'asset'))
+      }
     },
     onFileUploaded (addedFile, response) {
       // We update file list on successful upload
@@ -173,7 +179,7 @@ export default {
       this.$refs.modal.close()
     },
     storageService () {
-      return this.$api.getService(this.options.service || 'storage', this.contextId)
+      return this.$api.getService(this.options.service || 'storage')
     },
     dropZone () {
       // Access vue drop zone
@@ -183,7 +189,8 @@ export default {
       // Access underlying dropzone object
       return this.$refs.dropZone.dropzone
     },
-    updateDropZoneOptions () {
+    async updateDropZoneOptions () {
+      const accessToken = await this.$api.passport.getJWT()
       const options = _.omit(this.options, ['service', 'storagePath'])
       // We change interpolation tags to avoid interpolation by i18n next since drop zone will do it
       const dictionary = this.$t('KUploader.dropZone', { returnObjects: true, interpolation: { prefix: '[[', suffix: '[[' } })
@@ -200,11 +207,14 @@ export default {
           isArray: this.isMultiple()
         },
         // Uploading can require a long time
-        timeout: 60*60*1000 // 1h should be sufficient since we also have size limits
+        timeout: 60 * 60 * 1000 // 1h should be sufficient since we also have size limits
       }, options, dictionary)
-      this.dropZoneOptions.url = this.$api.getBaseUrl() + '/' + this.storageService().path
+      // Depending on the transport the path starts or not with '/'
+      let servicePath = this.storageService().path
+      if (!servicePath.startsWith('/')) servicePath = '/' + servicePath
+      this.dropZoneOptions.url = this.$api.getBaseUrl() + servicePath
       // This is used to ensure the request will be authenticated by Feathers
-      this.dropZoneOptions.headers = { Authorization: window.localStorage.getItem('feathers-jwt') }
+      this.dropZoneOptions.headers = { Authorization: accessToken }
     },
     processQueue () {
       if (this.dropZone().getQueuedFiles().length === 0) {
@@ -244,16 +254,16 @@ export default {
     open (defaultFiles = []) {
       this.clear()
       // Then setup existing files on server
-      defaultFiles.forEach(file => {
+      defaultFiles.forEach(async file => {
         this.dropZoneInstance().emit('addedfile', file)
         // Make sure that there is no progress bar, etc...
         this.dropZoneInstance().emit('complete', file)
-        if (file._id) {
+        const mimeType = mime.lookup(file.name)
+        // We only generate thumbnails for images
+        if (file._id && mimeType.startsWith('image/')) {
           // Download thumbnail
-          this.storageService().get(file._id + '.thumbnail')
-          .then(image => {
-            this.dropZoneInstance().emit('thumbnail', file, image.uri)
-          })
+          const image = await this.storageService().get(file._id + '.thumbnail')
+          this.dropZoneInstance().emit('thumbnail', file, image.uri)
         }
       })
       // Because this is dynamic we need to modify the instance as the vue drop zone is not updated automatically

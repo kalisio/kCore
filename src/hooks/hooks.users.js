@@ -63,15 +63,17 @@ export function storePreviousPassword (options = {}) {
       let user = hook.params.previousItem
       const passwordField = options.passwordField || 'password'
       let password = _.get(user, passwordField)
-      const previousPasswordsField = options.previousPasswordsField || 'previousPasswords'
-      let previousPasswords = _.get(user, previousPasswordsField, [])
-      debug(`Moving previous password from field ${passwordField} in field ${previousPasswords} on user`, user)
-      previousPasswords.push(password)
-      // Pop oldest password when required
-      const max = _.get(validator, 'options.history', 5)
-      if (previousPasswords.length > max) previousPasswords.shift()
-      Object.assign(data, { [previousPasswordsField]: previousPasswords })
-      replaceItems(hook, data)
+      if (password) {
+        const previousPasswordsField = options.previousPasswordsField || 'previousPasswords'
+        let previousPasswords = _.get(user, previousPasswordsField, [])
+        debug(`Moving previous password from field ${passwordField} in field ${previousPasswords} on user`, user)
+        previousPasswords.push(password)
+        // Pop oldest password when required
+        const max = _.get(validator, 'options.history', 5)
+        if (previousPasswords.length > max) previousPasswords.shift()
+        Object.assign(data, { [previousPasswordsField]: previousPasswords })
+        replaceItems(hook, data)
+      }
     }
     return hook
   }

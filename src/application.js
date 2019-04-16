@@ -32,6 +32,7 @@ const debugLimiter = makeDebug('kalisio:kCore:application:limiter')
 function auth () {
   const app = this
   const config = app.get('authentication')
+  if (!config) return
   const limiter = config.limiter
   if (limiter && limiter.http) {
     app.use(config.path, new HttpLimiter(limiter.http))
@@ -194,15 +195,17 @@ export function createService (name, app, options = {}) {
     paginate
   }, options)
   // For DB services a model has to be provided
+  let fileName = serviceOptions.fileName || name
+
   let dbService = false
   try {
-    if (options.modelsPath) {
-      const configureModel = require(path.join(options.modelsPath, name + '.model.' + app.db.adapter))
+    if (serviceOptions.modelsPath) {
+      const configureModel = require(path.join(serviceOptions.modelsPath, fileName + '.model.' + app.db.adapter))
       configureModel(app, serviceOptions)
       dbService = true
     }
   } catch (error) {
-    debug('No ' + name + ' service model configured on path ' + options.modelsPath)
+    debug('No ' + fileName + ' service model configured on path ' + serviceOptions.modelsPath)
     if (error.code !== 'MODULE_NOT_FOUND') {
       // Log error in this case as this might be linked to a syntax error in required file
       debug(error)
@@ -214,41 +217,44 @@ export function createService (name, app, options = {}) {
   let service
   if (dbService) {
     service = createFeathersService(serviceOptions)
-  } else if (options.proxy) {
-    service = createProxyService(options.proxy)
+  } else if (serviceOptions.proxy) {
+    service = createProxyService(serviceOptions.proxy)
   } else {
     // Otherwise we expect the service to be provided as a Feathers service interface
-    service = require(path.join(options.servicesPath, name, name + '.service'))
+    service = require(path.join(serviceOptions.servicesPath, fileName, fileName + '.service'))
     // If we get a function try to call it assuming it will return the service object
     if (typeof service === 'function') {
-      service = service(name, app, options)
+      service = service(name, app, serviceOptions)
     }
     // Need to set this manually for services not using class inheritance or default adapters
-    if (options.events) service.events = options.events
+    if (serviceOptions.events) service.events = serviceOptions.events
   }
 
   // Get our initialized service so that we can register hooks and filters
-  let servicePath = options.path || name
+  let servicePath = serviceOptions.path || name
   let contextId
-  if (options.context) {
-    contextId = (typeof options.context === 'object'
-      ? (ObjectID.isValid(options.context) ? options.context.toString() : options.context._id.toString()) : options.context)
+  if (serviceOptions.context) {
+    contextId = (typeof serviceOptions.context === 'object'
+      ? (ObjectID.isValid(serviceOptions.context) ?
+        serviceOptions.context.toString() :
+        serviceOptions.context._id.toString()) :
+      serviceOptions.context)
     servicePath = contextId + '/' + servicePath
   }
-  service = declareService(servicePath, app, service, options.middlewares)
+  service = declareService(servicePath, app, service, serviceOptions.middlewares)
   // Register hooks and event filters
-  service = configureService(name, service, options.servicesPath)
+  service = configureService(fileName, service, serviceOptions.servicesPath)
   // Optionnally a specific service mixin can be provided, apply it
-  if (dbService && options.servicesPath) {
+  if (dbService && serviceOptions.servicesPath) {
     try {
-      let serviceMixin = require(path.join(options.servicesPath, name, name + '.service'))
+      let serviceMixin = require(path.join(serviceOptions.servicesPath, fileName, fileName + '.service'))
       // If we get a function try to call it assuming it will return the mixin object
       if (typeof serviceMixin === 'function') {
-        serviceMixin = serviceMixin(name, app, options)
+        serviceMixin = serviceMixin(fileName, app, serviceOptions)
       }
       service.mixin(serviceMixin)
     } catch (error) {
-      debug('No ' + name + ' service mixin configured on path ' + options.servicesPath)
+      debug('No ' + fileName + ' service mixin configured on path ' + serviceOptions.servicesPath)
       if (error.code !== 'MODULE_NOT_FOUND') {
         // Log error in this case as this might be linked to a syntax error in required file
         debug(error)
@@ -259,9 +265,9 @@ export function createService (name, app, options = {}) {
   // Then configuration
   service.name = name
   service.app = app
-  service.options = options
+  service.options = serviceOptions
   service.path = servicePath
-  service.context = options.context
+  service.context = serviceOptions.context
 
   // Add some utility functions
   service.getPath = function (withApiPrefix) {
@@ -296,7 +302,7 @@ function setupLogger (logsConfig) {
     let options = logsConfig[logType]
     // Setup default log level if not defined
     if (!options.level) {
-      options.level = (process.env.ENV === 'development' ? 'debug' : 'info')
+      options.level = (process.env.NODE_ENV === 'development' ? 'debug' : 'info')
     }
     try {
       logger.add(logger.transports[logType], options)
@@ -318,7 +324,7 @@ function tooManyRequests (socket, message, key) {
 function setupSockets (app) {
   const apiLimiter = app.get('apiLimiter')
   const authConfig = app.get('authentication')
-  const authLimiter = authConfig.limiter
+  const authLimiter = (authConfig ? authConfig.limiter : null)
   let connections = {}
   let nbConnections = 0
 
@@ -456,9 +462,9 @@ export function kalisio () {
   }
 
   // Enable CORS, security, compression, and body parsing
-  app.use(cors())
-  app.use(helmet())
-  app.use(compress())
+  app.use(cors(app.get('cors')))
+  app.use(helmet(app.get('helmet')))
+  app.use(compress(app.get('compression')))
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
 

@@ -7,7 +7,16 @@ import reactive from 'feathers-reactive'
 import config from 'config'
 import { permissions } from '../common'
 import { Store } from './store'
+import Vue from 'vue'
 import { Platform, Events } from 'quasar'
+
+// Register some global filters for case conversions
+Vue.filter('kebabCase', (value) => _.kebabCase(value))
+Vue.filter('camelCase', (value) => _.camelCase(value))
+Vue.filter('lowerCase', (value) => _.lowerCase(value))
+Vue.filter('snakeCase', (value) => _.snakeCase(value))
+Vue.filter('startCase', (value) => _.startCase(value))
+Vue.filter('upperCase', (value) => _.upperCase(value))
 
 function getBaseUrlStorageKey () {
   return config.appName + '-baseUrl'
@@ -78,9 +87,28 @@ export function kalisio () {
     if (!service.path) service.path = path
     return service
   }
-  // Used to register a service with its options
+  // Used to register an existing backend service with its options
   api.declareService = function (name, options = {}) {
     _.set(api.serviceOptions, name, options)
+  }
+  // Used to create a frontend only service with its options
+  api.createService = function (name, options = {}) {
+    let servicePath = options.path || name
+    let contextId
+    if (options.context) {
+      contextId = (typeof options.context === 'object' ? options.context._id : options.context)
+      servicePath = contextId + '/' + servicePath
+    }
+    servicePath = config.apiPath + '/' + servicePath
+    api.declareService(name, options)
+    let service = options.service
+    // If we get a function try to call it assuming it will return the service object
+    if (typeof options.service === 'function') {
+      service = service(name, api, options)
+    }
+    service = api.use(servicePath, service)
+    if (options.hooks) service.hooks(options.hooks)
+    return api.service(servicePath)
   }
   // Change the base URL/domain to be used (useful for mobile apps)
   api.setBaseUrl = function (baseUrl) {
@@ -162,8 +190,8 @@ export function kalisio () {
   api.configure(feathers.authentication({
     storage: window.localStorage,
     // FIXME: customize cookie/key name
-    cookie: 'feathers-jwt',
-    storageKey: 'feathers-jwt',
+    cookie: config.apiJwt || 'feathers-jwt',
+    storageKey: config.apiJwt || 'feathers-jwt',
     path: config.apiPath + '/authentication'
   }))
   api.configure(reactive({

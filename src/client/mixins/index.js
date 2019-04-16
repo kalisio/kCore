@@ -11,6 +11,7 @@ import objectProxy from './mixin.object-proxy'
 import schemaProxy from './mixin.schema-proxy'
 import service from './mixin.service'
 import refsResolver from './mixin.refs-resolver'
+import rangeCompute from './mixin.range-compute'
 
 export default {
   authentication,
@@ -25,5 +26,6 @@ export default {
   objectProxy,
   schemaProxy,
   service,
-  refsResolver
+  refsResolver,
+  rangeCompute
 }

@@ -7,6 +7,7 @@ export * from './services'
 export * as hooks from './hooks'
 export * from './db'
 export * from './application'
+export * from './marshall'
 export * from './common'
 
 const debug = makeDebug('kalisio:kCore')
@@ -14,6 +15,6 @@ const debug = makeDebug('kalisio:kCore')
 export default function init () {
   const app = this
 
-  debug('Initializing kalisio')
+  debug('Initializing kalisio core')
   app.configure(services)
 }
