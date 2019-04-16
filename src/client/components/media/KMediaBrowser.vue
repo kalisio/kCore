@@ -15,7 +15,7 @@
           <q-icon @click="doClose" color="white" name="close" />
           <a ref="downloadLink" v-show="false" :href="currentDownloadLink" :download="currentName"></a>
         </div>
-        <p v-if="currentMediaIsFile" class="fixed-top-left" style="top: 0px">{{currentName}}</p>
+        <p v-if="currentMediaIsFile" class="fixed-top-left" style="top: 0px; width: 75%;">{{currentName}}</p>
       </q-carousel>
       <div class="carousel" v-if="zoomedMedia" >
         <img :src="zoomedMedia.uri" />
