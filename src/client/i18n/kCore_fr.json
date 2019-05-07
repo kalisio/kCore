@@ -6,9 +6,8 @@
   "CLOSE": "Fermer",
   "SEARCH": "Rechercher",
   "DONE": "Ok",
+  "RETRY": "Réessayer",
   "EMPTY": "Aucun élément",
-  "CLIENT_VERSION": "Version du client",
-  "API_VERSION": "Version de l'API",
   "ANONYMOUS": "Anonyme",
   "errors": {
     "400": "Cette opération ne peut être réalisée: paramètres incorrects",

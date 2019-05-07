@@ -6,6 +6,7 @@
   "CLOSE": "Close",
   "SEARCH": "Search",  
   "DONE": "Done",
+  "RETRY": "Retry",
   "EMPTY": "No elements found",
   "ANONYMOUS": "Anonymous",
   "errors": {
