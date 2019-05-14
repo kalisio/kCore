@@ -5,14 +5,15 @@
 </template>
 
 <script>
+import config from 'config'
+
 export default {
   name: 'k-screen-header',
   computed: {
     message () {
-      if (!process.env.NODE_APP_INSTANCE) return 'KScreen.DEVELOPMENT_VERSION'
-      if (process.env.NODE_APP_INSTANCE === 'dev') return 'KScreen.DEVELOPMENT_VERSION'
-      if (process.env.NODE_APP_INSTANCE === 'test') return 'KScreen.STAGING_VERSION'
-      return ''
+      if (config.flavor === 'prod') return ''
+      else if (config.flavor === 'test') return 'KScreen.TEST_VERSION'
+      else return 'KScreen.DEVELOPMENT_VERSION'
     }
   }
 }

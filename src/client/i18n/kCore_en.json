@@ -53,7 +53,7 @@
     "EMAIL_FIELD_HELPER": "Enter your email address",
     "CHANGE_ENDPOINT_LINK": "Change endpoint" ,
     "DEVELOPMENT_VERSION": "DEVELOPMENT VERSION",
-    "TESTING_VERSION": "TESTING VERSION",   
+    "TEST_VERSION": "TEST VERSION",   
     "KDK_POWERED": "Powered by KDK (Kalisio's Development Kit)"
   },
   "KLogin": {

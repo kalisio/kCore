@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.1.1](https://github.com/kalisio/kCore/tree/v1.1.1) (2019-05-14)
+
+**Fixed bugs:**
+
+- KScreenHeader does not update its message according to app flavor [\#125](https://github.com/kalisio/kCore/issues/125)
+
+[Full Changelog](https://github.com/kalisio/kCore/compare/v1.1.0...v1.1.1)
+
 ## [v1.1.0](https://github.com/kalisio/kCore/tree/v1.1.0) (2019-04-18)
 
 [Full Changelog](https://github.com/kalisio/kCore/compare/v1.0.7...v1.1.0)
@@ -13,7 +21,6 @@
 - Add global Vue filters to ease string case conversion [\#108](https://github.com/kalisio/kCore/issues/108)
 - The KMediaBrowser should allow to download the target image/document [\#84](https://github.com/kalisio/kCore/issues/84)
 - Allow to use documents \(eg PDF\) as attachments [\#83](https://github.com/kalisio/kCore/issues/83)
-- Allow to deactivate pagination on the client side [\#107](https://github.com/kalisio/kCore/issues/107)
 
 **Fixed bugs:**
 
@@ -28,6 +35,14 @@
 ## [v1.0.7](https://github.com/kalisio/kCore/tree/v1.0.7) (2019-02-25)
 
 [Full Changelog](https://github.com/kalisio/kCore/compare/airtac-v0.1.0...v1.0.7)
+
+## [airtac-v0.1.0](https://github.com/kalisio/kCore/tree/airtac-v0.1.0) (2019-02-12)
+
+[Full Changelog](https://github.com/kalisio/kCore/compare/v1.0.6...airtac-v0.1.0)
+
+**Implemented enhancements:**
+
+- Allow to deactivate pagination on the client side [\#107](https://github.com/kalisio/kCore/issues/107)
 
 ## [v1.0.6](https://github.com/kalisio/kCore/tree/v1.0.6) (2019-01-13)
 
