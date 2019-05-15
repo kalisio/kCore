@@ -151,7 +151,10 @@ export default {
       this.setRefs(this.fields.map(field => field.name))
       return this.loadRefs()
     },
-    build () {
+    async build () {
+      // Since schema is injected in form we need to make sure Vue.js has processed props
+      // This could be done externally but adding it here we ensure no one will forget it
+      await this.$nextTick()
       if (!this.schema) throw Error('Cannot build the form without schema')
       logger.debug('Building form', this.schema.$id)
       // Test in cache first
