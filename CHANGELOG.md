@@ -1,10 +1,15 @@
 # Changelog
 
-## [v1.1.1](https://github.com/kalisio/kCore/tree/v1.1.1) (2019-05-14)
+## [v1.1.2](https://github.com/kalisio/kCore/tree/v1.1.2) (2019-05-15)
+
+[Full Changelog](https://github.com/kalisio/kCore/compare/v1.1.1...v1.1.2)
 
 **Fixed bugs:**
 
+- Sometimes editors cannot build their forms [\#126](https://github.com/kalisio/kCore/issues/126)
 - KScreenHeader does not update its message according to app flavor [\#125](https://github.com/kalisio/kCore/issues/125)
+
+## [v1.1.1](https://github.com/kalisio/kCore/tree/v1.1.1) (2019-05-14)
 
 [Full Changelog](https://github.com/kalisio/kCore/compare/v1.1.0...v1.1.1)
 
