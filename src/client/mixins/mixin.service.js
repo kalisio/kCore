@@ -2,7 +2,7 @@ let serviceMixin = {
   props: {
     contextId: {
       type: String,
-      default: ''
+      default: undefined
     },
     service: {
       type: String,
