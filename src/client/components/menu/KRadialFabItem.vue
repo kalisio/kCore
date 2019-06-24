@@ -13,7 +13,7 @@
 <script>
 export default {
   name: 'k-radial-fab-item',
-  props: ['top', 'left', 'height', 'width', 'onClick'],
+  props: ['top', 'left', 'height', 'width', 'handler'],
   data() {
     const { top, left, height, width } = this
     return {
@@ -26,9 +26,9 @@ export default {
     }
   },
   methods: {
-    handleClick(e) {
-      this.onClick && this.onClick(e)
-      this.$emit('click', e)
+    handleClick(event) {
+      if (this.handler) this.handler(event)
+      this.$emit('click', event)
     }
   }
 }

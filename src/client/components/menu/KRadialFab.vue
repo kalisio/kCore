@@ -51,6 +51,7 @@ export default {
     open() {
       if (!this.isOpen) {
         this.isOpen = true
+        // This ensure the click event will not be handled by the newly added listener
         setTimeout(() => document.addEventListener('click', this.closeMenuEvent), 100)
         this.$emit('open')
       }
@@ -83,7 +84,7 @@ export default {
         propData.left =
           -1 * (size / 2 + Math.cos(angles[index]) * radius - itemSize / 2) // -1 to have the items in the right order
         propData.top = size / 2 - Math.sin(angles[index]) * radius - itemSize / 2
-        propData.onClick = this.close // To prevent double emiting click event
+        propData.handler = this.close // To prevent double emiting click event
       })
     }
   }
