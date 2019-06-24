@@ -35,9 +35,6 @@ export default {
       }
     }
   },
-  mounted() {
-    this.setChildProps()
-  },
   beforeUpdate() {
     this.setChildProps()
   },
@@ -68,8 +65,10 @@ export default {
       else this.open()
     },
     setChildProps() {
+      // Not yet ready ?
+      if (!this.$slots.default) return
       // Manually add prop data to the items
-      const items = this.$slots.default.map(s => s.componentOptions.propsData)
+      const items = this.$slots.default.map(vnode => vnode.componentOptions ? vnode.componentOptions.propsData : {})
       const { size, itemSize, angleRestriction, rotate, radius } = this
       const angle =
         angleRestriction > 300 || angleRestriction < -300 ? 300 : angleRestriction
