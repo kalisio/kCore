@@ -27,8 +27,8 @@ export default {
   },
   methods: {
     handleClick(event) {
-      if (this.handler) this.handler(event)
       this.$emit('click', event)
+      if (this.handler) this.handler(event)
     }
   }
 }
