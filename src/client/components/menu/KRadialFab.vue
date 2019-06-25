@@ -1,62 +1,47 @@
 <!-- Adapted from https://github.com/vparadis/vue-radial-menu -->
 <template>
   <div>
-    <div v-if="button" :style="style" class="vue-radial-menu-wrapper">
-      <div
-          :class="['vue-radial-menu-container', isOpen && 'open']"
-          :style="style"
-          @click="toggle">+</div>
-      <slot v-if="isOpen"></slot>
-    </div>
-    <div v-if="!button" >
-      <slot v-if="isOpen"></slot>
-    </div>
+    <span @click="toggle"><slot name="closed-menu-container" v-if="!isOpen"/></span>
+    <span @click="toggle"><slot name="open-menu-container" v-if="isOpen"/></span>
+    <slot v-if="isOpen"></slot>
   </div>
 </template>
 
 <script>
+import { QBtn } from 'quasar'
+
 export default {
   name: 'k-radial-fab',
+  components: {
+    QBtn
+  },
   props: {
-    angleRestriction: { type: Number, default: 180 },
-    size: { type: Number, default: 50 },
+    startAngle: { type: Number, default: 0 },
+    endAngle: { type: Number, default: 180 },
     itemSize: { type: Number, default: 36 },
-    rotate: { type: Number, default: 0 },
+    offset: { type: Number, default: 0 },
     radius: { type: Number, default: 100 },
-    button: true
+    closeOnClick: { type: Boolean, default: true }
   },
   data() {
     const { size } = this
     return {
-      isOpen: false,
-      style: {
-        width: size + 'px',
-        height: size + 'px'
-      }
+      isOpen: false
     }
   },
   beforeUpdate() {
     this.setChildProps()
   },
-  beforeDestroy() {
-    document.removeEventListener('click', this.closeMenuEvent)
-  },
   methods: {
-    closeMenuEvent(e) {
-      if (!this.$el.contains(e.target)) this.close()
-    },
     open() {
       if (!this.isOpen) {
         this.isOpen = true
-        // This ensure the click event will not be handled by the newly added listener
-        setTimeout(() => document.addEventListener('click', this.closeMenuEvent), 100)
         this.$emit('open')
       }
     },
     close() {
       if (this.isOpen) {
         this.isOpen = false
-        document.removeEventListener('click', this.closeMenuEvent)
         this.$emit('close')
       }
     },
@@ -68,22 +53,24 @@ export default {
       // Not yet ready ?
       if (!this.$slots.default) return
       // Manually add prop data to the items
-      const items = this.$slots.default.map(vnode => vnode.componentOptions ? vnode.componentOptions.propsData : {})
-      const { size, itemSize, angleRestriction, rotate, radius } = this
-      const angle =
-        angleRestriction > 300 || angleRestriction < -300 ? 300 : angleRestriction
-      const frags = angle / (items.length - 1 || 1)
+      let items = []
+      this.$slots.default.forEach(vnode => {
+        if (vnode.componentOptions && vnode.tag) items.push(vnode.componentOptions.propsData)
+      })
+      const { itemSize, startAngle, endAngle, offset, radius } = this
+      const angle = endAngle - startAngle
+      const angleStep = angle / (items.length - 1)
       const angles = items.map(
-        (item, index) => (Math.PI * (frags * index + rotate)) / 180
+        (item, index) => startAngle + (offset + angleStep * index) * Math.PI / 180
       )
 
       items.forEach((propData, index) => {
-        propData.width = itemSize
-        propData.height = itemSize
+        //propData.width = itemSize
+        //propData.height = itemSize
         propData.left =
-          -1 * (size / 2 + Math.cos(angles[index]) * radius - itemSize / 2) // -1 to have the items in the right order
-        propData.top = size / 2 - Math.sin(angles[index]) * radius - itemSize / 2
-        propData.handler = this.close // To prevent double emiting click event
+          -1 * (Math.cos(angles[index]) * radius) // -1 to have the items in the right order
+        propData.top = - Math.sin(angles[index]) * radius
+        if (this.closeOnClick) propData.handler = this.close // To prevent double emiting click event
       })
     }
   }

@@ -37,17 +37,12 @@ export default {
 <style>
 .vue-radial-menu-item {
   position: absolute;
-  border-radius: 50%;
-  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: all 0.2s ease;
-  z-index: 5;
   transform: none;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 0 0 rgba(0, 0, 0, 0.16);
   user-select: none;
-  font-size: 16px;
 }
 
 .radial-vue-radial-menu-item-enter,
