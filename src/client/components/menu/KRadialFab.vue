@@ -24,7 +24,6 @@ export default {
     closeOnClick: { type: Boolean, default: true }
   },
   data() {
-    const { size } = this
     return {
       isOpen: false
     }
@@ -57,7 +56,7 @@ export default {
       this.$slots.default.forEach(vnode => {
         if (vnode.componentOptions && vnode.tag) items.push(vnode.componentOptions.propsData)
       })
-      const { itemSize, startAngle, endAngle, offset, radius } = this
+      const { startAngle, endAngle, offset, radius } = this
       const angle = endAngle - startAngle
       const angleStep = angle / (items.length - 1)
       const angles = items.map(
@@ -65,8 +64,6 @@ export default {
       )
 
       items.forEach((propData, index) => {
-        //propData.width = itemSize
-        //propData.height = itemSize
         propData.left =
           -1 * (Math.cos(angles[index]) * radius) // -1 to have the items in the right order
         propData.top = - Math.sin(angles[index]) * radius
