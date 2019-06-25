@@ -54,6 +54,9 @@ let baseItemMixin = {
     // This method should be overriden in items
     refreshActions () {
       this.clearActions()
+    },
+    onItemSelected () {
+      this.$emit('item-selected', this.item)
     }
   },
   created () {

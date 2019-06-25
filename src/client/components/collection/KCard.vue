@@ -1,6 +1,6 @@
 <template>
   <div :class="layout()">
-    <q-card >
+    <q-card @click="onItemSelected">
       <!--
         Title section
       -->
@@ -80,9 +80,11 @@ import _ from 'lodash'
 import { QCard, QCardTitle, QCardActions, QCardSeparator, QCardMain, QCardMedia, QBtn, QIcon, QPopover, QList, QItem, QItemSide, QItemMain, QItemTile, QTooltip, QChip } from 'quasar'
 import { Avatar } from 'vue-avatar'
 import { KTextArea } from '../frame'
+import mixins from '../../mixins'
 
 export default {
   name: 'k-card',
+  mixins: [mixins.baseItem],
   components: {
     QCard,
     QCardTitle,

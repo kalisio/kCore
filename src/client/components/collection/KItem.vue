@@ -87,9 +87,6 @@ export default {
     key (object, property) {
       return this.item._id + '-' + object[property]
     },
-    onItemSelected () {
-      this.$emit('item-selected', this.item)
-    },
     onActionTriggered (action, item) {
       // If a handler is given call it
       if (action.handler) action.handler.call(this, item)

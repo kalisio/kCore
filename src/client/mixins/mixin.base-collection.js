@@ -69,6 +69,10 @@ let baseCollectionMixin = {
     },
     onPageChanged () {
       this.refreshCollection()
+    },
+    onItemSelected (item) {
+      // FIXME: support multi-selection
+      this.$emit('selection-changed', item)
     }
   },
   beforeDestroy () {

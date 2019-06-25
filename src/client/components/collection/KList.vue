@@ -77,10 +77,6 @@ export default {
     },
     getCollectionFilterQuery () {
       return this.filterQuery
-    },
-    onItemSelected (item) {
-      // FIXME: support multi-selection
-      this.$emit('selection-changed', item)
     }
   },
   created () {
