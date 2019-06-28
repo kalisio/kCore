@@ -12,6 +12,7 @@ import schemaProxy from './mixin.schema-proxy'
 import service from './mixin.service'
 import refsResolver from './mixin.refs-resolver'
 import rangeCompute from './mixin.range-compute'
+import baseViewer from './mixin.base-viewer'
 
 
 export default {
@@ -28,5 +29,6 @@ export default {
   schemaProxy,
   service,
   refsResolver,
-  rangeCompute
+  rangeCompute,
+  baseViewer
 }

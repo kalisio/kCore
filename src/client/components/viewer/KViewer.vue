@@ -4,7 +4,7 @@
       Form section
     -->
     <div>
-      <k-form ref="form" :schema="schema" @field-changed="onFieldChanged"/>
+      <k-view ref="view" :schema="schema" @field-changed="onFieldChanged"/>
     </div>
     <!--
       Buttons section
@@ -21,14 +21,14 @@
 
 <script>
 import { QBtn } from 'quasar'
-import { KForm } from '../form'
+import { KView } from '../viewer'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-viewer',
   components: {
     QBtn,
-    KForm
+    KView
   },
   mixins: [
     mixins.service,
