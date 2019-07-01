@@ -177,7 +177,7 @@ export default {
           this.getField(field.name).clear()
         }
       })
-    },
+    }/*,
     values () {
       return this.fields.reduce((values, field) => Object.assign(values, { [field.name]: this.getField(field.name).value() }), {})
     },
@@ -229,7 +229,7 @@ export default {
         const field = this.fields[i]
         await this.getField(field.name).submitted(object, field.name)
       }
-    }
+    }*/
   },
   created () {
     // Store the AJV instance

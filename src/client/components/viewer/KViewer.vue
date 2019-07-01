@@ -34,8 +34,8 @@ export default {
     mixins.service,
     mixins.objectProxy,
     mixins.schemaProxy,
-    mixins.baseEditor(['form']),
-    mixins.refsResolver(['form'])
+    mixins.baseViewer(['view']),
+    mixins.refsResolver(['view'])
   ],
   watch: {
     '$route' (to, from) {

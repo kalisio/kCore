@@ -42,13 +42,7 @@ import Ajv from 'ajv'
 import AjvLocalize from 'ajv-i18n'
 import mixins from '../../mixins'
 import { getLocale } from '../../utils'
-
-// Create the AJV instance
-let ajv = new Ajv({
-  allErrors: true,
-  coerceTypes: true,
-  $data: true
-})
+import KDisplayFieldVue from './KDisplayField.vue';
 
 export default {
   name: 'k-view',
@@ -90,36 +84,8 @@ export default {
     },
     onFieldChanged (field, value) {
       this.$emit('field-changed', field, value)
-      // Checks whether the form is valid
-      if (!this.validator(this.values())) {
-        const locale = getLocale()
-        if (AjvLocalize.hasOwnProperty(locale)) {
-          AjvLocalize[locale](this.validator.errors)
-        }
-        // Checks whether the touched field has an error
-        let error = this.hasFieldError(field)
-        if (error) {
-          // Invalidate the field
-          this.getField(field).invalidate(error.message)
-          return
-        }
-      }
       // Validate the field
       this.getField(field).validate()
-    },
-    hasFieldError (field) {
-      for (let i = 0; i < this.validator.errors.length; i++) {
-        let error = this.validator.errors[i]
-        // Check whether the field is required
-        if (error.keyword === 'required') {
-          if (error.params.missingProperty === field) return error
-        } else {
-          // Check whether is the field in invalid
-          let fieldDataPath = '.' + field
-          if (error.dataPath === fieldDataPath) return error
-        }
-      }
-      return null
     },
     buildFields  () {
       // Clear the fields states
@@ -158,13 +124,6 @@ export default {
       await this.$nextTick()
       if (!this.schema) throw Error('Cannot build the view without schema')
       logger.debug('Building view', this.schema.$id)
-      // Test in cache first
-      this.validator = this.ajv.getSchema(this.schema.$id)
-      if (!this.validator) {
-        // Otherwise add it
-        this.ajv.addSchema(this.schema, this.schema.$id)
-        this.validator = this.ajv.compile(this.schema)
-      }
       return this.buildFields()
     },
     fill (values) {
@@ -178,7 +137,7 @@ export default {
           this.getField(field.name).clear()
         }
       })
-    },
+    }/*,
     values () {
       return this.fields.reduce((values, field) => Object.assign(values, { [field.name]: this.getField(field.name).value() }), {})
     },
@@ -193,23 +152,6 @@ export default {
       let result = {
         isValid: false,
         values: this.values()
-      }
-      // If the validation fails, it iterates though the errors in order
-      // to update the validation status of each field
-      if (!this.validator(result.values)) {
-        const locale = getLocale()
-        if (AjvLocalize.hasOwnProperty(locale)) {
-          AjvLocalize[locale](this.validator.errors)
-        }
-        this.fields.forEach(field => {
-          let error = this.hasFieldError(field.name)
-          if (error) {
-            this.getField(field.name).invalidate(error.message)
-          } else {
-            this.getField(field.name).validate()
-          }
-        })
-        return result
       }
       this.fields.forEach(field => {
         this.getField(field.name).validate()
@@ -230,11 +172,9 @@ export default {
         const field = this.fields[i]
         await this.getField(field.name).submitted(object, field.name)
       }
-    }
+    }*/
   },
   created () {
-    // Store the AJV instance
-    this.ajv = ajv
     // If a schema is already registered automatially build the form
     // otherwise the parent component would have to manually
     // FIXME: cannot know when the form is built => should be done by the parent or need to emit an event
@@ -244,7 +184,7 @@ export default {
       this.build()
       .then(() => {
         if (this.clearOnCreate) this.clear()
-        this.$emit('view-ready', this)
+        this.$emit('form-ready', this)
       })
     }
   }
