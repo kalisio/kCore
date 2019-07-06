@@ -4,7 +4,7 @@
   "UPDATE": "Update",
   "CREATE": "Create",
   "CLOSE": "Close",
-  "SEARCH": "Search",  
+  "SEARCH": "Search",
   "DONE": "Done",
   "EMPTY": "No elements found",
   "ANONYMOUS": "Anonymous",
@@ -52,7 +52,7 @@
     "EMAIL_FIELD_HELPER": "Enter your email address",
     "CHANGE_ENDPOINT_LINK": "Change endpoint" ,
     "DEVELOPMENT_VERSION": "DEVELOPMENT VERSION",
-    "TESTING_VERSION": "TESTING VERSION",   
+    "TESTING_VERSION": "TESTING VERSION",
     "KDK_POWERED": "Powered by KDK (Kalisio's Development Kit)"
   },
   "KLogin": {
@@ -62,7 +62,7 @@
     "PASSWORD_FIELD_HELPER": "Enter your password",
     "APPLY_BUTTON": "Log in",
     "FORGOT_YOUR_PASSWORD_LINK": "Forgot your password ?",
-    "DONT_HAVE_AN_ACCOUNT_LINK": "Dont't have an account ?",
+    "DONT_HAVE_AN_ACCOUNT_LINK": "Don't have an account ?",
     "LOGIN_ERROR": "Wrong credentials or service unavailable, please try again"
   },
   "KRegister": {
@@ -83,10 +83,10 @@
     "APPLY_BUTTON": "Apply",
     "RESET_BUTTON": "Reset",
     "LOGIN_LINK": "Log in ?",
-    "DONT_HAVE_AN_ACCOUNT_LINK": "Dont't have an account ?"
-  },  
+    "DONT_HAVE_AN_ACCOUNT_LINK": "Don't have an account ?"
+  },
   "KLogout": {
-    "TITLE": "Your are now logged out",
+    "TITLE": "You are now logged out",
     "SIGN_OFF_LABEL": "Thank you for using",
     "LOG_IN_AGAIN_LINK": "Log in again ?"
   },
@@ -100,7 +100,7 @@
     "BLOCK_TEXT": "Please note that deleting your account will delete any data attached to this account.<br><br>The deletion cannot be undone and you will be logged out of the application.",
     "BLOCK_ACTION": "Delete account",
     "DIALOG_TITLE": "Are you sure you want to delete your account ?",
-    "DIALOG_HELPER": "Enter your account name to confirm the deletion" 
+    "DIALOG_HELPER": "Enter your account name to confirm the deletion"
   },
   "KAccountSecurity": {
     "PASSWORD_BLOCK_TITLE": "Change your password ?",

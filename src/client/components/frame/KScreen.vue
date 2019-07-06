@@ -17,20 +17,20 @@
         </div>
       </slot>
       <!-- Frame -->
-      <q-card>
-        <q-card-section>
+      <q-card class="q-ma-sm">
+        <q-card-section class="k-card-title">
           <!-- Title -->
           <slot name="screen-title">
-            {{ title }}
+            <div>{{ title }}</div>
           </slot>
         </q-card-section>
-        <q-card-section>
+        <q-card-section class="k-card-main">
           <div class="col">
             <!-- Content -->
             <slot name="screen-content" />
             <!-- links -->
             <slot name="screen-links">
-              <div class="row justify-center xs-gutter screen-links">
+              <div class="row justify-center q-gutter-xs screen-links">
                 <template v-for="link in links">
                   <a class="link" :id="link.id" :key="link.id" @click="$router.push(link.route)">
                     {{ $t(link.label) }}
@@ -44,7 +44,7 @@
       <!-- Extra links -->
       <slot name="screen-extra-links">
         <small>
-          <div class="row justify-center xs-gutter">
+          <div class="row justify-center q-gutter-xs">
             <template v-for="link in extraLinks">
               <a class="link" :key="link.label" @click="onLinkClicked(link)">
                 {{ $t(link.label) }}

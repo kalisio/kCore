@@ -1,8 +1,8 @@
 <template>
-  <div class="column justify-center xs-gutter">
+  <div class="column justify-center q-gutter-xs">
     <!--
       Endpoint
-    -->    
+    -->
     <div v-if="canChangeEndpoint()" class="row justify-center">
       <small>
         <a id="change-endpoint-link" @click="$router.push({name: 'change-endpoint'})">
@@ -20,7 +20,7 @@
     <!--
       KDK
     -->
-    <div class="row justify-center items-center xs-gutter">
+    <div class="row justify-center items-center q-gutter-xs">
       <div>
         <img :src="$load('kdk-icon.png', 'asset')" width="20" height="20" />
       </div>

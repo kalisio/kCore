@@ -1,7 +1,7 @@
 <template>
   <k-modal ref="modal" :toolbar="getToolbar()" :buttons="getButtons()" :options="{ padding: '4px', width: '600px' }">
-    <div slot="modal-content" class="column sm-gutter">
-      <div class="row justify-center items-center sm-gutter">
+    <div slot="modal-content" class="column q-gutter-sm">
+      <div class="row justify-center items-center q-gutter-sm">
         <template v-for="icon in iconsPage">
           <q-icon class="col-1" style="margin:4px" :key="icon" :color="icon !== selectedIcon.name ? 'grey-7' : selectedIcon.color" :name="icon" size="2rem" @click="onIconSelected(icon)" />
         </template>
@@ -60,7 +60,7 @@ export default {
     },
     getButtons () {
       return [
-        { name: 'done-button', label: this.$t('KIconChooser.DONE_BUTTON'), color: 'primary', handler: (event, done) => this.doDone(event, done) }
+        { name: 'done-button', label: this.$t('KIconChooser.DONE_BUTTON'), color: 'primary', handler: (event) => this.doDone(event) }
       ]
     },
     open (defaultIcon) {
@@ -73,12 +73,11 @@ export default {
       // Open the modal
       this.$refs.modal.open()
     },
-    doDone (event, done) {
+    doDone (event) {
       this.$emit('icon-choosed', this.selectedIcon)
-      done()
       this.doClose()
     },
-    doClose (event, done) {
+    doClose (event) {
       this.$refs.modal.close()
     },
     onIconSelected (icon) {

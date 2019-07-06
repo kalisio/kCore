@@ -56,7 +56,7 @@ export default {
       if (link.route.query) {
         route.query = Object.assign({}, this.$route.query)
       }
-      (this.sideNav ? this.sideNav.navigate(route) : this.$router.push(route))
+      this.$router.push(route)
     }
   },
   created () {

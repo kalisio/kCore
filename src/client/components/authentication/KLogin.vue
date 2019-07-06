@@ -1,20 +1,20 @@
 <template>
   <k-screen :title="canLogWith() ? $t('KLogin.TITLE') : ''" :links="links">
     <div slot="screen-content">
-      <div class="column justify-center sm-gutter">
+      <div class="column justify-center q-gutter-sm">
         <!--
           Login providers
         -->
         <div v-if="canLogWith()">
           <div class="row justify-around" style="padding: 18px">
             <template v-for="provider in providers">
-              <q-btn :icon="'fa-' + provider" :id="provider" @click="onLogWith(provider)" :key="provider">
-                {{provider}}
+              <q-btn :icon="'fab fa-' + provider" :id="provider" @click="onLogWith(provider)" :key="provider"
+                     :label="provider">
               </q-btn>
             </template>
           </div>
           <div class="row items-center">
-            <div class="col-1"><h6>{{ $t('KLogin.OR_LABEL') }}</h6></div>
+            <div class="col-1"><h6 class="margin-block-none">{{ $t('KLogin.OR_LABEL') }}</h6></div>
             <div class="col-11"><hr></div>
           </div>
         </div>
@@ -25,9 +25,9 @@
           <k-form ref="form" :schema="schema" @form-ready="onFormReady"/>
         </div>
         <div class="self-center">
-          <q-btn color="primary" loader id="local" @click="onLogin">
+          <k-btn color="primary" id="local" @click="onLogin">
             {{ $t('KLogin.APPLY_BUTTON') }}
-          </q-btn>
+          </k-btn>
         </div>
       </div>
     </div>
@@ -37,6 +37,7 @@
 <script>
 import { QBtn, Platform } from 'quasar'
 import { KScreen } from '../frame'
+import { KBtn } from '../input'
 import { KForm } from '../form'
 import mixins from '../../mixins'
 
@@ -45,7 +46,8 @@ export default {
   components: {
     QBtn,
     KForm,
-    KScreen
+    KScreen,
+    KBtn
   },
   data () {
     return {
@@ -97,26 +99,28 @@ export default {
         })
       }
     },
-    onLogin (event, done) {
+    onLogin (event) {
       let result = this.$refs.form.validate()
+
       if (result.isValid) {
+        event.loading(true)
+
         this.login(result.values.email, result.values.password)
         .then(() => {
           if (this.storeCredentials()) {
             window.localStorage.setItem('klogin.email', result.values.email)
           }
-          done()
+          event.loading(false)
         })
-        .catch(() => {
+        .catch((e) => {
           this.$q.notify({
             type: 'negative',
             message: this.$t('KLogin.LOGIN_ERROR'),
             timeout: 5000
           })
-          done()
+
+          event.loading(false)
         })
-      } else {
-        done()
       }
     },
     onLogWith (provider) {

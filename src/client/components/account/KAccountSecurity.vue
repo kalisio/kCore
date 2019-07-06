@@ -1,36 +1,36 @@
 <template>
   <div>
-    <div class="row items-center justify-center full-width xs-gutter">
-      <!-- 
-        Change password 
+    <div class="row items-center justify-center full-width q-gutter-xs">
+      <!--
+        Change password
       -->
       <div class="col-12">
         <k-block
-          color="grey" 
+          color="grey"
           :title="$t('KAccountSecurity.PASSWORD_BLOCK_TITLE')"
           :text="$t('KAccountSecurity.PASSWORD_BLOCK_TEXT')"
           :action="$t('KAccountSecurity.PASSWORD_BLOCK_ACTION')"
           @action-triggered="onChangePassword" />
       </div>
-      <!-- 
-        Change email 
+      <!--
+        Change email
       -->
       <div class="col-12">
         <k-block
-          color="orange" 
+          color="orange"
           :title="$t('KAccountSecurity.EMAIL_BLOCK_TITLE')"
           :text="$t('KAccountSecurity.EMAIL_BLOCK_TEXT', { email })"
           :action="$t('KAccountSecurity.EMAIL_BLOCK_ACTION')"
           @action-triggered="onChangeEmail" />
       </div>
-      <!-- 
+      <!--
         Devices
       -->
       <div class="col-12" v-if="hasDevices">
         <k-account-devices />
       </div>
     </div>
-    
+
   </div>
 </template>
 

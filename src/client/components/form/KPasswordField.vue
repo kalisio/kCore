@@ -1,34 +1,46 @@
 <template>
-  <div>
-    <q-field
-      :icon="icon"
-      :label="label"
-      :helper="helper"
-      :error-label="errorLabel"
-      :label-width="labelWidth"
-      :error="hasError"
-      :disabled="disabled"
-    >
-      <q-input
-        :id="properties.name + '-field'"
-        type="password"
-        v-model="model"
-        clearable
-        @blur="onChanged" />
-    </q-field>
-  </div>
+  <q-input
+    :id="properties.name + '-field'"
+    :type="isPwd ? 'password' : 'text'"
+    v-model="model"
+    clearable
+    @blur="onChanged"
+    :icon="icon"
+    :label="label"
+    :label-width="labelWidth"
+    :disabled="disabled"
+    :hint="helper"
+    :error="hasError"
+    :error-message="errorLabel"
+    no-error-icon
+    bottom-slots
+  >
+    <template v-slot:append>
+      <q-icon
+        :name="isPwd ? 'visibility_off' : 'visibility'"
+        class="cursor-pointer"
+        @click="isPwd = !isPwd"
+      />
+    </template>
+  </q-input>
 </template>
 
 <script>
-import { QField, QInput } from 'quasar'
+import { QField, QInput, QIcon } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-password-field',
   components: {
     QField,
-    QInput
+    QInput,
+    QIcon
   },
-  mixins: [mixins.baseField]
+  mixins: [mixins.baseField],
+  data () {
+    return {
+      isPwd: true
+    }
+  }
 }
 </script>

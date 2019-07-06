@@ -1,7 +1,7 @@
 <template>
   <k-screen :title="$t('KChangeEndpoint.TITLE')" :links="links">
     <div slot="screen-content">
-      <div class="column justify-center sm-gutter">
+      <div class="column justify-center q-gutter-sm">
         <div>
           <k-form ref="form" :schema="schema" />
         </div>

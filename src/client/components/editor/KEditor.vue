@@ -11,24 +11,24 @@
     -->
     <div>
       <div class="row justify-end" style="padding: 12px">
-        <q-btn v-if="clearButton !== ''" id="clear-button" color="primary" @click="clear" loader>{{clearButton}}</q-btn>
-        <q-btn v-if="resetButton !== ''" id="reset-button" color="primary" @click="reset" loader>{{resetButton}}</q-btn>
-        <q-btn v-if="applyButton !== ''" id="apply-button" color="primary" @click="apply" loader>{{applyButton}}</q-btn>
+        <k-btn v-if="clearButton !== ''" id="clear-button" color="primary" @click="clear">{{clearButton}}</k-btn>
+        <k-btn v-if="resetButton !== ''" id="reset-button" color="primary" @click="reset">{{resetButton}}</k-btn>
+        <k-btn v-if="applyButton !== ''" id="apply-button" color="primary" @click="apply">{{applyButton}}</k-btn>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { QBtn } from 'quasar'
 import { KForm } from '../form'
+import { KBtn } from '../input'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-editor',
   components: {
-    QBtn,
-    KForm
+    KForm,
+    KBtn
   },
   mixins: [
     mixins.service,

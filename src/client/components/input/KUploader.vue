@@ -1,6 +1,6 @@
 <template>
   <k-modal ref="modal" :toolbar="getToolbar()" :buttons="getButtons()">
-    <div slot="modal-content" class="column sm-gutter">
+    <div slot="modal-content" class="column q-gutter-sm">
       <drop-zone ref="dropZone" id="dropZone" @vdropzone-file-added="onFileAdded" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" @vdropzone-thumbnail="onThumbnailGenerated" @vdropzone-error="onError" :options="dropZoneOptions"/>
     </div>
   </k-modal>
@@ -48,7 +48,7 @@ export default {
     },
     getButtons () {
       return [
-        { name: 'done-button', label: this.$t('KUploader.DONE_BUTTON'), color: 'primary', handler: (event, done) => this.doDone(event, done) }
+        { name: 'done-button', label: this.$t('KUploader.DONE_BUTTON'), color: 'primary', handler: (event) => this.doDone(event) }
       ]
     },
     isMultiple () {
@@ -170,11 +170,10 @@ export default {
       // The error message is already translated using the DropZone dictionary
       this.$events.$emit('error', { message: error })
     },
-    doDone (event, done) {
-      done()
+    doDone (event) {
       this.doClose()
     },
-    doClose (event, done) {
+    doClose (event) {
       this.$refs.modal.close()
     },
     storageService () {

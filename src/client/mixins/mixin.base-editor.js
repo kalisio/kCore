@@ -175,29 +175,45 @@ export default function baseEditorMixin (formRefs) {
         }
         return query
       },
-      async apply (event, done) {
+      async apply (event) {
         let isValid = this.validateForms()
         // Now the form is validated apply it to the target object
         const object = this.getBaseObject()
+
         if (isValid) {
           isValid = await this.applyForms(object)
-        }
-        // Stop here if invalid or not applied correctly
-        if (!isValid) {
-          if (done) done()
+        } else {
+          // Stop here if invalid or not applied correctly
           return
         }
 
         if (this.getService()) {
+
+          let start = () => {
+            if (event.loading) {
+              event.loading(true)
+            }
+          }
+
+          let done = () => {
+            if (event.loading) {
+              event.loading(false)
+            }
+          }
+
           // Small helper to avoid repeating too much similar code
           let onServiceResponse = async (response) => {
             await this.submittedForms(response)
             this.$emit('applied', response)
-            if (done) done()
+            done()
           }
+
           const query = this.getBaseQuery(object)
+
           // Update the item
           try {
+            start()
+
             if (this.getMode() === 'update') {
               // Editing mode => patch the item
               if (this.perspective !== '') {
@@ -217,10 +233,10 @@ export default function baseEditorMixin (formRefs) {
               onServiceResponse(response)
             } else {
               logger.warn('Invalid editor mode')
-              if (done) done()
+              done()
             }
           } catch (error) {
-            if (done) done()
+            done()
           }
         }
       },

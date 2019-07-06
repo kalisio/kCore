@@ -1,6 +1,6 @@
 <template>
-  <q-layout ref="layout"
-    v-model="sides"
+  <q-layout
+    ref="layout"
     v-bind="options"
     @left-breakpoint="onSideNavBreakpoint"
     @right-breakpoint="onRightPanelBreakpoint">
@@ -10,7 +10,7 @@
     <!-- TODO -->
     <!-- <div slot="header"> -->
     <q-header>
-      <k-app-bar id="app-bar" :has-side-nav-toggle="!sides.left" @side-nav-toggled="onSideNavToggled" />
+      <k-app-bar id="app-bar" :has-side-nav-toggle="!left" @side-nav-toggled="onSideNavToggled" />
       <!-- TODO -->
       <k-tab-bar id="tab-bar" />
       <!-- TODO -->
@@ -22,7 +22,7 @@
     <!-- TODO -->
     <!-- <div slot="left"> -->
     <q-drawer v-model="left" side="left" bordered>
-      <k-side-nav id="side-nav" :closable="sides.left" @side-nav-toggled="onSideNavToggled" />
+      <k-side-nav id="side-nav" :closable="left" @side-nav-toggled="onSideNavToggled" />
     </q-drawer>
      <!--
       The right pane
@@ -30,7 +30,7 @@
     <!-- TODO -->
     <!-- <div slot="right"> -->
     <q-drawer v-model="right" side="right" bordered>
-      <k-right-panel id="right-panel" :closable="sides.right" @right-panel-toggled="onRightPanelToggled" />
+      <k-right-panel id="right-panel" :closable="right" @right-panel-toggled="onRightPanelToggled" />
     </q-drawer>
     <!--
       The TabBar
@@ -69,27 +69,23 @@ export default {
   },
   data () {
     return {
-      sides: {
-        left: false,
-        right: false
-      },
+      left: true,
+      right: false,
       options: {}
     }
   },
   methods: {
     onSideNavToggled () {
-      // TODO fix this - Quasar v1 does not support "toggleLeft"
-      this.$refs.layout.toggleLeft()
+      this.left = !this.left
     },
     onSideNavBreakpoint (toggle) {
-      this.sides.left = toggle
+      this.left = toggle
     },
     onRightPanelToggled () {
-      // TODO fix this - Quasar v1 does not support "toggleRight"
-      this.$refs.layout.toggleRight()
+      this.right = !this.right
     },
     onRightPanelBreakpoint (toggle) {
-      this.sides.right = toggle
+      this.right = toggle
     }
   },
   created () {

@@ -73,8 +73,8 @@
     "lib": "lib"
   },
   "dependencies": {
-    "@quasar/extras": "^1.1.1",
-    "quasar": "^1.0.0-beta.13",
+    "@quasar/extras": "^1.1.4",
+    "quasar": "^1.0.3",
     "@feathersjs/authentication": "https://github.com/kalisio/authentication.git",
     "@feathersjs/authentication-jwt": "^2.0.1",
     "@feathersjs/authentication-local": "^1.2.1",
@@ -120,7 +120,8 @@
     "sift": "^6.0.0",
     "socket.io-client": "^1.7.3",
     "uberproto": "^1.2.0",
-    "vue": "2.6.10",
+    "vue": "^2.6.10",
+    "vue-router": "^3.0.2",
     "vue-avatar": "^2.0.0",
     "vue2-dropzone": "^3.5.8",
     "winston": "^2.3.1",
@@ -135,7 +136,7 @@
     "babel-plugin-transform-runtime": "^6.0.0",
     "babel-polyfill": "^6.23.0",
     "babel-preset-env": "^1.7.0",
-    "@quasar/app": "^1.0.0-beta.15",
+    "@quasar/app": "^1.0.1",
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^4.4.1",
@@ -159,7 +160,7 @@
     "standard": "^10.0.3",
     "superagent": "^3.5.2",
     "vue-template-compiler": "2.6.10",
-    "vue-style-loader": "^3.0.1"
+    "vue-style-loader": "^4.1.2"
   },
   "peerDependencies": {}
 }

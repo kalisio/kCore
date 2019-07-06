@@ -1,12 +1,14 @@
 <template>
   <k-screen :title="$t('KRegister.TITLE')" :links="links">
     <div slot="screen-content">
-      <div class="column justify-center sm-gutter">
+      <div class="column justify-center q-gutter-sm">
         <div>
           <k-form ref="form" :schema="getSchema()" />
         </div>
         <div class="self-center">
-          <q-btn id="register" color="primary" loader @click="onRegister">{{$t('KRegister.APPLY_BUTTON')}}</q-btn>
+          <k-btn color="primary" id="register" @click="onRegister">
+            {{$t('KRegister.APPLY_BUTTON')}}
+          </k-btn>
         </div>
       </div>
     </div>
@@ -14,18 +16,18 @@
 </template>
 
 <script>
-import { QBtn } from 'quasar'
 import { KScreen } from '../frame'
 import { KForm } from '../form'
+import { KBtn } from '../input'
 import mixins from '../../mixins'
 import { getLocale } from '../../utils'
 
 export default {
   name: 'k-register',
   components: {
-    QBtn,
     KForm,
-    KScreen
+    KScreen,
+    KBtn
   },
   mixins: [mixins.authentication],
   data () {
@@ -90,20 +92,21 @@ export default {
         'required': ['name', 'email', 'password', 'confirmPassword', 'consentTerms']
       }
     },
-    onRegister (event, done) {
+    onRegister (event) {
       let result = this.$refs.form.validate()
+
       if (result.isValid) {
+        event.loading(true)
+
         // Add the locale information
         result.values.locale = getLocale()
         this.register(result.values)
         .then(() => {
-          done()
+          event.loading(false)
         })
         .catch(error => {
-          done(error)
+          event.loading(false)
         })
-      } else {
-        done()
       }
     }
   },

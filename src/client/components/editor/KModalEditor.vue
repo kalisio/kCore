@@ -1,6 +1,7 @@
 <template>
   <k-modal ref="modal" :title="editorTitle" :toolbar="toolbar" :buttons="buttons" :route="router ? true : false" >
     <div slot="modal-content">
+      <!-- TODO -->
       <k-form ref="form" :schema="schema" @field-changed="onFieldChanged"/>
     </div>
   </k-modal>
@@ -33,16 +34,16 @@ export default {
   computed: {
     buttons () {
       let buttons = [
-        { name: 'apply-button', label: this.applyButton, color: 'primary', handler: (event, done) => this.apply(event, done) }
+        { name: 'apply-button', label: this.applyButton, color: 'primary', handler: (event) => this.apply(event) }
       ]
       if (this.clearButton !== '') {
         buttons.push({
-          name: 'clear-button', label: this.clearButton, color: 'primary', handler: (event, done) => this.clear(event, done)
+          name: 'clear-button', label: this.clearButton, color: 'primary', handler: (event) => this.clear(event)
         })
       }
       if (this.resetButton !== '') {
         buttons.push({
-          name: 'reset-button', label: this.resetButton, color: 'primary', handler: (event, done) => this.reset(event, done)
+          name: 'reset-button', label: this.resetButton, color: 'primary', handler: (event) => this.reset(event)
         })
       }
       return buttons

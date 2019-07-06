@@ -1,12 +1,12 @@
 <template>
   <div>
-    <!-- 
+    <!--
         Render a modal grid action if more than 8 actions are provided
       -->
     <div v-if="fab.actions.length > expandableLimit">
       <k-modal ref="modal" :toolbar="getModalToolbar()" :buttons="getModalButtons()" :options="getModalOptions()" :route="false">
         <div slot="modal-content">
-          <div class="row sm-gutter full-width">
+          <div class="row q-gutter-sm full-width">
             <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 col-xl-2" align="center" v-for="action in fab.actions" :key="action.id">
               <q-btn
                 :id="action.id"
@@ -23,7 +23,7 @@
           </div>
         </div>
       </k-modal>
-      <q-btn  
+      <q-btn
         id="modal-action"
         color="secondary"
         class="fixed"
@@ -33,17 +33,17 @@
         <q-icon name="keyboard_arrow_up" />
       </q-btn>
     </div>
-    <!-- 
+    <!--
       Render an expandable fab if more than one action is provided
      -->
-    <q-fab v-else-if="fab.actions.length > 1" 
+    <q-fab v-else-if="fab.actions.length > 1"
       icon="keyboard_arrow_up"
       class="fixed"
-      style="right: 18px; bottom: 18px" 
-      direction ="up" 
+      style="right: 18px; bottom: 18px"
+      direction ="up"
       color="secondary">
-        <q-fab-action 
-          v-for="action in fab.actions" 
+        <q-fab-action
+          v-for="action in fab.actions"
           :id="action.id"
           :key="action.id"
           color="secondary"
@@ -54,7 +54,7 @@
           </q-tooltip>
         </q-fab-action>
     </q-fab>
-    <!-- 
+    <!--
       Render a non expandable fab if a single action is provided
      -->
     <q-btn v-else-if="fab.actions.length > 0"

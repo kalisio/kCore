@@ -1,20 +1,19 @@
 <template>
-  <q-field
+  <q-input
+    :id="properties.name + '-field'"
+    type="textarea"
+    v-model="model"
+    clearable
     :icon="icon"
     :label="label"
-    :helper="helper"
-    :error-label="errorLabel"
     :label-width="labelWidth"
-    :error="hasError"
     :disabled="disabled"
-  >
-    <q-input
-      :id="properties.name + '-field'"
-      type="textarea"
-      v-model="model"
-      clearable
-      @blur="onChanged" />
-  </q-field>
+    :hint="helper"
+    :error="hasError"
+    :error-message="errorLabel"
+    no-error-icon
+    bottom-slots
+  />
 </template>
 
 <script>
