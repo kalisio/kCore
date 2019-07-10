@@ -13,6 +13,7 @@
       type="textarea"
       v-model="model"
       clearable
+      :readonly="readonly"
       @blur="onChanged" />
   </q-field>
 </template>

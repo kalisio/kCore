@@ -17,7 +17,7 @@
       v-model="model"
       :options="options"
       @change="onChanged"
-      @blur="onChanged" />
+      @blur="onChanged" /><!--:disabled="readonly"-->
   </q-field>
 </template>
 

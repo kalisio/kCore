@@ -2,28 +2,26 @@
   <q-field
     :icon="icon"
     :label="label"
-    :helper="helper"
-    :error-label="errorLabel"
     :label-width="labelWidth"
-    :error="hasError"
     :disabled="disabled"
   >
     <q-input
       :id="properties.name + '-field'"
-      type="text"
+      type="text" 
       v-model="model"
-      clearable
-      :readonly="readonly"
-      @blur="onChanged" />
+      :readonly="readonly"/>
   </q-field>
+  <!--div>
+    {{label}} : {{model}}
+  </div-->
 </template>
 
 <script>
 import { QField, QInput } from 'quasar'
-import mixins from '../../mixins'
+import { mixins } from '@kalisio/kdk-core/client'//'../mixins' //
 
 export default {
-  name: 'k-text-field',
+  name: 'custom-field',
   components: {
     QField,
     QInput

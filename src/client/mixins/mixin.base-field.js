@@ -33,7 +33,11 @@ let baseFieldMixin = {
     labelWidth () {
       return _.get(this.display, 'labelWidth', 3)
     },
+    readonly () {
+      return _.get(this.display, 'readonly', false)
+    },
     helper () {
+      if (_.get(this.display, 'readonly')) return ''
       // Check if we have a translation key or directly the helper content
       const helper = _.get(this.properties.field, 'helper', '')
       return (this.$i18n.i18next.exists(helper) ? this.$t(helper) : helper)

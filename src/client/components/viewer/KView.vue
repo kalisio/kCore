@@ -1,6 +1,5 @@
 <template>
   <div class="column">
-    [)test(]
     <!-- Non-grouped fields first -->  
     <template v-for="field in fields">
       <component
@@ -42,7 +41,7 @@ import Ajv from 'ajv'
 import AjvLocalize from 'ajv-i18n'
 import mixins from '../../mixins'
 import { getLocale } from '../../utils'
-import KDisplayFieldVue from './KDisplayField.vue';
+import KTextViewField from '../view/KTextViewField.vue';
 
 export default {
   name: 'k-view',
@@ -65,9 +64,10 @@ export default {
       type: Object,
       default: () => {
         return {
-          icon: false,
-          label: false,
-          labelWidth: 3
+          icon: true,
+          label: true,
+          labelWidth: 3,
+          readonly: true
         }
       }
     }
@@ -137,42 +137,7 @@ export default {
           this.getField(field.name).clear()
         }
       })
-    }/*,
-    values () {
-      return this.fields.reduce((values, field) => Object.assign(values, { [field.name]: this.getField(field.name).value() }), {})
-    },
-    clear () {
-      logger.debug('Clearing view', this.schema.$id)
-      if (!this.loadRefs().isFulfilled()) throw Error('Cannot clear the view while not ready')
-      this.fields.forEach(field => this.getField(field.name).clear())
-    },
-    validate () {
-      if (!this.loadRefs().isFulfilled()) throw Error('Cannot validate the view while not ready')
-      logger.debug('Validating view', this.schema.$id)
-      let result = {
-        isValid: false,
-        values: this.values()
-      }
-      this.fields.forEach(field => {
-        this.getField(field.name).validate()
-      })
-      result.isValid = true
-      return result
-    },
-    async apply (object) {
-      if (!this.loadRefs().isFulfilled()) throw Error('Cannot apply the view while not ready')
-      for (let i = 0; i < this.fields.length; i++) {
-        const field = this.fields[i]
-        await this.getField(field.name).apply(object, field.name)
-      }
-    },
-    async submitted (object) {
-      if (!this.loadRefs().isFulfilled()) throw Error('Cannot run submitted on the view while not ready')
-      for (let i = 0; i < this.fields.length; i++) {
-        const field = this.fields[i]
-        await this.getField(field.name).submitted(object, field.name)
-      }
-    }*/
+    }
   },
   created () {
     // If a schema is already registered automatially build the form
@@ -184,7 +149,7 @@ export default {
       this.build()
       .then(() => {
         if (this.clearOnCreate) this.clear()
-        this.$emit('form-ready', this)
+        this.$emit('view-ready', this)
       })
     }
   }
