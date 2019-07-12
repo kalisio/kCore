@@ -11,9 +11,10 @@
 
 <script>
 import { QBtn } from 'quasar'
-import { KView } from '../viewer'
+import { KView } from '../view'
 import mixins from '../../mixins'
 
+console.log('je suis là', KView)
 export default {
   name: 'k-viewer',
   components: {

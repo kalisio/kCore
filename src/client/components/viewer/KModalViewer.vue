@@ -8,10 +8,10 @@
 
 <script>
 import { KModal } from '../frame'
-import { KView } from '../viewer'
+import { KView } from '../view'
 import mixins from '../../mixins'
 
-
+console.log('je suis là', KModal, KView)
 export default {
   name: 'k-modal-viewer',
   components: {
