@@ -1,5 +1,5 @@
 <template>
-  <k-modal ref="modal" :title="editorTitle" :toolbar="toolbar" :buttons="buttons" :route="router ? true : false" >
+  <k-modal ref="modal" :title="viewerTitle" :toolbar="toolbar" :route="router ? true : false" >
     <div slot="modal-content">
       <k-view ref="view" :schema="schema"/>
     </div>
@@ -11,17 +11,18 @@ import { KModal } from '../frame'
 import { KView } from '../viewer'
 import mixins from '../../mixins'
 
+
 export default {
   name: 'k-modal-viewer',
   components: {
     KModal,
-    KForm
+    KView
   },
   mixins: [
     mixins.service,
     mixins.objectProxy,
     mixins.schemaProxy,
-    mixins.baseEditor(['view']),
+    mixins.baseViewer(['view']),
     mixins.refsResolver(['view'])
   ],
   props: {
@@ -29,24 +30,6 @@ export default {
       type: Object,
       default: () => { return null }
     }
-  },
-  computed: {
-    /*buttons () {
-      let buttons = [
-        { name: 'apply-button', label: this.applyButton, color: 'primary', handler: (event, done) => this.apply(event, done) }
-      ]
-      if (this.clearButton !== '') {
-        buttons.push({
-          name: 'clear-button', label: this.clearButton, color: 'primary', handler: (event, done) => this.clear(event, done)
-        })
-      }
-      if (this.resetButton !== '') {
-        buttons.push({
-          name: 'reset-button', label: this.resetButton, color: 'primary', handler: (event, done) => this.reset(event, done)
-        })
-      }
-      return buttons
-    }*/
   },
   data () {
     return {
