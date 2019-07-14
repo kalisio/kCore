@@ -156,7 +156,7 @@ export function createProxyService (options) {
   function proxyParams (params) {
     if (options.params) {
       let proxiedParams
-      if (options.params === 'function') {
+      if (typeof options.params === 'function') {
         proxiedParams = options.params(params)
       } else {
         proxiedParams = _.merge(params, options.params)
