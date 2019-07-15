@@ -13,7 +13,9 @@
       type="textarea"
       v-model="model"
       clearable
+      :inverted="readonly"
       :readonly="readonly"
+      :color="backgroundcolor"
       @blur="onChanged" />
   </q-field>
 </template>

@@ -36,6 +36,10 @@ let baseFieldMixin = {
     readonly () {
       return _.get(this.display, 'readonly', false)
     },
+    backgroundcolor (){
+      //return in string format grey color if readonly is true, else return none for use default color
+      return this.readonly ? "grey" : null;
+    },
     helper () {
       if (_.get(this.display, 'readonly')) return ''
       // Check if we have a translation key or directly the helper content

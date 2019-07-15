@@ -16,9 +16,11 @@
       :chips="properties.field.chips ? properties.field.chips : false"
       v-model="model"
       :options="options"
-      :disable="readonly"      
+      :disable="readonly"
+      :inverted="readonly"  
+      :color="backgroundcolor"  
       @change="onChanged"
-      @blur="onChanged" /><!--:disabled="readonly"-->
+      @blur="onChanged" />
   </q-field>
 </template>
 
