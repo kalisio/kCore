@@ -10,7 +10,7 @@
       :disabled="disabled"
     >
       <div v-if="model.icon !== ''">
-        <q-chip :icon="model.name" :color="model.color" :closable="closable" @close="onCloseClicked" @click="onIconClicked"/>
+        <q-chip :icon="model.name" :color="model.color" :closable="closable && !readonly" @close="onCloseClicked" @click="onIconClicked"/>
       </div>
       <div v-else>
         <q-input @click="onIconClicked" />

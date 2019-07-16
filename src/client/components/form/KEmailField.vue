@@ -13,7 +13,10 @@
       type="email"
       v-model="model"
       clearable
-      @blur="onChanged" />
+      @blur="onChanged"
+      :inverted="readonly"
+      :readonly="readonly"
+      :color="backgroundcolor" />
   </q-field>
 </template>
 

@@ -14,7 +14,10 @@
       v-model="model"
       :options="properties.field.options"
       @change="onChanged"
-      @blur="onChanged" />
+      @blur="onChanged"
+      :inverted="readonly"
+      :disable="readonly"
+      :color="backgroundcolor" />
   </q-field>
 </template>
 

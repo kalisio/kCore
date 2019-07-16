@@ -2,7 +2,7 @@
   <div class="row full-width justify-between items-center">
     <k-autocomplete v-if="!isCompleted" class="col" ref="autocomplete" :services="services" @changed="onAutocompleteChanged" />
     <div class="col-8" v-if="items.length > 0">
-      <q-chip v-for="item in items" :key="item._id" class="chip" :icon="itemIcon(item)" color="primary" @close="onItemRemoved(item)" closable>
+      <q-chip v-for="item in items" :key="item._id" class="chip" :icon="itemIcon(item)" :color="backgroundcolor" @close="onItemRemoved(item)" :closable="!readonly">
         {{itemName(item)}}
       </q-chip>
     </div>
@@ -27,6 +27,13 @@ export default {
     },
     isCompleted () {
       return this.multiselect ? false : (this.items.length > 0)
+    },
+    readonly () {
+      return _.get(this.display, true, false)
+    },
+    backgroundcolor (){
+      //return in string format grey color if readonly is true, else return primarys for use default color
+      return this.readonly ? "grey" : "primary";
     }
   },
   props: {

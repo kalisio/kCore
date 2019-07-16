@@ -8,7 +8,7 @@
     :error="hasError"
     :disabled="disabled"
   >
-    <q-chip  v-for="file in files" :key="file.name" color="primary" @close="onFileRemoved(file)" closable>
+    <q-chip  v-for="file in files" :key="file.name" :color="backgroundcolor" @close="onFileRemoved(file)" :closable="!readonly">
       {{fileName(file)}}
     </q-chip>
     <q-icon :id="properties.name + '-field'" v-show="files.length < maxFiles" name="fa-cloud-upload fa-2x" @click="onUpload"/>

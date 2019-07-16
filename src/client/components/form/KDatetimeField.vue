@@ -12,7 +12,10 @@
       :id="properties.name + '-field'"
       v-model="model"
       v-bind="properties.field"
-      @blur="onChanged" />
+      @blur="onChanged"
+      :disable="readonly"
+      :inverted="readonly"
+      :color="backgroundcolor" />
   </q-field>
 </template>
 

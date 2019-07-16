@@ -37,8 +37,8 @@ let baseFieldMixin = {
       return _.get(this.display, 'readonly', false)
     },
     backgroundcolor (){
-      //return in string format grey color if readonly is true, else return none for use default color
-      return this.readonly ? "grey" : null;
+      //return in string format grey color if readonly is true, else return primary for use default color
+      return this.readonly ? "grey" : "primary";
     },
     helper () {
       if (_.get(this.display, 'readonly')) return ''

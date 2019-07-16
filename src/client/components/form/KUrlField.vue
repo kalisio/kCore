@@ -12,8 +12,11 @@
       :id="properties.name + '-field'"
       type="url"
       v-model="model"
-      clearable=true
-      @blur="onChanged" />
+      clearable
+      @blur="onChanged"
+      :inverted="readonly"
+      :readonly="readonly"
+      :color="backgroundcolor" />
   </q-field>
 </template>
 
