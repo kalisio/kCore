@@ -8,6 +8,7 @@
     :error="hasError"
     :disabled="disabled"
   >
+  <a :href="'mailto:'+model+'?subject=Kalisio'">
     <q-input
       :id="properties.name + '-field'"
       type="email"
@@ -17,6 +18,7 @@
       :inverted="readonly"
       :readonly="readonly"
       :color="backgroundcolor" />
+  </a>
   </q-field>
 </template>
 

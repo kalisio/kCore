@@ -8,6 +8,7 @@
     :error="hasError"
     :disabled="disabled"
   >
+  <a :href="'tel:'+model">
     <q-input
       :id="properties.name + '-field'"
       type="tel"
@@ -17,6 +18,7 @@
       :inverted="readonly"
       :readonly="readonly"
       :color="backgroundcolor" />
+  </a>
   </q-field>
 </template>
 
