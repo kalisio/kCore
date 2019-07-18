@@ -82,6 +82,7 @@ export default {
       this.$refs.autocomplete.clear()
     },
     onItemRemoved (oldItem) {
+      this.readonly ? console.log("Readonly ON") : console.log("Readonly OFF")
       this.items = this.items.filter(item => item._id !== oldItem._id)
       this.$emit('changed', this.items, this.pattern)
     },

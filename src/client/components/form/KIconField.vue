@@ -51,7 +51,8 @@ export default {
       this.model = { name: '', color: '' }
     },
     onIconClicked () {
-      this.$refs.iconChooser.open(this.model.icon, this.model.color)
+      //You can't change icon in readonly mode
+      this.readonly ? false : this.$refs.iconChooser.open(this.model.icon, this.model.color)
     },
     onIconChoosed (icon) {
       this.model = Object.assign({}, icon)
