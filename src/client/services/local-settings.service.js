@@ -4,7 +4,7 @@ import { Store } from '../store'
 
 export default function (name, api, options) {
   const mapping = options.propertyMapping
-  const settingsKey = config.appName + '-' + (options.settingsKey || 'settings')
+  const settingsKey = config.appName.toLowerCase() + '-' + (options.settingsKey || 'settings')
   return {
 
     async get (id) {
@@ -17,7 +17,7 @@ export default function (name, api, options) {
 
     async patch (id, data) {
       _.forOwn(data, (value, key) => {
-        if (mapping[key]) {
+        if (_.has(mapping, key)) {
           Store.set(mapping[key], value)
         }
       })

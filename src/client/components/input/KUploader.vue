@@ -1,7 +1,7 @@
 <template>
   <k-modal ref="modal" :toolbar="getToolbar()" :buttons="getButtons()">
     <div slot="modal-content" class="column q-gutter-sm">
-      <drop-zone ref="dropZone" id="dropZone" @vdropzone-file-added="onFileAdded" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" @vdropzone-thumbnail="onThumbnailGenerated" @vdropzone-error="onError" :options="dropZoneOptions"/>
+      <drop-zone v-if="dropZoneOptions" ref="dropZone" id="dropZone" @vdropzone-file-added="onFileAdded" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" @vdropzone-thumbnail="onThumbnailGenerated" @vdropzone-error="onError" :options="dropZoneOptions"/>
     </div>
   </k-modal>
 </template>
@@ -35,8 +35,7 @@ export default {
   },
   data () {
     return {
-      dropZoneOptions: {
-      },
+      dropZoneOptions: null,
       files: []
     }
   },
@@ -130,9 +129,10 @@ export default {
       const id = this.generateFileId(file)
       formData.set('id', id)
       // If we attach file to an existing resource add required parameters
-      if (this.resource) {
+      const resourcesService = this.resourcesService()
+      if (resourcesService && this.resource) {
         formData.set('resource', this.resource)
-        formData.set('resourcesService', this.resourcesService())
+        formData.set('resourcesService', resourcesService)
       }
       _.forOwn(this.baseQuery, (value, key) => {
         formData.set(key, value)

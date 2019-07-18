@@ -11,20 +11,6 @@ class OAuth2Verifier extends Verifier {
     super(app, options)
   }
 
-  _updateEntity (entity, data) {
-    const options = this.options
-    const name = options.name
-    const id = entity[this.service.id]
-    debug(`Patching ${options.entity}: ${id}`)
-
-    const newData = {
-      [options.idField]: data.profile.id,
-      [name]: data
-    }
-
-    return this.service.patch(id, newData)
-  }
-
   verify (req, accessToken, refreshToken, profile, done) {
     debug('Checking credentials')
     const options = this.options

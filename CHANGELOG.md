@@ -1,5 +1,81 @@
 # Changelog
 
+## [v1.1.2](https://github.com/kalisio/kCore/tree/v1.1.2) (2019-05-15)
+
+[Full Changelog](https://github.com/kalisio/kCore/compare/v1.1.1...v1.1.2)
+
+**Fixed bugs:**
+
+- Sometimes editors cannot build their forms [\#126](https://github.com/kalisio/kCore/issues/126)
+
+## [v1.1.1](https://github.com/kalisio/kCore/tree/v1.1.1) (2019-05-14)
+
+[Full Changelog](https://github.com/kalisio/kCore/compare/v1.1.0...v1.1.1)
+
+**Fixed bugs:**
+
+- KScreenHeader does not update its message according to app flavor [\#125](https://github.com/kalisio/kCore/issues/125)
+
+## [v1.1.0](https://github.com/kalisio/kCore/tree/v1.1.0) (2019-04-18)
+
+[Full Changelog](https://github.com/kalisio/kCore/compare/v1.0.7...v1.1.0)
+
+**Implemented enhancements:**
+
+- Allow rich formatting in card description [\#117](https://github.com/kalisio/kCore/issues/117)
+- KEditor should manage groups of fields [\#113](https://github.com/kalisio/kCore/issues/113)
+- No event emitted when closing a modal editor [\#111](https://github.com/kalisio/kCore/issues/111)
+- Add a client service to manage local settings [\#109](https://github.com/kalisio/kCore/issues/109)
+- Add global Vue filters to ease string case conversion [\#108](https://github.com/kalisio/kCore/issues/108)
+- The KMediaBrowser should allow to download the target image/document [\#84](https://github.com/kalisio/kCore/issues/84)
+- Allow to use documents \(eg PDF\) as attachments [\#83](https://github.com/kalisio/kCore/issues/83)
+
+**Fixed bugs:**
+
+- Impossible to use the actions when browsing medias [\#122](https://github.com/kalisio/kCore/issues/122)
+- Uploader does not work on Firefox [\#121](https://github.com/kalisio/kCore/issues/121)
+- File download in KMediaBrowser does not work in a mobile application [\#118](https://github.com/kalisio/kCore/issues/118)
+- KUploader does not work in HTTP transport mode [\#115](https://github.com/kalisio/kCore/issues/115)
+- Translation not handled in editor title on update [\#110](https://github.com/kalisio/kCore/issues/110)
+- Google+ API deprecation [\#102](https://github.com/kalisio/kCore/issues/102)
+- Problem when using different OAuth providers with the same e-mail [\#1](https://github.com/kalisio/kCore/issues/1)
+
+## [v1.0.7](https://github.com/kalisio/kCore/tree/v1.0.7) (2019-02-25)
+
+[Full Changelog](https://github.com/kalisio/kCore/compare/airtac-v0.1.0...v1.0.7)
+
+## [airtac-v0.1.0](https://github.com/kalisio/kCore/tree/airtac-v0.1.0) (2019-02-12)
+
+[Full Changelog](https://github.com/kalisio/kCore/compare/v1.0.6...airtac-v0.1.0)
+
+**Implemented enhancements:**
+
+- Allow to deactivate pagination on the client side [\#107](https://github.com/kalisio/kCore/issues/107)
+
+## [v1.0.6](https://github.com/kalisio/kCore/tree/v1.0.6) (2019-01-13)
+
+[Full Changelog](https://github.com/kalisio/kCore/compare/v1.0.5...v1.0.6)
+
+**Implemented enhancements:**
+
+- Allow to configure the additionnal links within the various authentication screens [\#100](https://github.com/kalisio/kCore/issues/100)
+- Create a new Widget component [\#99](https://github.com/kalisio/kCore/issues/99)
+- Create a time controller [\#87](https://github.com/kalisio/kCore/issues/87)
+
+**Fixed bugs:**
+
+- Create a KList component [\#104](https://github.com/kalisio/kCore/issues/104)
+- ObjectID conversion hook clears $in query clause on fields [\#103](https://github.com/kalisio/kCore/issues/103)
+- Uploading files on a slow network does not work [\#98](https://github.com/kalisio/kCore/issues/98)
+
+## [v1.0.5](https://github.com/kalisio/kCore/tree/v1.0.5) (2018-12-03)
+
+[Full Changelog](https://github.com/kalisio/kCore/compare/v1.0.4...v1.0.5)
+
+**Fixed bugs:**
+
+- Filling a form causes validation to occur [\#97](https://github.com/kalisio/kCore/issues/97)
+
 ## [v1.0.4](https://github.com/kalisio/kCore/tree/v1.0.4) (2018-11-30)
 
 [Full Changelog](https://github.com/kalisio/kCore/compare/v1.0.3...v1.0.4)

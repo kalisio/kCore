@@ -1,8 +1,13 @@
 import { TooManyRequests, Forbidden } from '@feathersjs/errors'
+import { SKIP } from '@feathersjs/feathers'
 import { RateLimiter } from 'limiter'
 import makeDebug from 'debug'
 
 const debug = makeDebug('kalisio:kCore:service:hooks')
+
+export function skipEvents (hook) {
+  return SKIP
+}
 
 export function rateLimit (options) {
   const limiter = new RateLimiter(options.tokensPerInterval, options.interval)

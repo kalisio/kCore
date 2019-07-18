@@ -6,6 +6,7 @@
   "CLOSE": "Fermer",
   "SEARCH": "Rechercher",
   "DONE": "Ok",
+  "RETRY": "Réessayer",
   "EMPTY": "Aucun élément",
   "ANONYMOUS": "Anonyme",
   "errors": {
@@ -52,7 +53,7 @@
     "EMAIL_FIELD_HELPER": "Saisissez votre adresse mail",
     "CHANGE_ENDPOINT_LINK": "Modifier l'adresse du serveur",
     "DEVELOPMENT_VERSION": "VERSION DE DEVELOPPEMENT",
-    "TESTING_VERSION": "VERSION DE TEST", 
+    "TEST_VERSION": "VERSION DE TEST", 
     "KDK_POWERED": "Réalisé avec KDK (Kalisio's Development Kit)"
   },
   "KLogin": {

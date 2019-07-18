@@ -21,29 +21,40 @@ let baseActivityMixin = {
   methods: {
     registerTabAction (action) {
       this.registerAction('tabBar', action)
-      action.uid = uid()
-      this.$store.patch('tabBar', { tabs: _.concat(this.$store.get('tabBar.tabs'), action) })
+      this.$store.patch('tabBar', { tabs: this.getActions('tabBar') })
+    },
+    unregisterTabAction (nameOrId) {
+      this.unregisterAction('tabBar', nameOrId)
+      this.$store.patch('tabBar', { tabs: this.getActions('tabBar') })
     },
     registerFabAction (action) {
       this.registerAction('fab', action)
-      this.$store.patch('fab', { actions: _.concat(this.$store.get('fab.actions'), action) })
+      this.$store.patch('fab', { actions: this.getActions('fab') })
+    },
+    unregisterFabAction (nameOrId) {
+      this.unregisterAction('fab', nameOrId)
+      this.$store.patch('fab', { actions: this.getActions('fab') })
     },
     registerAction (type, action) {
       action.id = _.kebabCase(action.name)
+      action.uid = uid()
       if (!this.actions[type]) this.actions[type] = []
       this.actions[type].push(action)
+    },
+    unregisterAction (type, nameOrId) {
+      // Ensure we convert to the right case when using name
+      const id = _.kebabCase(nameOrId)
+      if (!this.actions[type]) return
+      _.remove(this.actions[type], (action) => (action.id === id) || (action.uid === id))
     },
     getActions (type) {
       return this.actions[type] || []
     },
-    getAction (name, type) {
-      let action = null
-      _.forOwn(this.actions, (value, key) => {
-        if (type && key !== type) return
-        let actionForType = value.find(action => action.name === name)
-        if (actionForType) action = actionForType
-      })
-      return action
+    getAction (nameOrId, type) {
+      // Ensure we convert to the right case when using name
+      const id = _.kebabCase(nameOrId)
+      const actions = this.getActions(type)
+      return _.find(actions, (action) => (action.id === id) || (action.uid === id))
     },
     clearActions () {
       // Clear tabBar actions

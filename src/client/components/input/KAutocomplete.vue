@@ -1,7 +1,7 @@
 <template>
   <!-- TODO Quasar v1 migration --><div>TODO TEMP REMOVE ME</div>
   <!-- <q-search v-model="pattern" @change="onChanged" :placeholder="$t('KAutocomplete.PLACEHOLDER')">
-    <q-autocomplete @search="onSearch" @selected="onSelected" />
+    <q-autocomplete @search="onSearch" @selected="onSelected" @keyup.enter="onSelected"/>
   </q-search> -->
 </template>
 

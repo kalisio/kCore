@@ -72,13 +72,16 @@ export default {
       // Setup the component
       let component = {}
       component.name = element[0]
-      component.renderer = _.kebabCase(_.last(_.split(element[1], '/')))
-      // Load the renderer
-      if (!this.$options.components[component.key]) {
-        this.$options.components[component.renderer] = this.$load(element[1])
+      const componentClass = element[1]
+      if (componentClass) {
+        component.renderer = _.kebabCase(_.last(_.split(componentClass, '/')))
+        // Load the renderer
+        if (!this.$options.components[component.renderer]) {
+          this.$options.components[component.renderer] = this.$load(componentClass)
+        }
+        // Add the component to the components array
+        this.components.push(component)
       }
-      // Add the component to the components array
-      this.components.push(component)
     })
   }
 }

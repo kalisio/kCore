@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { serialize, updateAbilities, populatePreviousObject, enforcePasswordPolicy, storePreviousPassword } from '../../hooks'
 const { hashPassword } = require('@feathersjs/authentication-local').hooks
 const commonHooks = require('feathers-hooks-common')
@@ -8,6 +9,8 @@ module.exports = {
     find: [],
     get: [],
     create: [
+      commonHooks.when(hook => _.get(hook.app.get('authentication'), 'disallowRegistration'),
+        commonHooks.disallow('external')),
       commonHooks.when(hook => hook.data.googleId, serialize([
         { source: 'google.profile.displayName', target: 'name' },
         { source: 'google.profile.emails[0].value', target: 'email' }

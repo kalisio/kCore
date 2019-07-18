@@ -156,7 +156,7 @@ export function createProxyService (options) {
   function proxyParams (params) {
     if (options.params) {
       let proxiedParams
-      if (options.params === 'function') {
+      if (typeof options.params === 'function') {
         proxiedParams = options.params(params)
       } else {
         proxiedParams = _.merge(params, options.params)
@@ -194,6 +194,7 @@ export function createService (name, app, options = {}) {
     name: name,
     paginate
   }, options)
+  if (serviceOptions.disabled) return undefined
   // For DB services a model has to be provided
   let fileName = serviceOptions.fileName || name
 
@@ -429,6 +430,12 @@ export function kalisio () {
   // Then setup logger
   setupLogger(app.get('logs'))
 
+  // This retrieve corresponding service options from app config if any
+  app.getServiceOptions = function (name) {
+    const services = app.get('services')
+    if (!services) return {}
+    return _.get(services, name, {})
+  }
   // This avoid managing the API path before each service name
   app.getService = function (path, context) {
     // Context is given as string ID

@@ -1,7 +1,9 @@
 <template>
   <div class="column">
+    <!-- Non-grouped fields first -->
     <template v-for="field in fields">
       <component
+        v-if="!field.group"
         :key="field.name"
         :is="field.componentKey"
         :ref="field.name"
@@ -11,12 +13,30 @@
         @field-changed="onFieldChanged"
       />
     </template>
+    <!-- Grouped fields then -->
+    <template v-for="group in groups">
+      <q-expansion-item icon="wrap_text" :group="group" :label="$t(group)">
+        <template v-for="field in fields">
+          <component
+            v-if="field.group === group"
+            :key="field.name"
+            :is="field.componentKey"
+            :ref="field.name"
+            :required="field.required"
+            :properties="field"
+            :display="display"
+            @field-changed="onFieldChanged"
+          />
+        </template>
+      </q-expansion-item>
+    </template>
   </div>
 </template>
 
 <script>
 import _ from 'lodash'
 import logger from 'loglevel'
+import { QExpansionItem } from 'quasar'
 import Ajv from 'ajv'
 import AjvLocalize from 'ajv-i18n'
 import mixins from '../../mixins'
@@ -34,6 +54,9 @@ export default {
   mixins: [
     mixins.refsResolver()
   ],
+  components: {
+    QExpansionItem
+  },
   props: {
     schema: {
       type: Object,
@@ -56,7 +79,8 @@ export default {
   },
   data () {
     return {
-      fields: []
+      fields: [],
+      groups: []
     }
   },
   methods: {
@@ -99,6 +123,7 @@ export default {
     buildFields  () {
       // Clear the fields states
       this.fields = []
+      this.groups = []
       this.nbExpectedFields = Object.keys(this.schema.properties).length
       this.nbReadyFields = 0
       // Build the fields
@@ -114,6 +139,7 @@ export default {
         field['componentKey'] = componentKey
         // Adds the field to the list of fields to be rendered
         this.fields.push(field)
+        if (field.group && !this.groups.includes(field.group)) this.groups.push(field.group)
         // 3- load the component if not previously loaded
         if (!this.$options.components[componentKey]) {
           this.$options.components[componentKey] = this.$load(field.field.component)
@@ -125,7 +151,10 @@ export default {
       this.setRefs(this.fields.map(field => field.name))
       return this.loadRefs()
     },
-    build () {
+    async build () {
+      // Since schema is injected in form we need to make sure Vue.js has processed props
+      // This could be done externally but adding it here we ensure no one will forget it
+      await this.$nextTick()
       if (!this.schema) throw Error('Cannot build the form without schema')
       logger.debug('Building form', this.schema.$id)
       // Test in cache first

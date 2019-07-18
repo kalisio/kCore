@@ -1,6 +1,6 @@
 <template>
   <div :class="layout()">
-    <q-card >
+    <q-card @click="onItemSelected">
       <!--
         Title section
       -->
@@ -101,9 +101,11 @@ import { QCard, QCardSection, QCardActions, QSeparator, QBtn, QIcon,
          QMenu, QList, QItem, QItemSection, QItemLabel, QTooltip, QChip } from 'quasar'
 import { Avatar } from 'vue-avatar'
 import { KTextArea } from '../frame'
+import mixins from '../../mixins'
 
 export default {
   name: 'k-card',
+  mixins: [mixins.baseItem],
   components: {
     QCard,
     QCardSection,
