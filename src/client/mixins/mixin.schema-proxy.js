@@ -36,6 +36,9 @@ let schemaProxyMixin = {
     async loadSchemaFromResource (schemaName) {
       try {
         this.schema = await this.$load(schemaName, 'schema')
+        // FIXME: not yet sure why this is now required, might be related to
+        // https://forum.vuejs.org/t/solved-using-standalone-version-but-getting-failed-to-mount-component-template-or-render-function-not-defined/19569/2
+        if (this.schema.default) this.schema = this.schema.default
         return this.schema
       } catch (error) {
         Events.$emit('error', error)
