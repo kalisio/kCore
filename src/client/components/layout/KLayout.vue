@@ -1,16 +1,12 @@
 <template>
-  <q-layout
-    ref="layout"
-    v-bind="options"
-    @left-breakpoint="onSideNavBreakpoint"
-    @right-breakpoint="onRightPanelBreakpoint">
+  <q-layout ref="layout" v-bind="options">
     <!--
       The AppBar
     -->
     <!-- TODO -->
     <!-- <div slot="header"> -->
     <q-header>
-      <k-app-bar id="app-bar" :has-side-nav-toggle="!left" @side-nav-toggled="onSideNavToggled" />
+      <k-app-bar id="app-bar" :has-side-nav-toggle="!leftDrawer" @side-nav-toggled="leftDrawer=!leftDrawer" />
       <!-- TODO -->
       <k-tab-bar id="tab-bar" />
       <!-- TODO -->
@@ -19,18 +15,14 @@
     <!--
       The SideNav
     -->
-    <!-- TODO -->
-    <!-- <div slot="left"> -->
-    <q-drawer v-model="left" side="left" bordered>
-      <k-side-nav id="side-nav" :closable="left" @side-nav-toggled="onSideNavToggled" />
+    <q-drawer v-model="leftDrawer" side="left" bordered>
+      <k-side-nav id="side-nav" :closable="leftDrawer" />
     </q-drawer>
      <!--
       The right pane
-    -->
-    <!-- TODO -->
-    <!-- <div slot="right"> -->
-    <q-drawer v-model="right" side="right" bordered>
-      <k-right-panel id="right-panel" :closable="right" @right-panel-toggled="onRightPanelToggled" />
+     -->
+    <q-drawer v-model="rightDrawer" side="right" bordered>
+      <k-right-panel id="right-panel" :closable="rightDrawer" />
     </q-drawer>
     <!--
       The TabBar
@@ -57,35 +49,39 @@
 
 <script>
 import _ from 'lodash'
-import { QLayout, QHeader, QDrawer, QPageContainer } from 'quasar'
 
 export default {
   name: 'k-layout',
-  components: {
-    QLayout,
-    QHeader,
-    QDrawer,
-    QPageContainer
+  provide () {
+    return {
+      'klayout': this
+    }
   },
   data () {
     return {
-      left: true,
-      right: false,
+      leftDrawer: false,
+      rightDrawer: false,
       options: {}
     }
   },
   methods: {
-    onSideNavToggled () {
-      this.left = !this.left
+    showLeftDrawer () {
+      this.leftDrawer = true
     },
-    onSideNavBreakpoint (toggle) {
-      this.left = toggle
+    hideLeftDrawer () {
+      this.leftDrawer = false
     },
-    onRightPanelToggled () {
-      this.right = !this.right
+    toggleLeftDrawer () {
+      this.leftDrawer = !this.leftDrawer
     },
-    onRightPanelBreakpoint (toggle) {
-      this.right = toggle
+    showRightDrawer () {
+      this.rightDrawer = true
+    },
+    hideRightDrawer () {
+      this.rightDrawer = false
+    },
+    toggleRightDrawer () {
+      this.rightDrawer = !this.rightDrawer
     }
   },
   created () {
@@ -96,11 +92,6 @@ export default {
     this.$options.components['k-search-bar'] = this.$load(_.get(this.options, 'searchBar', 'layout/KSearchBar'))
     this.$options.components['k-tab-bar'] = this.$load(_.get(this.options, 'tabBar', 'layout/KTabBar'))
     this.$options.components['k-fab'] = this.$load(_.get(this.options, 'fab', 'layout/KFab'))
-  },
-  mounted () {
-    this.$events.$on('speech-recognition', phrases => {
-      if (phrases.includes('menu')) this.onMenuToggled()
-    })
   }
 }
 </script>

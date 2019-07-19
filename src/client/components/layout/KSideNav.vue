@@ -40,7 +40,7 @@ export default {
       sideNav: this
     }
   },
-  inject: ['layout'],
+  inject: ['klayout'],
   props: {
     closable: {
       type: Boolean,
@@ -56,7 +56,8 @@ export default {
   methods: {
     navigate (route) {
       // TODO fix this - Quasar v1 does not support "hideCurrentSide"
-      this.layout.hideCurrentSide(() => this.$router.push(route))
+      this.klayout.hideLeftDrawer()
+      this.$router.push(route)
     }
   },
   created () {

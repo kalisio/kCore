@@ -7,7 +7,7 @@
       :self="currentSelf"
       max-height="100%"
       :style="currentCss"
-      v-model="menuOpened"
+      persistent
     >
         <!--
          Toolbar section
@@ -84,11 +84,6 @@ export default {
       }
     }
   },
-  data () {
-    return {
-      menuOpened: false
-    }
-  },
   computed: {
     currentCorner () {
       return this.corner[this.mode]
@@ -121,7 +116,8 @@ export default {
   },
   data () {
     return {
-      mode: 'minimized'
+      mode: 'minimized',
+      isOpened: false
     }
   },
   methods: {
@@ -136,30 +132,20 @@ export default {
       await this.setMode(this.mode === 'minimized' ? 'maximized' : 'minimized')
     },
     open (fn) {
-      if (!this.menuOpened) {
-        // Quasar popover is not persistent and closes when clicking outside
-        // We manually remove event listeners so that it becomes persistent
-
-        // TODO is this still relevant after migration to Quasar v1 ?
-        setTimeout(() => {
-          document.body.removeEventListener('click', this.$refs.popover.hide, true)
-          document.body.removeEventListener('touchstart', this.$refs.popover.hide, true)
-        }, 1000)
-      }
       this.$refs.popover.show(fn)
     },
     close (fn) {
       this.$refs.popover.hide(fn)
     },
     toggle (onClose) {
-      if (!this.menuOpened) {
+      if (!this.isOpened) {
         this.open()
       } else {
         this.close(onClose)
       }
     },
     isOpen () {
-      return this.menuOpened
+      return this.isOpened
     },
     onOpen () {
       this.$emit('state-changed', this.mode)
