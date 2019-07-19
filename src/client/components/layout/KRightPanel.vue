@@ -19,14 +19,9 @@
 
 <script>
 import _ from 'lodash'
-import { QBtn, QIcon } from 'quasar'
 
 export default {
   name: 'k-right-panel',
-  components: {
-    QBtn,
-    QIcon
-  },
   props: {
     closable: {
       type: Boolean,

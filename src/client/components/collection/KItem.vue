@@ -39,7 +39,7 @@
         <q-icon name="more_vert" />
 
         <q-menu>
-          <q-list link>
+          <q-list>
             <q-item v-for="action in itemActions" :key="key(action, 'label')">
               <q-item-label @click="onActionTriggered(action, item)">{{ action.label }}</q-item-label>
             </q-item>
@@ -52,22 +52,11 @@
 
 <script>
 import _ from 'lodash'
-import { QList, QItem, QItemSection, QItemLabel, QIcon, QAvatar, QBtn, QMenu } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-item',
   mixins: [mixins.baseItem],
-  components: {
-    QList,
-    QItem,
-    QItemSection,
-    QItemLabel,
-    QIcon,
-    QAvatar,
-    QBtn,
-    QMenu
-  },
   props: {
     item: {
       type: Object,

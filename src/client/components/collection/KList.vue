@@ -1,20 +1,22 @@
 <template>
-  <q-list highlight separator v-if="items.length > 0">
-    <template v-for="item in items">
-      <component :id="item._id" :key="item._id" :item="item" :contextId="contextId" :is="renderer.component" v-bind="renderer.props" @item-selected="onItemSelected(item)"/>
-    </template>
-    <div class="self-center" v-if="nbPages > 1">
-      <q-pagination v-model="currentPage" :max="nbPages" style="padding: 18px" @input="onPageChanged" />
+  <div class="row">
+    <div v-if="items.length > 0" class="col-12">
+      <q-list  class="col-12" highlight separator>
+        <template v-for="item in items">
+          <component :id="item._id" :key="item._id" :item="item" :contextId="contextId" :is="renderer.component" v-bind="renderer.props" @item-selected="onItemSelected(item)"/>
+        </template>
+      </q-list>
+      <div class="self-center" v-if="nbPages > 1">
+        <q-pagination v-model="currentPage" :max="nbPages" style="padding: 18px" @input="onPageChanged" />
+      </div>
     </div>
-  </q-list>
-  <q-list v-else class="column items-center">
-    <div>
+    <div v-else class="col-12 items-center">
       <q-icon size="2rem" name="error_outline" />
+      <div class="message">
+        {{$t('KList.EMPTY_LIST')}}
+      </div>
     </div>
-    <div class="message">
-      {{$t('KList.EMPTY_LIST')}}
-    </div>
-  </q-list>
+  </div>
 </template>
 
 <script>
