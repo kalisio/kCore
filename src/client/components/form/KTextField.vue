@@ -9,14 +9,13 @@
     :disabled="disabled"
   >
     <q-input
+      v-if="!readonly"
       :id="properties.name + '-field'"
       type="text"
       v-model="model"
       clearable
-      :inverted="readonly"
-      :readonly="readonly"
-      :color="backgroundcolor"
       @blur="onChanged" />
+    <p v-else>{{model}}</p>
   </q-field>
 </template>
 

@@ -8,8 +8,8 @@
     :error="hasError"
     :disabled="disabled"
   >
-  <a :href="'mailto:'+model+'?subject=Kalisio'">
     <q-input
+      v-if="!readonly"
       :id="properties.name + '-field'"
       type="email"
       v-model="model"
@@ -18,7 +18,7 @@
       :inverted="readonly"
       :readonly="readonly"
       :color="backgroundcolor" />
-  </a>
+    <a :href="'mailto:'+model+'?subject=Kalisio'" v-else>{{model}}</a>      
   </q-field>
 </template>
 

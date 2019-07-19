@@ -13,8 +13,7 @@
       v-model="model" 
       @change="onChanged"
       @blur="onChanged"
-      :disable="readonly"
-      :color="backgroundcolor" />
+      :disable="readonly"/>
   </q-field>
 </template>
 

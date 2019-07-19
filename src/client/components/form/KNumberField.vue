@@ -9,6 +9,7 @@
     :disabled="disabled"
   >
     <q-input
+      v-if="!readonly"
       :id="properties.name + '-field'"
       type="number"
       v-model="model"
@@ -17,6 +18,7 @@
       :inverted="readonly"
       :readonly="readonly"
       :color="backgroundcolor" />
+    <p v-else>{{model}}</p>
   </q-field>
 </template>
 

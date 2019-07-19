@@ -8,17 +8,14 @@
     :error="hasError"
     :disabled="disabled"
   >
-  <a :href="'tel:'+model">
     <q-input
+      v-if="!readonly"
       :id="properties.name + '-field'"
       type="tel"
       v-model="model"
       clearable
-      @blur="onChanged"
-      :inverted="readonly"
-      :readonly="readonly"
-      :color="backgroundcolor" />
-  </a>
+      @blur="onChanged"/>
+    <a :href="'tel:'+model" v-else>{{model}}</a>
   </q-field>
 </template>
 

@@ -9,6 +9,7 @@
     :disabled="disabled"
   >
     <q-datetime
+      v-if="!readonly"
       :id="properties.name + '-field'"
       v-model="model"
       v-bind="properties.field"
@@ -16,6 +17,7 @@
       :disable="readonly"
       :inverted="readonly"
       :color="backgroundcolor" />
+    <p v-else>{{model}}</p>
   </q-field>
 </template>
 

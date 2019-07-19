@@ -9,6 +9,7 @@
     :disabled="disabled"
   >
     <q-input
+      v-if="!readonly"
       :id="properties.name + '-field'"
       type="url"
       v-model="model"
@@ -17,6 +18,7 @@
       :inverted="readonly"
       :readonly="readonly"
       :color="backgroundcolor" />
+    <a :href="'https://'+model" v-else target="_blank">{{model}}</a>
   </q-field>
 </template>
 

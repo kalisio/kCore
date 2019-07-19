@@ -9,6 +9,7 @@
     :disabled="disabled"
   >
     <q-input
+      v-if="!readonly"
       :id="properties.name + '-field'"
       type="textarea"
       v-model="model"
@@ -17,6 +18,7 @@
       :readonly="readonly"
       :color="backgroundcolor"
       @blur="onChanged" />
+    <p v-else>{{model}}</p>
   </q-field>
 </template>
 

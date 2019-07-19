@@ -10,7 +10,7 @@
       :disabled="disabled"
     >
       <div class="row justify-start items-center">
-        <div :class="inputClass">
+        <div v-if="!readonly" :class="inputClass">
           <q-input type="text" v-model="input" :after="inputActions" @keyup.enter="onChipAdded()"/>
         </div>
         <div class="col-auto" v-if="chips.length > 0">
@@ -22,7 +22,8 @@
               :color="chip.icon.color" 
               @close="onChipRemoved(chip)" 
               @click="onChipClicked(chip)" 
-              closable>
+              :closable="!readonly"
+              :disable="readonly">
               {{chip.value}}
             </q-chip>
           </template>
@@ -105,7 +106,7 @@ export default {
     },
     onChipClicked (chip) {
       this.selectedChip = chip
-      this.$refs.iconChooser.open(chip.icon)
+      this.readonly ? false : this.$refs.iconChooser.open(chip.icon)
     },
     onIconChoosed (icon) {
       this.selectedChip.icon = Object.assign({}, icon)
