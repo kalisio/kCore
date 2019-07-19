@@ -1,9 +1,9 @@
 <template>
-  <div v-if="component!==''" class="col">
+  <div v-if="component!==''" class="row">
     <!--
      Close action
     -->
-    <div v-if="closable" class="row justify-start">
+    <div v-if="closable" class="col-12">
       <q-btn id="right-panel-close" flat color="secondary" @click="$emit('right-panel-toggled')">
         <q-icon name="chevron_right" />
       </q-btn>
@@ -11,7 +11,7 @@
     <!--
      The child component
     -->
-    <div class="row">
+    <div class="col-12">
       <component :is="component" v-bind="content" />
     </div>
   </div>
