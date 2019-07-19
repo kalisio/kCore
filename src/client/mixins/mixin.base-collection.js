@@ -51,11 +51,12 @@ let baseCollectionMixin = {
     },
     getCollectionPaginationQuery () {
       // This method can be overriden in activities
-      if (this.nbItemsPerPage > 0) return {
-        $limit: this.nbItemsPerPage,
-        $skip: (this.currentPage - 1) * this.nbItemsPerPage
-      }
-      else return {}
+      if (this.nbItemsPerPage > 0) {
+        return {
+          $limit: this.nbItemsPerPage,
+          $skip: (this.currentPage - 1) * this.nbItemsPerPage
+        }
+      } else return {}
     },
     refreshCollection () {
       // Add locale to perform sorting (i.e. collation) correctly w.r.t. user's language

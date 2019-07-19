@@ -23,32 +23,32 @@ export default {
     radius: { type: Number, default: 100 },
     closeOnClick: { type: Boolean, default: true }
   },
-  data() {
+  data () {
     return {
       isOpen: false
     }
   },
-  beforeUpdate() {
+  beforeUpdate () {
     this.setChildProps()
   },
   methods: {
-    open() {
+    open () {
       if (!this.isOpen) {
         this.isOpen = true
         this.$emit('open')
       }
     },
-    close() {
+    close () {
       if (this.isOpen) {
         this.isOpen = false
         this.$emit('close')
       }
     },
-    toggle() {
+    toggle () {
       if (this.isOpen) this.close()
       else this.open()
     },
-    setChildProps() {
+    setChildProps () {
       // Not yet ready ?
       if (!this.$slots.default) return
       // Manually add prop data to the items
@@ -66,7 +66,7 @@ export default {
       items.forEach((propData, index) => {
         propData.left =
           -1 * (Math.cos(angles[index]) * radius) // -1 to have the items in the right order
-        propData.top = - Math.sin(angles[index]) * radius
+        propData.top = -Math.sin(angles[index]) * radius
         if (this.closeOnClick) propData.handler = this.close // To prevent double emiting click event
       })
     }

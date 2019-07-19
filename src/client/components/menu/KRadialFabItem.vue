@@ -14,7 +14,7 @@
 export default {
   name: 'k-radial-fab-item',
   props: ['top', 'left', 'height', 'width', 'handler'],
-  data() {
+  data () {
     const { top, left, height, width } = this
     return {
       style: {
@@ -26,7 +26,7 @@ export default {
     }
   },
   methods: {
-    handleClick(event) {
+    handleClick (event) {
       this.$emit('click', event)
       if (this.handler) this.handler(event)
     }

@@ -236,10 +236,10 @@ export function createService (name, app, options = {}) {
   let contextId
   if (serviceOptions.context) {
     contextId = (typeof serviceOptions.context === 'object'
-      ? (ObjectID.isValid(serviceOptions.context) ?
-        serviceOptions.context.toString() :
-        serviceOptions.context._id.toString()) :
-      serviceOptions.context)
+      ? (ObjectID.isValid(serviceOptions.context)
+        ? serviceOptions.context.toString()
+        : serviceOptions.context._id.toString())
+      : serviceOptions.context)
     servicePath = contextId + '/' + servicePath
   }
   service = declareService(servicePath, app, service, serviceOptions.middlewares)

@@ -21,6 +21,7 @@ import { KForm } from '../form'
 import { KBtn } from '../input'
 import mixins from '../../mixins'
 import { getLocale } from '../../utils'
+import { Events } from '../events'
 
 export default {
   name: 'k-register',
@@ -92,21 +93,19 @@ export default {
         'required': ['name', 'email', 'password', 'confirmPassword', 'consentTerms']
       }
     },
-    onRegister (event) {
+    async onRegister (event) {
       let result = this.$refs.form.validate()
-
       if (result.isValid) {
         event.loading(true)
-
         // Add the locale information
         result.values.locale = getLocale()
-        this.register(result.values)
-        .then(() => {
+        try {
+          await this.register(result.values)
           event.loading(false)
-        })
-        .catch(error => {
+        } catch (error) {
           event.loading(false)
-        })
+          Events.$emit('error', error)
+        }
       }
     }
   },

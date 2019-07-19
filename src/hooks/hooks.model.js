@@ -108,7 +108,7 @@ export function processObjectIDs (hook) {
   replaceItems(hook, isArray ? items : items[0])
 
   if (hook.params.query) objectifyIDs(hook.params.query)
-  
+
   return hook
 }
 

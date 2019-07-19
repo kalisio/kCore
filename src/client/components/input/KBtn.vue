@@ -36,7 +36,7 @@ export default {
       this.$emit('click', {loading: this.loading})
     },
     loading (value) {
-      this.isLoading = value;
+      this.isLoading = value
     }
   }
 }

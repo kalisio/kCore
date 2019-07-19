@@ -188,7 +188,6 @@ export default function baseEditorMixin (formRefs) {
         }
 
         if (this.getService()) {
-
           let start = () => {
             if (event.loading) {
               event.loading(true)

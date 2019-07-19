@@ -64,7 +64,7 @@ export default {
       }
     },
     onClickAccount () {
-      this.$router.push({ name: 'account-activity', params: { perspective: 'profile' }})
+      this.$router.push({ name: 'account-activity', params: { perspective: 'profile' } })
     }
   },
   created () {

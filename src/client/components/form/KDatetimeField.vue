@@ -20,7 +20,7 @@
 <script>
 // TODO quasar v1: QDatetime is not supported anymore - split into QDate and QTime
 import { QField } from 'quasar'
-//import { QField, QDatetime } from 'quasar'
+// import { QField, QDatetime } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
