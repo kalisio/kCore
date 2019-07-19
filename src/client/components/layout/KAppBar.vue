@@ -3,7 +3,7 @@
     <!--
       SideNav toggle
      -->
-    <q-btn id="side-nav-toggle" v-if="hasSideNavToggle" flat @click="$emit('side-nav-toggled')">
+    <q-btn id="left-drawer-toggle" v-if="hasLeftDrawerToggle" flat @click="$emit('left-drawer-toggled')">
       <q-icon name="menu" />
     </q-btn>
     <!--
@@ -73,7 +73,7 @@ export default {
     QTooltip
   },
   props: {
-    hasSideNavToggle: {
+    hasLeftDrawerToggle: {
       type: Boolean,
       required: true
     }

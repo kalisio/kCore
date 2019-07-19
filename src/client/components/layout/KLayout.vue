@@ -6,7 +6,7 @@
     <!-- TODO -->
     <!-- <div slot="header"> -->
     <q-header>
-      <k-app-bar id="app-bar" :has-side-nav-toggle="!leftDrawer" @side-nav-toggled="leftDrawer=!leftDrawer" />
+      <k-app-bar id="app-bar" :has-left-drawer-toggle="!leftDrawer" @left-drawer-toggled="leftDrawer=!leftDrawer" />
       <!-- TODO -->
       <k-tab-bar id="tab-bar" />
       <!-- TODO -->
@@ -15,14 +15,14 @@
     <!--
       The SideNav
     -->
-    <q-drawer v-model="leftDrawer" side="left" bordered>
-      <k-side-nav id="side-nav" :closable="leftDrawer" />
+    <q-drawer v-model="leftDrawer" v-bind="options.leftDrawer" side="left" bordered>
+      <k-side-nav id="side-nav" :closable="options.leftDrawer.behavior !== 'mobile'" />
     </q-drawer>
      <!--
       The right pane
      -->
-    <q-drawer v-model="rightDrawer" side="right" bordered>
-      <k-right-panel id="right-panel" :closable="rightDrawer" />
+    <q-drawer v-model="rightDrawer" v-bind="options.rightDrawer" side="right" bordered>
+      <k-right-panel id="right-panel" :closable="options.rightDrawer.behavior !== 'mobile'" />
     </q-drawer>
     <!--
       The TabBar
