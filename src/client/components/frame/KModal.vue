@@ -1,7 +1,7 @@
 <template>
   <q-dialog ref="modal" no-esc-dismiss no-backdrop-dismiss :content-style="options"
            @show="$emit('opened')" @hide="$emit('closed')" :maximized="options.maximized">
-    <div class="column">
+    <q-card class="column">
       <!--
          Toolbar section
        -->
@@ -41,7 +41,7 @@
           </div>
         </slot>
       </div>
-    </div>
+    </q-card>
   </q-dialog>
 </template>
 

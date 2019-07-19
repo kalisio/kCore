@@ -240,21 +240,19 @@ export default function baseEditorMixin (formRefs) {
           }
         }
       },
-      refresh () {
+      async refresh () {
         // When the service is available
-        this.loadService()
+        await this.loadService()
         // We can then load the schema/object and local refs in parallel
-        return Promise.all([
+        await Promise.all([
           this.loadSchema(),
           this.loadObject(),
           this.loadRefs()
         ])
         // We finally build the forms then fill it
-        .then(() => Promise.all(formRefs.map(name => this.$refs[name].build())))
-        .then(() => {
-          this.fillEditor()
-          this.$emit('editor-ready', this)
-        })
+        await Promise.all(formRefs.map(name => this.$refs[name].build()))
+        this.fillEditor()
+        this.$emit('editor-ready', this)
       }
     }
   }
