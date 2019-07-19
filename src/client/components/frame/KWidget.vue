@@ -1,12 +1,13 @@
 <template>
   <q-page-sticky :position="currentCorner" :offset="currentOffset">
-    <q-menu
+    <q-menu 
       ref="popover" @show="onOpen" @hide="onClose"
       :anchor-click="false"
-      anchor="center middle"
+      anchor="top left"
       :self="currentSelf"
-      max-height="100%"
-      :style="currentCss"
+      max-height="100vh"
+      max-width="100vw"
+      :content-style="currentCss"
       persistent
     >
         <!--
@@ -40,17 +41,9 @@
 
 <script>
 import _ from 'lodash'
-import { QMenu, QPageSticky, QBtn, QIcon, QTooltip } from 'quasar'
 
 export default {
-  name: 'k-k-widget',
-  components: {
-    QMenu,
-    QPageSticky,
-    QBtn,
-    QIcon,
-    QTooltip
-  },
+  name: 'k-widget',
   props: {
     title: {
       type: String,

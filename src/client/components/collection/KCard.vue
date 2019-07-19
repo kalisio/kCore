@@ -6,10 +6,6 @@
       -->
       <slot name="card-title">
         <q-item>
-          <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below may be incorrect -->
-          <!-- <q-item-side v-if="options.avatar">
-            <avatar v-if="name" :username="name" :size="options.avatar.size" />
-          </q-item-side> -->
           <q-item-section avatar v-if="options.avatar">
             <avatar v-if="name" :username="name" :size="options.avatar.size" />
           </q-item-section>

@@ -1,23 +1,21 @@
 <template>
-  <div class="row">
-    <div v-if="items.length > 0" class="col-12">
-      <q-list  class="col-12" highlight separator>
+  <div class="column items-center">
+    <div v-if="items.length > 0" class="row">
+      <q-list  class="col-12 items-center" highlight separator>
         <template v-for="item in items">
           <component :id="item._id" :key="item._id" :item="item" :contextId="contextId" :is="renderer.component" v-bind="renderer.props" @item-selected="onItemSelected(item)"/>
         </template>
       </q-list>
-      <div class="self-center" v-if="nbPages > 1">
+      <div class="col-12" v-if="nbPages > 1">
         <q-pagination v-model="currentPage" :max="nbPages" style="padding: 18px" @input="onPageChanged" />
       </div>
     </div>
-    <div v-else class="col-12">
-      <div class="row justify-center full-width">
-        <div class="self-center">
-          <q-icon size="2rem" name="error_outline" />
-        </div>
-        <div class="self-center message">
-          {{$t('KList.EMPTY_LIST')}}
-        </div>
+    <div v-else class="row">
+      <div class="col-12">
+        <q-icon size="2rem" name="error_outline" />
+      </div>
+      <div class="col-12">
+        {{$t('KList.EMPTY_LIST')}}
       </div>
     </div>
   </div>
