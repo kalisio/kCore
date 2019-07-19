@@ -1,5 +1,5 @@
 <template>
-  <q-dialog ref="modal" no-esc-dismiss no-backdrop-dismiss :content-css="options"
+  <q-dialog ref="modal" no-esc-dismiss no-backdrop-dismiss :content-style="options"
            @show="$emit('opened')" @hide="$emit('closed')" :maximized="options.maximized">
     <div class="column">
       <!--
@@ -34,9 +34,9 @@
         <slot name="dialog-actions">
           <div class="row justify-end">
             <template v-for="button in buttons">
-              <k-btn :id="button.name" :key="button.name" flat color="primary" @click="button.handler">
+              <q-btn :id="button.name" v-bind:key="button.name" loader flat color="primary" @click="button.handler">
                 {{button.label}}
-              </k-btn>
+              </q-btn>
             </template>
           </div>
         </slot>
@@ -46,18 +46,9 @@
 </template>
 
 <script>
-import { QDialog, QBtn, QIcon, QTooltip } from 'quasar'
-import { KBtn } from '../input'
 
 export default {
   name: 'k-modal',
-  components: {
-    QDialog,
-    QBtn,
-    QIcon,
-    QTooltip,
-    KBtn
-  },
   props: {
     title: {
       type: String,
@@ -87,17 +78,7 @@ export default {
       this.$refs.modal.show()
     },
     close (onClose) {
-      // FIXME: du to https://github.com/quasarframework/quasar/issues/994
-      // we force the toggleInProgress property to false in order to close the modal
-      // There is still a bug as it is needed to click twice on close the modal
-
-      // TODO is this still relevant after migration to Quasar v1 ?  What does the "onClose" event do?
       this.$refs.modal.hide(onClose)
-      // TODO is this workaround still needed  after migration to Quasar v1 ?
-      this.$nextTick(() => {
-        this.$refs.modal.toggleInProgress = false
-        this.$refs.modal.active = false
-      })
     }
   },
   mounted () {
