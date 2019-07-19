@@ -15,7 +15,7 @@
     </template>
     <!-- Grouped fields then -->
     <template v-for="group in groups">
-      <q-expansion-item icon="wrap_text" :group="group" :label="$t(group)">
+      <q-expansion-item :key="group" icon="wrap_text" :group="group" :label="$t(group)">
         <template v-for="field in fields">
           <component
             v-if="field.group === group"
