@@ -10,10 +10,14 @@
         <q-pagination v-model="currentPage" :max="nbPages" style="padding: 18px" @input="onPageChanged" />
       </div>
     </div>
-    <div v-else class="col-12 items-center">
-      <q-icon size="2rem" name="error_outline" />
-      <div class="message">
-        {{$t('KList.EMPTY_LIST')}}
+    <div v-else class="col-12">
+      <div class="row justify-center full-width">
+        <div class="self-center">
+          <q-icon size="2rem" name="error_outline" />
+        </div>
+        <div class="self-center message">
+          {{$t('KList.EMPTY_LIST')}}
+        </div>
       </div>
     </div>
   </div>
