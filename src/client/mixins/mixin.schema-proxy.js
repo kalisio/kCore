@@ -1,4 +1,5 @@
 import { createQuerablePromise } from '../utils'
+import { Events } from '../events'
 
 let schemaProxyMixin = {
   props: {
