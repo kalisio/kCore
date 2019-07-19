@@ -84,7 +84,7 @@ export default {
   methods: {
     canLogWith () {
       if (this.providers.length === 0) return false
-      else return DEV ? true : !Platform.is.cordova
+      else return process.env.DEV ? true : !Platform.is.cordova
     },
     storeCredentials () {
       return Platform.is.cordova
