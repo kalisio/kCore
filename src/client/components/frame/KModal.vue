@@ -34,9 +34,9 @@
         <slot name="dialog-actions">
           <div class="row justify-end">
             <template v-for="button in buttons">
-              <q-btn :id="button.name" v-bind:key="button.name" loader flat color="primary" @click="button.handler">
+              <k-btn :id="button.name" :key="button.name" flat color="primary" @click="button.handler">
                 {{button.label}}
-              </q-btn>
+              </k-btn>
             </template>
           </div>
         </slot>
@@ -46,9 +46,13 @@
 </template>
 
 <script>
+import { KBtn } from '../input'
 
 export default {
   name: 'k-modal',
+  components: {
+    KBtn
+  },
   props: {
     title: {
       type: String,
