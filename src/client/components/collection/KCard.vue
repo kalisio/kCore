@@ -7,7 +7,7 @@
       <slot name="card-title">
         <q-item>
           <q-item-section avatar v-if="options.avatar">
-            <avatar v-if="name" :username="name" :size="options.avatar.size" />
+            <q-avatar v-if="name" :size="options.avatar.size">{{name}}</q-avatar>
           </q-item-section>
           <q-item-label>
             <q-item-label header>{{ name }}</q-item-label>
@@ -95,7 +95,6 @@
 import _ from 'lodash'
 import { QCard, QCardSection, QCardActions, QSeparator, QBtn, QIcon,
          QMenu, QList, QItem, QItemSection, QItemLabel, QTooltip, QChip } from 'quasar'
-import { Avatar } from 'vue-avatar'
 import { KTextArea } from '../frame'
 import mixins from '../../mixins'
 
@@ -116,7 +115,6 @@ export default {
     QMenu,
     QTooltip,
     QChip,
-    Avatar,
     KTextArea
   },
   props: {

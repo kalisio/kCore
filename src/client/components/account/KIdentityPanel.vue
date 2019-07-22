@@ -4,8 +4,8 @@
       User avatar
     -->
     <div class="self-center" style="padding: 16px">
-      <avatar v-if="!avatarImage" :username="name" :size="72" />
-      <avatar v-if="avatarImage" :username="name" :src="avatarImage" :size="72" />
+      <q-avatar v-if="!avatarImage" :size="72">{{name}}</q-avatar>
+      <q-avatar v-if="avatarImage" :size="72" /><img :src="avatarImage"></q-avatar>
     </div>
     <!--
       User information
@@ -30,7 +30,6 @@
 
 <script>
 import { QList, QItem, QItemSection, QItemLabel } from 'quasar'
-import { Avatar } from 'vue-avatar'
 
 export default {
   name: 'k-identity-panel',
@@ -38,8 +37,7 @@ export default {
     QList,
     QItem,
     QItemSection,
-    QItemLabel,
-    Avatar: Avatar
+    QItemLabel
   },
   data () {
     return {
