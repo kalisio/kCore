@@ -77,3 +77,13 @@ export function getLocale () {
   }
   // return undefined by default
 }
+
+export function toast ({type, message, timeout}) {
+  // this.$q.notify returns a function that, when invoked, hides the notification
+  return this.$q.notify({
+    color: type === 'negative' ? 'red' : 'green',
+    message,
+    timeout,
+    position: 'bottom-left'
+  })
+}
