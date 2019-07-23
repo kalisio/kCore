@@ -4,24 +4,17 @@
       User avatar
     -->
     <div class="self-center" style="padding: 16px">
-      <q-avatar v-if="!avatarImage" :size="72">{{name}}</q-avatar>
-      <q-avatar v-if="avatarImage" :size="72" /><img :src="avatarImage"></q-avatar>
+      <q-avatar v-if="!avatarImage" size="72px" color="primary" text-color="white">{{initials}}</q-avatar>
+      <q-avatar v-if="avatarImage" size="72px"><img :src="avatarImage"></q-avatar>
     </div>
     <!--
       User information
     -->
     <div>
-      <q-list highlight no-border>
+      <q-list>
         <q-item id="account" @click="onClickAccount" clickable v-ripple>
-          <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below may be incorrect -->
-          <q-item-section>
-            <q-item-label>{{ name }}</q-item-label> />
-          </q-item-section>
-          <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below may be incorrect -->
-          <!-- <q-item-side icon="perm_identity" right /> -->
-          <q-item-section avatar >
-              <q-icon name="perm_identity" />
-          </q-item-section>
+          <q-item-section>{{name}}</q-item-section>
+          <q-item-section avatar><q-icon name="perm_identity"/></q-item-section>
         </q-item>
       </q-list>
     </div>
@@ -29,21 +22,18 @@
 </template>
 
 <script>
-import { QList, QItem, QItemSection, QItemLabel } from 'quasar'
+import { getInitials } from '../../utils'
 
 export default {
   name: 'k-identity-panel',
-  components: {
-    QList,
-    QItem,
-    QItemSection,
-    QItemLabel
-  },
   data () {
     return {
       name: '',
       avatarImage: ''
     }
+  },
+  computed: {
+    initials () { return getInitials(this.name) }
   },
   methods: {
     async refreshIdentity () {

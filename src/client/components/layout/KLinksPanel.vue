@@ -1,15 +1,11 @@
 <template>
   <!--q-list highlight no-border-->
   <div>
-    <q-list link no-border>
+    <q-list>
       <template v-for="(link,index) in links">
         <q-item v-if="link.label" :key="index" @click="onLinkClicked(link)" clickable v-ripple>
-          <q-item-section avatar >
-             <q-icon :name="link.icon" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label inset>{{ $t(link.label) }}</q-item-label>
-          </q-item-section>
+          <q-item-section avatar><q-icon :name="link.icon"/></q-item-section>
+          <q-item-section>{{ $t(link.label) }}</q-item-section>
         </q-item>
         <q-separator v-else :key="index" />
       </template>
@@ -18,18 +14,9 @@
 </template>
 
 <script>
-import { QList, QItem, QItemSection, QItemLabel, QIcon, QSeparator } from 'quasar'
 
 export default {
   name: 'k-links-panel',
-  components: {
-    QList,
-    QItem,
-    QItemSection,
-    QItemLabel,
-    QIcon,
-    QSeparator
-  },
   props: {
     name: {
       type: String,

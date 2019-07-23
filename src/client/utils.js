@@ -78,6 +78,11 @@ export function getLocale () {
   // return undefined by default
 }
 
+export function getInitials (name) {
+  const initials = name.toUpperCase().match(/\b\w/g) || []
+  return initials.join('')
+}
+
 export function toast ({type, message, timeout}) {
   // this.$q.notify returns a function that, when invoked, hides the notification
   return this.$q.notify({
