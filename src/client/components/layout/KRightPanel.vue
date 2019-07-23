@@ -4,7 +4,7 @@
      Close action
     -->
     <div v-if="closable" class="col-12">
-      <q-btn id="right-panel-close" flat color="secondary" @click="$emit('right-panel-toggled')">
+      <q-btn id="right-panel-close" flat color="secondary" @click="klayout.hideRightDrawer()">
         <q-icon name="chevron_right" />
       </q-btn>
     </div>
@@ -22,6 +22,7 @@ import _ from 'lodash'
 
 export default {
   name: 'k-right-panel',
+  inject: ['klayout'],
   props: {
     closable: {
       type: Boolean,

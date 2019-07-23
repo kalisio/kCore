@@ -92,6 +92,10 @@ export default {
     this.$options.components['k-search-bar'] = this.$load(_.get(this.options, 'searchBar', 'layout/KSearchBar'))
     this.$options.components['k-tab-bar'] = this.$load(_.get(this.options, 'tabBar', 'layout/KTabBar'))
     this.$options.components['k-fab'] = this.$load(_.get(this.options, 'fab', 'layout/KFab'))
+
+    if (this.options.showLeftDrawerOnStartup) {
+      this.showLeftDrawer()
+    }
   }
 }
 </script>

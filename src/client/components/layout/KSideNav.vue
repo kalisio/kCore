@@ -4,7 +4,7 @@
      Close action
     -->
     <div v-if="closable" class="row justify-end">
-      <q-btn id="left-panel-close" flat color="secondary" @click="$emit('side-nav-toggled')">
+      <q-btn id="left-panel-close" flat color="secondary" @click="klayout.hideLeftDrawer()">
         <q-icon name="chevron_left" />
       </q-btn>
     </div>
