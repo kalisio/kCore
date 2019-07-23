@@ -19,14 +19,14 @@
       Content section
     -->
     <slot name="item-content">
-      <q-item-label>
+      <q-item-section>
         <slot name="item-label">
           <q-item-label header>{{ name }}</q-item-label>
         </slot>
         <slot name="item-sublabel">
           <q-item-label caption>{{ description }}</q-item-label>
         </slot>
-      </q-item-label>
+      </q-item-section>
     </slot>
     <!--
       Actions section
