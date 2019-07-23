@@ -31,13 +31,12 @@
 
 <script>
 import _ from 'lodash'
-import { QField, QSelect } from 'quasar'
+import { QSelect } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-select-field',
   components: {
-    QField,
     QSelect
   },
   mixins: [mixins.baseField],

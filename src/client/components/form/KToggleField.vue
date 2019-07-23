@@ -1,18 +1,23 @@
 <template>
   <q-field
-    :icon="icon"
-    :label="label"
-    :helper="helper"
-    :error-label="errorLabel"
+    :error-message="errorLabel"
     :label-width="labelWidth"
     :error="hasError"
     :disabled="disabled"
+    no-error-icon
+    bottom-slots
   >
     <q-toggle
       :id="properties.name + '-field'"
-      v-model="model" 
+      :icon="icon"
+      v-model="model"
       v-bind="properties.field"
       @blur="onChanged" />
+
+    <template v-if="helper" v-slot:hint>
+      <span v-html="helper"></span>
+    </template>
+
   </q-field>
 </template>
 

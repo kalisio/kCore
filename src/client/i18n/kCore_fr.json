@@ -53,7 +53,7 @@
     "EMAIL_FIELD_HELPER": "Saisissez votre adresse mail",
     "CHANGE_ENDPOINT_LINK": "Modifier l'adresse du serveur",
     "DEVELOPMENT_VERSION": "VERSION DE DEVELOPPEMENT",
-    "TEST_VERSION": "VERSION DE TEST", 
+    "TEST_VERSION": "VERSION DE TEST",
     "KDK_POWERED": "Réalisé avec KDK (Kalisio's Development Kit)"
   },
   "KLogin": {
@@ -73,7 +73,7 @@
     "PASSWORD_FIELD_HELPER": "Saisissez un mot de passe",
     "CONFIRM_PASSWORD_FIELD_HELPER": "Confirmez votre mot de passe",
     "ACCEPT_TERMS_HELPER": "J'accepte les <a href='{{domain}}/#/terms' target='_blank'>conditions générales</a>",
-    "ACCEPT_TERMS_ERROR_LABEL": "Vous devez accepter nos <a href='{{domain}}/#/terms' target='_blank'>conditions générales</a> pour vous enregistrer",
+    "ACCEPT_TERMS_ERROR_LABEL": "Vous devez accepter nos conditions générales pour vous enregistrer",
     "APPLY_BUTTON": "S'enregistrer",
     "ALREADY_HAVE_AN_ACCOUNT_LINK": "Déjà un compte ?",
     "EMAIL_ALREADY_TAKEN": "Mail déjà pris !"
@@ -85,7 +85,7 @@
     "RESET_BUTTON": "Réinitialiser",
     "LOGIN_LINK": "Se connecter ?",
     "DONT_HAVE_AN_ACCOUNT_LINK": "Vous n'avez pas de compte ?"
-  },  
+  },
   "KLogout": {
     "TITLE": "Vous avez été déconnecté",
     "SIGN_OFF_LABEL": "Merci d'utiliser",
@@ -101,7 +101,7 @@
     "BLOCK_TEXT": "Veuillez prendre en compte que la suppression de votre compte entrainera la suppression de toutes les données qui y sont attachées.<br>La suppression ne peut pas être annulée et vous serez déconnecté de l'application.",
     "BLOCK_ACTION": "Supprimer",
     "DIALOG_TITLE": "Etes vous sûr de vouloir supprimer votre compte ?",
-    "DIALOG_HELPER": "Saisissez le nom de votre compte pour confirmer la suprression" 
+    "DIALOG_HELPER": "Saisissez le nom de votre compte pour confirmer la suprression"
   },
   "KAccountSecurity": {
     "PASSWORD_BLOCK_TITLE": "Changer votre mot de passe ?",

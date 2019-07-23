@@ -72,8 +72,8 @@
     "EMAIL_FIELD_HELPER": "$t(KScreen.EMAIL_FIELD_HELPER)",
     "PASSWORD_FIELD_HELPER": "Enter a password",
     "CONFIRM_PASSWORD_FIELD_HELPER": "Confirm your password",
-    "ACCEPT_TERMS_HELPER": "I accept <a href='{{domain}}/#/terms' target='_blank'>terms and policies</a>",
-    "ACCEPT_TERMS_ERROR_LABEL": "You must accept our <a href='{{domain}}/#/terms' target='_blank'>terms and policies</a> to register",
+    "ACCEPT_TERMS_HELPER": "I accept the <a href='{{domain}}/#/terms' target='_blank'>terms and policies</a>",
+    "ACCEPT_TERMS_ERROR_LABEL": "You must accept our terms and policies to register",
     "APPLY_BUTTON": "Register",
     "ALREADY_HAVE_AN_ACCOUNT_LINK": "Already have an account ?",
     "EMAIL_ALREADY_TAKEN": "Email already taken !"
