@@ -8,7 +8,7 @@
 
 <script>
 import _ from 'lodash'
-import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+import 'vue2-dropzone/dist/vue2Dropzone.css'
 import 'mime-types-browser'
 import DropZone from 'vue2-dropzone'
 

@@ -36,7 +36,6 @@
 <script>
 import _ from 'lodash'
 import logger from 'loglevel'
-import { QExpansionItem } from 'quasar'
 import Ajv from 'ajv'
 import AjvLocalize from 'ajv-i18n'
 import mixins from '../../mixins'
@@ -54,9 +53,6 @@ export default {
   mixins: [
     mixins.refsResolver()
   ],
-  components: {
-    QExpansionItem
-  },
   props: {
     schema: {
       type: Object,
