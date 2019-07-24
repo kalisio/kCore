@@ -34,14 +34,12 @@
     <slot name="item-actions">
       <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below are probably incorrect -->
       <!-- <q-item-section v-if="itemActions.length > 0" right icon="more_vert"> -->
-      <q-item-section v-if="itemActions.length > 0" side >
-        <!-- TODO figure out how to 'translate' this to Quasar v1 -->
+      <q-item-section v-if="itemActions.length > 0" side>
         <q-icon name="more_vert" />
-
         <q-menu>
           <q-list>
-            <q-item v-for="action in itemActions" :key="key(action, 'label')">
-              <q-item-label @click="onActionTriggered(action, item)">{{ action.label }}</q-item-label>
+            <q-item v-for="action in itemActions" clickable @click="onActionTriggered(action, item)" :key="key(action, 'label')">
+              <q-item-section>{{ action.label }}</q-item-section>
             </q-item>
           </q-list>
         </q-menu>

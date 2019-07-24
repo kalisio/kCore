@@ -34,17 +34,11 @@
     <template v-if="hasMenu">
       <q-btn id="overflow-menu-entry" flat>
         <q-menu id="overflow-menu" ref="menu">
-          <q-list>
+          <q-list dense>
             <template v-for="action in appBar.menu">
-              <q-item :id="action.name" :key="action.name" link @click="onActionTriggered(action)">
-                <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below may be incorrect -->
-                <!-- <q-item-side :icon="action.icon" /> -->
-                <q-item-section avatar >
-                  <q-icon :name="action.icon" />
-                </q-item-section>
-                <q-item-label>
-                  {{action.label}}
-                </q-item-label>
+              <q-item :id="action.name" :key="action.name" clickable @click="onActionTriggered(action)">
+                <q-item-section avatar><q-icon :name="action.icon"/></q-item-section>
+                <q-item-section>{{action.label}}</q-item-section>
               </q-item>
             </template>
           </q-list>

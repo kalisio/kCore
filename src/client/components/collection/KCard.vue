@@ -7,19 +7,13 @@
       <slot name="card-title">
         <q-item>
           <q-item-section avatar v-if="options.avatar">
-            <q-avatar v-if="name" :size="options.avatar.size">{{name}}</q-avatar>
+            <q-avatar v-if="name" color="primary" text-color="white" :size="options.avatar.size">{{initials}}</q-avatar>
           </q-item-section>
-          <q-item-label>
-            <q-item-label header>{{ name }}</q-item-label>
-            <q-item-label caption><small><k-text-area :length="20" :text="description" /></small></q-item-label>
-          </q-item-label>
-          <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below may be incorrect - what about "right" ? -->
-          <!-- <q-item-side right>
-            <slot name="card-icon"></slot>
-          </q-item-side> -->
-          <q-item-section side>
-            <slot name="card-icon"></slot>
+          <q-item-section>
+          {{ name }}
+          <small><k-text-area :length="20" :text="description" /></small>
           </q-item-section>
+          <q-item-section side><slot name="card-icon"></slot></q-item-section>
         </q-item>
         <q-separator />
       </slot>
@@ -31,10 +25,9 @@
           <div v-if="tags && tags.length > 0">
             <div class="row justify-start items-center">
               <template v-for="tag in tags">
-                <!-- TODO 'small' attribute not supported by Quasar v1 ? -->
                 <q-chip v-if="options.tags && options.tags === 'chip'"
                         :key="key(tag, 'value')"
-                        small
+                        dense
                         :color="tag.icon.color" :icon="tag.icon.name" class="card-tag-chip">
                   {{tag.value}}
                 </q-chip>
@@ -56,7 +49,7 @@
       -->
       <q-separator />
       <slot name="card-actions">
-        <q-card-actions align="end">
+        <q-card-actions align="right">
           <!-- Pane -->
           <template v-for="action in itemActions.pane">
             <q-btn :id="action.name" :key="key(action, 'name')" flat round small :color="action.warning ? 'red' : 'grey-7'" @click="onActionTriggered(action, item)">
@@ -69,16 +62,9 @@
             <q-menu id="card-overflow-menu" ref="menu">
               <q-list>
                 <template v-for="action in itemActions.menu">
-                  <q-item :id="action.name" link :key="key(action, 'name')" @click="$refs.menu.hide(); onActionTriggered(action, item)">
-                    <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below may be incorrect -->
-                    <!-- <q-item-side :icon="action.icon" /> -->
-                    <q-item-section avatar >
-                      <q-icon :name="action.icon" />
-                    </q-item-section>
-
-                    <q-item-label>
-                      {{action.label}}
-                    </q-item-label>
+                  <q-item :id="action.name" link :key="key(action, 'name')" clickable @click="$refs.menu.hide(); onActionTriggered(action, item)">
+                    <q-item-section avatar><q-icon :name="action.icon"/></q-item-section>
+                    <q-item-section>{{action.label}}</q-item-section>
                   </q-item>
                 </template>
               </q-list>
@@ -96,6 +82,7 @@ import _ from 'lodash'
 import { QCard, QCardSection, QCardActions, QSeparator, QBtn, QIcon,
          QMenu, QList, QItem, QItemSection, QItemLabel, QTooltip, QChip } from 'quasar'
 import { KTextArea } from '../frame'
+import { getInitials } from '../../utils'
 import mixins from '../../mixins'
 
 export default {
@@ -143,6 +130,9 @@ export default {
       // Check for custom name field
       return (this.options.nameField ? _.get(this.item, this.options.nameField, '') : this.item.name)
     },
+    initials () {
+      return getInitials(this.name)
+    },
     description () {
       // Check for custom description field
       return this.options.descriptionField ? _.get(this.item, this.options.descriptionField, '') : this.item.description
@@ -150,7 +140,14 @@ export default {
     tags () {
       // Check for custom name field
       let tags = this.options.tagsField ? _.get(this.item, this.options.tagsField, '') : this.item.tags
-      return _.filter(tags, { context: this.$store.get('context._id') })
+      // Filter tags from current context
+      tags = _.filter(tags, { context: this.$store.get('context._id') })
+      // Then process icons for backward compatibility with font awesome 4
+      tags.forEach(tag => {
+        const icon = _.get(tag, 'icon.name', '')
+        if (icon.startsWith('fa-')) _.set(tag, 'icon.name', `fas ${icon}`)
+      })
+      return tags
     }
   },
   data () {

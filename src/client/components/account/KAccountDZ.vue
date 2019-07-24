@@ -38,34 +38,28 @@ export default {
     onDeleteClicked () {
       Dialog.create({
         title: this.$t('KAccountDZ.DIALOG_TITLE'),
-        form: {
-          confirm: {
-            type: 'text',
-            model: '',
-            label: this.$t('KAccountDZ.DIALOG_HELPER')
-          }
+        message: this.$t('KAccountDZ.DIALOG_HELPER'),
+        prompt: {
+          type: 'text',
+          model: ''
         },
-        buttons: [
-          {
-            label: this.$t('OK'),
-            preventClose: true,
-            handler: (data, close) => {
-              if (data.confirm === this.name) {
-                close(async () => {
-                  try {
-                    await this.loadService().remove(this.objectId)
-                  } catch (error) {
-                    // do not logout
-                    return
-                  }
-                  this.$router.push({name: 'logout'})
-                })
-              }
-            }
-          }, {
-            label: this.$t('CANCEL')
+        persistent: true,
+        ok: {
+          label: this.$t('OK'),
+        },
+        cancel: {
+          label: this.$t('CANCEL')
+        }
+      }).onOk(async (data) => {
+        if (data === this.name) {
+          try {
+            await this.loadService().remove(this.objectId)
+          } catch (error) {
+            // do not logout
+            return
           }
-        ]
+          this.$router.push({name: 'logout'})
+        }
       })
     }
   },
