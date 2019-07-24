@@ -113,12 +113,7 @@ export default {
           event.loading(false)
         })
         .catch((e) => {
-          this.$toast({
-            type: 'negative',
-            message: this.$t('KLogin.LOGIN_ERROR'),
-            timeout: 5000
-          })
-
+          this.$toast({ message: this.$t('KLogin.LOGIN_ERROR') })
           event.loading(false)
         })
       }

@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { Notify } from 'quasar'
 
 /**
  * This function allow you to modify a JS Promise by adding some status properties.
@@ -83,12 +84,18 @@ export function getInitials (name) {
   return initials.join('')
 }
 
-export function toast ({type, message, timeout}) {
-  // this.$q.notify returns a function that, when invoked, hides the notification
-  return this.$q.notify({
-    color: type === 'negative' ? 'red' : 'green',
-    message,
-    timeout,
-    position: 'bottom-left'
-  })
+Notify.setDefaults({
+  position: 'bottom-left',
+  timeout: 5000,
+  textColor: 'white',
+  actions: [{ icon: 'close', color: 'white' }]
+})
+
+export function toast (options) {
+  const type = options.type || 'negative'
+  // Notify.create returns a function that, when invoked, hides the notification
+  return Notify.create(Object.assign({
+    color: (type === 'negative' ? 'red' : (type === 'warning' ? 'orange' : 'green'))
+  }, _.omit(options, ['type'])))
 }
+
