@@ -2,7 +2,7 @@
   <div v-show="tabBar.tabs.length > 0">
     <q-tabs align="justify" @select="onCurrentTabChanged" color="secondary">
       <template v-for="tab in tabBar.tabs">
-        <q-route-tab slot="title"
+        <q-route-tab
           :id="tab.id" 
           :key="tab.uid"
           :default="tab.default"
@@ -17,14 +17,9 @@
 
 <script>
 import _ from 'lodash'
-import { QTabs, QRouteTab } from 'quasar'
 
 export default {
   name: 'k-tab-bar',
-  components: {
-    QTabs,
-    QRouteTab
-  },
   data () {
     return {
       tabBar: this.$store.get('tabBar')
