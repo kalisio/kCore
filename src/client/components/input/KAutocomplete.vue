@@ -100,7 +100,7 @@ export default {
           this.processResults(pattern, results)
         }
         this.$emit('pattern-changed', pattern)
-        update(() => this.options = results)
+        update(() => { this.options = results })
       })
     },
     onSelected (item) {
