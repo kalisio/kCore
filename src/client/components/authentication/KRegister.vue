@@ -101,11 +101,10 @@ export default {
         result.values.locale = getLocale()
         try {
           await this.register(result.values)
-          event.loading(false)
         } catch (error) {
-          event.loading(false)
           Events.$emit('error', error)
         }
+        event.loading(false)
       }
     }
   },

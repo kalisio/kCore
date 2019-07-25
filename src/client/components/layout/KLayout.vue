@@ -1,15 +1,11 @@
 <template>
-  <q-layout ref="layout" v-bind="options">
+  <q-layout class="q-pa-md" ref="layout" v-bind="options">
     <!--
       The AppBar
     -->
-    <!-- TODO -->
-    <!-- <div slot="header"> -->
     <q-header>
       <k-app-bar id="app-bar" :has-left-drawer-toggle="!leftDrawer" @left-drawer-toggled="leftDrawer=!leftDrawer" />
-      <!-- TODO -->
       <k-tab-bar id="tab-bar" />
-      <!-- TODO -->
       <k-search-bar id="search-bar" />
     </q-header>
     <!--
@@ -24,16 +20,6 @@
     <q-drawer v-model="rightDrawer" v-bind="options.rightDrawer" side="right" bordered>
       <k-right-panel id="right-panel" :closable="options.rightDrawer.behavior !== 'mobile'" />
     </q-drawer>
-    <!--
-      The TabBar
-     -->
-    <!-- <div slot="navigation">
-      <k-tab-bar id="tab-bar" />
-    </div> -->
-    <!--
-      The search bar
-     -->
-    <!-- <k-search-bar id="search-bar" /> -->
     <!--
       The Content area
     -->
