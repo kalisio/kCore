@@ -3,11 +3,13 @@
     <q-field
       :icon="icon"
       :label="label"
-      :helper="helper"
-      :error-label="errorLabel"
+      :hint="helper"
+      :error-message="errorLabel"
       :label-width="labelWidth"
       :error="hasError"
       :disabled="disabled"
+      no-error-icon
+      bottom-slots
     >
       <div class="row justify-between items-center">
         <div class="col-4">
@@ -21,15 +23,14 @@
         <div class="col-7" v-if="tags.length > 0">
           <template v-for="(tag, index) in tags">
             <q-chip
-              class="tag-chip"
+              text-color="white"
               :key="tag.value + '-' + index " 
               :icon="tag.icon.name" 
-              :color="tag.icon.color" 
-              @close="onTagRemoved(tag)" 
-              @click="onTagClicked(tag)" 
-              closable>
-              {{tag.value}}
-            </q-chip>
+              :color="tag.icon.color"
+              :label="tag.value"
+              @remove="onTagRemoved(tag)" 
+              @click="onTagClicked(tag)"
+              removable clickable/>
           </template>
         </div>
       </div>
@@ -122,10 +123,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.tag-chip {
-  cursor: pointer;
-  margin: 4px;
-}
-</style>

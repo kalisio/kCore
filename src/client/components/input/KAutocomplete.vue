@@ -1,26 +1,42 @@
 <template>
-  <!-- TODO Quasar v1 migration --><div>TODO TEMP REMOVE ME</div>
-  <!-- <q-search v-model="pattern" @change="onChanged" :placeholder="$t('KAutocomplete.PLACEHOLDER')">
-    <q-autocomplete @search="onSearch" @selected="onSelected" @keyup.enter="onSelected"/>
-  </q-search> -->
+  <q-select clearable use-input hide-selected dropdown-icon="" v-model="pattern" :options="options"
+    @filter="onSearch" @input="onSelected" :label="$t('KAutocomplete.PLACEHOLDER')">
+    <template v-slot:no-option>
+      <q-item>
+        <q-item-section class="text-grey">{{$t('KAutocomplete.NO_RESULTS')}}</q-item-section>
+      </q-item>
+    </template>
+    <template v-slot:option="scope">
+      <q-item
+        v-bind="scope.itemProps"
+        v-on="scope.itemEvents"
+      >
+        <q-item-section avatar>
+          <q-icon :name="scope.opt.icon" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label v-html="scope.opt.label" />
+          <q-item-label caption>{{ scope.opt.description }}</q-item-label>
+        </q-item-section>
+      </q-item>
+    </template>
+  </q-select>
 </template>
 
 <script>
 import _ from 'lodash'
-// TODO Quasar v1 migration
-// import { QSearch, QAutocomplete } from 'quasar'
+import { processIcon } from '../../utils'
 
 export default {
   name: 'k-autocomplete',
-  components: {
-// TODO Quasar v1 migration
-    // QSearch,
-    // QAutocomplete
-  },
   props: {
     services: {
       type: Array,
       required: true
+    },
+    minLength: {
+      type: Number,
+      default: 2
     },
     processResults: {
       type: Function
@@ -28,46 +44,52 @@ export default {
   },
   data () {
     return {
-      pattern: ''
+      pattern: '',
+      options: []
     }
   },
   methods: {
     clear () {
       this.pattern = ''
     },
-    onSearch (pattern, done) {
+    onSearch (pattern, update, abort) {
+      if (pattern.length < this.minLength) {
+        abort()
+        return
+      }
       // Perform request for partial match to all registered services
-      const requests = this.services.map(item => {
-        const service = this.$api.getService(item.service)
+      const requests = this.services.map(serviceDescriptor => {
+        const service = this.$api.getService(serviceDescriptor.service)
         // build the query using given templet if any
-        let query = Object.assign({}, item.baseQuery)
+        let query = Object.assign({}, serviceDescriptor.baseQuery)
         // Then add partial match
         // We don't use set by dot here because Mongo queries on nested fields
         // require the key to contain the path and not nested objects
-        // _.set(query, item.field, { $search: pattern })
+        // _.set(query, serviceDescriptor.field, { $search: pattern })
 
-        query[item.field] = { $search: pattern }
+        query[serviceDescriptor.field] = { $search: pattern }
         return service.find({ query })
       })
       Promise.all(requests).then(responses => {
         let results = []
         for (let i = 0; i < responses.length; i++) {
           const response = responses[i]
-          const item = this.services[i]
+          const serviceDescriptor = this.services[i]
           if (response.total > 0) {
             response.data.forEach(data => {
-              data.service = item.service
-              data.field = item.field
-              data.limit = item.limit
-              if (!data.icon) data.icon = item.icon
+              data.service = serviceDescriptor.service
+              data.field = serviceDescriptor.field
+              data.limit = serviceDescriptor.limit
+              if (!data.icon) data.icon = serviceDescriptor.icon
               let result = {
-                label: _.get(data, item.field),
-                value: _.get(data, item.field),
-                icon: _.get(data, item.iconField || 'icon.name')
+                label: _.get(data, serviceDescriptor.field),
+                value: _.get(data, serviceDescriptor.field),
+                icon: _.get(data, serviceDescriptor.iconField || 'icon.name')
               }
-              if (item.subfield) {
-                data.subfield = item.subfield
-                result.sublabel = _.get(data, item.subfield)
+              processIcon(result, 'icon')
+              if (serviceDescriptor.subfield) {
+                data.subfield = serviceDescriptor.subfield
+                result.description = _.get(data, serviceDescriptor.subfield)
               }
               Object.assign(result, { data: data })
               results.push(result)
@@ -78,18 +100,13 @@ export default {
           this.processResults(pattern, results)
         }
         this.$emit('pattern-changed', pattern)
-        done(results)
+        update(() => this.options = results)
       })
     },
     onSelected (item) {
-      this.emitChange(item.data)
-    },
-    onChanged (pattern) {
-      this.emitChange(pattern)
+      // Can be null on clear
+      this.$emit('changed', item ? item.data : {})
     }
-  },
-  created () {
-    this.emitChange = _.debounce((value) => { this.$emit('changed', value) }, 300)
   }
 }
 </script>

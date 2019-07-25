@@ -28,13 +28,15 @@
                 <q-chip v-if="options.tags && options.tags === 'chip'"
                         :key="key(tag, 'value')"
                         dense
-                        :color="tag.icon.color" :icon="tag.icon.name" class="card-tag-chip">
-                  {{tag.value}}
-                </q-chip>
+                        text-color="white"
+                        :color="tag.icon.color"
+                        :icon="tag.icon.name"
+                        :label="tag.value"/>
                 <q-icon v-else
                         :key="key(tag, 'value')"
                         size="24px"
-                        :color="tag.icon.color" class="card-tag-chip" :name="tag.icon.name">
+                        :color="tag.icon.color"
+                        :name="tag.icon.name">
                   <q-tooltip>{{tag.value}}</q-tooltip>
                 </q-icon>
               </template>
@@ -82,7 +84,7 @@ import _ from 'lodash'
 import { QCard, QCardSection, QCardActions, QSeparator, QBtn, QIcon,
          QMenu, QList, QItem, QItemSection, QItemLabel, QTooltip, QChip } from 'quasar'
 import { KTextArea } from '../frame'
-import { getInitials } from '../../utils'
+import { getInitials, processIcon } from '../../utils'
 import mixins from '../../mixins'
 
 export default {
@@ -142,11 +144,8 @@ export default {
       let tags = this.options.tagsField ? _.get(this.item, this.options.tagsField, '') : this.item.tags
       // Filter tags from current context
       tags = _.filter(tags, { context: this.$store.get('context._id') })
-      // Then process icons for backward compatibility with font awesome 4
-      tags.forEach(tag => {
-        const icon = _.get(tag, 'icon.name', '')
-        if (icon.startsWith('fa-')) _.set(tag, 'icon.name', `fas ${icon}`)
-      })
+      // Then process icons
+      tags.forEach(tag => processIcon(tag))
       return tags
     }
   },
@@ -172,9 +171,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.card-tag-chip {
-  margin: 4px;
-}
-</style>

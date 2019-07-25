@@ -2,9 +2,10 @@
   <div class="row full-width justify-between items-center">
     <k-autocomplete v-if="!isCompleted" class="col" ref="autocomplete" :services="services" @changed="onAutocompleteChanged" />
     <div class="col-8" v-if="items.length > 0">
-      <q-chip v-for="item in items" :key="item._id" class="chip" :icon="itemIcon(item)" color="primary" @close="onItemRemoved(item)" closable>
-        {{itemName(item)}}
-      </q-chip>
+      <q-chip v-for="item in items" removable color="primary" text-color="white" :key="item._id"
+        :icon="itemIcon(item)"
+        :label="itemName(item)"
+        @remove="onItemRemoved(item)"/>
     </div>
   </div>
 </template>
@@ -13,6 +14,7 @@
 import _ from 'lodash'
 import { QChip, QIcon } from 'quasar'
 import KAutocomplete from './KAutocomplete.vue'
+import { getIconName } from '../../utils'
 
 export default {
   name: 'k-item-chooser',
@@ -61,9 +63,9 @@ export default {
   },
   methods: {
     itemIcon (item) {
-      const icon = _.get(item, 'icon', '')
-      if (typeof icon === 'object') return icon.name
-      else return icon
+      // Make this work on either icon object like { name: xxx, color: yyy } or icon names
+      const icon = getIconName(item)
+      return (icon ? icon : getIconName(item, 'icon'))
     },
     itemName (item) {
       if (item.value) return item.value
@@ -103,9 +105,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.chip {
-  margin: 4px;
-}
-</style>

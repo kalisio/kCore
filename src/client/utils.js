@@ -99,3 +99,15 @@ export function toast (options) {
   }, _.omit(options, ['type'])))
 }
 
+// Extract icon name from a given icon property on a given target object
+export function getIconName(object, path = 'icon.name') {
+  // Make function work in a generic way, sometimes the provided input is directly the icon name
+  const icon = (typeof object === 'object' ? _.get(object, path, '') : object)
+  // Name icons to ensure backward compatibility with font awesome 4
+  return (icon.startsWith('fa-') ? `fas ${icon}` : icon)
+}
+
+export function processIcon(object, path = 'icon.name') {
+  // Process icons for backward compatibility with font awesome 4
+  _.set(object, path, getIconName(object, path))
+}

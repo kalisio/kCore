@@ -1,6 +1,6 @@
 <template>
   <div v-show="tabBar.tabs.length > 0">
-    <q-tabs dense align="justify" @select="onCurrentTabChanged" class="bg-secondary text-white shadow-2" active-bg-color="secondary" >
+    <q-tabs dense align="justify" @select="onCurrentTabChanged" class="bg-secondary text-primary shadow-2" active-color="white" active-bg-color="secondary" >
       <template v-for="tab in tabBar.tabs">
         <q-route-tab
           :id="tab.id" 

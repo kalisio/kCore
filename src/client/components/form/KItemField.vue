@@ -2,11 +2,13 @@
   <q-field
     :icon="icon"
     :label="label"
-    :helper="helper"
-    :error-label="errorLabel"
+    :hint="helper"
+    :error-message="errorLabel"
     :label-width="labelWidth"
     :error="hasError"
     :disabled="disabled"
+    no-error-icon
+    bottom-slots
   >
     <k-item-chooser
       :id="properties.name + '-field'"
