@@ -75,8 +75,9 @@ export default {
     },
     fill (value) {
       this.model = value
-      // Update tags as well
-      this.partition = _.partition(this.model, { context: Store.get('context') })
+      // Update tags as well but only those of current context as tag service can be contextual
+      const context = Store.get('context')
+      this.partition = _.partition(this.model, { context: _.get(context, '_id') })
       this.tags = this.partition[0]
     },
     processResults (pattern, results) {
