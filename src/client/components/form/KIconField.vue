@@ -3,18 +3,13 @@
     <q-field
       :icon="icon"
       :label="label"
-      :helper="helper"
-      :error-label="errorLabel"
+      :hint="helper"
+      :error-message="errorLabel"
       :label-width="labelWidth"
       :error="hasError"
       :disabled="disabled"
     >
-      <div v-if="model.icon !== ''">
-        <q-chip :icon="model.name" :color="model.color" :closable="closable" @close="onCloseClicked" @click="onIconClicked"/>
-      </div>
-      <div v-else>
-        <q-input @click="onIconClicked" />
-      </div>
+      <q-chip clickable v-ripple text-color="white" :icon="model.name" :color="model.color" @click="onIconClicked"/>
     </q-field>
     <k-icon-chooser 
       :id="properties.name + '-field'"

@@ -114,9 +114,7 @@ export default {
       })
     } else if (this.iconSet === 'fontawesome') {
       // Fetch available FA icons from the font awesome repository so we are always in sync
-      // FIXME: this code should work with FA v5 and new quasar version
-      // fetch('https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/advanced-options/metadata/icons.yml')
-      fetch('https://raw.githubusercontent.com/FortAwesome/Font-Awesome/fa-4/src/icons.yml')
+      fetch('https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/metadata/icons.yml')
       .then(response => {
         if (response.status !== 200) {
           throw new Error('Impossible to retrieve fontawesome code points: ' + response.status)
@@ -125,14 +123,6 @@ export default {
       })
       .then(text => {
         try {
-          // FA v4
-          let yamlCodes = yaml.safeLoad(text).icons
-          // We have a list with on each entry 'name id ...' so we need to filter the codes
-          if (yamlCodes && yamlCodes.length > 0) {
-            // Add also prefix for quasar
-            this.icons = yamlCodes.map(icon => 'fa-' + icon.id)
-          }
-          /* FIXME: this code should work with FA v5 and new quasar version
           let yamlCodes = yaml.safeLoad(text)
           _.forOwn(yamlCodes, (value, key) => {
             if (!value.styles) {
@@ -153,12 +143,9 @@ export default {
               }
             }
           })
-          */
           if (this.icons.length === 0) {
             throw new Error('Impossible to parse fontawesome code points')
           }
-          // FIXME: FA v5 are already sorted, we should remove this when upgrading
-          this.icons.sort()
           this.maxPage = Math.ceil(this.icons.length / this.iconsPerPage)
         } catch (error) {
           throw new Error('Impossible to parse fontawesome code points: ' + error)
