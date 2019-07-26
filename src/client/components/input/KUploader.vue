@@ -1,9 +1,5 @@
 <template>
-  <k-modal ref="modal" :toolbar="getToolbar()" :buttons="getButtons()">
-    <div slot="modal-content" class="column q-gutter-sm">
-      <drop-zone v-if="dropZoneOptions" ref="dropZone" id="dropZone" @vdropzone-file-added="onFileAdded" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" @vdropzone-thumbnail="onThumbnailGenerated" @vdropzone-error="onError" :options="dropZoneOptions"/>
-    </div>
-  </k-modal>
+  <drop-zone v-if="dropZoneOptions" ref="dropZone" id="dropZone" @vdropzone-file-added="onFileAdded" @vdropzone-success="onFileUploaded" @vdropzone-removed-file="onFileRemoved" @vdropzone-sending="onFileSending" @vdropzone-thumbnail="onThumbnailGenerated" @vdropzone-error="onError" :options="dropZoneOptions" :destroyDropzone="false"/>
 </template>
 
 <script>
@@ -40,16 +36,6 @@ export default {
     }
   },
   methods: {
-    getToolbar () {
-      return [
-        { name: 'close-action', label: this.$t('KUploader.CLOSE_ACTION'), icon: 'close', handler: () => this.doClose() }
-      ]
-    },
-    getButtons () {
-      return [
-        { name: 'done-button', label: this.$t('KUploader.DONE_BUTTON'), color: 'primary', handler: (event) => this.doDone(event) }
-      ]
-    },
     isMultiple () {
       return _.get(this.options, 'multiple', false)
     },
@@ -58,6 +44,9 @@ export default {
     },
     resourcesService () {
       return _.get(this.options, 'resourcesService', '')
+    },
+    resourceField () {
+      return _.get(this.options, 'resourceField', 'attachments')
     },
     addFile (addedFile) {
       this.files.push(addedFile)
@@ -86,7 +75,14 @@ export default {
             if (mimeType.startsWith('image/')) this.storageService().remove(this.files[index]._id + '.thumbnail')
           }
         }
+        // Clean preview as well
+        const preview = this.previews[index]
+        if (preview) {
+          this.clearPreview(preview)
+          _.pullAt(this.previews, index)
+        }
         _.pullAt(this.files, index)
+        
         this.$emit('file-selection-changed', this.files)
       }
     },
@@ -133,6 +129,7 @@ export default {
       if (resourcesService && this.resource) {
         formData.set('resource', this.resource)
         formData.set('resourcesService', resourcesService)
+        formData.set('field', this.resourceField())
       }
       _.forOwn(this.baseQuery, (value, key) => {
         formData.set(key, value)
@@ -169,12 +166,6 @@ export default {
       this.dropZone().removeFile(file)
       // The error message is already translated using the DropZone dictionary
       this.$events.$emit('error', { message: error })
-    },
-    doDone (event) {
-      this.doClose()
-    },
-    doClose (event) {
-      this.$refs.modal.close()
     },
     storageService () {
       return this.$api.getService(this.options.service || 'storage')
@@ -229,13 +220,14 @@ export default {
         })
       }
     },
+    clearPreview (preview) {
+      // Code taken from removedfile method of DropZone.js
+      if (preview.parentNode) {
+        preview.parentNode.removeChild(preview)
+      }
+    },
     clearPreviews () {
-      this.previews.forEach(preview => {
-        // Code taken from removedfile method of DropZone.js
-        if (preview.parentNode) {
-          preview.parentNode.removeChild(preview)
-        }
-      })
+      this.previews.forEach(preview => this.clearPreview(preview))
       this.previews = []
     },
     clearFiles () {
@@ -249,7 +241,7 @@ export default {
       this.clearPreviews()
       this.clearFiles()
     },
-    open (defaultFiles = []) {
+    async initialize (defaultFiles = []) {
       this.clear()
       // Then setup existing files on server
       defaultFiles.forEach(async file => {
@@ -270,21 +262,12 @@ export default {
         // Adjust maxFiles with files already uploaded to get the correct amount
         this.dropZoneInstance().options.maxFiles = _.get(this.options, 'maxFiles', 5) - defaultFiles.length
       }
-      // Then open the modal
-      this.$refs.modal.open()
     }
   },
   created () {
     // Initialize private properties
     this.previews = []
-    // Load the required components
-    this.$options.components['k-modal'] = this.$load('frame/KModal')
     this.updateDropZoneOptions()
-  },
-  beforeDestroy () {
-    // Without this the lastest uploaded files remain active in drop zone
-    // causing the file removed event to be trigerred
-    this.clear()
   }
 }
 </script>

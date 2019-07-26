@@ -1,4 +1,5 @@
 <template>
+  <div>
   <q-field
     :icon="icon"
     :label="label"
@@ -9,16 +10,19 @@
     :disabled="disabled"
     no-error-icon
   >
-    <q-chip v-for="file in files" :key="file.name" color="primary" @close="onFileRemoved(file)" closable>
-      {{fileName(file)}}
-    </q-chip>
-    <q-icon :id="properties.name + '-field'" v-show="files.length < maxFiles" name="fa-cloud-upload fa-2x" @click="onUpload"/>
-    <k-uploader
-      ref="uploader"
-      :resource="resource"
-      @file-selection-changed="updateFiles"
-      :options="properties.field"/>
+    <q-icon style="font-size: 2em;" :id="properties.name + '-field'"
+      name="fas fa-cloud-upload-alt" @click="isUploaderVisible = !isUploaderVisible"/>
+    <q-chip v-for="file in files" :key="file.name" color="primary" text-color="white"
+      :label="fileName(file)" @remove="onFileRemoved(file)" removable/>
   </q-field>
+  <div class="row">
+  <k-uploader class="col-12" v-show="isUploaderVisible"
+    ref="uploader"
+    :resource="resource"
+    @file-selection-changed="updateFiles"
+    :options="properties.field"/>
+  </div>
+  </div>
 </template>
 
 <script>
@@ -39,6 +43,7 @@ export default {
   mixins: [mixins.baseField],
   data () {
     return {
+      isUploaderVisible: false,
       files: [],
       resource: ''
     }
@@ -113,8 +118,11 @@ export default {
       }
     },
     updateFiles (files) {
-      this.files = files
+      this.files = []
+      files.forEach(file => this.files.push(file))
       this.updateModel()
+      // Hide uploader if full
+      if (this.files.length >= this.maxFiles) this.isUploaderVisible = false
     },
     updateModel () {
       // filter rendering properties only
@@ -136,7 +144,7 @@ export default {
       if (!this.autoProcessQueue()) {
         this.updateFiles([])
       }
-      this.$refs.uploader.open(this.files)
+      this.$refs.uploader.initialize(this.files)
     },
     onFileRemoved (oldFile) {
       // When processing uploads on-the-fly we need to remove from server
@@ -149,8 +157,10 @@ export default {
         const mimeType = mime.lookup(oldFile.name)
         // We only store thumbnails for images
         if (mimeType.startsWith('image/')) storage.remove(oldFile._id + '.thumbnail')
+        this.updateFiles(this.files.filter(file => file.name !== oldFile.name))
+      } else {
+        this.$refs.uploader.removeFile(oldFile)
       }
-      this.updateFiles(this.files.filter(file => file.name !== oldFile.name))
     }
   }
 }
