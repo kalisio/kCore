@@ -21,7 +21,6 @@ import { KForm } from '../form'
 import { KBtn } from '../input'
 import mixins from '../../mixins'
 import { getLocale } from '../../utils'
-import { Events } from '../../events'
 
 export default {
   name: 'k-register',
