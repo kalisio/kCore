@@ -101,8 +101,7 @@ export default {
         result.values.locale = getLocale()
         try {
           await this.register(result.values)
-        } catch (error) {
-          Events.$emit('error', error)
+        } catch (_) {
         }
         event.loading(false)
       }

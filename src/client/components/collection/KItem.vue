@@ -21,7 +21,7 @@
     <slot name="item-content">
       <q-item-section>
         <slot name="item-label">
-          <q-item-label header>{{ name }}</q-item-label>
+          <q-item-label>{{ name }}</q-item-label>
         </slot>
         <slot name="item-sublabel">
           <q-item-label caption>{{ description }}</q-item-label>
