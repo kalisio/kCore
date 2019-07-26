@@ -138,9 +138,7 @@
         "kb": "KO",
         "b": "o"
       }
-    },
-    "CLOSE_ACTION": "$t(CLOSE)",
-    "DONE_BUTTON": "$t(DONE)"
+    }
   },
   "KAutocomplete": {
     "PLACEHOLDER": "$t(SEARCH)",

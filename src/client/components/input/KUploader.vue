@@ -7,9 +7,13 @@ import _ from 'lodash'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import 'mime-types-browser'
 import DropZone from 'vue2-dropzone'
+import mixins from '../../mixins'
 
 export default {
   name: 'k-uploader',
+  mixins: [
+    mixins.refsResolver(['dropZone'])
+  ],
   components: {
     DropZone
   },
@@ -233,7 +237,7 @@ export default {
     clearFiles () {
       this.files = []
       // Reset drop zone
-      this.dropZone().removeAllFiles(true)
+      if (this.dropZone()) this.dropZone().removeAllFiles(true)
     },
     clear () {
       // FIXME: for now we need to remove previous preview elements manually
@@ -268,6 +272,10 @@ export default {
     // Initialize private properties
     this.previews = []
     this.updateDropZoneOptions()
+  },
+  async mounted () {
+    await this.loadRefs()
+    this.$emit('uploader-ready')
   }
 }
 </script>
