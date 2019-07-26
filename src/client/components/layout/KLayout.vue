@@ -1,5 +1,5 @@
 <template>
-  <q-layout class="q-pa-md" ref="layout" v-bind="options">
+  <q-layout ref="layout" v-bind="options">
     <!--
       The AppBar
     -->
