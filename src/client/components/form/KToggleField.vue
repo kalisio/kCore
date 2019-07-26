@@ -1,5 +1,6 @@
 <template>
   <q-field
+    :label="label"
     :error-message="errorLabel"
     :label-width="labelWidth"
     :error="hasError"

@@ -2,11 +2,12 @@
   <q-field
     :icon="icon"
     :label="label"
-    :helper="helper"
-    :error-label="errorLabel"
+    :hint="helper"
+    :error-message="errorLabel"
     :label-width="labelWidth"
     :error="hasError"
     :disabled="disabled"
+    no-error-icon
   >
     <q-option-group
       :id="properties.name + '-field'"
@@ -32,7 +33,7 @@ export default {
   mixins: [mixins.baseField],
   methods: {
     emptyModel () {
-      let type = _.get(this.properties.field.type, 'radio')
+      let type = _.get(this.properties.field, 'type', 'radio')
       if (type === 'radio') return ''
       return []
     }

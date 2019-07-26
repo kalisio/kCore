@@ -2,20 +2,21 @@
   <q-field
     :icon="icon"
     :label="label"
-    :helper="helper"
-    :error-label="errorLabel"
+    :hint="helper"
+    :error-message="errorLabel"
     :label-width="labelWidth"
     :error="hasError"
     :disabled="disabled"
+    no-error-icon
   >
-    <q-chip  v-for="file in files" :key="file.name" color="primary" @close="onFileRemoved(file)" closable>
+    <q-chip v-for="file in files" :key="file.name" color="primary" @close="onFileRemoved(file)" closable>
       {{fileName(file)}}
     </q-chip>
     <q-icon :id="properties.name + '-field'" v-show="files.length < maxFiles" name="fa-cloud-upload fa-2x" @click="onUpload"/>
-    <k-uploader 
-      ref="uploader" 
-      :resource="resource" 
-      @file-selection-changed="updateFiles" 
+    <k-uploader
+      ref="uploader"
+      :resource="resource"
+      @file-selection-changed="updateFiles"
       :options="properties.field"/>
   </q-field>
 </template>
