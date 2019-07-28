@@ -2,11 +2,13 @@
   <q-input :id="properties.name + '-field'" v-model="model"
     :icon="icon"
     :label="label"
-    :hint="helper"
     :error-message="errorLabel"
     :label-width="labelWidth"
     :error="hasError"
-    :disabled="disabled" @blur="onChanged">
+    :disabled="disabled" @blur="onChanged"
+    no-error-icon
+    bottom-slots
+  >
     <template v-slot:prepend>
       <q-icon name="event" class="cursor-pointer">
         <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -18,6 +20,10 @@
           <q-time v-model="model" mask="YYYY-MM-DDTHH:mm:ss.SSSZ" v-bind="properties.field" />
         </q-popup-proxy>
       </q-icon>
+    </template>
+
+    <template v-if="helper" v-slot:hint>
+      <span v-html="helper"></span>
     </template>
   </q-input>
 </template>

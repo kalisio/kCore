@@ -1,27 +1,33 @@
 <template>
   <div>
-  <q-field
-    :icon="icon"
-    :label="label"
-    :hint="helper"
-    :error-message="errorLabel"
-    :label-width="labelWidth"
-    :error="hasError"
-    :disabled="disabled"
-    no-error-icon
-  >
-    <q-icon style="font-size: 2em;" :id="properties.name + '-field'"
-      name="fas fa-cloud-upload-alt" @click="isUploaderVisible = !isUploaderVisible"/>
-    <q-chip v-for="file in files" :key="file.name" color="primary" text-color="white"
-      :label="fileName(file)" @remove="onFileRemoved(file)" removable/>
-  </q-field>
-  <div class="row">
-  <k-uploader class="col-12" v-show="isUploaderVisible"
-    ref="uploader"
-    :resource="resource"
-    @file-selection-changed="updateFiles"
-    :options="properties.field"/>
-  </div>
+    <q-field
+      :icon="icon"
+      :label="label"
+      :error-message="errorLabel"
+      :label-width="labelWidth"
+      :error="hasError"
+      :disabled="disabled"
+      no-error-icon
+      bottom-slots
+    >
+      <q-icon style="font-size: 2em;" :id="properties.name + '-field'"
+        name="fas fa-cloud-upload-alt" @click="isUploaderVisible = !isUploaderVisible"/>
+      <q-chip v-for="file in files" :key="file.name" color="primary" text-color="white"
+        :label="fileName(file)" @remove="onFileRemoved(file)" removable/>
+
+    <template v-if="helper" v-slot:hint>
+      <span v-html="helper"></span>
+    </template>
+
+    </q-field>
+
+    <div class="row">
+      <k-uploader class="col-12" v-show="isUploaderVisible"
+        ref="uploader"
+        :resource="resource"
+        @file-selection-changed="updateFiles"
+        :options="properties.field"/>
+    </div>
   </div>
 </template>
 

@@ -3,7 +3,6 @@
     <q-field
       :icon="icon"
       :label="label"
-      :hint="helper"
       :error-message="errorLabel"
       :label-width="labelWidth"
       :error="hasError"
@@ -11,32 +10,39 @@
       no-error-icon
       bottom-slots
     >
-      <div class="row justify-between items-center">
-        <div class="col-4">
-          <k-autocomplete 
-            :id="properties.name + '-field'" 
-            ref="search" 
-            :services="services" 
-            :process-results="processResults" 
-            @changed="onTagAdded" />
+      <template v-slot:default>
+        <div class="row justify-between items-center">
+          <div class="col-4">
+            <k-autocomplete
+              :id="properties.name + '-field'"
+              ref="search"
+              :services="services"
+              :process-results="processResults"
+              @changed="onTagAdded" />
+          </div>
+          <div class="col-7" v-if="tags.length > 0">
+            <template v-for="(tag, index) in tags">
+              <q-chip
+                text-color="white"
+                :key="tag.value + '-' + index "
+                :icon="tag.icon.name"
+                :color="tag.icon.color"
+                :label="tag.value"
+                @remove="onTagRemoved(tag)"
+                @click="onTagClicked(tag)"
+                removable clickable/>
+            </template>
+          </div>
         </div>
-        <div class="col-7" v-if="tags.length > 0">
-          <template v-for="(tag, index) in tags">
-            <q-chip
-              text-color="white"
-              :key="tag.value + '-' + index " 
-              :icon="tag.icon.name" 
-              :color="tag.icon.color"
-              :label="tag.value"
-              @remove="onTagRemoved(tag)" 
-              @click="onTagClicked(tag)"
-              removable clickable/>
-          </template>
-        </div>
-      </div>
+      </template>
+
+      <template v-if="helper" v-slot:hint>
+        <span v-html="helper"></span>
+      </template>
     </q-field>
-    <k-icon-chooser 
-      ref="iconChooser" 
+
+    <k-icon-chooser
+      ref="iconChooser"
       @icon-choosed="onIconChoosed" />
   </div>
 </template>

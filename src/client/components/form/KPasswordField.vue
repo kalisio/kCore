@@ -9,7 +9,6 @@
     :label="label"
     :label-width="labelWidth"
     :disabled="disabled"
-    :hint="helper"
     :error="hasError"
     :error-message="errorLabel"
     no-error-icon
@@ -21,6 +20,10 @@
         class="cursor-pointer"
         @click="isPwd = !isPwd"
       />
+    </template>
+
+    <template v-if="helper" v-slot:hint>
+      <span v-html="helper"></span>
     </template>
   </q-input>
 </template>

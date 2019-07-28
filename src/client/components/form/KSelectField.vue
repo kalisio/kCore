@@ -4,7 +4,7 @@
     :multiple="properties.field.multiple ? properties.field.multiple : false"
     :toggle="properties.field.toggle ? properties.field.toggle : false"
     :radio="properties.field.radio ? properties.field.radio : false"
-    :chips="properties.field.chips ? properties.field.chips : false"
+    :use-chips="properties.field.chips ? properties.field.chips : false"
     v-model="model"
     :options="options"
     @change="onChanged"

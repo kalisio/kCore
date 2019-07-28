@@ -3,35 +3,45 @@
     <q-field
       :icon="icon"
       :label="label"
-      :helper="helper"
-      :error-label="errorLabel"
+      :error-message="errorLabel"
       :label-width="labelWidth"
       :error="hasError"
       :disabled="disabled"
+      no-error-icon
+      bottom-slots
     >
-      <div class="row justify-start items-center">
-        <div :class="inputClass">
-          <q-input type="text" v-model="input" :after="inputActions" @keyup.enter="onChipAdded()"/>
+      <template v-slot:default>
+        <div class="row justify-start items-center">
+          <div :class="inputClass">
+            <q-input type="text" v-model="input" :after="inputActions" @keyup.enter="onChipAdded()"/>
+          </div>
+          <div class="col-auto" v-if="chips.length > 0">
+            <template v-for="(chip, index) in chips">
+              <q-chip
+                class="chip"
+                :key="chip.value + '-' + index "
+                :icon="chip.icon.name"
+                :color="chip.icon.color"
+                @remove="onChipRemoved(chip)"
+                @click="onChipClicked(chip)"
+                clickable
+                removable
+              >
+                {{chip.value}}
+              </q-chip>
+            </template>
+          </div>
         </div>
-        <div class="col-auto" v-if="chips.length > 0">
-          <template v-for="(chip, index) in chips">
-            <q-chip
-              class="chip"
-              :key="chip.value + '-' + index " 
-              :icon="chip.icon.name" 
-              :color="chip.icon.color" 
-              @close="onChipRemoved(chip)" 
-              @click="onChipClicked(chip)" 
-              closable>
-              {{chip.value}}
-            </q-chip>
-          </template>
-        </div>
-      </div>
+      </template>
+
+      <template v-if="helper" v-slot:hint>
+        <span v-html="helper"></span>
+      </template>
     </q-field>
-    <k-icon-chooser 
+
+    <k-icon-chooser
       :id="properties.name + '-field'"
-      ref="iconChooser" 
+      ref="iconChooser"
       @icon-choosed="onIconChoosed" />
   </div>
 </template>

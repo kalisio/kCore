@@ -3,17 +3,23 @@
     <q-field
       :icon="icon"
       :label="label"
-      :hint="helper"
       :error-message="errorLabel"
       :label-width="labelWidth"
       :error="hasError"
       :disabled="disabled"
+      no-error-icon
+      bottom-slots
     >
       <q-chip clickable v-ripple text-color="white" :icon="model.name" :color="model.color" @click="onIconClicked"/>
+
+      <template v-if="helper" v-slot:hint>
+        <span v-html="helper"></span>
+      </template>
     </q-field>
-    <k-icon-chooser 
+
+    <k-icon-chooser
       :id="properties.name + '-field'"
-      ref="iconChooser" 
+      ref="iconChooser"
       @icon-choosed="onIconChoosed" />
   </div>
 </template>

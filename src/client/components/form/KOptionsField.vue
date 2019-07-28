@@ -2,12 +2,12 @@
   <q-field
     :icon="icon"
     :label="label"
-    :hint="helper"
     :error-message="errorLabel"
     :label-width="labelWidth"
     :error="hasError"
     :disabled="disabled"
     no-error-icon
+    bottom-slots
   >
     <q-option-group
       :id="properties.name + '-field'"
@@ -16,6 +16,10 @@
       :options="properties.field.options"
       @change="onChanged"
       @blur="onChanged" />
+
+    <template v-if="helper" v-slot:hint>
+      <span v-html="helper"></span>
+    </template>
   </q-field>
 </template>
 

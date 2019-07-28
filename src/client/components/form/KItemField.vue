@@ -2,7 +2,6 @@
   <q-field
     :icon="icon"
     :label="label"
-    :hint="helper"
     :error-message="errorLabel"
     :label-width="labelWidth"
     :error="hasError"
@@ -12,10 +11,14 @@
   >
     <k-item-chooser
       :id="properties.name + '-field'"
-      :multiselect="properties.multiselect" 
-      :default-items="defaultItems" 
-      :services="properties.services" 
+      :multiselect="properties.multiselect"
+      :default-items="defaultItems"
+      :services="properties.services"
       @changed="updateModel" />
+
+    <template v-if="helper" v-slot:hint>
+      <span v-html="helper"></span>
+    </template>
   </q-field>
 </template>
 
