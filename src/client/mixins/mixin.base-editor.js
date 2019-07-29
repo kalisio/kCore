@@ -199,7 +199,6 @@ export default function baseEditorMixin (formRefs) {
           this.applyInProgress = true
           // Update the item
           try {
-            await new Promise((resolve, reject) => setTimeout(resolve, 1000))
             if (this.getMode() === 'update') {
               // Editing mode => patch the item
               if (this.perspective !== '') {
