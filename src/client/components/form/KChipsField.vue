@@ -14,9 +14,10 @@
       new-value-mode="add"
       @new-value="createValue"
       @input.native="onInput($event.target.value)"
+      @keydown.tab.native="onClick"
       @change="onChanged"
       @blur="onChanged"
-      ref="chipInput"
+      ref="chipsInput"
       no-error-icon
       bottom-slots
     >
@@ -68,6 +69,7 @@ export default {
       return []
     },
     createValue (val, done) {
+      this.showSendIcon = false
       done(val)
     },
     onInput (val) {
@@ -75,19 +77,9 @@ export default {
       this.inputValue = val
     },
     onClick (e) {
-      // TODO commented this out because it does not work correctly ... so the "send" icon, while
-      // looking nice, currently does not do anything when clicked
-
-      // this.showSendIcon = false
-
-      // if (this.inputValue) {
-      //   // this.model.push(this.inputValue)
-      //   this.$refs.chipInput.add(this.inputValue)
-      // }
-
-      // // The following doesn't work, input field doesn't get cleared ... it does work in
-      // // the codepen: https://codepen.io/smolinari/pen/bJWEaX so what is the difference, Quasar version?
-      // this.inputValue = ''
+      this.showSendIcon = false
+      this.$refs.chipsInput.add(this.inputValue)
+      this.$refs.chipsInput.updateInputValue('')
     }
   }
 }
