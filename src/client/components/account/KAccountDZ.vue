@@ -39,6 +39,7 @@ export default {
       Dialog.create({
         title: this.$t('KAccountDZ.DIALOG_TITLE'),
         message: this.$t('KAccountDZ.DIALOG_HELPER'),
+        html: true,
         prompt: {
           type: 'text',
           model: ''

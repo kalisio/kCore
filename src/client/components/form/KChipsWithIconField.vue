@@ -20,7 +20,8 @@
               <q-chip
                 class="chip"
                 :key="chip.value + '-' + index "
-                :icon="chip.icon.name"
+                text-color="white"
+                :icon="chipIcon(chip)"
                 :color="chip.icon.color"
                 @remove="onChipRemoved(chip)"
                 @click="onChipClicked(chip)"
@@ -51,6 +52,7 @@ import _ from 'lodash'
 import { QField, QInput, QChip, QIcon } from 'quasar'
 import { KIconChooser } from '../input'
 import mixins from '../../mixins'
+import { getIconName } from '../../utils'
 
 export default {
   name: 'k-chips-with-icon-field',
@@ -96,6 +98,9 @@ export default {
     fill (value) {
       this.model = value
       this.chips = this.model.slice()
+    },
+    chipIcon (chip) {
+      return getIconName(chip)
     },
     onChipAdded () {
       let chip = {

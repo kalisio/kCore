@@ -53,7 +53,10 @@ export default {
       toolbar: [{
         name: 'close',
         icon: 'close',
-        handler: () => this.close(this.router ? _ => this.$router.push(this.router.onDismiss) : this.$emit('closed'))
+        handler: () => {
+          this.close()
+          if (this.router) this.$router.push(this.router.onDismiss)
+        }
       }]
     }
   },
@@ -62,8 +65,9 @@ export default {
       this.refresh()
       this.$refs.modal.open()
     },
-    close (onClose) {
-      this.$refs.modal.close(onClose)
+    close () {
+      this.$refs.modal.close()
+      this.$emit('closed')
     },
     onFieldChanged (field, value) {
       this.$emit('field-changed', field, value)
@@ -73,7 +77,10 @@ export default {
     // Refresh the editor only when using a router. Otherwise it will be done when opening the editor
     if (this.router) this.refresh()
     this.$on('applied', _ => {
-      if (this.router) this.close(() => this.$router.push(this.router.onApply))
+      if (this.router) {
+        this.close()
+        this.$router.push(this.router.onApply)
+      }
     })
   }
 }

@@ -117,8 +117,8 @@ export default {
       this.$refs.modal.open()
     },
     closeModal (action) {
-      if (!_.isNil(action)) this.$refs.modal.close(() => this.onActionTriggered(action))
-      else this.$refs.modal.close()
+      this.$refs.modal.close()
+      if (!_.isNil(action)) this.onActionTriggered(action)
     },
     onActionTriggered (action) {
       // If a handler is given call it

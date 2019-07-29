@@ -10,7 +10,7 @@
       no-error-icon
       bottom-slots
     >
-      <q-chip clickable v-ripple text-color="white" :icon="model.name" :color="model.color" @click="onIconClicked"/>
+      <q-chip clickable v-ripple text-color="white" :icon="iconName" :color="model.color" @click="onIconClicked"/>
 
       <template v-if="helper" v-slot:hint>
         <span v-html="helper"></span>
@@ -28,6 +28,7 @@
 import { QField, QChip, QInput, QIcon } from 'quasar'
 import { KIconChooser } from '../input'
 import mixins from '../../mixins'
+import { getIconName } from '../../utils'
 
 export default {
   name: 'k-icon-field',
@@ -42,6 +43,9 @@ export default {
   computed: {
     closable () {
       return !this.properties.required
+    },
+    iconName () {
+      return getIconName(this.model, 'name')
     }
   },
   methods: {

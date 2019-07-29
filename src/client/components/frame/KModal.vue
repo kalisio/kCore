@@ -81,8 +81,8 @@ export default {
     open () {
       this.$refs.modal.show()
     },
-    close (onClose) {
-      this.$refs.modal.hide(onClose)
+    close () {
+      this.$refs.modal.hide()
     }
   },
   mounted () {

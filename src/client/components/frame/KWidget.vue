@@ -124,17 +124,17 @@ export default {
     async toggleMode () {
       await this.setMode(this.mode === 'minimized' ? 'maximized' : 'minimized')
     },
-    open (fn) {
-      this.$refs.popover.show(fn)
+    open () {
+      this.$refs.popover.show()
     },
-    close (fn) {
-      this.$refs.popover.hide(fn)
+    close () {
+      this.$refs.popover.hide()
     },
-    toggle (onClose) {
+    toggle () {
       if (!this.isOpened) {
         this.open()
       } else {
-        this.close(onClose)
+        this.close()
       }
     },
     isOpen () {
