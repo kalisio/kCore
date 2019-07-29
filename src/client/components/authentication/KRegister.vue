@@ -6,9 +6,7 @@
           <k-form ref="form" :schema="getSchema()" />
         </div>
         <div class="self-center">
-          <k-btn color="primary" id="register" @click="onRegister">
-            {{$t('KRegister.APPLY_BUTTON')}}
-          </k-btn>
+          <q-btn :loading="loading" color="primary" id="register" :label="$t('KRegister.APPLY_BUTTON')" @click="onRegister"/>
         </div>
       </div>
     </div>
@@ -18,7 +16,6 @@
 <script>
 import { KScreen } from '../frame'
 import { KForm } from '../form'
-import { KBtn } from '../input'
 import mixins from '../../mixins'
 import { getLocale } from '../../utils'
 
@@ -26,13 +23,13 @@ export default {
   name: 'k-register',
   components: {
     KForm,
-    KScreen,
-    KBtn
+    KScreen
   },
   mixins: [mixins.authentication],
   data () {
     return {
-      links: []
+      links: [],
+      loading: false
     }
   },
   methods: {
@@ -95,14 +92,14 @@ export default {
     async onRegister (event) {
       let result = this.$refs.form.validate()
       if (result.isValid) {
-        event.loading(true)
+        this.loading = true
         // Add the locale information
         result.values.locale = getLocale()
         try {
           await this.register(result.values)
         } catch (_) {
         }
-        event.loading(false)
+        this.loading = false
       }
     }
   },

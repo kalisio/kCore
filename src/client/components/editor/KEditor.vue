@@ -4,16 +4,17 @@
       Form section
     -->
     <div>
-      <k-form ref="form" :schema="schema" @field-changed="onFieldChanged"/>
+      <k-form :class="{ 'light-dimmed': applyInProgress }" ref="form" :schema="schema" @field-changed="onFieldChanged"/>
+      <q-spinner-cube color="primary" class="fixed-center" v-if="applyInProgress" size="4em"/>
     </div>
     <!--
       Buttons section
     -->
     <div>
       <div class="row justify-end" style="padding: 12px">
-        <k-btn v-if="clearButton !== ''" id="clear-button" color="primary" @click="clear">{{clearButton}}</k-btn>
-        <k-btn v-if="resetButton !== ''" id="reset-button" color="primary" @click="reset">{{resetButton}}</k-btn>
-        <k-btn v-if="applyButton !== ''" id="apply-button" color="primary" @click="apply">{{applyButton}}</k-btn>
+        <q-btn v-if="clearButton !== ''" id="clear-button" color="primary" :label="clearButton" @click="clear"/>
+        <q-btn v-if="resetButton !== ''" id="reset-button" color="primary" :label="resetButton" @click="reset"/>
+        <q-btn v-if="applyButton !== ''" id="apply-button" color="primary" :label="applyButton" @click="apply"/>
       </div>
     </div>
   </div>
@@ -21,14 +22,12 @@
 
 <script>
 import { KForm } from '../form'
-import { KBtn } from '../input'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-editor',
   components: {
-    KForm,
-    KBtn
+    KForm
   },
   mixins: [
     mixins.service,

@@ -34,9 +34,7 @@
         <slot name="dialog-actions">
           <div class="row justify-end">
             <template v-for="button in buttons">
-              <k-btn :id="button.name" :key="button.name" flat color="primary" @click="button.handler">
-                {{button.label}}
-              </k-btn>
+              <q-btn :id="button.name" :key="button.name" flat color="primary" :label="button.label" @click="button.handler"/>
             </template>
           </div>
         </slot>

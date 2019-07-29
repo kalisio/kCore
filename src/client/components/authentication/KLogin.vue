@@ -25,9 +25,7 @@
           <k-form ref="form" :schema="schema" @form-ready="onFormReady"/>
         </div>
         <div class="self-center">
-          <k-btn color="primary" id="local" @click="onLogin">
-            {{ $t('KLogin.APPLY_BUTTON') }}
-          </k-btn>
+          <q-btn :loading="loading" color="primary" id="local" :label="$t('KLogin.APPLY_BUTTON')" @click="onLogin"/>
         </div>
       </div>
     </div>
@@ -37,7 +35,6 @@
 <script>
 import { QBtn, Platform } from 'quasar'
 import { KScreen } from '../frame'
-import { KBtn } from '../input'
 import { KForm } from '../form'
 import mixins from '../../mixins'
 
@@ -46,8 +43,7 @@ export default {
   components: {
     QBtn,
     KForm,
-    KScreen,
-    KBtn
+    KScreen
   },
   data () {
     return {
@@ -77,7 +73,8 @@ export default {
       },
       providers: [],
       links: [],
-      displayDetails: false
+      displayDetails: false,
+      loading: false
     }
   },
   mixins: [mixins.authentication, mixins.version],
@@ -99,23 +96,19 @@ export default {
         })
       }
     },
-    onLogin (event) {
+    async onLogin (event) {
       let result = this.$refs.form.validate()
-
       if (result.isValid) {
-        event.loading(true)
-
-        this.login(result.values.email, result.values.password)
-        .then(() => {
+        this.loading = true
+        try {
+          await this.login(result.values.email, result.values.password)
           if (this.storeCredentials()) {
             window.localStorage.setItem('klogin.email', result.values.email)
           }
-          event.loading(false)
-        })
-        .catch((e) => {
+        } catch(_) {
           this.$toast({ message: this.$t('KLogin.LOGIN_ERROR') })
-          event.loading(false)
-        })
+        }
+        this.loading = false
       }
     },
     onLogWith (provider) {
