@@ -1,14 +1,17 @@
 <template>
-  <q-input :id="properties.name + '-field'" v-model="model"
+  <q-field :id="properties.name + '-field'"
     :icon="icon"
     :label="label"
     :error-message="errorLabel"
     :label-width="labelWidth"
     :error="hasError"
-    :disabled="disabled" @blur="onChanged"
+    :disabled="disabled"
+    @blur="onChanged"
     no-error-icon
     bottom-slots
   >
+    <span>{{formattedDatetime}}</span>
+
     <template v-slot:prepend>
       <q-icon name="event" class="cursor-pointer">
         <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -25,15 +28,25 @@
     <template v-if="helper" v-slot:hint>
       <span v-html="helper"></span>
     </template>
-  </q-input>
+  </q-field>
 </template>
 
 <script>
 import mixins from '../../mixins'
+import moment from 'moment'
 
 export default {
   name: 'k-datetime-field',
   mixins: [mixins.baseField],
+  computed: {
+    formattedDatetime () {
+      const datetime = moment.utc(this.model).local()
+      return datetime.format(this.datetimeFormat)
+    },
+    datetimeFormat () {
+      return _.get(this.properties.field, 'datetimeFormat', 'L LT')
+    }
+  },
   methods: {
     emptyModel () {
       let now = Date.now()
@@ -48,6 +61,10 @@ export default {
       this.model = date.toISOString()
       this.onChanged()
     }
+  },
+  created () {
+    const locale = _.get(this.properties.field, 'locale', window.navigator.userLanguage || window.navigator.language)
+    moment.locale(locale)
   }
 }
 </script>
