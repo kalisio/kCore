@@ -15,12 +15,12 @@
     <template v-slot:prepend>
       <q-icon name="event" class="cursor-pointer">
         <q-popup-proxy transition-show="scale" transition-hide="scale">
-          <q-date v-model="model" mask="YYYY-MM-DDTHH:mm:ss.SSSZ" v-bind="properties.field" />
+          <q-date :value="localDatetime" @input="onChangeLocalDatetime" mask="YYYY-MM-DDTHH:mm:ss.SSSZ" v-bind="properties.field" />
         </q-popup-proxy>
       </q-icon>
       <q-icon name="access_time" class="cursor-pointer">
         <q-popup-proxy transition-show="scale" transition-hide="scale">
-          <q-time v-model="model" mask="YYYY-MM-DDTHH:mm:ss.SSSZ" v-bind="properties.field" />
+          <q-time :value="localDatetime" @input="onChangeLocalDatetime" mask="YYYY-MM-DDTHH:mm:ss.SSSZ" v-bind="properties.field" />
         </q-popup-proxy>
       </q-icon>
     </template>
@@ -40,9 +40,17 @@ export default {
   name: 'k-datetime-field',
   mixins: [mixins.baseField],
   computed: {
+    localDatetimeValue () {
+      // get local datetime value from the component model's UTC datetime
+      return moment.utc(this.model).local()
+    },
+    localDatetime () {
+      // get local datetime value, and format it using the same mask that's also used by the QDate and QTime components
+      return this.localDatetimeValue.format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+    },
     formattedDatetime () {
-      const datetime = moment.utc(this.model).local()
-      return datetime.format(this.datetimeFormat)
+      // get local datetime value, and format it using the configured mask
+      return this.localDatetimeValue.format(this.datetimeFormat)
     },
     datetimeFormat () {
       return _.get(this.properties.field, 'datetimeFormat', 'L LT')
@@ -57,9 +65,9 @@ export default {
       }
       return new Date(now).toISOString()
     },
-    updateModel (date) {
+    onChangeLocalDatetime (datetime) {
       // Convert from date object to string
-      this.model = date.toISOString()
+      this.model = moment.utc(datetime).toISOString()
       this.onChanged()
     }
   },
