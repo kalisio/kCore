@@ -1,12 +1,13 @@
 <template>
   <div>
-    <q-carousel ref="carousel" v-show="fullscreen" class="carousel text-secondary" control-color="secondary"
+    <q-carousel ref="carousel" v-show="fullscreen" :style="{ 'background-color': backgroundColor }" :class="'text-' + controlColor" :control-color="controlColor"
       animated :navigation="hasMedia && !zoomedMedia" :arrows="hasMedia && !zoomedMedia" infinite v-model="currentMediaName" @input="onCurrentMediaChanged">
       <q-carousel-slide v-for="media in medias" :name="media.name" :key="media._id" class="flex-center row">
-        <img v-if="media.uri" style="max-width: 100%; max-height: 100%; object-fit: content;" :src="media.uri" />
-        <div v-if="!media.uri">
-          <q-spinner-cube size="4em"/>
-          <span style="font-size: 2em;">{{ $t('KMediaBrowser.LOADING') }}</span>
+        <img v-show="media.uri" style="max-width: 100%; max-height: 100%; object-fit: content;" :src="media.uri" />
+        <div v-if="currentMediaIsFile" class="text-h5">{{currentMediaName}}</div>
+        <div v-show="!media.uri" class="text-h3">
+          <q-spinner-cube/>
+          {{ $t('KMediaBrowser.LOADING') }}
         </div>
       </q-carousel-slide>
       <q-carousel-slide name="no-media" class="flex-center row text-h3" :disable="hasMedia">
@@ -16,21 +17,21 @@
         <img v-if="zoomedMedia" :src="zoomedMedia.uri" />
       </q-carousel-slide>
       <template v-slot:control>
-        <q-carousel-control position="top-right" :offset="[18, 18]" class="toolbar">
-          <q-icon v-show="hasMedia && !zoomedMedia" v-if="!currentMediaIsFile" @click="doZoomIn" color="secondary" name="zoom_in" />
-          <q-icon v-show="hasMedia && !zoomedMedia" @click="doDownload" color="secondary" name="cloud_download" />
-          <q-icon v-show="!zoomedMedia" @click="doHide" color="secondary" name="close" />
+        <q-carousel-control position="top-right" :offset="[0, 0]" style="font-size: 2em; cursor: 'pointer';">
+          <q-icon v-show="hasMedia && !zoomedMedia" v-if="!currentMediaIsFile" @click="doZoomIn" :color="controlColor" name="zoom_in" />
+          <q-icon v-show="hasMedia && !zoomedMedia" @click="doDownload" :color="controlColor" name="cloud_download" />
+          <q-icon v-show="!zoomedMedia" @click="doHide" :color="controlColor" name="close" />
           <a ref="downloadLink" v-show="false" :href="currentDownloadLink" :download="currentMediaName"></a>
-          <q-icon v-show="zoomedMedia" @click="doZoomOut" color="secondary" name="zoom_out" />
+          <q-icon v-show="zoomedMedia" @click="doZoomOut" :color="controlColor" name="zoom_out" />
         </q-carousel-control>
       </template>
-      <p v-if="currentMediaIsFile" class="fixed-top-left" style="top: 0px; width: 75%;">{{currentMediaName}}</p>
     </q-carousel>
   </div>
 </template>
 
 <script>
-import { Platform, QCarousel, QCarouselSlide, QCarouselControl, QSpinnerCube } from 'quasar'
+import _ from 'lodash'
+import { Platform, QCarousel, QCarouselSlide, QCarouselControl } from 'quasar'
 import 'mime-types-browser'
 import mixins from '../../mixins'
 
@@ -42,8 +43,7 @@ export default {
   components: {
     QCarousel,
     QCarouselSlide,
-    QCarouselControl,
-    QSpinnerCube
+    QCarouselControl
   },
   props: {
     options: {
@@ -54,6 +54,12 @@ export default {
   computed: {
     hasMedia () {
       return (this.medias.length > 0)
+    },
+    backgroundColor () {
+      return this.options.backgroundColor || 'white'
+    },
+    controlColor () {
+      return this.options.controlColor || 'primary'
     }
   },
   data () {
@@ -160,18 +166,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.carousel {
-  background-color: #000000;
-}
-.toolbar {
-  right: 20px;
-  font-size: 2rem;
-  cursor: pointer;
-}
-.title {
-  left: 20px;
-  font-size: 2rem;
-}
-</style>

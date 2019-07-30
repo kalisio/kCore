@@ -129,7 +129,7 @@ export default {
       files.forEach(file => this.files.push(file))
       this.updateModel()
       // Hide uploader if full
-      if (this.files.length >= this.maxFiles) this.isUploaderVisible = false
+      if (this.isMultiple() && (this.files.length >= this.maxFiles)) this.isUploaderVisible = false
     },
     updateModel () {
       // filter rendering properties only
