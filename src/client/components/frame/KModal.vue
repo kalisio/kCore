@@ -7,8 +7,8 @@
        -->
       <div class="row justify-end">
         <template v-for="action in toolbar">
-          <q-btn :id="action.name" v-bind:key="action.name" flat round small color="primary" @click="action.handler">
-            <q-icon :name="action.icon" />
+          <q-btn :id="action.name" v-bind:key="action.name" flat round small @click="action.handler">
+            <q-icon :name="action.icon" :color="action.color || 'primary'"/>
             <q-tooltip v-if="action.label">{{action.label}}</q-tooltip>
           </q-btn>
         </template>

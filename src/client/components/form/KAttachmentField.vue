@@ -11,7 +11,7 @@
       bottom-slots
     >
       <q-icon style="font-size: 2em;" :id="properties.name + '-field'"
-        name="fas fa-cloud-upload-alt" @click="isUploaderVisible = !isUploaderVisible"/>
+        name="fas fa-cloud-upload-alt" @click="onUpload"/>
       <q-chip v-for="file in files" :key="file.name" color="primary" text-color="white"
         :label="fileName(file)" @remove="onFileRemoved(file)" removable/>
 
@@ -88,6 +88,7 @@ export default {
       } else {
         this.files = (!_.isEmpty(this.model) ? [this.model] : [])
       }
+      this.$refs.uploader.initialize(this.files)
     },
     async apply (object, field) {
       // If not processing uploads on-the-fly upload when the form is being submitted on update
@@ -145,28 +146,19 @@ export default {
               : (file._id ? file._id : file))
     },
     onUpload () {
-      // When not processing uploads on-the-fly we start from a fresh state
-      // otherwise we would have to keep thumbnails, etc. in-memory
-      if (!this.autoProcessQueue()) {
-        this.updateFiles([])
+      // Simply open file dialog for single selection mode
+      if (!this.isMultiple()) {
+        this.$refs.uploader.initialize([])
+        this.$refs.uploader.openFileInput()
+      } else {
+        // Otherwise display drop zone
+        this.isUploaderVisible = !this.isUploaderVisible
+        // And open file dialog the first time
+        if (this.isUploaderVisible && (this.files.length === 0)) this.$refs.uploader.openFileInput()
       }
-      this.$refs.uploader.initialize(this.files)
     },
     onFileRemoved (oldFile) {
-      // When processing uploads on-the-fly we need to remove from server
-      if (this.autoProcessQueue()) {
-        const storage = this.storageService()
-        storage.remove(oldFile._id, {
-          query: { resource: this.objectId, resourcesService: this.resourcesService() }
-        })
-        // Thumbnail as well
-        const mimeType = mime.lookup(oldFile.name)
-        // We only store thumbnails for images
-        if (mimeType.startsWith('image/')) storage.remove(oldFile._id + '.thumbnail')
-        this.updateFiles(this.files.filter(file => file.name !== oldFile.name))
-      } else {
-        this.$refs.uploader.removeFile(oldFile)
-      }
+      this.$refs.uploader.removeFile(oldFile)
     }
   }
 }

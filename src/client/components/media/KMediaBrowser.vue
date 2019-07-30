@@ -1,60 +1,50 @@
 <template>
-  <k-modal ref="modal" :toolbar="toolbar" :buttons="[]" :options="{ 'background-color': '#000000', padding: '0px', maximized: (hasMedia ? true : false) }">
-    <div slot="modal-content">
-      <q-carousel ref="carousel" class="carousel text-white" actions arrows dots infinite v-show="hasMedia && !zoomedMedia" @slide="onViewMedia">
-        <div v-for="media in medias" :key="media._id" slot="slide" class="flex-center row">
-          <img v-if="media.uri" style="max-width: 100%; max-height: 100%; object-fit: content;" :src="media.uri" />
-          <div v-if="!media.uri">
-            <q-spinner-cube size="4em"/>
-            <span style="font-size: 2em;">{{ $t('KMediaBrowser.LOADING') }}</span>
-          </div>
+  <div>
+    <q-carousel ref="carousel" v-show="fullscreen" class="carousel text-secondary" control-color="secondary"
+      animated :navigation="hasMedia && !zoomedMedia" :arrows="hasMedia && !zoomedMedia" infinite v-model="currentMediaName" @input="onCurrentMediaChanged">
+      <q-carousel-slide v-for="media in medias" :name="media.name" :key="media._id" class="flex-center row">
+        <img v-if="media.uri" style="max-width: 100%; max-height: 100%; object-fit: content;" :src="media.uri" />
+        <div v-if="!media.uri">
+          <q-spinner-cube size="4em"/>
+          <span style="font-size: 2em;">{{ $t('KMediaBrowser.LOADING') }}</span>
         </div>
-        <div class="toolbar fixed-top-right">
-          <q-icon v-if="!currentMediaIsFile" @click="doZoomIn" color="white" name="zoom_in" />
-          <q-icon @click="doDownload" color="white" name="cloud_download" />
-          <q-icon @click="doClose" color="white" name="close" />
-          <a ref="downloadLink" v-show="false" :href="currentDownloadLink" :download="currentName"></a>
-        </div>
-        <p v-if="currentMediaIsFile" class="fixed-top-left" style="top: 0px; width: 75%;">{{currentName}}</p>
-      </q-carousel>
-      <div class="carousel" v-if="zoomedMedia" >
-        <img :src="zoomedMedia.uri" />
-        <!-- TODO master branch has '<div class="toolbar fixed-top-right">' - reason? -->
-        <!-- <div class="toolbar fixed-top-right"> -->
-        <q-page-sticky position="top-right" :offset="[0, -100]">
-          <!-- TODO master branch has q-icon rather than q-btn -->
-          <!-- <q-btn flat big color="white" @click="doZoomOut" icon="zoom_out" /> -->
-          <q-icon @click="doZoomOut" color="white" name="zoom_out" />
-        </q-page-sticky>
-
-        <q-fixed-position corner="top-right" :offset="[0, -100]">
-          <q-btn flat big color="white" @click="doZoomOut" icon="zoom_out" />
-        </q-fixed-position>
-      </div>
-      <div v-show="!hasMedia" class="text-center text-white"><big>{{ $t('KMediaBrowser.NO_MEDIA') }}</big></div>
-    </div>
-  </k-modal>
+      </q-carousel-slide>
+      <q-carousel-slide name="no-media" class="flex-center row text-h3" :disable="hasMedia">
+        {{ $t('KMediaBrowser.NO_MEDIA') }}
+      </q-carousel-slide>
+      <q-carousel-slide name="zoomed-media" :disable="!zoomedMedia" >
+        <img v-if="zoomedMedia" :src="zoomedMedia.uri" />
+      </q-carousel-slide>
+      <template v-slot:control>
+        <q-carousel-control position="top-right" :offset="[18, 18]" class="toolbar">
+          <q-icon v-show="hasMedia && !zoomedMedia" v-if="!currentMediaIsFile" @click="doZoomIn" color="secondary" name="zoom_in" />
+          <q-icon v-show="hasMedia && !zoomedMedia" @click="doDownload" color="secondary" name="cloud_download" />
+          <q-icon v-show="!zoomedMedia" @click="doHide" color="secondary" name="close" />
+          <a ref="downloadLink" v-show="false" :href="currentDownloadLink" :download="currentMediaName"></a>
+          <q-icon v-show="zoomedMedia" @click="doZoomOut" color="secondary" name="zoom_out" />
+        </q-carousel-control>
+      </template>
+      <p v-if="currentMediaIsFile" class="fixed-top-left" style="top: 0px; width: 75%;">{{currentMediaName}}</p>
+    </q-carousel>
+  </div>
 </template>
 
 <script>
-import { Platform, QCarousel, QSpinnerCube, QIcon, QPageSticky, QBtn } from 'quasar'
+import { Platform, QCarousel, QCarouselSlide, QCarouselControl, QSpinnerCube } from 'quasar'
 import 'mime-types-browser'
-import { KModal } from '../frame'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-media-browser',
+  mixins: [
+    mixins.refsResolver(['carousel'])
+  ],
   components: {
     QCarousel,
-    QSpinnerCube,
-    QIcon,
-    QPageSticky,
-    QBtn,
-    KModal
+    QCarouselSlide,
+    QCarouselControl,
+    QSpinnerCube
   },
-  mixins: [
-    mixins.refsResolver(['modal', 'carousel', 'downloadLink'])
-  ],
   props: {
     options: {
       type: Object,
@@ -64,37 +54,30 @@ export default {
   computed: {
     hasMedia () {
       return (this.medias.length > 0)
-    },
-    toolbar () {
-      return (this.hasMedia ? [] : [{
-        name: 'close',
-        icon: 'close',
-        handler: () => this.close()
-      }])
-    },
-    currentName () {
-      return (this.currentMedia ? this.currentMedia.name : '')
     }
   },
   data () {
     return {
       medias: [],
       currentMedia: null,
+      currentMediaName: '',
       currentMediaIsFile: false,
       currentDownloadLink: null,
-      zoomedMedia: null
+      zoomedMedia: null,
+      fullscreen: false
     }
   },
   methods: {
-    doClose () {
-      this.$refs.carousel.toggleFullscreen()
-      this.$refs.modal.close()
+    doHide () {
+      this.fullscreen = false
     },
     doZoomIn () {
       this.zoomedMedia = this.currentMedia
+      this.$refs.carousel.goTo('zoomed-media')
     },
     doZoomOut () {
       this.zoomedMedia = null
+      this.$refs.carousel.goTo(this.currentMedia.name)
     },
     async doDownload () {
       if (!this.currentMedia) return
@@ -132,7 +115,9 @@ export default {
         this.$nextTick(() => this.$refs.downloadLink.click())
       }
     },
-    async onViewMedia (index, direction) {
+    async onCurrentMediaChanged () {
+      const index = _.findIndex(this.medias, media => media.name === this.currentMediaName)
+      if (index < 0) return
       let media = this.medias[index]
       const mimeType = mime.lookup(media.name)
       this.currentMedia = media
@@ -151,27 +136,27 @@ export default {
         this.$set(this.medias, index, media)
       }
     },
-    async open (medias = []) {
+    async show (medias = []) {
       this.medias = medias
       this.currentMedia = null
       this.zoomedMedia = null
+      this.fullscreen = true
       await this.loadRefs()
       // Then open the modal
-      this.$refs.carousel.toggleFullscreen()
-      await this.$refs.modal.open()
+      this.$refs.carousel.setFullscreen()
       // Quasar does not send the silde event on first display
       if (this.medias.length > 0) {
-        this.$refs.carousel.goToSlide(0)
+        this.$refs.carousel.goTo(this.medias[0].name)
+      } else {
+        this.$refs.carousel.goTo('no-media')
       }
-    },
-    close (onClose) {
-      this.$refs.modal.close(onClose)
     },
     storageService () {
       return this.$api.getService(this.options.service || 'storage')
     }
   },
-  created () {
+  async mounted () {
+    this.$emit('browser-ready')
   }
 }
 </script>

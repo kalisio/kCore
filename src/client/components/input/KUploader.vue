@@ -266,6 +266,9 @@ export default {
         // Adjust maxFiles with files already uploaded to get the correct amount
         this.dropZoneInstance().options.maxFiles = _.get(this.options, 'maxFiles', 5) - defaultFiles.length
       }
+    },
+    openFileInput () {
+      this.dropZoneInstance().hiddenFileInput.click()
     }
   },
   created () {
