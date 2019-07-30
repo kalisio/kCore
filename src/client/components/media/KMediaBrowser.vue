@@ -17,12 +17,12 @@
         <img v-if="zoomedMedia" :src="zoomedMedia.uri" />
       </q-carousel-slide>
       <template v-slot:control>
-        <q-carousel-control position="top-right" :offset="[0, 0]" style="font-size: 2em; cursor: 'pointer';">
+        <q-carousel-control position="top-right" :offset="[0, 0]" style="font-size: 2em; cursor: pointer;">
           <q-icon v-show="hasMedia && !zoomedMedia" v-if="!currentMediaIsFile" @click="doZoomIn" :color="controlColor" name="zoom_in" />
           <q-icon v-show="hasMedia && !zoomedMedia" @click="doDownload" :color="controlColor" name="cloud_download" />
           <q-icon v-show="!zoomedMedia" @click="doHide" :color="controlColor" name="close" />
           <a ref="downloadLink" v-show="false" :href="currentDownloadLink" :download="currentMediaName"></a>
-          <q-icon v-show="zoomedMedia" @click="doZoomOut" :color="controlColor" name="zoom_out" />
+          <q-icon v-show="zoomedMedia" @click="doZoomOut" :color="controlColor" style="right: 18px" name="zoom_out" />
         </q-carousel-control>
       </template>
     </q-carousel>
