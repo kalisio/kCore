@@ -3,7 +3,7 @@
     <div v-if="items.length > 0">
       <div class="row">
         <template v-for="item in items">
-          <component :id="item._id" :key="item._id" :item="item" :contextId="contextId" :is="renderer.component" v-bind="renderer.props" item-selected="onItemSelected(item)"/>
+          <component style="padding: 8px" :id="item._id" :key="item._id" :item="item" :contextId="contextId" :is="renderer.component" v-bind="renderer.props" item-selected="onItemSelected(item)"/>
         </template>
       </div>
       <div class="self-center" v-if="nbPages > 1">
