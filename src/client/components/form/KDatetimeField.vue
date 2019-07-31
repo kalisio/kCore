@@ -39,9 +39,14 @@ import _ from 'lodash'
 export default {
   name: 'k-datetime-field',
   mixins: [mixins.baseField],
+  data () {
+    return {
+      locale: _.get(this.properties.field, 'localeValue', this.$q.lang.getLocale())
+    }
+  },
   computed: {
     localDatetimeValue () {
-      // get local datetime value from the component model's UTC datetime
+      // get local (within the user's timezone) datetime value from the component model's UTC datetime
       return moment.utc(this.model).local()
     },
     localDatetime () {
@@ -49,8 +54,8 @@ export default {
       return this.localDatetimeValue.format("YYYY-MM-DDTHH:mm:ss.SSSZ")
     },
     formattedDatetime () {
-      // get local datetime value, and format it using the configured mask
-      return this.localDatetimeValue.format(this.datetimeFormat)
+      // get local datetime value, and format it using the current locale and the configured mask
+      return this.localDatetimeValue.locale(this.locale).format(this.datetimeFormat)
     },
     datetimeFormat () {
       return _.get(this.properties.field, 'datetimeFormat', 'L LT')
@@ -70,10 +75,6 @@ export default {
       this.model = moment.utc(datetime).toISOString()
       this.onChanged()
     }
-  },
-  created () {
-    const locale = _.get(this.properties.field, 'locale', window.navigator.userLanguage || window.navigator.language)
-    moment.locale(locale)
   }
 }
 </script>
