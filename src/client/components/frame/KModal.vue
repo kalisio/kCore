@@ -30,7 +30,7 @@
       <!--
         Buttons section
        -->
-      <div style="padding: 16px">
+      <div style="padding: 16px" v-if="buttons.length > 0">
         <slot name="dialog-actions">
           <div class="row justify-end">
             <template v-for="button in buttons">
