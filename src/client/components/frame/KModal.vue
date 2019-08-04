@@ -5,14 +5,21 @@
       <!--
          Toolbar section
        -->
-      <div class="row justify-end">
-        <template v-for="action in toolbar">
-          <q-btn :id="action.name" v-bind:key="action.name" flat round small @click="action.handler">
-            <q-icon :name="action.icon" :color="action.color || 'primary'"/>
-            <q-tooltip v-if="action.label">{{action.label}}</q-tooltip>
-          </q-btn>
-        </template>
-      </div>
+      <div class="row">
+        <div class="col">
+          <slot name="modal-toolbar" />
+        </div>
+        <div class="col-auto">
+          <div style="display: inline-block; float: right">
+            <template v-for="action in toolbar">
+              <q-btn :id="action.name" v-bind:key="action.name" flat round small @click="action.handler">
+                <q-icon :name="action.icon" :color="action.color || 'primary'"/>
+                <q-tooltip v-if="action.label">{{action.label}}</q-tooltip>
+              </q-btn>
+            </template>
+          </div>
+        </div>
+    </div>
       <!--
         Title section
       -->
@@ -32,11 +39,16 @@
        -->
       <div style="padding: 16px" v-if="buttons.length > 0">
         <slot name="dialog-actions">
-          <div class="row justify-end">
-            <template v-for="button in buttons">
-              <q-btn :id="button.name" :key="button.name" flat :color="button.color || 'primary'"
-                :label="button.label" @click="button.handler"/>
-            </template>
+          <div class="row items-center">
+            <div class="col">
+              <slot name="modal-footer" />
+            </div>
+            <div class="col-auto">
+              <template v-for="button in buttons">
+                <q-btn :id="button.name" :key="button.name" flat :color="button.color || 'primary'"
+                  :label="button.label" @click="button.handler"/>
+              </template>
+            </div>
           </div>
         </slot>
       </div>

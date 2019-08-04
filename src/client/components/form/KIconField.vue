@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-field
-      :icon="icon"
+      :icon="properties.name"
       :label="label"
       :error-message="errorLabel"
       :label-width="labelWidth"
@@ -20,6 +20,7 @@
     <k-icon-chooser
       :id="properties.name + '-field'"
       ref="iconChooser"
+      :icon-set="iconSet"
       @icon-choosed="onIconChoosed" />
   </div>
 </template>
@@ -29,6 +30,7 @@ import { QField, QChip, QInput, QIcon } from 'quasar'
 import { KIconChooser } from '../input'
 import mixins from '../../mixins'
 import { getIconName } from '../../utils'
+import _ from 'lodash'
 
 export default {
   name: 'k-icon-field',
@@ -48,6 +50,11 @@ export default {
       return getIconName(this.model, 'name')
     }
   },
+  data () {
+    return {
+      iconSet: _.get(this.properties.field, 'iconSet', undefined)
+    }
+  },
   methods: {
     emptyModel () {
       return { name: '', color: '' }
@@ -56,7 +63,7 @@ export default {
       this.model = { name: '', color: '' }
     },
     onIconClicked () {
-      this.$refs.iconChooser.open(this.model.icon, this.model.color)
+      this.$refs.iconChooser.open(this.model.name, this.model.color)
     },
     onIconChoosed (icon) {
       this.model = Object.assign({}, icon)

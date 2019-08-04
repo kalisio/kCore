@@ -146,7 +146,9 @@
   },
   "KIconChooser": {
     "CLOSE_ACTION": "$t(CANCEL)",
-    "DONE_BUTTON": "$t(DONE)"
+    "DONE_BUTTON": "$t(DONE)",
+    "SEARCH_FIELD_LABEL": "Tapez ici pour rechercher",
+    "SEARCH_CATEGORY_LABEL": "Toutes les catégories"
   },
   "KTagField": {
     "ADD_TAG": "Ajouter l'étiquette \"{{tag}}\""
