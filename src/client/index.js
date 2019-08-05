@@ -34,11 +34,13 @@ export default function init () {
   Store.set('searchBar', search)
   let tabBar = { tabs: [] }
   Store.set('tabBar', tabBar)
+  let leftDrawer = { component: '', options: {} }
+  Store.set('leftDrawer', leftDrawer)
+  let rightDrawer = { component: '', options: {} }
+  Store.set('rightDrawer', rightDrawer)
   let fab = { actions: [] }
   Store.set('fab', fab)
-  let rightPanel = { component: '', content: {} }
-  Store.set('rightPanel', rightPanel)
-
+  
   // Listen to the 'patched' event on the users
   const users = api.getService('users')
   users.on('patched', user => {

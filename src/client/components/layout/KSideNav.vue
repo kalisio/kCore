@@ -1,13 +1,5 @@
 <template>
   <div class="col">
-     <!--
-     Close action
-    -->
-    <div v-if="closable" class="row justify-end">
-      <q-btn id="left-panel-close" flat color="secondary" @click="klayout.hideLeftDrawer()">
-        <q-icon name="chevron_left" />
-      </q-btn>
-    </div>
     <!--
       Banner
      -->
@@ -27,26 +19,15 @@
 
 <script>
 import _ from 'lodash'
-import { QBtn, QIcon } from 'quasar'
 
 export default {
   name: 'k-side-nav',
-  components: {
-    QBtn,
-    QIcon
-  },
   provide () {
     return {
       sideNav: this
     }
   },
   inject: ['klayout'],
-  props: {
-    closable: {
-      type: Boolean,
-      required: true
-    }
-  },
   data () {
     return {
       banner: '',
