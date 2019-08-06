@@ -1,5 +1,5 @@
 <template>
-  <q-layout ref="layout" v-bind="options">
+  <q-layout ref="layout" v-bind="options" class="q-pa-md">
     <!--
       The AppBar
     -->
@@ -59,7 +59,7 @@ export default {
       let componentKey = _.kebabCase(this.leftDrawer.component)
       this.$options.components[componentKey] = this.$load(this.leftDrawer.component)
       return componentKey
-    },  
+    },
     rightDrawerComponent () {
       if (!this.rightDrawer || this.rightDrawer.component === '') return ''
       let componentKey = _.kebabCase(this.rightDrawer.component)
@@ -70,7 +70,7 @@ export default {
   data () {
     return {
       leftDrawer: this.$store.get('leftDrawer'),
-      leftDrawerIsVisible: false,     
+      leftDrawerIsVisible: false,
       rightDrawer: this.$store.get('rightDrawer'),
       rightDrawerIsVisible: false,
       options: {}
@@ -105,13 +105,13 @@ export default {
     this.$options.components['k-tab-bar'] = this.$load(_.get(this.options, 'tabBar', 'layout/KTabBar'))
     this.$options.components['k-fab'] = this.$load(_.get(this.options, 'fab', 'layout/KFab'))
     // Setup the left and right drawers
-    this.$store.patch('leftDrawer', { 
-      component: _.get(this.options, 'leftDrawer.component.name', ''), 
+    this.$store.patch('leftDrawer', {
+      component: _.get(this.options, 'leftDrawer.component.name', ''),
       options: _.get(this.options, 'leftDrawer.component.options', {})
     })
     this.leftDrawerIsVisible = _.get(this.options, 'leftDrawer.isVisible', false)
-    this.$store.patch('rightDrawer', { 
-      component: _.get(this.options, 'rightDrawer.component.name', ''), 
+    this.$store.patch('rightDrawer', {
+      component: _.get(this.options, 'rightDrawer.component.name', ''),
       options: _.get(this.options, 'rightDrawer.component.options', {})
     })
     this.rightDrawerIsVisible = _.get(this.options, 'rightDrawer.isVisible', false)
