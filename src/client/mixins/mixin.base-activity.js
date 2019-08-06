@@ -95,7 +95,6 @@ let baseActivityMixin = {
       this.clearTitle()
       this.clearSearchBar()
       this.clearActions()
-      this.clearRightDrawer()
     },
     refreshActivity () {
       // This method should be overriden in activities
