@@ -1,5 +1,5 @@
 <template>
-  <div class="row justify-center items-center">
+  <div class="row justify-center items-center window-height window-width">
      <!--
        Header section
       -->
