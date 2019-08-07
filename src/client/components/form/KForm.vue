@@ -175,7 +175,13 @@ export default {
       })
     },
     values () {
-      return this.fields.reduce((values, field) => Object.assign(values, { [field.name]: this.getField(field.name).value() }), {})
+     let values = {}
+      _.forEach(this.fields, field => {
+        if (!this.getField(field.name).isEmpty()) {
+          Object.assign(values, { [field.name]: this.getField(field.name).value() })
+        }
+      })
+      return values
     },
     clear () {
       logger.debug('Clearing form', this.schema.$id)
