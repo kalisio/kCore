@@ -1,37 +1,29 @@
 <template>
-  <div class="column items-center">
-    <div v-if="items.length > 0" class="row full-width">
-      <q-list class="col-12 items-center" highlight separator>
+  <div class="q-pa-xs">
+    <div v-if="items.length > 0" class="row">
+      <q-list class="col-12" highlight separator>
         <template v-for="item in items">
           <component :id="item._id" :key="item._id" :item="item" :contextId="contextId" :is="renderer.component" v-bind="renderer.props" @item-selected="onItemSelected(item)"/>
         </template>
       </q-list>
-      <div class="col-12" v-if="nbPages > 1">
-        <q-pagination v-model="currentPage" :max="nbPages" style="padding: 18px" @input="onPageChanged" />
+      <div v-if="nbPages > 1" class="col-12">
+        <q-pagination class="justify-center q-ma-md" v-model="currentPage" :max="nbPages" @input="onPageChanged" />
       </div>
     </div>
-    <div v-else class="row">
-      <div class="col-12">
-        <q-icon size="2rem" name="error_outline" />
-      </div>
-      <div class="col-12">
-        {{$t('KList.EMPTY_LIST')}}
+    <div v-else class="row justify-center text-center">
+      <div>
+        <q-icon size="3rem" name="error_outline" />
+        <p>{{$t('KList.EMPTY_LIST')}}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { QList, QIcon, QPagination } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-list',
-  components: {
-    QList,
-    QIcon,
-    QPagination
-  },
   mixins: [mixins.service, mixins.baseCollection],
   props: {
     renderer: {
@@ -94,15 +86,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.content {
-  padding: 8px
-}
-.message {
-  font-size: 18px;
-  font-weight: 400;
-  letter-spacing: normal;
-  line-height: 2rem
-}
-</style>

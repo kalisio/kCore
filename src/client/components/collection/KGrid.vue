@@ -1,36 +1,29 @@
 <template>
-  <div class="content">
-    <div v-if="items.length > 0">
-      <div class="row">
-        <template v-for="item in items">
-          <component style="padding: 8px" :id="item._id" :key="item._id" :item="item" :contextId="contextId" :is="renderer.component" v-bind="renderer.props" item-selected="onItemSelected(item)"/>
-        </template>
-      </div>
-      <div class="self-center" v-if="nbPages > 1">
-        <q-pagination v-model="currentPage" :max="nbPages" style="padding: 18px" @input="onPageChanged" />
+  <div class="q-pa-sm">
+    <div v-if="items.length > 0" class="row">
+      <template v-for="item in items">
+        <div class="col-12 col-sm-4 col-md-3 col-lg-2" :key="item._id">
+          <component class="q-pa-sm" :id="item._id" :item="item" :contextId="contextId" :is="renderer.component" v-bind="renderer.props" item-selected="onItemSelected(item)"/>
+        </div>
+      </template>
+      <div v-if="nbPages > 1" class="col-12">
+        <q-pagination class="justify-center q-ma-md" v-model="currentPage" :max="nbPages" @input="onPageChanged" />
       </div>
     </div>
-    <div v-else class="column items-center">
+    <div v-else class="row justify-center text-center">
       <div>
-        <q-icon size="2rem" name="error_outline" />
-      </div>
-      <div class="message">
-        {{$t('KGrid.EMPTY_GRID')}}
+        <q-icon size="3rem" name="error_outline" />
+        <p>{{$t('KList.EMPTY_LIST')}}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { QIcon, QPagination } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-grid',
-  components: {
-    QIcon,
-    QPagination
-  },
   mixins: [mixins.service, mixins.baseCollection],
   props: {
     renderer: {
@@ -93,15 +86,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.content {
-  padding: 8px
-}
-.message {
-  font-size: 18px;
-  font-weight: 400;
-  letter-spacing: normal;
-  line-height: 2rem
-}
-</style>
