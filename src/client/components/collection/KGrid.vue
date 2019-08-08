@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-sm">
+  <div>
     <div v-if="items.length > 0" class="row">
       <template v-for="item in items">
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2" :key="item._id">

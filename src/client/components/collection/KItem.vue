@@ -3,16 +3,14 @@
     <!--
       Avatar section
     -->
-    <slot name="item-icon">
-      <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below may be incorrect -->
-      <q-item-section avatar v-if="options.icon">
-         <q-icon :color="options.color" :name="options.icon" />
-      </q-item-section>
-    </slot>
     <slot name="item-avatar">
-      <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below may be incorrect -->
-      <q-item-section avatar v-if="options.avatar">
-         <q-avatar :icon="options.avatar" />
+      <q-item-section avatar v-if="avatar">
+        <q-avatar>
+          <img :src="avatar">
+        </q-avatar>
+      </q-item-section>
+      <q-item-section avatar v-if="icon">
+        <q-icon :color="icon.color" :name="icon.name" />
       </q-item-section>
     </slot>
     <!--
@@ -32,17 +30,16 @@
       Actions section
     -->
     <slot name="item-actions">
-      <!-- TODO figure out how to 'translate' this to Quasar v1 - choices below are probably incorrect -->
-      <!-- <q-item-section v-if="itemActions.length > 0" right icon="more_vert"> -->
       <q-item-section v-if="itemActions.length > 0" side>
-        <q-icon name="more_vert" />
-        <q-menu>
-          <q-list>
-            <q-item v-for="action in itemActions" clickable @click="onActionTriggered(action, item)" :key="key(action, 'label')">
-              <q-item-section>{{ action.label }}</q-item-section>
-            </q-item>
-          </q-list>
-        </q-menu>
+        <q-btn icon="more_vert" flat dense round>
+          <q-menu>
+            <q-list>
+              <q-item v-for="action in itemActions" clickable @click="onActionTriggered(action, item)" :key="key(action, 'label')">
+                <q-item-section>{{ action.label }}</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-btn>
       </q-item-section>
     </slot>
   </q-item>
@@ -79,6 +76,14 @@ export default {
     description () {
       // Check for custom description field
       return this.options.descriptionField ? _.get(this.item, this.options.descriptionField, '') : this.item.description
+    },
+    avatar () {
+      if (this.item.avatar) return this.item.avatar
+      return undefined
+    },
+    icon () {
+      if (this.item.icon) return this.item.icon
+      return undefined
     }
   },
   methods: {

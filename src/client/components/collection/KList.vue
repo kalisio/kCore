@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-xs">
+  <div>
     <div v-if="items.length > 0" class="row">
       <q-list class="col-12" highlight separator>
         <template v-for="item in items">
