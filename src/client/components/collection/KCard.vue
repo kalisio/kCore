@@ -54,13 +54,12 @@
         <q-card-actions align="right">
           <!-- Pane -->
           <template v-for="action in itemActions.pane">
-            <q-btn :id="action.name" :key="key(action, 'name')" flat round small :color="action.warning ? 'red' : 'grey-7'" @click="onActionTriggered(action, item)">
-              <q-icon :name="action.icon"/>
+            <q-btn :id="action.name" :key="key(action, 'name')" :icon="action.icon" size="md" flat round dense :color="action.warning ? 'red' : 'grey-7'" @click="onActionTriggered(action, item)">
               <q-tooltip>{{action.warning ? action.warning : action.label}}</q-tooltip>
             </q-btn>
           </template>
           <!-- Menu -->
-          <q-btn id="card-overflow-menu-entry" v-if="itemActions.menu && itemActions.menu.length > 0" flat small round>
+          <q-btn id="card-overflow-menu-entry" v-if="itemActions.menu && itemActions.menu.length > 0" size="md" flat round dense>
             <q-menu id="card-overflow-menu" ref="menu">
               <q-list>
                 <template v-for="action in itemActions.menu">
