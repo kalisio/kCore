@@ -11,7 +11,7 @@
       </div>
     </div>
     <div v-else class="row justify-center text-center">
-      <div>
+      <div class="q-ma-xl">
         <q-icon size="3rem" name="error_outline" />
         <p>{{$t('KList.EMPTY_LIST')}}</p>
       </div>
