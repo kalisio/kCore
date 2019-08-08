@@ -31,7 +31,7 @@
     -->
     <slot name="item-actions">
       <q-item-section v-if="itemActions.length > 0" side>
-        <q-btn icon="more_vert" flat dense round>
+        <q-btn icon="more_vert" size="md" flat dense round>
           <q-menu>
             <q-list>
               <q-item v-for="action in itemActions" clickable @click="onActionTriggered(action, item)" :key="key(action, 'label')">
