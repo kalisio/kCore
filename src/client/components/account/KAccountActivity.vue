@@ -1,18 +1,20 @@
 <template>
-  <div v-if="objectId !== ''" class="row justify-center full-width">
-    <div v-if="perspective === 'profile'" class="col-11">
-      <k-editor service="users" :objectId="objectId" perspective="profile"/>
+  <q-page padding>
+    <div v-if="objectId !== ''" class="row justify-center full-width">
+      <div v-if="perspective === 'profile'" class="col-11">
+        <k-editor service="users" :objectId="objectId" perspective="profile"/>
+      </div>
+      <div v-if="perspective === 'security'"  class="col-11">
+        <k-account-security :objectId="objectId" :email="email" />
+      </div>
+      <div v-else-if="perspective === 'danger-zone'" class="col-11">
+        <k-account-dz :objectId="objectId" :name="name" />
+      </div>
+      <div v-else>
+        <!-- Error -->
+      </div>
     </div>
-    <div v-if="perspective === 'security'"  class="col-11">
-      <k-account-security :objectId="objectId" :email="email" />
-    </div>
-    <div v-else-if="perspective === 'danger-zone'" class="col-11">
-      <k-account-dz :objectId="objectId" :name="name" />
-    </div>
-    <div v-else>
-      <!-- Error -->
-    </div>
-  </div>
+  </q-page>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <q-card class="k-block">
+  <q-card>
     <!--
       Title section
      -->
@@ -63,9 +63,6 @@ export default {
 </script>
 
 <style>
-.k-block {
-  padding: 8px;
-}
 .k-block-content {
   margin: 8px;
 }

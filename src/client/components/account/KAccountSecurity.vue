@@ -1,36 +1,33 @@
 <template>
-  <div>
-    <div class="row items-center justify-center full-width q-gutter-xs">
-      <!--
-        Change password
-      -->
-      <div class="col-12">
-        <k-block
-          color="grey"
-          :title="$t('KAccountSecurity.PASSWORD_BLOCK_TITLE')"
-          :text="$t('KAccountSecurity.PASSWORD_BLOCK_TEXT')"
-          :action="$t('KAccountSecurity.PASSWORD_BLOCK_ACTION')"
-          @action-triggered="onChangePassword" />
-      </div>
-      <!--
-        Change email
-      -->
-      <div class="col-12">
-        <k-block
-          color="orange"
-          :title="$t('KAccountSecurity.EMAIL_BLOCK_TITLE')"
-          :text="$t('KAccountSecurity.EMAIL_BLOCK_TEXT', { email })"
-          :action="$t('KAccountSecurity.EMAIL_BLOCK_ACTION')"
-          @action-triggered="onChangeEmail" />
-      </div>
-      <!--
-        Devices
-      -->
-      <div class="col-12" v-if="hasDevices">
-        <k-account-devices />
-      </div>
-    </div>
-
+  <div class="row q-gutter-md">
+    <!--
+      Change password
+    -->
+    <k-block
+      class="col-12"
+      color="grey"
+      :title="$t('KAccountSecurity.PASSWORD_BLOCK_TITLE')"
+      :text="$t('KAccountSecurity.PASSWORD_BLOCK_TEXT')"
+      :action="$t('KAccountSecurity.PASSWORD_BLOCK_ACTION')"
+      @action-triggered="onChangePassword" />
+    <!--
+      Change email
+    -->
+    <k-block
+      class="col-12"
+      color="orange"
+      :title="$t('KAccountSecurity.EMAIL_BLOCK_TITLE')"
+      :text="$t('KAccountSecurity.EMAIL_BLOCK_TEXT', { email })"
+      :action="$t('KAccountSecurity.EMAIL_BLOCK_ACTION')"
+      @action-triggered="onChangeEmail" />
+    <!--
+      Separator
+    -->
+    <q-separator />
+    <!--
+      Devices
+    -->
+    <k-account-devices class="col-12" />
   </div>
 </template>
 
@@ -62,15 +59,16 @@ export default {
     }
   },
   created () {
+    this.$options.components['k-account-devices'] = this.$load('account/KAccountDevices')
     // Load the required components
-    this.$load('account/KAccountDevices')()
+    /*this.$load('account/KAccountDevices')()
     .then(component => {
-      this.hasDevices = true
       this.$options.components['k-account-devices'] = component
+      this.hasDevices = true
     })
     .catch(() => {
       this.hasDevices = false
-    })
+    })*/
   }
 }
 </script>
