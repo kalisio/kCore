@@ -1,7 +1,7 @@
 <template>
   <q-toolbar v-if="appBar.title!=''">
     <!--
-      SideNav toggle
+      Left drawer toggle
      -->
     <q-btn id="left-drawer-toggle" v-if="hasLeftDrawerToggle" flat @click="$emit('left-drawer-toggled')">
       <q-icon name="menu" />
@@ -50,22 +50,8 @@
 </template>
 
 <script>
-import { QToolbar, QToolbarTitle, QBtn, QIcon, QList, QItem, QItemSection, QItemLabel, QTooltip, QMenu } from 'quasar'
-
 export default {
   name: 'k-app-bar',
-  components: {
-    QToolbar,
-    QToolbarTitle,
-    QBtn,
-    QIcon,
-    QList,
-    QItem,
-    QItemSection,
-    QItemLabel,
-    QMenu,
-    QTooltip
-  },
   props: {
     hasLeftDrawerToggle: {
       type: Boolean,

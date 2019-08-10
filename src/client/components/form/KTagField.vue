@@ -11,18 +11,11 @@
       bottom-slots
     >
       <template v-slot:default>
-        <div class="row justify-between items-center">
-          <div class="col-4">
-            <k-autocomplete
-              :id="properties.name + '-field'"
-              ref="search"
-              :services="services"
-              :process-results="processResults"
-              @changed="onTagAdded" />
-          </div>
-          <div class="col-7" v-if="tags.length > 0">
+        <div class="row items-center q-gutter-sm">
+          <div v-if="tags.length > 0">
             <template v-for="(tag, index) in tags">
               <q-chip
+                dense
                 text-color="white"
                 :key="tag.value + '-' + index "
                 :icon="tag.icon.name"
@@ -32,6 +25,14 @@
                 @click="onTagClicked(tag)"
                 removable clickable/>
             </template>
+          </div>
+          <div>
+            <k-autocomplete
+              :id="properties.name + '-field'"
+              ref="search"
+              :services="services"
+              :process-results="processResults"
+              @changed="onTagAdded" />
           </div>
         </div>
       </template>
@@ -90,13 +91,13 @@ export default {
       // We always add first an entry to create a new tag
       if (_.findIndex(results, result => result.value === pattern) === -1) {
         results.unshift({
-          label: this.$t('KTagField.ADD_TAG', { tag: pattern }),
+          label: this.$t('KTagField.CREATE_TAG', { tag: pattern }),
           icon: 'send',
           value: pattern,
           data: {
             value: pattern,
             scope: this.properties.scope,
-            icon: { name: '', color: 'dark' }
+            icon: { name: '', color: 'black' }
           }
         })
       }

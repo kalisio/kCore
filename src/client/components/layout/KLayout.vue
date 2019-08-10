@@ -39,7 +39,7 @@
     <!--
      The Fab
     -->
-    <k-fab id="fab" />
+    <k-fab />
   </q-layout>
 </template>
 

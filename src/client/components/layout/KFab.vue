@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--
-        Render a modal grid action if more than 8 actions are provided
+        Render a modal grid action if more than expandableLimit actions are provided
       -->
     <div v-if="fab.actions.length > expandableLimit">
       <k-modal ref="modal" :toolbar="getModalToolbar()" :buttons="getModalButtons()" :options="getModalOptions()" :route="false">
@@ -60,11 +60,12 @@
     <q-btn v-else-if="fab.actions.length > 0"
       :id="fab.actions[0].id"
       color="accent"
+      :icon="fab.actions[0].icon"
       class="fixed"
       style="right: 18px; bottom: 18px"
+      size="1.15rem"
       round
       @click="onActionTriggered(fab.actions[0])">
-      <q-icon :name="fab.actions[0].icon" />
       <q-tooltip v-if="fab.actions[0].label" anchor="center left" self="center right" :offset="[20, 20]">
         {{fab.actions[0].label}}
       </q-tooltip>

@@ -1,6 +1,12 @@
 <template>
-  <div v-show="tabBar.tabs.length > 0">
-    <q-tabs dense align="justify" @select="onCurrentTabChanged" class="bg-secondary text-primary shadow-2" active-color="white" active-bg-color="secondary" >
+  <div v-show="hasTabs">
+    <q-tabs
+      class="bg-secondary shadow-2"
+      align="justify"
+      inline-label    
+      active-color="accent" 
+      active-bg-color="secondary" 
+      @select="onCurrentTabChanged">
       <template v-for="tab in tabBar.tabs">
         <q-route-tab
           :id="tab.id" 
@@ -9,7 +15,7 @@
           :name="tab.name"
           :label="tab.label" 
           :icon="tab.icon" 
-          :to="tab.route"/>
+          :to="tab.route" />
       </template>
     </q-tabs>
   </div>
@@ -23,6 +29,11 @@ export default {
   data () {
     return {
       tabBar: this.$store.get('tabBar')
+    }
+  },
+  computed: {
+    hasTabs () {
+      return this.tabBar.tabs && this.tabBar.tabs.length > 0
     }
   },
   methods: {

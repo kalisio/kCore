@@ -151,7 +151,7 @@
     "SEARCH_CATEGORY_LABEL": "All categories"
   },
   "KTagField": {
-    "ADD_TAG": "Add \"{{tag}}\" tag"
+    "CREATE_TAG": "Create <b>{{tag}}</b>"
   },
   "KMediaBrowser": {
     "LOADING": "Loading... ",
