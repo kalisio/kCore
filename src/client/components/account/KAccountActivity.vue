@@ -1,18 +1,13 @@
 <template>
-  <q-page padding>
-    <div v-if="objectId !== ''" class="row justify-center full-width">
-      <div v-if="perspective === 'profile'" class="col-11">
-        <k-editor service="users" :objectId="objectId" perspective="profile"/>
-      </div>
-      <div v-if="perspective === 'security'"  class="col-11">
-        <k-account-security :objectId="objectId" :email="email" />
-      </div>
-      <div v-else-if="perspective === 'danger-zone'" class="col-11">
-        <k-account-dz :objectId="objectId" :name="name" />
-      </div>
-      <div v-else>
-        <!-- Error -->
-      </div>
+  <q-page v-if="objectId !== ''" padding>
+    <div v-if="perspective === 'profile'">
+      <k-editor service="users" :objectId="objectId" perspective="profile"/>
+    </div>
+    <div v-if="perspective === 'security'">
+      <k-account-security :objectId="objectId" :email="email" />
+    </div>
+    <div v-else-if="perspective === 'danger-zone'">
+      <k-account-dz :objectId="objectId" :name="name" />
     </div>
   </q-page>
 </template>
@@ -28,7 +23,10 @@ export default {
   props: {
     perspective: {
       type: String,
-      required: true
+      required: true,
+      validator: (value) => {
+        return ['profile', 'security', 'danger-zone'].indexOf(value) !== -1
+      }
     }
   },
   data () {
