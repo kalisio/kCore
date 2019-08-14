@@ -5,9 +5,6 @@
     v-model="model"
     clearable
     @blur="onChanged"
-    :icon="icon"
-    :label="label"
-    :label-width="labelWidth"
     :disabled="disabled"
     :error="hasError"
     :error-message="errorLabel"

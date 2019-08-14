@@ -1,21 +1,15 @@
 <template>
   <div>
     <q-field
-      :icon="icon"
-      :label="label"
       :error-message="errorLabel"
-      :label-width="labelWidth"
       :error="hasError"
       :disabled="disabled"
       no-error-icon
       bottom-slots
     >
       <template v-slot:default>
-        <div class="row justify-start items-center">
-          <div :class="inputClass">
-            <q-input type="text" v-model="input" :after="inputActions" @keyup.enter="onChipAdded()"/>
-          </div>
-          <div class="col-auto" v-if="chips.length > 0">
+        <div class="row items-center">
+          <div class="q-pa-xs">
             <template v-for="(chip, index) in chips">
               <q-chip
                 class="chip"
@@ -27,14 +21,18 @@
                 @click="onChipClicked(chip)"
                 clickable
                 removable
+                dense
               >
                 {{chip.value}}
               </q-chip>
             </template>
           </div>
+          <div :class="inputClass">
+            <q-input type="text" v-model="input" :after="inputActions" @keyup.enter="onChipAdded()"/>
+          </div>
         </div>
       </template>
-
+      <!-- Helper -->
       <template v-if="helper" v-slot:hint>
         <span v-html="helper"></span>
       </template>
@@ -49,7 +47,6 @@
 
 <script>
 import _ from 'lodash'
-import { QField, QInput, QChip, QIcon } from 'quasar'
 import { KIconChooser } from '../input'
 import mixins from '../../mixins'
 import { getIconName } from '../../utils'
@@ -57,10 +54,6 @@ import { getIconName } from '../../utils'
 export default {
   name: 'k-chips-with-icon-field',
   components: {
-    QField,
-    QInput,
-    QChip,
-    QIcon,
     KIconChooser
   },
   mixins: [mixins.baseField],
@@ -106,8 +99,8 @@ export default {
       let chip = {
         value: this.input,
         icon: {
-          name: _.get(this.properties.field, 'icon.name', 'mood'),
-          color: _.get(this.properties.field, 'icon.color', 'dark')
+          name: _.get(this.properties.field, 'icon.name', ''),
+          color: _.get(this.properties.field, 'icon.color', 'black')
         }
       }
       this.chips.push(chip)
@@ -138,6 +131,5 @@ export default {
 <style>
 .chip {
   cursor: pointer;
-  margin: 4px;
 }
 </style>

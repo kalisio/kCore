@@ -1,10 +1,7 @@
 <template>
     <q-select
       :id="properties.name + '-field'"
-      v-model="model"
-      :label="label"
       :error-message="errorLabel"
-      :label-width="labelWidth"
       :error="hasError"
       :disabled="disabled"
       use-chips
@@ -29,7 +26,7 @@
         @click="onClick"
       ></q-icon>
     </template>
-
+    <!-- Helper -->
     <template v-if="helper" v-slot:hint>
       <span v-html="helper"></span>
     </template>
@@ -47,16 +44,10 @@
 // and https://forum.quasar-framework.org/topic/3407/q-select-as-chip-input/2
 //
 // However unfortunately it does not work at the moment - see TODO below.
-
-import { QField, QSelect } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-chips-field',
-  components: {
-    QField,
-    QSelect
-  },
   data () {
     return {
       inputValue: '',

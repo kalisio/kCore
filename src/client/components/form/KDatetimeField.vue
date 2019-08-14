@@ -1,17 +1,13 @@
 <template>
   <q-field :id="properties.name + '-field'"
-    :icon="icon"
-    :label="label"
     :error-message="errorLabel"
-    :label-width="labelWidth"
     :error="hasError"
     :disabled="disabled"
     @blur="onChanged"
     no-error-icon
     bottom-slots
+    :prefix="formattedDatetime"
   >
-    <span>{{formattedDatetime}}</span>
-
     <template v-slot:prepend>
       <q-icon name="event" class="cursor-pointer">
         <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -24,7 +20,7 @@
         </q-popup-proxy>
       </q-icon>
     </template>
-
+    <!-- Helper -->
     <template v-if="helper" v-slot:hint>
       <span v-html="helper"></span>
     </template>

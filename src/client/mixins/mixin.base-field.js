@@ -16,23 +16,6 @@ let baseFieldMixin = {
     }
   },
   computed: {
-    icon () {
-      if (this.display.icon) {
-        return _.get(this.properties.field, 'icon', '')
-      }
-      return ''
-    },
-    label () {
-      if (this.display.label) {
-        // Check if we have a translation key or directly the label content
-        const label = _.get(this.properties.field, 'label', '')
-        return (this.$i18n.i18next.exists(label) ? this.$t(label) : label)
-      }
-      return ''
-    },
-    labelWidth () {
-      return _.get(this.display, 'labelWidth', 3)
-    },
     helper () {
       // Check if we have a translation key or directly the helper content
       const helper = _.get(this.properties.field, 'helper', '')

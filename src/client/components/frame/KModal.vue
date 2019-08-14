@@ -1,69 +1,47 @@
 <template>
-  <q-dialog ref="modal" no-esc-dismiss no-backdrop-dismiss :content-style="options"
-           @show="$emit('opened')" @hide="$emit('closed')" :maximized="options.maximized">
-    <q-card style="min-width: 50vw;">
+  <q-dialog 
+    ref="modal"
+    persistent
+    @show="$emit('opened')" 
+    @hide="$emit('closed')">
+    <q-card :class="contentClass" :style="contentStyle">
       <!--
          Toolbar section
        -->
-      <div class="row">
-        <div class="col">
-          <slot name="modal-toolbar" />
-        </div>
-        <div class="col-auto">
-          <div style="display: inline-block; float: right">
-            <template v-for="action in toolbar">
-              <q-btn :id="action.name" v-bind:key="action.name" flat round small @click="action.handler">
-                <q-icon :name="action.icon" :color="action.color || 'primary'"/>
-                <q-tooltip v-if="action.label">{{action.label}}</q-tooltip>
-              </q-btn>
-            </template>
-          </div>
-        </div>
-    </div>
-      <!--
-        Title section
-      -->
-      <div class="row justify-start" style="margin-left: 18px">
-        <div class="modal-title">
-          {{title}}
-        </div>
-      </div>
+      <q-toolbar>
+        <q-toolbar-title>
+          <span class="ellipsis">{{ title }}</span>
+        </q-toolbar-title>
+        <q-space />
+        <template v-for="action in toolbar">
+          <q-btn  class="items-start" :id="action.name" v-bind:key="action.name" flat round dense @click="action.handler">
+            <q-icon :name="action.icon" :color="action.color || 'primary'"/>
+            <q-tooltip v-if="action.label">{{action.label}}</q-tooltip>
+          </q-btn>
+        </template>
+      </q-toolbar>
       <!--
         Content section
        -->
-      <div style="padding: 16px">
+      <q-card-section>
         <slot name="modal-content" />
-      </div>
+      </q-card-section>
       <!--
         Buttons section
        -->
-      <div style="padding: 16px" v-if="buttons.length > 0">
-        <slot name="dialog-actions">
-          <div class="row items-center">
-            <div class="col">
-              <slot name="modal-footer" />
-            </div>
-            <div class="col-auto">
-              <template v-for="button in buttons">
-                <q-btn :id="button.name" :key="button.name" flat :color="button.color || 'primary'"
-                  :label="button.label" @click="button.handler"/>
-              </template>
-            </div>
-          </div>
-        </slot>
-      </div>
+      <q-card-actions align="right">
+        <template v-for="button in buttons">
+          <q-btn :id="button.name" :key="button.name" flat :color="button.color || 'primary'"
+            :label="button.label" @click="button.handler"/>
+        </template>
+      </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
 
 <script>
-import { KBtn } from '../input'
-
 export default {
   name: 'k-modal',
-  components: {
-    KBtn
-  },
   props: {
     title: {
       type: String,
@@ -77,10 +55,26 @@ export default {
       type: Array,
       default: () => { return [] }
     },
-    options: {
-      type: Object,
+    contentClass: {
+      type: String,
+      default: 'q-pa-xs q-ma-xs'
+    },
+    contentStyle: {
+      type: String,
       default: () => {
-        return { padding: '4px', minWidth: '50vw' }
+        if (window.innerWidth < 599) {
+          return 'min-width: 100vw; max-height: 90vh'
+        }
+        if (window.innerWidth < 1023) {
+          return 'min-width: 80vw; max-height: 90vh'
+        }
+        if (window.innerWidth < 1439) {
+          return 'min-width: 60vw; max-height: 90vh'
+        }
+        if (window.innerWidth < 1919) {
+          return 'min-width: 50vw; max-height: 90vh'
+        }
+        return 'min-width: 40vw; max-height: 90vh'
       }
     },
     route: {
@@ -101,12 +95,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.modal-title {
-  font-size: 18px;
-  font-weight: 400;
-  letter-spacing: normal;
-  line-height: 2rem
-}
-</style>

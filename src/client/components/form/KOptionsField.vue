@@ -1,9 +1,6 @@
 <template>
   <q-field
-    :icon="icon"
-    :label="label"
     :error-message="errorLabel"
-    :label-width="labelWidth"
     :error="hasError"
     :disabled="disabled"
     no-error-icon

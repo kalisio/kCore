@@ -1,26 +1,32 @@
 <template>
-  <div class="row full-width justify-between items-center">
-    <k-autocomplete v-if="!isCompleted" class="col" ref="autocomplete" :services="services" @changed="onAutocompleteChanged" />
-    <div class="col-8" v-if="items.length > 0">
-      <q-chip v-for="item in items" removable color="primary" text-color="white" :key="item._id"
+  <div class="row full-width items-baseline q-gutter-sm">
+    <template v-for="item in items">
+      <q-chip 
+        dense
+        removable 
+        color="primary" 
+        text-color="white" 
+        :key="item._id"
         :icon="itemIcon(item)"
         :label="itemName(item)"
-        @remove="onItemRemoved(item)"/>
-    </div>
+        @remove="onItemRemoved(item)" />
+    </template>
+    <k-autocomplete v-if="!isCompleted" 
+      ref="autocomplete" 
+      :clearable="false"
+      :services="services" 
+      @changed="onAutocompleteChanged" />
   </div>
 </template>
 
 <script>
 import _ from 'lodash'
-import { QChip, QIcon } from 'quasar'
 import KAutocomplete from './KAutocomplete.vue'
 import { getIconName } from '../../utils'
 
 export default {
   name: 'k-item-chooser',
   components: {
-    QChip,
-    QIcon,
     KAutocomplete
   },
   computed: {

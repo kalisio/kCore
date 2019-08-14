@@ -1,8 +1,6 @@
 <template>
   <q-field
-    :label="label"
     :error-message="errorLabel"
-    :label-width="labelWidth"
     :error="hasError"
     :disabled="disabled"
     no-error-icon
@@ -10,7 +8,6 @@
   >
     <q-toggle
       :id="properties.name + '-field'"
-      :icon="icon"
       v-model="model"
       v-bind="properties.field"
       @blur="onChanged" />

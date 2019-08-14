@@ -32,7 +32,7 @@
             <slot name="screen-links">
               <div class="row justify-center q-gutter-xs screen-links">
                 <template v-for="link in links">
-                  <a class="link" :id="link.id" :key="link.id" @click="$router.push(link.route)">
+                  <a :id="link.id" :key="link.id" @click="$router.push(link.route)">
                     {{ $t(link.label) }}
                   </a>
                 </template>
@@ -43,15 +43,13 @@
       </q-card>
       <!-- Extra links -->
       <slot name="screen-extra-links">
-        <small>
-          <div class="row justify-center q-gutter-xs">
-            <template v-for="link in extraLinks">
-              <a class="link" :key="link.label" @click="onLinkClicked(link)">
-                {{ $t(link.label) }}
-              </a>
-            </template>
-          </div>
-        </small>
+        <div class="row justify-center q-gutter-sm">
+          <template v-for="link in extraLinks">
+            <a :key="link.label" @click="onLinkClicked(link)">
+              <small>{{ $t(link.label) }}</small>
+            </a>
+          </template>
+        </div>
       </slot>
     </div>
      <!--

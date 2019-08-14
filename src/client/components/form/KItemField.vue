@@ -1,9 +1,6 @@
 <template>
   <q-field
-    :icon="icon"
-    :label="label"
     :error-message="errorLabel"
-    :label-width="labelWidth"
     :error="hasError"
     :disabled="disabled"
     no-error-icon
@@ -24,14 +21,12 @@
 
 <script>
 import _ from 'lodash'
-import { QField } from 'quasar'
 import { KItemChooser } from '../input'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-item-field',
   components: {
-    QField,
     KItemChooser
   },
   mixins: [mixins.baseField],

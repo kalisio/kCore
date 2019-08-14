@@ -4,9 +4,6 @@
     type="textarea"
     v-model="model"
     clearable
-    :icon="icon"
-    :label="label"
-    :label-width="labelWidth"
     :disabled="disabled"
     :error="hasError"
     :error-message="errorLabel"
@@ -20,15 +17,10 @@
 </template>
 
 <script>
-import { QField, QInput } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-textarea-field',
-  components: {
-    QField,
-    QInput
-  },
   mixins: [mixins.baseField]
 }
 </script>

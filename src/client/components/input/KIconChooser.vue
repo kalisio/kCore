@@ -1,56 +1,54 @@
 <template>
-  <k-modal ref="modal" :toolbar="getToolbar()" :buttons="getButtons()" :options="{ padding: '4px', width: '600px' }">
-    <div slot="modal-toolbar" class="row">
-      <q-input
-        v-model="searchQuery"
-        :label="$t('KIconChooser.SEARCH_FIELD_LABEL')"
-        clearable
-        class="col-7"
-        style="margin-left: 18px"
-      />
+  <k-modal ref="modal" :toolbar="getToolbar()" :buttons="getButtons()">
+    <div slot="modal-content">
+      <div class="column q-gutter-sm">
+        <div class="row justify-between">
+          <q-input
+            v-model="searchQuery"
+            :label="$t('KIconChooser.SEARCH_FIELD_LABEL')"
+            clearable
+            class="col-7" 
+            dense />
+          <q-select
+            v-if="categories"
+            :label="$t('KIconChooser.SEARCH_CATEGORY_LABEL')"
+            :options="categories"
+            :value="selectedCategory"
+            @input="onSelectCategory"
+            emit-value
+            map-options
+            clearable
+            class="col-4" 
+            dense />
+        </div>
+        <div class="row justify-start items-center q-gutter-sm">
+          <template v-for="icon in iconsPage">
+            <q-icon
+              :key="icon.name"
+              :color="icon.name !== selectedIcon.name ? 'grey-7' : selectedIcon.color"
+              :name="icon.name"
+              size="2rem"
+              @click="onIconSelected(icon)">
 
-      <q-select
-        v-if="categories"
-        :label="$t('KIconChooser.SEARCH_CATEGORY_LABEL')"
-        :options="categories"
-        :value="selectedCategory"
-        @input="onSelectCategory"
-        emit-value
-        map-options
-        clearable
-        class="col-4"
-        style="margin-left: 18px"
-      />
-    </div>
+              <q-tooltip>
+                {{icon.title}}
+              </q-tooltip>
+            </q-icon>
+          </template>
+        </div>
+        <div class="row justify-center items-center q-gutter-sm">
+          <q-pagination v-model="currentPage" :max="maxPage" />
+        </div>
+        <div class="row justify-between items-center q-gutter-sm">
+          <k-palette shape="round" v-model="selectedIcon.color" />
+        </div>
 
-    <div slot="modal-content" class="column q-gutter-sm">
-      <div class="row justify-center items-center q-gutter-sm">
-        <template v-for="icon in iconsPage">
-          <q-icon
-            class="col-1"
-            style="margin:4px"
-            :key="icon.name"
-            :color="icon.name !== selectedIcon.name ? 'grey-7' : selectedIcon.color"
-            :name="icon.name"
-            size="2rem"
-            @click="onIconSelected(icon)">
-
-            <q-tooltip>
-              {{icon.title}}
-            </q-tooltip>
-          </q-icon>
-        </template>
+        <!--For debug purpose only 
+        <div class="row justify-start items-center q-gutter-sm">
+          <span class="text-bold">Selected:</span> &nbsp;{{iconSelected() ? selectedIcon.name : '-'}}
+        </div>
+        -->
       </div>
-      <div class="row justify-center items-center">
-        <q-pagination v-model="currentPage" :max="maxPage" />
-      </div>
-      <div class="row justify-between items-center">
-        <k-palette shape="round" v-model="selectedIcon.color" />
-      </div>
-    </div>
-
-    <div slot="modal-footer" style="font-size: larger">
-      <span class="text-bold">Selected:</span> &nbsp;{{iconSelected() ? selectedIcon.name : '-'}}
     </div>
   </k-modal>
 </template>

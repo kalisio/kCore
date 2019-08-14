@@ -11,7 +11,7 @@
       bottom-slots
     >
       <template v-slot:default>
-        <div class="row items-center q-gutter-sm">
+        <div class="row items-baseline q-gutter-sm">
           <div v-if="tags.length > 0">
             <template v-for="(tag, index) in tags">
               <q-chip
@@ -23,7 +23,7 @@
                 :label="tag.value"
                 @remove="onTagRemoved(tag)"
                 @click="onTagClicked(tag)"
-                removable clickable/>
+                removable clickable />
             </template>
           </div>
           <div>
@@ -31,6 +31,8 @@
               :id="properties.name + '-field'"
               ref="search"
               :services="services"
+              :borderless="true"
+              :clearable="false"
               :process-results="processResults"
               @changed="onTagAdded" />
           </div>
@@ -50,7 +52,6 @@
 
 <script>
 import _ from 'lodash'
-import { QField, QChip, QIcon } from 'quasar'
 import { Store } from '../../store'
 import { KAutocomplete, KIconChooser } from '../input'
 import mixins from '../../mixins'
@@ -58,9 +59,6 @@ import mixins from '../../mixins'
 export default {
   name: 'k-tag-field',
   components: {
-    QField,
-    QChip,
-    QIcon,
     KAutocomplete,
     KIconChooser
   },

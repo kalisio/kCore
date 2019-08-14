@@ -4,9 +4,6 @@
     type="number"
     v-model="model"
     clearable
-    :icon="icon"
-    :label="label"
-    :label-width="labelWidth"
     :disabled="disabled"
     :error="hasError"
     :error-message="errorLabel"

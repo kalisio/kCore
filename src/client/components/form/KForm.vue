@@ -1,5 +1,5 @@
 <template>
-  <div class="column">
+  <div class="column q-gutter-sm">
     <!-- Non-grouped fields first -->
     <template v-for="field in fields">
       <component
@@ -16,18 +16,21 @@
     <!-- Grouped fields then -->
     <template v-for="group in groups">
       <q-expansion-item :key="group" icon="wrap_text" :group="group" :label="$t(group)">
-        <template v-for="field in fields">
-          <component
-            v-if="field.group === group"
-            :key="field.name"
-            :is="field.componentKey"
-            :ref="field.name"
-            :required="field.required"
-            :properties="field"
-            :display="display"
-            @field-changed="onFieldChanged"
-          />
-        </template>
+        <q-card>
+          <q-card-section>
+            <template v-for="field in fields">
+              <component
+                v-if="field.group === group"
+                :key="field.name"
+                :is="field.componentKey"
+                :ref="field.name"
+                :required="field.required"
+                :properties="field"
+                :display="display"
+                @field-changed="onFieldChanged" />
+            </template>
+          </q-card-section>
+        </q-card>
       </q-expansion-item>
     </template>
   </div>

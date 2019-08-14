@@ -1,6 +1,14 @@
 <template>
-  <q-select clearable use-input hide-selected dropdown-icon="" v-model="pattern" :options="options"
-    @filter="onSearch" @input="onSelected" :label="$t('KAutocomplete.PLACEHOLDER')">
+  <q-select 
+    use-input
+    hide-selected
+    :clearable="clearable"
+    :borderless="borderless"
+    dropdown-icon="" 
+    v-model="pattern" 
+    :options="options"
+    @filter="onSearch" 
+    @input="onSelected">
     <template v-slot:no-option>
       <q-item>
         <q-item-section class="text-grey">{{$t('KAutocomplete.NO_RESULTS')}}</q-item-section>
@@ -37,6 +45,14 @@ export default {
     minLength: {
       type: Number,
       default: 2
+    },
+    borderless: {
+      type: Boolean,
+      default: false
+    },
+    clearable: {
+      type: Boolean,
+      default: true
     },
     processResults: {
       type: Function

@@ -11,18 +11,12 @@
     @blur="onChanged"
     emit-value
     map-options
-    :label="label"
-    :label-width="labelWidth"
     :error="hasError"
     :error-message="errorLabel"
     :disabled="disabled"
     no-error-icon
     bottom-slots
   >
-    <template v-if="icon" v-slot:append>
-      <q-icon name="icon" />
-    </template>
-
     <template v-if="helper" v-slot:hint>
       {{helper}}
     </template>
@@ -31,14 +25,10 @@
 
 <script>
 import _ from 'lodash'
-import { QSelect } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-select-field',
-  components: {
-    QSelect
-  },
   mixins: [mixins.baseField],
   computed: {
     options () {

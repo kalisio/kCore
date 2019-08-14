@@ -1,26 +1,43 @@
 <template>
   <div>
+    <!-- 
+      The field 
+    -->    
     <q-field
-      :icon="icon"
-      :label="label"
       :error-message="errorLabel"
-      :label-width="labelWidth"
       :error="hasError"
       :disabled="disabled"
       no-error-icon
       bottom-slots
     >
-      <q-icon style="font-size: 2em;" :id="properties.name + '-field'"
-        name="fas fa-cloud-upload-alt" @click="onUpload"/>
-      <q-chip v-for="file in files" :key="file.name" color="primary" text-color="white"
-        :label="fileName(file)" @remove="onFileRemoved(file)" removable/>
-
-    <template v-if="helper" v-slot:hint>
-      <span v-html="helper"></span>
-    </template>
-
+      <!-- Content -->
+      <template v-slot:prepend>
+        <q-btn 
+          :id="properties.name + '-field'"
+          dense
+          round
+          flat
+          icon="fas fa-cloud-upload-alt" 
+          @click="onUpload" />
+        <template v-for="file in files">
+          <q-chip  
+          :key="file.name" 
+          dense
+          color="primary" 
+          text-color="white"
+          :label="fileName(file)" 
+          @remove="onFileRemoved(file)" 
+          removable />
+        </template>
+      </template>
+      <!-- Helper -->
+      <template v-if="helper" v-slot:hint>
+        <span v-html="helper"></span>
+      </template>
     </q-field>
-
+    <!-- 
+      The uploader 
+    -->
     <div class="row">
       <k-uploader class="col-12" v-show="isUploaderVisible"
         ref="uploader"
@@ -34,16 +51,12 @@
 <script>
 import _ from 'lodash'
 import 'mime-types-browser'
-import { QIcon, QChip, QField } from 'quasar'
 import { KUploader } from '../input'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-attachment-field',
   components: {
-    QIcon,
-    QChip,
-    QField,
     KUploader
   },
   mixins: [mixins.baseField],
