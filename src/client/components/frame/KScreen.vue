@@ -3,7 +3,7 @@
      <!--
        Header section
       -->
-    <div class="col-12 self-start">
+    <div class="col-12 self-start q-">
       <k-screen-header class="screen-header" />
     </div>
      <!--
@@ -17,27 +17,22 @@
         </div>
       </slot>
       <!-- Frame -->
-      <q-card class="q-ma-sm">
-        <q-card-section class="k-card-title">
-          <!-- Title -->
-          <slot name="screen-title">
-            <div>{{ title }}</div>
-          </slot>
+      <q-card>
+        <q-card-section>
+          <span class="text-subtitle1">{{ title }}</span>
         </q-card-section>
-        <q-card-section class="k-card-main">
-          <div class="col">
+        <q-card-section>
+          <div class="col q-gutter-xs">
             <!-- Content -->
             <slot name="screen-content" />
             <!-- links -->
-            <slot name="screen-links">
-              <div class="row justify-center q-gutter-xs screen-links">
-                <template v-for="link in links">
-                  <a :id="link.id" :key="link.id" @click="$router.push(link.route)">
-                    {{ $t(link.label) }}
-                  </a>
-                </template>
-              </div>
-            </slot>
+            <div class="row justify-center q-gutter-xs">
+              <template v-for="link in links">
+                <a :id="link.id" :key="link.id" @click="$router.push(link.route)">
+                  {{ $t(link.label) }}
+                </a>
+              </template>
+            </div>
           </div>
         </q-card-section>
       </q-card>
@@ -118,9 +113,6 @@ export default {
   }
   .screen-frame {
     width: 540px;
-  }
-  .screen-links {
-    margin-top: 16px;
   }
   .screen-footer {
     padding: 8px;

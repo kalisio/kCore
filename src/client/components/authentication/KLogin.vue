@@ -1,20 +1,20 @@
 <template>
   <k-screen :title="canLogWith() ? $t('KLogin.TITLE') : ''" :links="links">
     <div slot="screen-content">
-      <div class="column justify-center q-gutter-sm">
+      <div class="column justify-center q-gutter-md">
         <!--
           Login providers
         -->
-        <div v-if="canLogWith()">
-          <div class="row justify-around" style="padding: 18px">
+        <div v-if="canLogWith()" class="q-gutter-md">
+          <div class="row ull-width justify-around">
             <template v-for="provider in providers">
               <q-btn :icon="'fab fa-' + provider" :id="provider" @click="onLogWith(provider)" :key="provider"
                      :label="provider">
               </q-btn>
             </template>
           </div>
-          <div class="row items-center">
-            <div class="col-1"><h6 class="margin-block-none">{{ $t('KLogin.OR_LABEL') }}</h6></div>
+          <div class="row full-width items-center">
+            <div class="col-1 text-subtitle1">{{ $t('KLogin.OR_LABEL') }}</div>
             <div class="col-11"><hr></div>
           </div>
         </div>
@@ -24,7 +24,7 @@
         <div>
           <k-form ref="form" :schema="schema" @form-ready="onFormReady"/>
         </div>
-        <div class="self-center">
+        <div class="q-pa-sm self-center">
           <q-btn :loading="loading" color="primary" id="local" :label="$t('KLogin.APPLY_BUTTON')" @click="onLogin"/>
         </div>
       </div>
@@ -152,9 +152,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  .link {
-    padding: 8px;
-  }
-</style>

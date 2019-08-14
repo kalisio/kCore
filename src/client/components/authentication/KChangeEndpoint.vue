@@ -5,11 +5,9 @@
         <div>
           <k-form ref="form" :schema="schema" />
         </div>
-        <div>
-          <div class="row justify-around">
-            <q-btn color="primary" @click="onReset">{{$t('KChangeEndpoint.RESET_BUTTON')}}</q-btn>
-            <q-btn color="primary" @click="onApplied">{{$t('KChangeEndpoint.APPLY_BUTTON')}}</q-btn>
-          </div>
+        <div class="row justify-around q-pa-sm">
+          <q-btn color="primary" @click="onReset">{{ $t('KChangeEndpoint.RESET_BUTTON') }}</q-btn>
+          <q-btn color="primary" @click="onApplied">{{ $t('KChangeEndpoint.APPLY_BUTTON') }}</q-btn>
         </div>
       </div>
     </div>

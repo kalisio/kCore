@@ -5,7 +5,7 @@
         <div>
           <k-form ref="form" :schema="getSchema()" />
         </div>
-        <div class="self-center">
+        <div class="q-pa-sm self-center">
           <q-btn :loading="loading" color="primary" id="register" :label="$t('KRegister.APPLY_BUTTON')" @click="onRegister"/>
         </div>
       </div>
