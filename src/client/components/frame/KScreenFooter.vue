@@ -48,7 +48,7 @@ export default {
   mixins: [mixins.version],
   methods: {
     canChangeEndpoint () {
-      return process.env.DEV ? true : Platform.is.cordova
+      return this.$config('flavor') === 'dev' ? true : Platform.is.cordova
     },
     onPopoverClicked () {
       this.$refs.popover.toggle()
