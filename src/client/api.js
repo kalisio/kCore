@@ -135,9 +135,9 @@ export function kalisio () {
   }
 
   api.getBaseUrl = function () {
-    // FIXME: for test
-    let isMobile = Platform.is.cordova || Platform.is.ios
-    let origin = isMobile ? config.domain : window.location.origin
+    
+    // let isMobile = Platform.is.cordova || Platform.is.ios
+    let origin = Platform.is.cordova ? config.domain : window.location.origin
     // Check for registered custom base Url if any
     if (window.localStorage.getItem(getBaseUrlStorageKey())) {
       origin = window.localStorage.getItem(getBaseUrlStorageKey())
