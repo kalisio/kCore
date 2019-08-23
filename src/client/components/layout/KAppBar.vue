@@ -3,7 +3,7 @@
     <!--
       Left drawer toggle
      -->
-    <q-btn id="left-drawer-toggle" v-if="hasLeftDrawerToggle" flat @click="$emit('left-drawer-toggled')">
+    <q-btn id="left-drawer-toggle" v-if="hasLeftDrawerToggle" flat :dense="$q.screen.lt.md" @click="$emit('left-drawer-toggled')">
       <q-icon name="menu" />
     </q-btn>
     <!--
@@ -20,7 +20,7 @@
      -->
     <template v-if="hasToolbar">
       <template v-for="action in appBar.toolbar">
-        <q-btn :id ="action.name" :key="action.name" flat @click="onActionTriggered(action)">
+        <q-btn :id ="action.name" :key="action.name" flat :dense="$q.screen.lt.md" @click="onActionTriggered(action)">
           <q-icon :name="action.icon" />
           <q-tooltip>
             {{ action.label }}
@@ -32,7 +32,7 @@
       Menu section
      -->
     <template v-if="hasMenu">
-      <q-btn id="overflow-menu-entry" flat>
+      <q-btn id="overflow-menu-entry" flat :dense="$q.screen.lt.md">
         <q-menu id="overflow-menu" ref="menu">
           <q-list dense>
             <template v-for="action in appBar.menu">

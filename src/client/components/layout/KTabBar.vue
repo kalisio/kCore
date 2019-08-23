@@ -1,11 +1,10 @@
 <template>
   <div v-show="hasTabs">
     <q-tabs
-      class="bg-secondary shadow-2"
+      class="bg-secondary text-white shadow-2"
       align="justify"
-      inline-label    
-      active-color="accent" 
-      active-bg-color="secondary" 
+      inline-label
+      :dense="$q.screen.lt.sm"   
       @select="onCurrentTabChanged">
       <template v-for="tab in tabBar.tabs">
         <q-route-tab
@@ -14,7 +13,7 @@
           :default="tab.default"
           :name="tab.name"
           :label="tab.label" 
-          :icon="tab.icon" 
+          :icon="$q.screen.lt.sm ? '' : tab.icon" 
           :to="tab.route" />
       </template>
     </q-tabs>
