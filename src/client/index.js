@@ -40,7 +40,7 @@ export default function init () {
   Store.set('rightDrawer', rightDrawer)
   let fab = { actions: [] }
   Store.set('fab', fab)
-  
+
   // Listen to the 'patched' event on the users
   const users = api.getService('users')
   users.on('patched', user => {

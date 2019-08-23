@@ -44,7 +44,7 @@ export default {
         },
         persistent: true,
         ok: {
-          label: this.$t('OK'),
+          label: this.$t('OK')
         },
         cancel: {
           label: this.$t('CANCEL')

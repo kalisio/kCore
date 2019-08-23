@@ -135,7 +135,6 @@ export function kalisio () {
   }
 
   api.getBaseUrl = function () {
-    
     // let isMobile = Platform.is.cordova || Platform.is.ios
     let origin = Platform.is.cordova ? config.domain : window.location.origin
     // Check for registered custom base Url if any

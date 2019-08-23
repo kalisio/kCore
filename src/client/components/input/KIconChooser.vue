@@ -231,7 +231,7 @@ export default {
 
       // We have a list with on each new line 'icon_name icon-code' so we need to filter the codes
       // (there was also an 'empty' entry in the list so additionally we filter on iconName !== "")
-      let icons = text.split(/\s+/).filter((iconName, index) => index % 2 === 0 && iconName !== "")
+      let icons = text.split(/\s+/).filter((iconName, index) => index % 2 === 0 && iconName !== '')
 
       if (icons.length === 0) throw new Error('Impossible to parse material-icons code points')
       icons.sort()
@@ -263,7 +263,6 @@ export default {
         if (icons.length === 0) throw new Error('Impossible to parse fontawesome code points')
 
         return { icons, categoryInfos, categories }
-
       } catch (error) {
         throw new Error('Impossible to parse fontawesome categories: ' + error)
       }
@@ -278,7 +277,6 @@ export default {
         const yamlCodes = yaml.safeLoad(text)
 
         return yamlCodes
-
       } catch (error) {
         throw new Error('Impossible to parse fontawesome categories: ' + error)
       }

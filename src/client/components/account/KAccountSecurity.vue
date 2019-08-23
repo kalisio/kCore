@@ -60,15 +60,6 @@ export default {
   },
   created () {
     this.$options.components['k-account-devices'] = this.$load('account/KAccountDevices')
-    // Load the required components
-    /*this.$load('account/KAccountDevices')()
-    .then(component => {
-      this.$options.components['k-account-devices'] = component
-      this.hasDevices = true
-    })
-    .catch(() => {
-      this.hasDevices = false
-    })*/
   }
 }
 </script>

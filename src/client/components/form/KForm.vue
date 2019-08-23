@@ -178,7 +178,7 @@ export default {
       })
     },
     values () {
-     let values = {}
+      let values = {}
       _.forEach(this.fields, field => {
         if (!this.getField(field.name).isEmpty()) {
           Object.assign(values, { [field.name]: this.getField(field.name).value() })

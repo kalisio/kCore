@@ -71,7 +71,7 @@ export default {
     itemIcon (item) {
       // Make this work on either icon object like { name: xxx, color: yyy } or icon names
       const icon = getIconName(item)
-      return (icon ? icon : getIconName(item, 'icon'))
+      return (icon || getIconName(item, 'icon'))
     },
     itemName (item) {
       if (item.value) return item.value

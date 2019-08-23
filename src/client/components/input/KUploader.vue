@@ -86,7 +86,7 @@ export default {
           _.pullAt(this.previews, index)
         }
         _.pullAt(this.files, index)
-        
+
         this.$emit('file-selection-changed', this.files)
       }
     },

@@ -47,7 +47,7 @@ export default {
     },
     localDatetime () {
       // get local datetime value, and format it using the same mask that's also used by the QDate and QTime components
-      return this.localDatetimeValue.format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+      return this.localDatetimeValue.format('YYYY-MM-DDTHH:mm:ss.SSSZ')
     },
     formattedDatetime () {
       // get local datetime value, and format it using the current locale and the configured mask
