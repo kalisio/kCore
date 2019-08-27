@@ -37,8 +37,8 @@ module.exports = {
       commonHooks.discard('clearPassword')
     ],
     // when changing password store previous one for password policy
-    update: [ commonHooks.when(hook => hook.data.password && hook.app.getPasswordPolicy, populatePreviousObject, storePreviousPassword({ userAsItem: true })) ],
-    patch: [ commonHooks.when(hook => hook.data.password && hook.app.getPasswordPolicy, populatePreviousObject, storePreviousPassword({ userAsItem: true })) ],
+    update: [commonHooks.when(hook => hook.data.password && hook.app.getPasswordPolicy, populatePreviousObject, storePreviousPassword({ userAsItem: true }))],
+    patch: [commonHooks.when(hook => hook.data.password && hook.app.getPasswordPolicy, populatePreviousObject, storePreviousPassword({ userAsItem: true }))],
     remove: []
   },
 
@@ -46,14 +46,14 @@ module.exports = {
     all: [
       commonHooks.when(hook => hook.params.provider, commonHooks.discard('password'), commonHooks.discard('previousPasswords')),
       serialize([
-        {source: 'profile.name', target: 'name'},
-        {source: 'profile.avatar', target: 'avatar'},
-        {source: 'profile.description', target: 'description'}
+        { source: 'profile.name', target: 'name' },
+        { source: 'profile.avatar', target: 'avatar' },
+        { source: 'profile.description', target: 'description' }
       ])
     ],
     find: [],
     get: [],
-    create: [ updateAbilities() ],
+    create: [updateAbilities()],
     update: [],
     patch: [],
     remove: []

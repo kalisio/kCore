@@ -74,12 +74,14 @@ export function defineAbilities (subject) {
 
   // CASL cannot infer the object type from the object itself so we need
   // to tell it how he can find the object type, i.e. service name.
-  return new Ability(rules, { subjectName: resource => {
-    if (!resource || typeof resource === 'string') {
-      return resource
+  return new Ability(rules, {
+    subjectName: resource => {
+      if (!resource || typeof resource === 'string') {
+        return resource
+      }
+      return resource[RESOURCE_TYPE_KEY]
     }
-    return resource[RESOURCE_TYPE_KEY]
-  }})
+  })
 }
 
 defineAbilities.registerHook = function (hook) {
@@ -104,7 +106,7 @@ export function hasServiceAbilities (abilities, service) {
 export function hasResourceAbilities (abilities, operation, resourceType, context, resource) {
   if (!abilities) return false
   // Create a shallow copy adding context and type
-  let object = Object.assign({}, resource)
+  const object = Object.assign({}, resource)
   object[RESOURCE_TYPE_KEY] = resourceType
   // Add a virtual context to take it into account for object having no link to it
   if (context) object.context = (typeof context === 'object' ? context._id.toString() : context)
@@ -142,13 +144,13 @@ export function getQueryForAbilities (abilities, operation, resourceType) {
   if (!abilities) return null
 
   const rules = abilities.rulesFor(operation, resourceType)
-  let query = toMongoQuery(rules)
+  const query = toMongoQuery(rules)
   // Remove any context to avoid taking it into account because it is not really stored on objects
   return (query ? removeContext(query) : null)
 }
 
 function buildSubjectsQueryForResource (resourceScope, resourceId, role) {
-  let query = { [resourceScope]: { $elemMatch: { _id: resourceId } } }
+  const query = { [resourceScope]: { $elemMatch: { _id: resourceId } } }
   if (role) {
     _.set(query[resourceScope], '$elemMatch.permissions', RoleNames[role])
   }
@@ -157,14 +159,14 @@ function buildSubjectsQueryForResource (resourceScope, resourceId, role) {
 
 export function findSubjectsForResource (subjectService, resourceScope, resourceId, role) {
   // Build the query
-  let query = buildSubjectsQueryForResource(resourceScope, resourceId, role)
+  const query = buildSubjectsQueryForResource(resourceScope, resourceId, role)
   // Execute the query
   return subjectService.find({ query })
 }
 
 export function countSubjectsForResource (subjectService, resourceScope, resourceId, role) {
   // Build the query
-  let query = buildSubjectsQueryForResource(resourceScope, resourceId, role)
+  const query = buildSubjectsQueryForResource(resourceScope, resourceId, role)
   // Indicate we'd only like to count
   query.$limit = 0
   // Execute the query

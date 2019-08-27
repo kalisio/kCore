@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-let baseItemMixin = {
+const baseItemMixin = {
   props: {
     contextId: {
       type: String,
@@ -41,7 +41,7 @@ let baseItemMixin = {
     getAction (name) {
       let action = null
       _.forOwn(this.actions, (value, key) => {
-        let actionForType = value.find(action => action.name === name)
+        const actionForType = value.find(action => action.name === name)
         if (actionForType) action = actionForType
       })
       return action

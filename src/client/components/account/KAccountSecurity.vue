@@ -52,10 +52,10 @@ export default {
   },
   methods: {
     onChangePassword () {
-      this.$router.push({name: 'change-password'})
+      this.$router.push({ name: 'change-password' })
     },
     onChangeEmail () {
-      this.$router.push({name: 'send-change-identity'})
+      this.$router.push({ name: 'send-change-identity' })
     }
   },
   created () {

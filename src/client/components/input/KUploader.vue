@@ -118,7 +118,7 @@ export default {
       // otherwise it will be stored at the root level with a generated hash
       if (idTemplate) {
         // Inject useful properties such as current object ID, file, etc.
-        let environment = { id: this.resource, file }
+        const environment = { id: this.resource, file }
         // The template generates the final ID for the file in storage
         return _.template(idTemplate)(environment)
       } else {

@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { uid } from 'quasar'
 
-let baseActivityMixin = {
+const baseActivityMixin = {
   data () {
     return {
       title: '',
@@ -103,7 +103,7 @@ let baseActivityMixin = {
     handleSearch () {
       // Update search query based on activity search config + currently selected pattern/items
       const search = this.$store.get('searchBar')
-      let query = {}
+      const query = {}
       // Handle the pattern
       if (search.pattern !== '') {
         query[search.field] = { $search: search.pattern }
@@ -111,7 +111,7 @@ let baseActivityMixin = {
       // Handle the selection
       search.items.forEach(item => {
         // We must have only one item per service
-        let queryPath = item.service + '.' + item.field
+        const queryPath = item.service + '.' + item.field
         query[queryPath] = item[item.field]
       })
       this.searchQuery = Object.assign({}, query)

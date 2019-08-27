@@ -115,7 +115,7 @@ export default {
       }
     },
     activeBarStyle () {
-      let activeBarWidth = this.activeBarWidth()
+      const activeBarWidth = this.activeBarWidth()
 
       return {
         height: this.barHeight(),
@@ -136,13 +136,13 @@ export default {
     },
     tickContainerStyle () {
       return {
-        height: '18px',   // TODO make configurable
+        height: '18px', // TODO make configurable
         top: this.barHeight()
       }
     },
     pointerContainerStyle () {
       return {
-        height: '18px',   // TODO make configurable
+        height: '18px', // TODO make configurable
         bottom: 0
       }
     },
@@ -188,13 +188,13 @@ export default {
         newPosition = this.componentWidth
       }
 
-      this.onChangePosition({value: newPosition, final: true})
+      this.onChangePosition({ value: newPosition, final: true })
     },
     onTimelineMouseOut (event) {
       this.timeIndicatorIsVisible = false
     },
     onTimelineMouseMove (event) {
-      let newPosition = event.clientX - this.componentLeft
+      const newPosition = event.clientX - this.componentLeft
 
       this.timeIndicatorIsVisible = true
       this.timeIndicatorPosition = newPosition

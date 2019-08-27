@@ -1,13 +1,13 @@
 <template>
-  <q-select 
+  <q-select
     use-input
     hide-selected
     :clearable="clearable"
     :borderless="borderless"
-    dropdown-icon="" 
-    v-model="pattern" 
+    dropdown-icon=""
+    v-model="pattern"
     :options="options"
-    @filter="onSearch" 
+    @filter="onSearch"
     @input="onSelected">
     <template v-slot:no-option>
       <q-item>
@@ -77,7 +77,7 @@ export default {
       const requests = this.services.map(serviceDescriptor => {
         const service = this.$api.getService(serviceDescriptor.service)
         // build the query using given templet if any
-        let query = Object.assign({}, serviceDescriptor.baseQuery)
+        const query = Object.assign({}, serviceDescriptor.baseQuery)
         // Then add partial match
         // We don't use set by dot here because Mongo queries on nested fields
         // require the key to contain the path and not nested objects
@@ -87,7 +87,7 @@ export default {
         return service.find({ query })
       })
       Promise.all(requests).then(responses => {
-        let results = []
+        const results = []
         for (let i = 0; i < responses.length; i++) {
           const response = responses[i]
           const serviceDescriptor = this.services[i]
@@ -97,7 +97,7 @@ export default {
               data.field = serviceDescriptor.field
               data.limit = serviceDescriptor.limit
               if (!data.icon) data.icon = serviceDescriptor.icon
-              let result = {
+              const result = {
                 label: _.get(data, serviceDescriptor.field),
                 value: _.get(data, serviceDescriptor.field),
                 icon: _.get(data, serviceDescriptor.iconField || 'icon.name')

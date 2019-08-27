@@ -28,9 +28,9 @@ export function unprocessTime (hook) {
 }
 
 export function processPerspectives (hook) {
-  let params = hook.params
-  let query = params.query
-  let service = hook.service
+  const params = hook.params
+  const query = params.query
+  const service = hook.service
 
   // Test if some perspectives are defined on the model
   if (!service.options || !service.options.perspectives) return
@@ -41,7 +41,7 @@ export function processPerspectives (hook) {
     let filterPerspective = true
     if (!_.isNil(query) && !_.isNil(query.$select)) {
       // Transform to array to unify processing
-      let selectedFields = (typeof query.$select === 'string' ? [query.$select] : query.$select)
+      const selectedFields = (typeof query.$select === 'string' ? [query.$select] : query.$select)
       if (Array.isArray(selectedFields)) {
         selectedFields.forEach(field => {
           // Take care that we might only ask for a subset of perspective fields like ['perspective.fieldName']
@@ -60,7 +60,7 @@ export function processPerspectives (hook) {
 // When perspectives are present we disallow update in order to avoid erase them.
 // Indeed when requesting an object they are not retrieved by default
 export function preventUpdatePerspectives (hook) {
-  let service = hook.service
+  const service = hook.service
 
   // Test if some perspectives are defined on the model
   if (!service.options || !service.options.perspectives) return
@@ -162,10 +162,10 @@ export function convertDates (properties, asMoment) {
 
 export async function populatePreviousObject (hook) {
   if (hook.type !== 'before') {
-    throw new Error(`The 'populatePreviousObject' hook should only be used as a 'before' hook.`)
+    throw new Error('The \'populatePreviousObject\' hook should only be used as a \'before\' hook.')
   }
-  let item = getItems(hook)
-  let id = item._id || hook.id
+  const item = getItems(hook)
+  const id = item._id || hook.id
   // Retrieve previous version of the item and make it available to next hooks
   if (id) {
     hook.params.previousItem = await hook.service.get(id.toString())
@@ -189,14 +189,14 @@ export function setAsDeleted (hook) {
 export function setExpireAfter (delayInSeconds) {
   return function (hook) {
     if (hook.type !== 'before') {
-      throw new Error(`The 'setExpireAfter' hook should only be used as a 'before' hook.`)
+      throw new Error('The \'setExpireAfter\' hook should only be used as a \'before\' hook.')
     }
     // Retrieve the items from the hook
     let items = getItems(hook)
     const isArray = Array.isArray(items)
     items = (isArray ? items : [items])
     // Apply the rules for each item
-    let date = new Date(Date.now() + 1000 * delayInSeconds)
+    const date = new Date(Date.now() + 1000 * delayInSeconds)
     items.forEach(item => _.set(item, 'expireAt', date))
     // Replace the items within the hook
     replaceItems(hook, isArray ? items : items[0])

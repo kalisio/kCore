@@ -8,13 +8,13 @@ export function marshallComparisonFields (queryObject) {
     if (typeof value === 'object') {
       marshallComparisonFields(value)
     } else if ((key === '$lt') || (key === '$lte') || (key === '$gt') || (key === '$gte')) {
-      let number = _.toNumber(value)
+      const number = _.toNumber(value)
       // Update from query string to number if required
       if (!Number.isNaN(number)) {
         queryObject[key] = number
       } else {
         // try for dates as well
-        let date = moment.utc(value)
+        const date = moment.utc(value)
         if (date.isValid()) {
           queryObject[key] = date.toDate()
         }
@@ -30,7 +30,7 @@ export function marshallSortFields (queryObject) {
     if (typeof value === 'object') {
       marshallSortFields(value)
     } else {
-      let number = _.toNumber(value)
+      const number = _.toNumber(value)
       // Update from query string to number if required
       if (!Number.isNaN(number)) {
         queryObject[key] = number

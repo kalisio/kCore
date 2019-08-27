@@ -1,8 +1,8 @@
 <template>
-  <q-dialog 
+  <q-dialog
     ref="modal"
     persistent
-    @show="$emit('opened')" 
+    @show="$emit('opened')"
     @hide="$emit('closed')">
     <q-card :class="contentClass" :style="contentStyle">
       <!--

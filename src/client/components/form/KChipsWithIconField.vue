@@ -62,8 +62,8 @@ export default {
       return this.chips.length > 0 ? 'col-auto' : 'col-12'
     },
     inputActions () {
-      let actions = []
-      if (_.findIndex(this.chips, { 'value': this.input }) === -1) {
+      const actions = []
+      if (_.findIndex(this.chips, { value: this.input }) === -1) {
         actions.push({
           icon: 'send',
           content: true,
@@ -96,7 +96,7 @@ export default {
       return getIconName(chip)
     },
     onChipAdded () {
-      let chip = {
+      const chip = {
         value: this.input,
         icon: {
           name: _.get(this.properties.field, 'icon.name', ''),

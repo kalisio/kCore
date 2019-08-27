@@ -1,6 +1,9 @@
 import logger from 'loglevel'
 import { Store } from './store'
 import services from './services'
+import * as utils from './utils'
+import * as mixins from './mixins'
+import * as hooks from './hooks'
 
 // We faced a bug in babel so that transform-runtime with export * from 'x' generates import statements in transpiled code
 // Tracked here : https://github.com/babel/babel/issues/2877
@@ -14,9 +17,9 @@ export * from './api'
 export * from './store'
 export * from './guards'
 export * from '../common'
-export * as utils from './utils'
-export * as mixins from './mixins'
-export * as hooks from './hooks'
+export { utils }
+export { mixins }
+export { hooks }
 export * from './services'
 
 export default function init () {
@@ -28,17 +31,17 @@ export default function init () {
   // Create the models listened by the main layout components
   // You must use the patch method on the store to update those models
   // It is generally done using the registerAction on an Activity based component
-  let appBar = { title: '', subtitle: '', toolbar: [], menu: [] }
+  const appBar = { title: '', subtitle: '', toolbar: [], menu: [] }
   Store.set('appBar', appBar)
-  let search = { field: '', pattern: '', services: [], items: [] }
+  const search = { field: '', pattern: '', services: [], items: [] }
   Store.set('searchBar', search)
-  let tabBar = { tabs: [] }
+  const tabBar = { tabs: [] }
   Store.set('tabBar', tabBar)
-  let leftDrawer = { component: '', options: {} }
+  const leftDrawer = { component: '', options: {} }
   Store.set('leftDrawer', leftDrawer)
-  let rightDrawer = { component: '', options: {} }
+  const rightDrawer = { component: '', options: {} }
   Store.set('rightDrawer', rightDrawer)
-  let fab = { actions: [] }
+  const fab = { actions: [] }
   Store.set('fab', fab)
 
   // Listen to the 'patched' event on the users

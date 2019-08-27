@@ -7,7 +7,7 @@
             v-model="searchQuery"
             :label="$t('KIconChooser.SEARCH_FIELD_LABEL')"
             clearable
-            class="col-7" 
+            class="col-7"
             dense />
           <q-select
             v-if="categories"
@@ -18,7 +18,7 @@
             emit-value
             map-options
             clearable
-            class="col-4" 
+            class="col-4"
             dense />
         </div>
         <div class="row justify-start items-center q-gutter-sm">
@@ -43,7 +43,7 @@
           <k-palette shape="round" v-model="selectedIcon.color" />
         </div>
 
-        <!--For debug purpose only 
+        <!--For debug purpose only
         <div class="row justify-start items-center q-gutter-sm">
           <span class="text-bold">Selected:</span> &nbsp;{{iconSelected() ? selectedIcon.name : '-'}}
         </div>
@@ -107,8 +107,8 @@ export default {
       return Math.ceil(this.icons.length / this.iconsPerPage)
     },
     iconsPage () {
-      let firstIndex = (this.currentPage - 1) * this.iconsPerPage
-      let lastIndex = Math.min(this.currentPage * this.iconsPerPage, this.icons.length)
+      const firstIndex = (this.currentPage - 1) * this.iconsPerPage
+      const lastIndex = Math.min(this.currentPage * this.iconsPerPage, this.icons.length)
 
       return this.icons.slice(firstIndex, lastIndex)
     }
@@ -149,7 +149,7 @@ export default {
       const categoryIcons = this.categoryInfos[this.selectedCategory].icons
       const icons = []
 
-      for (let categoryIcon of categoryIcons) {
+      for (const categoryIcon of categoryIcons) {
         const icon = this.allIcons.find((e) => e.title === categoryIcon)
 
         if (icon) {
@@ -182,7 +182,7 @@ export default {
 
       // Assign the selected icon to the default one if any
       if (defaultIcon) {
-        Object.assign(this.selectedIcon, {name: defaultIcon, color: defaultColor})
+        Object.assign(this.selectedIcon, { name: defaultIcon, color: defaultColor })
         index = _.findIndex(this.allIcons, icon => { return icon.name === this.selectedIcon.name })
       }
 
@@ -237,7 +237,7 @@ export default {
       icons.sort()
 
       icons = icons.map(icon => {
-        return {name: icon, title: icon}
+        return { name: icon, title: icon }
       })
 
       return { icons, categories: null, categoryInfos: null }
@@ -252,7 +252,7 @@ export default {
       try {
         const icons = []
 
-        let yamlCodes = yaml.safeLoad(text)
+        const yamlCodes = yaml.safeLoad(text)
         _.forOwn(yamlCodes, (value, key) => {
           this.addFontAwsomeIcons(icons, value, key)
         })
@@ -301,7 +301,7 @@ export default {
       }
     },
     addFontAwsomeIcon (list, key, icon) {
-      list.push({name: icon, title: key})
+      list.push({ name: icon, title: key })
     }
   },
   async created () {

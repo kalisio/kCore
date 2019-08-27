@@ -29,7 +29,7 @@ export default function baseEditorMixin (formRefs) {
       editorTitle () {
         // Retuns the schema title
         if (this.getSchema()) {
-          let schemaTitle = this.getSchema().title
+          const schemaTitle = this.getSchema().title
           return this.$t(schemaTitle, { object: this.getObject() })
         }
         return ''
@@ -50,7 +50,7 @@ export default function baseEditorMixin (formRefs) {
       setFormDisabled (formName, disabled) {
         // Iterate over forms
         formRefs.forEach(name => {
-          let form = this.$refs[name]
+          const form = this.$refs[name]
           if (name === formName) {
             if (form.loadRefs().isFulfilled()) {
               form.isDisabled = disabled
@@ -63,7 +63,7 @@ export default function baseEditorMixin (formRefs) {
       fillEditor () {
         // Iterate over forms
         formRefs.forEach(name => {
-          let form = this.$refs[name]
+          const form = this.$refs[name]
           if (form.loadRefs().isFulfilled()) {
             if (this.getObject()) {
               if (this.perspective !== '') {
@@ -88,7 +88,7 @@ export default function baseEditorMixin (formRefs) {
       clear () {
         // Iterate over forms
         formRefs.forEach(name => {
-          let form = this.$refs[name]
+          const form = this.$refs[name]
           if (form.loadRefs().isFulfilled()) {
             form.clear()
           } else {
@@ -103,10 +103,10 @@ export default function baseEditorMixin (formRefs) {
         // Iterate over forms for validation
         let isValid = true
         formRefs.forEach(name => {
-          let form = this.$refs[name]
+          const form = this.$refs[name]
           if (form.loadRefs().isFulfilled()) {
             if (!form.isDisabled) {
-              let result = form.validate()
+              const result = form.validate()
               if (!result.isValid) {
                 isValid = false
               }
@@ -123,7 +123,7 @@ export default function baseEditorMixin (formRefs) {
         let isApplied = true
         for (let i = 0; i < formRefs.length; i++) {
           const name = formRefs[i]
-          let form = this.$refs[name]
+          const form = this.$refs[name]
           if (!form.isDisabled) {
             try {
               await form.apply(object)
@@ -140,7 +140,7 @@ export default function baseEditorMixin (formRefs) {
         let isApplied = true
         for (let i = 0; i < formRefs.length; i++) {
           const name = formRefs[i]
-          let form = this.$refs[name]
+          const form = this.$refs[name]
           if (!form.isDisabled) {
             try {
               await form.submitted(object)
@@ -156,7 +156,7 @@ export default function baseEditorMixin (formRefs) {
         // Start from default object or input base object
         // This is used to keep track of existing or additional "hidden" or "internal" properties
         // in addition to the ones edited throught the form
-        let object = {}
+        const object = {}
         const baseObject = this.getObject() || this.baseObject
         if (this.perspective !== '') {
           Object.assign(object, _.get(baseObject, this.perspective))
@@ -169,7 +169,7 @@ export default function baseEditorMixin (formRefs) {
       },
       getBaseQuery () {
         // Start from default query
-        let query = {}
+        const query = {}
         Object.assign(query, this.baseQuery)
         if ((this.getMode() === 'update') && (this.perspective !== '')) {
           Object.assign(query, { $select: ['_id', this.perspective] })
@@ -190,7 +190,7 @@ export default function baseEditorMixin (formRefs) {
 
         if (this.getService()) {
           // Small helper to avoid repeating too much similar code
-          let onServiceResponse = async (response) => {
+          const onServiceResponse = async (response) => {
             await this.submittedForms(response)
             this.$emit('applied', response)
           }
@@ -202,19 +202,19 @@ export default function baseEditorMixin (formRefs) {
             if (this.getMode() === 'update') {
               // Editing mode => patch the item
               if (this.perspective !== '') {
-                let data = {}
+                const data = {}
                 data[this.perspective] = _.omit(object, ['_id'])
-                let response = await this.servicePatch(this.objectId, data, { query })
+                const response = await this.servicePatch(this.objectId, data, { query })
                 // Keep track of ID as it is used to know if we update or create
                 if (object._id) response._id = object._id
                 onServiceResponse(response)
               } else {
-                let response = await this.servicePatch(this.objectId, object, { query })
+                const response = await this.servicePatch(this.objectId, object, { query })
                 onServiceResponse(response)
               }
             } else if (this.getMode() === 'create') {
               // Creation mode => create the item
-              let response = await this.serviceCreate(object, { query })
+              const response = await this.serviceCreate(object, { query })
               onServiceResponse(response)
             } else {
               logger.warn('Invalid editor mode')

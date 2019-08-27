@@ -1,4 +1,4 @@
-let serviceMixin = {
+const serviceMixin = {
   props: {
     contextId: {
       type: String,

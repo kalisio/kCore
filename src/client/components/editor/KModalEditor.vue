@@ -33,7 +33,7 @@ export default {
   },
   computed: {
     buttons () {
-      let buttons = [{
+      const buttons = [{
         name: 'apply-button', label: this.applyButton, color: 'primary', handler: () => this.apply()
       }]
       if (this.clearButton !== '') {

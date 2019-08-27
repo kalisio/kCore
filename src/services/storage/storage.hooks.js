@@ -5,7 +5,7 @@ import { populateAttachmentResource, attachToResource, detachFromResource } from
 module.exports = {
   before: {
     all: [],
-    find: [ disallow() ],
+    find: [disallow()],
     get: [],
     create: [
       populateAttachmentResource,
@@ -22,9 +22,9 @@ module.exports = {
         if (hook.data.public) hook.params.s3 = { ACL: 'public-read' }
       }
     ],
-    update: [ disallow() ],
-    patch: [ disallow() ],
-    remove: [ populateAttachmentResource ]
+    update: [disallow()],
+    patch: [disallow()],
+    remove: [populateAttachmentResource]
   },
 
   after: {
@@ -44,7 +44,7 @@ module.exports = {
     update: [],
     patch: [],
     // Let the detachment on the resource object occur only when resource has been found
-    remove: [ iff(hook => hook.params.resource, detachFromResource), discard('uri') ]
+    remove: [iff(hook => hook.params.resource, detachFromResource), discard('uri')]
   },
 
   error: {

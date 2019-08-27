@@ -5,10 +5,10 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [ populateSubjects, populateResource ],
+    create: [populateSubjects, populateResource],
     update: [],
     patch: [],
-    remove: [ populateSubjects, populateResource ]
+    remove: [populateSubjects, populateResource]
   },
 
   after: {

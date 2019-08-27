@@ -1,6 +1,6 @@
 import { createQuerablePromise } from '../utils'
 
-let objectProxyMixin = {
+const objectProxyMixin = {
   props: {
     objectId: {
       type: String,
@@ -19,7 +19,7 @@ let objectProxyMixin = {
       return this._object ? this._object._id : ''
     },
     hasPerspective (perspective) {
-      return this._object ? this._object.hasOwnProperty(perspective) : false
+      return this._object ? this._object[perspective] : false
     },
     loadObject () {
       if (!this.objectId) {
@@ -35,14 +35,14 @@ let objectProxyMixin = {
             params = { query: { $select: ['_id', this.perspective] } }
           }
           this.loadService()
-          .get(this.objectId, params)
-          .then(object => {
-            this._object = object
-            resolve(object)
-          })
-          .catch(error => {
-            reject(error)
-          })
+            .get(this.objectId, params)
+            .then(object => {
+              this._object = object
+              resolve(object)
+            })
+            .catch(error => {
+              reject(error)
+            })
         })
       }
       return this.objectPromise

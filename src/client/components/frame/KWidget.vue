@@ -1,6 +1,6 @@
 <template>
   <q-page-sticky :position="currentCorner" :offset="currentOffset">
-    <q-menu 
+    <q-menu
       ref="popover" @show="onOpen" @hide="onClose"
       :anchor-click="false"
       anchor="top left"

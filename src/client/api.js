@@ -38,7 +38,7 @@ function siftMatcher (originalQuery) {
 }
 
 export function kalisio () {
-  let api = feathers()
+  const api = feathers()
 
   // Setup our interface
   // -------------------
@@ -80,7 +80,7 @@ export function kalisio () {
   }
   api.getService = function (name, context) {
     const path = api.getServicePath(name, context)
-    let service = api.service(path)
+    const service = api.service(path)
     if (!service) {
       throw new Error('Cannot retrieve service ' + name + ' for context ' + (typeof context === 'object' ? context._id : context))
     }
@@ -145,7 +145,7 @@ export function kalisio () {
   }
 
   api.can = function (operation, service, context, resource) {
-    let abilities = Store.get('user.abilities')
+    const abilities = Store.get('user.abilities')
     logger.debug('Check for abilities ', operation, service, context, resource, abilities)
     if (!abilities) {
       logger.debug('Access denied without abilities')
@@ -177,7 +177,7 @@ export function kalisio () {
   } else {
     logger.setLevel('info')
   }
-  let origin = api.getBaseUrl()
+  const origin = api.getBaseUrl()
   if (config.transport === 'http') {
     api.configure(feathers.rest(origin).fetch(window.fetch.bind(window)))
   } else {

@@ -9,21 +9,21 @@ const debug = makeDebug('kalisio:kCore:users:hooks')
 export function enforcePasswordPolicy (options = {}) {
   return async function (hook) {
     if (hook.type !== 'before') {
-      throw new Error(`The 'enforePasswordPolicy' hook should only be used as a 'before' hook.`)
+      throw new Error('The \'enforePasswordPolicy\' hook should only be used as a \'before\' hook.')
     }
     // By pass check ?
     if (hook.params.force) return hook
-    let app = hook.app
-    let item = getItems(hook)
-    let user = options.userAsItem ? item : hook.params.user
+    const app = hook.app
+    const item = getItems(hook)
+    const user = options.userAsItem ? item : hook.params.user
     // Get both password(s) since some rules target one and some the other one(s)
-    let clearPassword = _.get(item, options.passwordField || 'clearPassword')
-    let hashedPasswords = _.get(user, options.previousPasswordsField || 'previousPasswords', [])
+    const clearPassword = _.get(item, options.passwordField || 'clearPassword')
+    const hashedPasswords = _.get(user, options.previousPasswordsField || 'previousPasswords', [])
     if (clearPassword && hashedPasswords && app.getPasswordPolicy) {
       debug('Enforcing password policy on user', user)
       const validator = app.getPasswordPolicy()
       // First check the clear password
-      let result = validator.validate(clearPassword, { list: true })
+      const result = validator.validate(clearPassword, { list: true })
       // Then check for the last used passwords using password policy verifier
       for (let i = 0; i < hashedPasswords.length; i++) {
         try {
@@ -53,19 +53,19 @@ export function enforcePasswordPolicy (options = {}) {
 export function storePreviousPassword (options = {}) {
   return function (hook) {
     if (hook.type !== 'before') {
-      throw new Error(`The 'storePreviousPassword' hook should only be used as a 'before' hook.`)
+      throw new Error('The \'storePreviousPassword\' hook should only be used as a \'before\' hook.')
     }
-    let app = hook.app
-    let data = getItems(hook)
+    const app = hook.app
+    const data = getItems(hook)
     if (app.getPasswordPolicy && hook.params.previousItem) {
       const validator = app.getPasswordPolicy()
       // Based on previous password value
-      let user = hook.params.previousItem
+      const user = hook.params.previousItem
       const passwordField = options.passwordField || 'password'
-      let password = _.get(user, passwordField)
+      const password = _.get(user, passwordField)
       if (password) {
         const previousPasswordsField = options.previousPasswordsField || 'previousPasswords'
-        let previousPasswords = _.get(user, previousPasswordsField, [])
+        const previousPasswords = _.get(user, previousPasswordsField, [])
         debug(`Moving previous password from field ${passwordField} in field ${previousPasswords} on user`, user)
         previousPasswords.push(password)
         // Pop oldest password when required
@@ -81,12 +81,12 @@ export function storePreviousPassword (options = {}) {
 
 export function generatePassword (hook) {
   if (hook.type !== 'before') {
-    throw new Error(`The 'generatePassword' hook should only be used as a 'before' hook.`)
+    throw new Error('The \'generatePassword\' hook should only be used as a \'before\' hook.')
   }
-  let app = hook.app
-  let data = hook.data
+  const app = hook.app
+  const data = hook.data
   // Generate a password
-  let passwordRule = new RegExp('[\\w\\d\\?\\-]')
+  const passwordRule = new RegExp('[\\w\\d\\?\\-]')
   // If we have a password policy ensure we match it
   if (app.getPasswordPolicy) {
     const validator = app.getPasswordPolicy()

@@ -17,7 +17,7 @@ export function isTagEqual (tag1, tag2) {
 
 export function populateTagResource (hook) {
   if (hook.type !== 'before') {
-    throw new Error(`The 'populateTagResource' hook should only be used as a 'before' hook.`)
+    throw new Error('The \'populateTagResource\' hook should only be used as a \'before\' hook.')
   }
 
   // Avoid populating any target resource when resource parameters are not present
@@ -26,7 +26,7 @@ export function populateTagResource (hook) {
 
 export function unpopulateTagResource (hook) {
   if (hook.type !== 'after') {
-    throw new Error(`The 'unpopulateTagResource' hook should only be used as a 'after' hook.`)
+    throw new Error('The \'unpopulateTagResource\' hook should only be used as a \'after\' hook.')
   }
 
   // Avoid populating any target resource when resource parameters are not present
@@ -34,7 +34,7 @@ export function unpopulateTagResource (hook) {
 }
 
 export async function updateTags (hook) {
-  let item = getItems(hook)
+  const item = getItems(hook)
   if (!item.tags) {
     debug('No tags to update for object ', item)
     return Promise.resolve(hook)
@@ -42,7 +42,7 @@ export async function updateTags (hook) {
   // Tag service is contextual, look for context on initiator service
   const context = hook.service.context
   // Retrieve previous version of the item
-  let previousTags = _.get(hook.params, 'previousItem.tags')
+  const previousTags = _.get(hook.params, 'previousItem.tags')
   if (previousTags) {
     // Find common tags
     const commonTags = _.intersectionWith(item.tags, previousTags, isTagEqual)
@@ -64,7 +64,7 @@ export async function updateTags (hook) {
       if (!tagService) return Promise.reject(new Error('No valid context found to retrieve tag service for ', tag))
       else return tagService.create(tag)
     })
-    let [ oldTags, newTags ] = await Promise.all([
+    let [oldTags, newTags] = await Promise.all([
       Promise.all(removePromises),
       Promise.all(addedPromises)
     ])
@@ -113,7 +113,7 @@ export async function updateTags (hook) {
 
 export function addTagIfNew (hook) {
   if (hook.type !== 'before') {
-    throw new Error(`The 'addTagIfNew' hook should only be used as a 'before' hook.`)
+    throw new Error('The \'addTagIfNew\' hook should only be used as a \'before\' hook.')
   }
   const tagService = hook.service
   const value = _.get(hook, 'data.value')
@@ -123,29 +123,29 @@ export function addTagIfNew (hook) {
   }
 
   return tagService.find({ query: { value, scope } })
-  .then(result => {
+    .then(result => {
     // If it already exist avoid creating it in DB,
     // simply update counter and return it
-    if (result.total > 0) {
-      let tag = result.data[0]
-      hook.result = tag
-      tag.count += 1
-      debug('Increasing tag ' + tag.value + ' count (' + tag.count + ') with scope ' + tag.scope)
-      return tagService.patch(tag._id.toString(), { count: tag.count })
-    } else {
+      if (result.total > 0) {
+        const tag = result.data[0]
+        hook.result = tag
+        tag.count += 1
+        debug('Increasing tag ' + tag.value + ' count (' + tag.count + ') with scope ' + tag.scope)
+        return tagService.patch(tag._id.toString(), { count: tag.count })
+      } else {
       // Otherwise initialize tag counter
-      hook.data.count = 1
-      return Promise.resolve(hook)
-    }
-  })
-  .then(() => {
-    return hook
-  })
+        hook.data.count = 1
+        return Promise.resolve(hook)
+      }
+    })
+    .then(() => {
+      return hook
+    })
 }
 
 export function removeTagIfUnused (hook) {
   if (hook.type !== 'before') {
-    throw new Error(`The 'removeTagIfUnused' hook should only be used as a 'before' hook.`)
+    throw new Error('The \'removeTagIfUnused\' hook should only be used as a \'before\' hook.')
   }
 
   const tagService = hook.service
@@ -156,40 +156,40 @@ export function removeTagIfUnused (hook) {
   }
 
   return tagService.find({ query: { value, scope } })
-  .then(result => {
+    .then(result => {
     // If it already exist decrease counter and erase it if not used anymore
-    if (result.total > 0) {
-      let tag = result.data[0]
-      hook.result = tag
-      tag.count -= 1
-      if (tag.count <= 0) {
-        debug('Removing unused tag ' + tag.value + ' with scope ' + tag.scope)
-        return tagService.remove(tag._id.toString())
+      if (result.total > 0) {
+        const tag = result.data[0]
+        hook.result = tag
+        tag.count -= 1
+        if (tag.count <= 0) {
+          debug('Removing unused tag ' + tag.value + ' with scope ' + tag.scope)
+          return tagService.remove(tag._id.toString())
+        } else {
+          debug('Decreasing tag ' + tag.value + ' count (' + tag.count + ') with scope ' + tag.scope)
+          return tagService.patch(tag._id.toString(), { count: tag.count })
+        }
       } else {
-        debug('Decreasing tag ' + tag.value + ' count (' + tag.count + ') with scope ' + tag.scope)
-        return tagService.patch(tag._id.toString(), { count: tag.count })
-      }
-    } else {
       // Should not be possible, this will skip DB call
-      hook.result = null
-      return Promise.resolve(hook)
-    }
-  })
-  .then(() => {
-    return hook
-  })
+        hook.result = null
+        return Promise.resolve(hook)
+      }
+    })
+    .then(() => {
+      return hook
+    })
 }
 
 export function tagResource (hook) {
   if (hook.type !== 'after') {
-    throw new Error(`The 'tagResource' hook should only be used as a 'after' hook.`)
+    throw new Error('The \'tagResource\' hook should only be used as a \'after\' hook.')
   }
   const tag = hook.result
   const params = hook.params
   const query = params.query
   const context = hook.service.context
   const resourcesService = params.resourcesService
-  let resource = params.resource
+  const resource = params.resource
   // If not already tagged
   if (!_.find(resource.tags, resourceTag => isTagEqual(resourceTag, tag))) {
     // Initialize on first tag
@@ -209,10 +209,10 @@ export function tagResource (hook) {
       // Delete own parameters from query otherwise it will be used to filter items
       query: _.omit(query, ['resource', 'resourcesService', 'scope', 'value', 'context'])
     })
-    .then(subject => {
-      debug('Tag ' + tag.value + ' set on resource ' + resource._id.toString() + ' with scope ' + tag.scope)
-      return hook
-    })
+      .then(subject => {
+        debug('Tag ' + tag.value + ' set on resource ' + resource._id.toString() + ' with scope ' + tag.scope)
+        return hook
+      })
   } else {
     return Promise.resolve(hook)
   }
@@ -220,14 +220,14 @@ export function tagResource (hook) {
 
 export function untagResource (hook) {
   if (hook.type !== 'after') {
-    throw new Error(`The 'untagResource' hook should only be used as a 'after' hook.`)
+    throw new Error('The \'untagResource\' hook should only be used as a \'after\' hook.')
   }
 
   const tag = hook.result
   const params = hook.params
   const query = params.query
   const resourcesService = params.resourcesService
-  let resource = params.resource
+  const resource = params.resource
   // If already tagged
   const tagIndex = _.findIndex(resource.tags, resourceTag => isTagEqual(resourceTag, tag))
   if (tagIndex >= 0) {
@@ -240,10 +240,10 @@ export function untagResource (hook) {
       // Delete own parameters from query otherwise it will be used to filter items
       query: _.omit(query, ['resource', 'resourcesService', 'scope', 'value', 'context'])
     })
-    .then(subject => {
-      debug('Tag ' + tag.value + ' unset on resource ' + resource._id.toString() + ' with scope ' + tag.scope)
-      return hook
-    })
+      .then(subject => {
+        debug('Tag ' + tag.value + ' unset on resource ' + resource._id.toString() + ' with scope ' + tag.scope)
+        return hook
+      })
   } else {
     return Promise.resolve(hook)
   }

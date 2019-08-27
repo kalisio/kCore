@@ -41,10 +41,10 @@ export default {
   methods: {
     async processMarkdown () {
       let markdown = this.markdown
-      let converter = new showdown.Converter(this.options)
+      const converter = new showdown.Converter(this.options)
       converter.setFlavor('github')
       if (!markdown && this.url) {
-        let response = await fetch(this.url)
+        const response = await fetch(this.url)
         if (response.status !== 200) {
           throw new Error('Impossible to retrieve markdown: ' + response.status)
         }

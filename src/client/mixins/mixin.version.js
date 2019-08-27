@@ -1,4 +1,4 @@
-let versionMixin = {
+const versionMixin = {
   data () {
     return {
       clientVersionName: '',

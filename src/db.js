@@ -84,6 +84,10 @@ export class Database {
     return null
   }
 
+  async disconnect () {
+    // Default implementation
+  }
+
   static create (app) {
     switch (this.adapter) {
       case 'mongodb':
@@ -125,6 +129,25 @@ export class MongoDatabase extends Database {
       return this._db
     } catch (error) {
       logger.error('Could not connect to ' + this.adapter + ' database(s), please check your configuration', error)
+      throw error
+    }
+  }
+
+  async disconnect () {
+    try {
+      await this._db.close()
+      debug('Disconnected from primary DB ' + this.adapter)
+      this._db = null
+      if (this._secondaries) {
+        const dbs = _.values(this._dbs)
+        for (let i = 0; i < dbs.length; i++) {
+          await dbs[i].close()
+        }
+        this._dbs = {}
+        debug('Disconnected from secondaries DB ' + this.adapter)
+      }
+    } catch (error) {
+      logger.error('Could not disconnect from ' + this.adapter + ' database(s)', error)
       throw error
     }
   }

@@ -1,7 +1,7 @@
 import { createQuerablePromise } from '../utils'
 import { Events } from '../events'
 
-let schemaProxyMixin = {
+const schemaProxyMixin = {
   props: {
     schemaName: {
       type: String,

@@ -56,45 +56,47 @@ describe('kCore', () => {
 
   it('unauthenticated user cannot access services', (done) => {
     tagService.create({}, { checkAuthorisation: true })
-    .catch(error => {
-      expect(error).toExist()
-      expect(error.name).to.equal('Forbidden')
-      done()
-    })
+      .catch(error => {
+        expect(error).toExist()
+        expect(error.name).to.equal('Forbidden')
+        done()
+      })
   })
 
   it('cannot create a user with a weak password', (done) => {
     // Fake password hashing on a user to get a hashed password
     hashPassword()({ type: 'before', data: { password: 'weak;' }, params: {}, app })
-    .then(hook => {
-      userService.create({
-        email: 'test@test.org',
-        password: 'weak;',
-        previousPasswords: [hook.data.password],
-        name: 'test-user'})
-      .catch(error => {
-        expect(error).toExist()
-        expect(error.name).to.equal('BadRequest')
-        expect(error.data.translation.params.failedRules).to.deep.equal(['min', 'uppercase', 'digits', 'previous'])
+      .then(hook => {
         userService.create({
           email: 'test@test.org',
-          password: '12345678',
-          name: 'test-user'})
-        .catch(error => {
-          expect(error).toExist()
-          expect(error.name).to.equal('BadRequest')
-          expect(error.data.translation.params.failedRules).to.deep.equal(['uppercase', 'lowercase', 'symbols', 'oneOf'])
-          done()
+          password: 'weak;',
+          previousPasswords: [hook.data.password],
+          name: 'test-user'
         })
+          .catch(error => {
+            expect(error).toExist()
+            expect(error.name).to.equal('BadRequest')
+            expect(error.data.translation.params.failedRules).to.deep.equal(['min', 'uppercase', 'digits', 'previous'])
+            userService.create({
+              email: 'test@test.org',
+              password: '12345678',
+              name: 'test-user'
+            })
+              .catch(error => {
+                expect(error).toExist()
+                expect(error.name).to.equal('BadRequest')
+                expect(error.data.translation.params.failedRules).to.deep.equal(['uppercase', 'lowercase', 'symbols', 'oneOf'])
+                done()
+              })
+          })
       })
-    })
   })
   // Let enough time to process
-  .timeout(5000)
+    .timeout(5000)
 
   it('creates a user', () => {
     // Test password generation
-    let hook = hooks.generatePassword({ type: 'before', data: {}, params: {}, app })
+    const hook = hooks.generatePassword({ type: 'before', data: {}, params: {}, app })
     return userService.create({
       email: 'test@test.org',
       password: hook.data.password,
@@ -103,65 +105,66 @@ describe('kCore', () => {
         scope: 'skills',
         value: 'developer'
       }],
-      profile: { phone: '0623256968' } }, { checkAuthorisation: true })
-    .then(user => {
-      userObject = user
-      // Keep track of clear password
-      userObject.clearPassword = hook.data.password
-      return userService.find({ query: { 'profile.name': 'test-user' } })
-    })
-    .then(users => {
-      expect(users.data.length > 0).beTrue()
-      // By default no perspective
-      expect(users.data[0].name).toExist()
-      expect(users.data[0].description).toExist()
-      expect(users.data[0].email).toExist()
-      expect(users.data[0].clearPassword).beUndefined()
-      expect(users.data[0].profile).beUndefined()
-      return tagService.find({ query: { value: 'developer' } })
-    })
-    .then(tags => {
-      expect(tags.data.length > 0).beTrue()
-      expect(tags.data[0].value).to.equal('developer')
-      expect(tags.data[0].scope).to.equal('skills')
-    })
+      profile: { phone: '0623256968' }
+    }, { checkAuthorisation: true })
+      .then(user => {
+        userObject = user
+        // Keep track of clear password
+        userObject.clearPassword = hook.data.password
+        return userService.find({ query: { 'profile.name': 'test-user' } })
+      })
+      .then(users => {
+        expect(users.data.length > 0).beTrue()
+        // By default no perspective
+        expect(users.data[0].name).toExist()
+        expect(users.data[0].description).toExist()
+        expect(users.data[0].email).toExist()
+        expect(users.data[0].clearPassword).beUndefined()
+        expect(users.data[0].profile).beUndefined()
+        return tagService.find({ query: { value: 'developer' } })
+      })
+      .then(tags => {
+        expect(tags.data.length > 0).beTrue()
+        expect(tags.data[0].value).to.equal('developer')
+        expect(tags.data[0].scope).to.equal('skills')
+      })
   })
 
   it('changing user password keeps password history', () => {
     return userService.patch(userObject._id.toString(), { password: userObject.password })
-    .then(() => {
-      return userService.get(userObject._id.toString())
-    })
-    .then(user => {
-      expect(user.previousPasswords).toExist()
-      expect(user.previousPasswords).to.deep.equal([userObject.password])
-    })
+      .then(() => {
+        return userService.get(userObject._id.toString())
+      })
+      .then(user => {
+        expect(user.previousPasswords).toExist()
+        expect(user.previousPasswords).to.deep.equal([userObject.password])
+      })
   })
 
   it('authenticates a user', () => {
     return request
-    .post(`${baseUrl}/authentication`)
-    .send({ email: 'test@test.org', password: userObject.clearPassword, strategy: 'local' })
-    .then(response => {
-      accessToken = response.body.accessToken
-      expect(accessToken).toExist()
-    })
+      .post(`${baseUrl}/authentication`)
+      .send({ email: 'test@test.org', password: userObject.clearPassword, strategy: 'local' })
+      .then(response => {
+        accessToken = response.body.accessToken
+        expect(accessToken).toExist()
+      })
   })
 
   it('authenticated user can access services', () => {
     return userService.find({ query: {}, params: { user: userObject, checkAuthorisation: true } })
-    .then(users => {
-      expect(users.data.length === 1).beTrue()
-    })
+      .then(users => {
+        expect(users.data.length === 1).beTrue()
+      })
   })
 
   it('get a user perspective', () => {
     return userService.find({ query: { $select: ['profile'] } })
-    .then(users => {
-      expect(users.data[0].profile.name).toExist()
-      expect(users.data[0].profile.description).toExist()
-      expect(users.data[0].profile.phone).toExist()
-    })
+      .then(users => {
+        expect(users.data[0].profile.name).toExist()
+        expect(users.data[0].profile.description).toExist()
+        expect(users.data[0].profile.phone).toExist()
+      })
   })
 
   it('creates a user tag', () => {
@@ -174,24 +177,24 @@ describe('kCore', () => {
         resourcesService: 'users'
       }
     })
-    .then(tag => {
-      tagObject = tag
-      expect(tag).toExist()
-      expect(tag.count).to.equal(1)
-      return tagService.find({ query: { value: 'manager' } })
-    })
-    .then(tags => {
-      expect(tags.data.length > 0).beTrue()
-      expect(tags.data[0].scope).to.equal('skills')
-      return userService.find({ query: { 'profile.name': 'test-user' } })
-    })
-    .then(users => {
-      expect(users.data.length > 0).beTrue()
-      userObject = users.data[0]
-      expect(userObject.tags).toExist()
-      expect(userObject.tags.length === 2).beTrue()
-      expect(userObject.tags[1]._id).toExist()
-    })
+      .then(tag => {
+        tagObject = tag
+        expect(tag).toExist()
+        expect(tag.count).to.equal(1)
+        return tagService.find({ query: { value: 'manager' } })
+      })
+      .then(tags => {
+        expect(tags.data.length > 0).beTrue()
+        expect(tags.data[0].scope).to.equal('skills')
+        return userService.find({ query: { 'profile.name': 'test-user' } })
+      })
+      .then(users => {
+        expect(users.data.length > 0).beTrue()
+        userObject = users.data[0]
+        expect(userObject.tags).toExist()
+        expect(userObject.tags.length === 2).beTrue()
+        expect(userObject.tags[1]._id).toExist()
+      })
   })
 
   it('creates an authorisation', () => {
@@ -205,16 +208,16 @@ describe('kCore', () => {
     }, {
       user: userObject
     })
-    .then(authorisation => {
-      expect(authorisation).toExist()
-      return userService.get(userObject._id.toString())
-    })
-    .then(user => {
-      userObject = user
-      expect(user.authorisations).toExist()
-      expect(user.authorisations.length > 0).beTrue()
-      expect(user.authorisations[0].permissions).to.deep.equal('manager')
-    })
+      .then(authorisation => {
+        expect(authorisation).toExist()
+        return userService.get(userObject._id.toString())
+      })
+      .then(user => {
+        userObject = user
+        expect(user.authorisations).toExist()
+        expect(user.authorisations.length > 0).beTrue()
+        expect(user.authorisations[0].permissions).to.deep.equal('manager')
+      })
   })
 
   it('cannot escalate an authorisation when creating', (done) => {
@@ -229,11 +232,11 @@ describe('kCore', () => {
       user: userObject,
       checkEscalation: true
     })
-    .catch(error => {
-      expect(error).toExist()
-      expect(error.name).to.equal('Forbidden')
-      done()
-    })
+      .catch(error => {
+        expect(error).toExist()
+        expect(error.name).to.equal('Forbidden')
+        done()
+      })
   })
 
   it('cannot escalate an authorisation when removing', (done) => {
@@ -249,13 +252,13 @@ describe('kCore', () => {
       user: userObject,
       checkEscalation: true
     })
-    .catch(error => {
-      expect(error).toExist()
-      expect(error.name).to.equal('Forbidden')
-      // Restore permission level
-      userObject.authorisations[0].permissions = 'manager'
-      done()
-    })
+      .catch(error => {
+        expect(error).toExist()
+        expect(error.name).to.equal('Forbidden')
+        // Restore permission level
+        userObject.authorisations[0].permissions = 'manager'
+        done()
+      })
   })
 
   it('removes an authorisation', () => {
@@ -269,14 +272,14 @@ describe('kCore', () => {
       user: userObject,
       checkEscalation: true
     })
-    .then(authorisation => {
-      expect(authorisation).toExist()
-      return userService.get(userObject._id.toString())
-    })
-    .then(user => {
-      expect(user.authorisations).toExist()
-      expect(user.authorisations.length === 0).beTrue()
-    })
+      .then(authorisation => {
+        expect(authorisation).toExist()
+        return userService.get(userObject._id.toString())
+      })
+      .then(user => {
+        expect(user.authorisations).toExist()
+        expect(user.authorisations.length === 0).beTrue()
+      })
   })
 
   it('removes a user tag', () => {
@@ -287,32 +290,32 @@ describe('kCore', () => {
         resourcesService: 'users'
       }
     })
-    .then(tag => {
-      expect(tag).toExist()
-      return tagService.find({ query: { value: 'manager' } })
-    })
-    .then(tags => {
-      expect(tags.data.length === 0).beTrue()
-      return tagService.find({ query: { value: 'developer' } })
-    })
-    .then(tags => {
-      expect(tags.data.length === 1).beTrue()
-      return userService.find({ query: { 'profile.name': 'test-user' } })
-    })
-    .then(users => {
-      expect(users.data.length > 0).beTrue()
-      expect(users.data[0].tags.length === 1).beTrue()
-    })
+      .then(tag => {
+        expect(tag).toExist()
+        return tagService.find({ query: { value: 'manager' } })
+      })
+      .then(tags => {
+        expect(tags.data.length === 0).beTrue()
+        return tagService.find({ query: { value: 'developer' } })
+      })
+      .then(tags => {
+        expect(tags.data.length === 1).beTrue()
+        return userService.find({ query: { 'profile.name': 'test-user' } })
+      })
+      .then(users => {
+        expect(users.data.length > 0).beTrue()
+        expect(users.data[0].tags.length === 1).beTrue()
+      })
   })
 
   it('unauthenticates a user', () => {
     return request
-    .del(`${baseUrl}/authentication`)
-    .set('Content-Type', 'application/json')
-    .set('Authorization', accessToken)
-    .then(response => {
-      expect(response.status).to.equal(200)
-    })
+      .del(`${baseUrl}/authentication`)
+      .set('Content-Type', 'application/json')
+      .set('Authorization', accessToken)
+      .then(response => {
+        expect(response.status).to.equal(200)
+      })
   })
 
   it('removes a user', () => {
@@ -320,29 +323,29 @@ describe('kCore', () => {
       user: userObject,
       checkAuthorisation: true
     })
-    .then(user => {
-      return userService.find({ query: { name: 'test-user' } })
-    })
-    .then(users => {
-      expect(users.data.length === 0).beTrue()
-      return tagService.find({ query: { value: 'developer' } })
-    })
-    .then(tags => {
-      expect(tags.data.length === 0).beTrue()
-    })
+      .then(user => {
+        return userService.find({ query: { name: 'test-user' } })
+      })
+      .then(users => {
+        expect(users.data.length === 0).beTrue()
+        return tagService.find({ query: { value: 'developer' } })
+      })
+      .then(tags => {
+        expect(tags.data.length === 0).beTrue()
+      })
   })
 
   it('registers the log options', (done) => {
     // Inserted manually
-    let log = 'This is a log test'
+    const log = 'This is a log test'
     // Raised by Forbidden error in hooks
-    let hookLog = 'You are not allowed to access service'
-    let now = new Date()
+    const hookLog = 'You are not allowed to access service'
+    const now = new Date()
     logger.info(log)
     // FIXME: need to let some time to proceed with log file
     // Didn't find a better way since fs.watch() does not seem to work...
     setTimeout(() => {
-      let logFilePath = path.join(__dirname, 'test-log-' + now.toISOString().slice(0, 10) + '.log')
+      const logFilePath = path.join(__dirname, 'test-log-' + now.toISOString().slice(0, 10) + '.log')
       fs.readFile(logFilePath, 'utf8', (err, content) => {
         expect(err).beNull()
         expect(content.includes(log)).to.equal(true)
@@ -352,11 +355,12 @@ describe('kCore', () => {
     }, 2500)
   })
   // Let enough time to process
-  .timeout(5000)
+    .timeout(5000)
 
   // Cleanup
   after(async () => {
     if (server) await server.close()
-    app.db.instance.dropDatabase()
+    await app.db.instance.dropDatabase()
+    await app.db.disconnect()
   })
 })

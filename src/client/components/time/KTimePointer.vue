@@ -90,7 +90,7 @@ export default {
         newPosition = this.componentWidth
       }
 
-      this.$emit('change', {value: newPosition, final})
+      this.$emit('change', { value: newPosition, final })
       this.emitChangePointer()
     },
     emitChangePointer () {
@@ -151,7 +151,7 @@ export default {
     border-top-width: 0.5em;
     border-right-width: 0.5em;
     border-bottom-width: 0.5em;
-    border-left-width: 0.5em;    
+    border-left-width: 0.5em;
     border-top-width: 0.5em;
     border-right-width: 0.5em;
     border-bottom-width: 0.5em;

@@ -10,7 +10,7 @@ function isAttachmentEqual (file1, file2) {
 
 export function populateAttachmentResource (hook) {
   if (hook.type !== 'before') {
-    throw new Error(`The 'populateStorageResource' hook should only be used as a 'before' hook.`)
+    throw new Error('The \'populateStorageResource\' hook should only be used as a \'before\' hook.')
   }
 
   // Avoid populating any target resource when resource parameters are not present
@@ -19,7 +19,7 @@ export function populateAttachmentResource (hook) {
 
 export function unpopulateAttachmentResource (hook) {
   if (hook.type !== 'after') {
-    throw new Error(`The 'unpopulateAttachmentResource' hook should only be used as a 'after' hook.`)
+    throw new Error('The \'unpopulateAttachmentResource\' hook should only be used as a \'after\' hook.')
   }
 
   return unpopulateObject({ serviceField: 'resourcesService', idField: 'resource' })(hook)
@@ -27,7 +27,7 @@ export function unpopulateAttachmentResource (hook) {
 
 export async function attachToResource (hook) {
   if (hook.type !== 'after') {
-    throw new Error(`The 'attachToResource' hook should only be used as a 'after' hook.`)
+    throw new Error('The \'attachToResource\' hook should only be used as a \'after\' hook.')
   }
   const data = hook.data
   const params = hook.params
@@ -43,9 +43,9 @@ export async function attachToResource (hook) {
   }
   const context = hook.service.context
   const resourcesService = params.resourcesService
-  let resource = params.resource
+  const resource = params.resource
   let attachments = _.get(resource, attachmentField)
-  let attachment = Object.assign({ _id: file._id }, _.omit(file, ['uri']))
+  const attachment = Object.assign({ _id: file._id }, _.omit(file, ['uri']))
   // Add context because attachments might come from different ones on the same target object
   if (context) {
     attachment.context = (typeof context === 'object' ? context._id : context)
@@ -72,15 +72,15 @@ export async function attachToResource (hook) {
 
 export async function detachFromResource (hook) {
   if (hook.type !== 'after') {
-    throw new Error(`The 'detachFromResource' hook should only be used as a 'after' hook.`)
+    throw new Error('The \'detachFromResource\' hook should only be used as a \'after\' hook.')
   }
 
   const params = hook.params
   const query = params.query
-  let file = hook.result
+  const file = hook.result
   const attachmentField = _.get(query, 'field') || 'attachments'
   const resourcesService = params.resourcesService
-  let resource = params.resource
+  const resource = params.resource
   let attachments = _.get(resource, attachmentField)
   let attachment
   // List of attachments
@@ -112,15 +112,15 @@ export async function detachFromResource (hook) {
 export function removeAttachments (attachmentField) {
   return async function (hook) {
     const context = hook.service.context
-    let storageService = hook.app.getService('storage', context)
+    const storageService = hook.app.getService('storage', context)
     if (!storageService) return Promise.reject(new Error('No valid context found to retrieve storage service for initiator service ' + hook.service.name))
-    let resource = hook.result
-    let attachments = _.get(resource, attachmentField)
+    const resource = hook.result
+    const attachments = _.get(resource, attachmentField)
     // Process with each attachment
     if (attachments) {
       debug('Removing attachments for resource ' + resource._id.toString(), attachments)
       if (Array.isArray(attachments)) {
-        let removePromises = []
+        const removePromises = []
         attachments.forEach(attachment => {
           removePromises.push(storageService.remove(attachment._id))
           // Thumbnail as well

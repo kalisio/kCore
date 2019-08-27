@@ -45,7 +45,7 @@ function auth () {
     app.getPasswordPolicy = function () {
       // Create on first access, should not be done outside a function because the app has not yet been correctly initialized
       if (validator) return validator
-      let { minLength, maxLength, uppercase, lowercase, digits, symbols, noSpaces, prohibited } = config.passwordPolicy
+      const { minLength, maxLength, uppercase, lowercase, digits, symbols, noSpaces, prohibited } = config.passwordPolicy
 
       validator = new PasswordValidator()
       if (minLength) validator.is().min(minLength)
@@ -102,13 +102,13 @@ function auth () {
 
 export function declareService (path, app, service, middlewares = {}) {
   const feathersPath = app.get('apiPath') + '/' + path
-  let feathersService = app.service(feathersPath)
+  const feathersService = app.service(feathersPath)
   // Some internal Feathers service might internally declare the service
   if (feathersService) {
     return feathersService
   }
   // Initialize our service by providing any middleware as well
-  let args = [ feathersPath ]
+  let args = [feathersPath]
   if (middlewares.before) args = args.concat(middlewares.before)
   args.push(service)
   if (middlewares.after) args = args.concat(middlewares.after)
@@ -196,7 +196,7 @@ export function createService (name, app, options = {}) {
   }, options)
   if (serviceOptions.disabled) return undefined
   // For DB services a model has to be provided
-  let fileName = serviceOptions.fileName || name
+  const fileName = serviceOptions.fileName || name
 
   let dbService = false
   try {
@@ -297,16 +297,16 @@ function setupLogger (logsConfig) {
     console.error('Could not remove default logger transport', error)
   }
   // We have one entry per log type
-  let logsTypes = logsConfig ? Object.getOwnPropertyNames(logsConfig) : []
+  const logsTypes = logsConfig ? Object.getOwnPropertyNames(logsConfig) : []
   // Create corresponding winston transports with options
   logsTypes.forEach(logType => {
-    let options = logsConfig[logType]
+    const options = logsConfig[logType]
     // Setup default log level if not defined
     if (!options.level) {
       options.level = (process.env.NODE_ENV === 'development' ? 'debug' : 'info')
     }
     try {
-      logger.add(logger.transports[logType], options)
+      logger.add(new logger.transports[logType](options))
     } catch (error) {
       // Logger might be down, use console
       console.error('Could not setup default log levels', error)
@@ -326,7 +326,7 @@ function setupSockets (app) {
   const apiLimiter = app.get('apiLimiter')
   const authConfig = app.get('authentication')
   const authLimiter = (authConfig ? authConfig.limiter : null)
-  let connections = {}
+  const connections = {}
   let nbConnections = 0
 
   return io => {
@@ -380,7 +380,7 @@ function setupSockets (app) {
         socket.use((packet, next) => {
           if (packet.length > 0) {
             // Message are formatted like this 'service_path::service_method'
-            let pathAndMethod = packet[0].split('::')
+            const pathAndMethod = packet[0].split('::')
             if (pathAndMethod.length > 0) {
               // const servicePath = pathAndMethod[0]
               debugLimiter(socket.socketLimiter.getTokensRemaining() + ' remaining API token for socket', socket.id, socket.conn.remoteAddress)
@@ -421,7 +421,7 @@ function setupSockets (app) {
 }
 
 export function kalisio () {
-  let app = express(feathers())
+  const app = express(feathers())
   // By default EventEmitters will print a warning if more than 10 listeners are added for a particular event.
   // The value can be set to Infinity (or 0) to indicate an unlimited number of listeners.
   app.setMaxListeners(0)

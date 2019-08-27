@@ -1,9 +1,9 @@
-let rangeComputeMixin = {
+const rangeComputeMixin = {
   props: [
-    'min',    // min value: time from
-    'max',    // max value: time until
-    'step',   // step (granularity): 'h' (hour) or 'm' (minute)
-    'value',  // value: initial time
+    'min', // min value: time from
+    'max', // max value: time until
+    'step', // step (granularity): 'h' (hour) or 'm' (minute)
+    'value', // value: initial time
     'timeInterval',
     'timeFormatter'
   ],
@@ -23,8 +23,8 @@ let rangeComputeMixin = {
       }
     },
     timeIntervals () {
-      let intervalValues = this.calculateIntervals(this.min, this.max, this.timeInterval)
-      let timeIntervals = []
+      const intervalValues = this.calculateIntervals(this.min, this.max, this.timeInterval)
+      const timeIntervals = []
 
       // Push the time intervals; note that the number of intervals is one less than the number of values
       for (let i = 0, len = intervalValues.length - 1; i < len; i++) {
@@ -32,10 +32,10 @@ let rangeComputeMixin = {
         const nextValue = intervalValues[i + 1]
 
         timeIntervals.push(
-            this.getTimeInterval(value, nextValue,
-              this.min, this.max, this.componentWidth,
-              i === 0, i === len - 1
-            )
+          this.getTimeInterval(value, nextValue,
+            this.min, this.max, this.componentWidth,
+            i === 0, i === len - 1
+          )
         )
       }
 
@@ -49,7 +49,7 @@ let rangeComputeMixin = {
       if (final || this.valueChanged(this.currentValue, this.previousValue, this.step, this.timeInterval)) {
         this.previousValue = this.currentValue
 
-        this.$emit('change', {value: this.currentValue, final})
+        this.$emit('change', { value: this.currentValue, final })
       }
     },
     calculatePosition (value, rangeStart, rangeEnd, componentWidth) {
@@ -59,7 +59,7 @@ let rangeComputeMixin = {
       return Math.round(rangeStart + position / componentWidth * (rangeEnd - rangeStart))
     },
     calculateIntervals (rangeStart, rangeEnd, timeInterval) {
-      let intervals = []
+      const intervals = []
       let value = timeInterval.getIntervalStartValue(rangeStart)
 
       while (value <= rangeEnd + timeInterval.length) {

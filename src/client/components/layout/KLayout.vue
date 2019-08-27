@@ -56,13 +56,13 @@ export default {
   computed: {
     leftDrawerComponent () {
       if (!this.leftDrawer || this.leftDrawer.component === '') return ''
-      let componentKey = _.kebabCase(this.leftDrawer.component)
+      const componentKey = _.kebabCase(this.leftDrawer.component)
       this.$options.components[componentKey] = this.$load(this.leftDrawer.component)
       return componentKey
     },
     rightDrawerComponent () {
       if (!this.rightDrawer || this.rightDrawer.component === '') return ''
-      let componentKey = _.kebabCase(this.rightDrawer.component)
+      const componentKey = _.kebabCase(this.rightDrawer.component)
       this.$options.components[componentKey] = this.$load(this.rightDrawer.component)
       return componentKey
     }

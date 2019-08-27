@@ -1,8 +1,8 @@
 <template>
   <div>
-    <!-- 
-      The field 
-    -->    
+    <!--
+      The field
+    -->
     <q-field
       :error-message="errorLabel"
       :error="hasError"
@@ -12,21 +12,21 @@
     >
       <!-- Content -->
       <template v-slot:prepend>
-        <q-btn 
+        <q-btn
           :id="properties.name + '-field'"
           dense
           round
           flat
-          icon="fas fa-cloud-upload-alt" 
+          icon="fas fa-cloud-upload-alt"
           @click="onUpload" />
         <template v-for="file in files">
-          <q-chip  
-          :key="file.name" 
+          <q-chip
+          :key="file.name"
           dense
-          color="primary" 
+          color="primary"
           text-color="white"
-          :label="fileName(file)" 
-          @remove="onFileRemoved(file)" 
+          :label="fileName(file)"
+          @remove="onFileRemoved(file)"
           removable />
         </template>
       </template>
@@ -35,8 +35,8 @@
         <span v-html="helper"></span>
       </template>
     </q-field>
-    <!-- 
-      The uploader 
+    <!--
+      The uploader
     -->
     <div class="row">
       <k-uploader class="col-12" v-show="isUploaderVisible"
@@ -155,8 +155,8 @@ export default {
     },
     fileName (file) {
       return (file.name
-              ? file.name
-              : (file._id ? file._id : file))
+        ? file.name
+        : (file._id ? file._id : file))
     },
     onUpload () {
       // Simply open file dialog for single selection mode

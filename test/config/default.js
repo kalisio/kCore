@@ -39,8 +39,8 @@ module.exports = {
       level: 'verbose'
     },
     DailyRotateFile: {
-      filename: path.join(__dirname, '..', 'test-log-'),
-      datePattern: 'yyyy-MM-dd.log'
+      filename: path.join(__dirname, '..', 'test-log-%DATE%.log'),
+      datePattern: 'YYYY-MM-DD'
     }
   },
   db: {

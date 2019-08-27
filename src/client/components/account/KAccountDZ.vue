@@ -1,7 +1,7 @@
 <template>
   <div>
-    <k-block 
-      color="red" 
+    <k-block
+      color="red"
       :title="$t('KAccountDZ.BLOCK_TITLE')"
       :text="$t('KAccountDZ.BLOCK_TEXT')"
       :action="$t('KAccountDZ.BLOCK_ACTION')"
@@ -57,7 +57,7 @@ export default {
             // do not logout
             return
           }
-          this.$router.push({name: 'logout'})
+          this.$router.push({ name: 'logout' })
         }
       })
     }

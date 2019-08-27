@@ -13,13 +13,13 @@ export default {
   // We pass parameters in the query/data object
   // The params object should be already filled by populate hooks
   create (data, params) {
-    let query = params.query
-    let context = params.resourcesService.context
+    const query = params.query
+    const context = params.resourcesService.context
     // Make hook usable with query params as well
-    let scopeName = data.scope || query.scope // Get scope name first
+    const scopeName = data.scope || query.scope // Get scope name first
     return Promise.all(params.subjects.map(subject => {
       // Then retrieve the right scope on the subject
-      let scope = _.get(subject, scopeName, [])
+      const scope = _.get(subject, scopeName, [])
       // Then the target resource
       let resource = _.find(scope, resource => resource._id && (resource._id.toString() === params.resource._id.toString()))
       // On first authorisation create the resource in scope
@@ -42,11 +42,11 @@ export default {
       }, {
         user: params.user
       })
-      .then(subject => {
-        this.updateAbilities(subject)
-        debug('Authorisation ' + data.permissions + ' set for subject ' + subject._id + ' on resource ' + params.resource._id + ' with scope ' + scopeName)
-        return subject
-      })
+        .then(subject => {
+          this.updateAbilities(subject)
+          debug('Authorisation ' + data.permissions + ' set for subject ' + subject._id + ' on resource ' + params.resource._id + ' with scope ' + scopeName)
+          return subject
+        })
     }))
   },
 
@@ -54,8 +54,8 @@ export default {
   // We use ID as target resource and pass parameters in the query object
   // The params object should be already filled by populate hooks
   remove (id, params) {
-    let query = params.query
-    let scopeName = query.scope // Get scope name first
+    const query = params.query
+    const scopeName = query.scope // Get scope name first
     return Promise.all(params.subjects.map(subject => {
       // Then retrieve the right scope on the subject
       let scope = _.get(subject, scopeName, [])
@@ -72,11 +72,11 @@ export default {
         }, {
           user: params.user
         })
-        .then(subject => {
-          this.updateAbilities(subject)
-          debug('Authorisation unset for subject ' + subject._id + ' on resource ' + id + ' with scope ' + scopeName)
-          return subject
-        })
+          .then(subject => {
+            this.updateAbilities(subject)
+            debug('Authorisation unset for subject ' + subject._id + ' on resource ' + id + ' with scope ' + scopeName)
+            return subject
+          })
       } else {
         return Promise.resolve(subject)
       }
@@ -105,7 +105,7 @@ export default {
       }
     }
 
-    let abilities = defineAbilities(subject)
+    const abilities = defineAbilities(subject)
 
     if (this.cache) {
       if (subject && subject._id) {

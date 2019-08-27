@@ -48,28 +48,28 @@ export default {
   data () {
     return {
       schema: {
-        '$schema': 'http://json-schema.org/draft-06/schema#',
-        '$id': 'http:/kalisio.xyz/schemas/login.json#',
-        'title': 'Login form',
-        'type': 'object',
-        'properties': {
-          'email': {
-            'type': 'string',
-            'format': 'email',
-            'field': {
-              'component': 'form/KEmailField',
-              'helper': 'KLogin.EMAIL_FIELD_HELPER'
+        $schema: 'http://json-schema.org/draft-06/schema#',
+        $id: 'http:/kalisio.xyz/schemas/login.json#',
+        title: 'Login form',
+        type: 'object',
+        properties: {
+          email: {
+            type: 'string',
+            format: 'email',
+            field: {
+              component: 'form/KEmailField',
+              helper: 'KLogin.EMAIL_FIELD_HELPER'
             }
           },
-          'password': {
-            'type': 'string',
-            'field': {
-              'component': 'form/KPasswordField',
-              'helper': 'KLogin.PASSWORD_FIELD_HELPER'
+          password: {
+            type: 'string',
+            field: {
+              component: 'form/KPasswordField',
+              helper: 'KLogin.PASSWORD_FIELD_HELPER'
             }
           }
         },
-        'required': ['email', 'password']
+        required: ['email', 'password']
       },
       providers: [],
       links: [],
@@ -97,7 +97,7 @@ export default {
       }
     },
     async onLogin (event) {
-      let result = this.$refs.form.validate()
+      const result = this.$refs.form.validate()
       if (result.isValid) {
         this.loading = true
         try {
@@ -116,12 +116,12 @@ export default {
       const callbackUrl = authUrl + '/callback'
       if (Platform.is.cordova) {
         // Use in app browser so that we can intercept the redirect on the callback URL
-        let authBrowser = window.cordova.InAppBrowser.open(authUrl, '_blank', 'location=no,clearsessioncache=yes,clearcache=yes')
+        const authBrowser = window.cordova.InAppBrowser.open(authUrl, '_blank', 'location=no,clearsessioncache=yes,clearcache=yes')
         // Detect when the login has finished and the feathers cookie is ready
         authBrowser.addEventListener('loadstop', event => {
           // Detect the callback URL from backend, take care it is also used in the OAuth2 login screen as query parameter
           if (event.url.includes('/callback') && !event.url.includes('redirect_uri')) {
-            let callbackBrowser = window.cordova.InAppBrowser.open(callbackUrl, '_blank', 'location=no,clearsessioncache=yes,clearcache=yes')
+            const callbackBrowser = window.cordova.InAppBrowser.open(callbackUrl, '_blank', 'location=no,clearsessioncache=yes,clearcache=yes')
             callbackBrowser.addEventListener('loadstop', event => {
               // Detect when the login has finished and the feathers cookie is ready
               if (event.url.includes(this.$api.getBaseUrl())) {

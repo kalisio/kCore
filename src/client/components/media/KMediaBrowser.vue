@@ -101,7 +101,7 @@ export default {
       const typeAndData = uri.split(',')
       if (typeAndData.length <= 1) throw Error(this.$t('errors.CANNOT_PROCESS_DOWNLOAD_DATA'))
       const data = atob(typeAndData[1])
-      let buffer = new Uint8Array(data.length)
+      const buffer = new Uint8Array(data.length)
       for (let i = 0; i < buffer.length; i++) {
         buffer[i] = data.charCodeAt(i)
       }
@@ -124,7 +124,7 @@ export default {
     async onCurrentMediaChanged () {
       const index = _.findIndex(this.medias, media => media.name === this.currentMediaName)
       if (index < 0) return
-      let media = this.medias[index]
+      const media = this.medias[index]
       const mimeType = mime.lookup(media.name)
       this.currentMedia = media
       this.currentMediaIsFile = !mimeType.startsWith('image/')

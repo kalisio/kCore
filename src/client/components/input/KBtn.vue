@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     onClick () {
-      this.$emit('click', {loading: this.loading})
+      this.$emit('click', { loading: this.loading })
     },
     loading (value) {
       this.isLoading = value

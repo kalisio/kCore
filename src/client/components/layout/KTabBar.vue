@@ -4,16 +4,16 @@
       class="bg-secondary text-white shadow-2"
       align="justify"
       inline-label
-      :dense="$q.screen.lt.sm"   
+      :dense="$q.screen.lt.sm"
       @select="onCurrentTabChanged">
       <template v-for="tab in tabBar.tabs">
         <q-route-tab
-          :id="tab.id" 
+          :id="tab.id"
           :key="tab.uid"
           :default="tab.default"
           :name="tab.name"
-          :label="tab.label" 
-          :icon="$q.screen.lt.sm ? '' : tab.icon" 
+          :label="tab.label"
+          :icon="$q.screen.lt.sm ? '' : tab.icon"
           :to="tab.route" />
       </template>
     </q-tabs>
@@ -38,7 +38,7 @@ export default {
   methods: {
     onCurrentTabChanged (newTab) {
       if (this.$route.name !== newTab) {
-        let tab = _.find(this.tabs, tab => tab.name === newTab)
+        const tab = _.find(this.tabs, tab => tab.name === newTab)
         if (tab) {
           // If a handler is given call it
           if (tab.handler) tab.handler.call(this)

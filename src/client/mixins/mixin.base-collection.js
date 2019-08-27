@@ -1,6 +1,6 @@
 import { getLocale } from '../utils'
 
-let baseCollectionMixin = {
+const baseCollectionMixin = {
   props: {
     // This value can be overriden in activities if they want to manage pagination by themselves
     // nbItemsPerPage = 0 means that the client does not handle pagination and server defaults will be used
@@ -26,14 +26,14 @@ let baseCollectionMixin = {
       // Remove previous listener if any
       this.unsubscribe()
       this.itemListener = this.loadService().watch({ listStrategy: this.listStrategy || 'always' })
-      .find({ query })
-      .subscribe(response => {
-        this.items = response.data
-        this.nbTotalItems = response.total
-        this.$emit('collection-refreshed')
-      }, error => {
-        this.$events.$emit('error', error)
-      })
+        .find({ query })
+        .subscribe(response => {
+          this.items = response.data
+          this.nbTotalItems = response.total
+          this.$emit('collection-refreshed')
+        }, error => {
+          this.$events.$emit('error', error)
+        })
     },
     unsubscribe () {
       if (this.itemListener) {
@@ -60,7 +60,7 @@ let baseCollectionMixin = {
     },
     refreshCollection () {
       // Add locale to perform sorting (i.e. collation) correctly w.r.t. user's language
-      let fullQuery = Object.assign({ $locale: getLocale() },
+      const fullQuery = Object.assign({ $locale: getLocale() },
         this.getCollectionBaseQuery(),
         this.getCollectionFilterQuery(),
         this.getCollectionPaginationQuery())

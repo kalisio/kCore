@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     calculateBottom (timePointerLeft, timePointerRight, timePointerHeight) {
-      let bottom = 19   // default 19px
+      let bottom = 19 // default 19px
 
       if (this.timeIndicatorOverlapsTimePointer(this.$refs.timeIndicator, timePointerLeft, timePointerRight)) {
         bottom += timePointerHeight
@@ -68,17 +68,17 @@ export default {
 
       // If the left side of the time indicator is "within" the time pointer: return overlaps = true
       if (
-            timeIndicatorRect.x < timePointerRight &&
+        timeIndicatorRect.x < timePointerRight &&
             timeIndicatorRect.x > timePointerLeft
-         ) {
+      ) {
         return true
       }
 
       // If the right side of the time indicator is "within" the time pointer: return overlaps = true
       if (
-            timeIndicatorRect.x + timeIndicatorRect.width > timePointerLeft &&
+        timeIndicatorRect.x + timeIndicatorRect.width > timePointerLeft &&
             timeIndicatorRect.x + timeIndicatorRect.width < timePointerRight
-         ) {
+      ) {
         return true
       }
 
@@ -135,7 +135,7 @@ export default {
     border-top-width: 0.5em;
     border-right-width: 0.5em;
     border-bottom-width: 0.5em;
-    border-left-width: 0.5em;    
+    border-left-width: 0.5em;
     border-top-width: 0.5em;
     border-right-width: 0.5em;
     border-bottom-width: 0.5em;

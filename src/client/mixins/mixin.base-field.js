@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-let baseFieldMixin = {
+const baseFieldMixin = {
   props: {
     properties: {
       type: Object,

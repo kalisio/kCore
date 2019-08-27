@@ -10,7 +10,7 @@ const debug = makeDebug('kalisio:kCore:authorisations:hooks')
 
 export function populateSubjects (hook) {
   if (hook.type !== 'before') {
-    throw new Error(`The 'populateSubjects' hook should only be used as a 'before' hook.`)
+    throw new Error('The \'populateSubjects\' hook should only be used as a \'before\' hook.')
   }
 
   return populateObjects({ serviceField: 'subjectsService', idField: 'subjects', throwOnNotFound: true })(hook)
@@ -18,7 +18,7 @@ export function populateSubjects (hook) {
 
 export function unpopulateSubjects (hook) {
   if (hook.type !== 'after') {
-    throw new Error(`The 'unpopulateSubjects' hook should only be used as a 'after' hook.`)
+    throw new Error('The \'unpopulateSubjects\' hook should only be used as a \'after\' hook.')
   }
 
   return unpopulateObjects({ serviceField: 'subjectsService', idField: 'subjects' })(hook)
@@ -26,7 +26,7 @@ export function unpopulateSubjects (hook) {
 
 export function populateResource (hook) {
   if (hook.type !== 'before') {
-    throw new Error(`The 'populateResource' hook should only be used as a 'before' hook.`)
+    throw new Error('The \'populateResource\' hook should only be used as a \'before\' hook.')
   }
 
   return populateObject({ serviceField: 'resourcesService', idField: 'resource', throwOnNotFound: true })(hook)
@@ -34,7 +34,7 @@ export function populateResource (hook) {
 
 export function unpopulateResource (hook) {
   if (hook.type !== 'after') {
-    throw new Error(`The 'unpopulateResource' hook should only be used as a 'after' hook.`)
+    throw new Error('The \'unpopulateResource\' hook should only be used as a \'after\' hook.')
   }
 
   return unpopulateObject({ serviceField: 'resourcesService', idField: 'resource' })(hook)
@@ -42,15 +42,15 @@ export function unpopulateResource (hook) {
 
 export function preventEscalation (hook) {
   if (hook.type !== 'before') {
-    throw new Error(`The 'preventEscalation' hook should only be used as a 'before' hook.`)
+    throw new Error('The \'preventEscalation\' hook should only be used as a \'before\' hook.')
   }
 
-  let params = hook.params
+  const params = hook.params
   // If called internally we skip authorisation
-  let checkEscalation = params.hasOwnProperty('provider')
+  let checkEscalation = _.has(params, 'provider')
   debug('Escalation check ' + (checkEscalation ? 'enabled' : 'disabled') + ' for provider')
   // If explicitely asked to perform/skip, override defaults
-  if (params.hasOwnProperty('checkEscalation')) {
+  if (_.has(params, 'checkEscalation')) {
     checkEscalation = params.checkEscalation
     debug('Escalation check ' + (checkEscalation ? 'forced' : 'unforced'))
   }
@@ -58,20 +58,20 @@ export function preventEscalation (hook) {
   if (checkEscalation) {
     const user = params.user
     // Make hook usable on remove as well
-    let data = hook.data || {}
+    const data = hook.data || {}
     // Make hook usable with query params as well
-    let query = params.query || {}
-    let scopeName = data.scope || query.scope // Get scope name first
+    const query = params.query || {}
+    const scopeName = data.scope || query.scope // Get scope name first
     // Retrieve the right scope on the user
-    let scope = _.get(user, scopeName, [])
+    const scope = _.get(user, scopeName, [])
     // Then the target resource
-    let resource = _.find(scope, resource => resource._id && (resource._id.toString() === params.resource._id.toString()))
+    const resource = _.find(scope, resource => resource._id && (resource._id.toString() === params.resource._id.toString()))
     // Then user permission level
     const permissions = (resource ? resource.permissions : undefined)
     const role = (permissions ? Roles[permissions] : undefined)
     if (_.isUndefined(role)) {
       debug('Role for authorisation not found on user for scope ' + scopeName)
-      throw new Forbidden(`You are not allowed to change authorisation on resource`)
+      throw new Forbidden('You are not allowed to change authorisation on resource')
     }
 
     // Check if privilege escalation might occur, if so clamp to user permission level
@@ -95,7 +95,7 @@ export function preventEscalation (hook) {
     })
     if (subjects.length < params.subjects.length) {
       debug(`${(params.subjects.length - subjects.length)} subjects with higher permissions level found for scope ${scopeName}`)
-      throw new Forbidden(`You are not allowed to change authorisation on subject(s)`)
+      throw new Forbidden('You are not allowed to change authorisation on subject(s)')
     }
     // Input permissions needs to be checked since:
     // - you should not be able to give higher permissions than your own ones to others
@@ -109,7 +109,7 @@ export function preventEscalation (hook) {
     if (!_.isUndefined(authorisationRole)) {
       if (authorisationRole > role) {
         debug('Cannot escalate with higher permissions level for scope ' + scopeName)
-        throw new Forbidden(`You are not allowed to change authorisation on resource`)
+        throw new Forbidden('You are not allowed to change authorisation on resource')
       }
     }
   }
@@ -119,7 +119,7 @@ export function preventEscalation (hook) {
 
 export function authorise (hook) {
   if (hook.type !== 'before') {
-    throw new Error(`The 'authorise' hook should only be used as a 'before' hook.`)
+    throw new Error('The \'authorise\' hook should only be used as a \'before\' hook.')
   }
   const operation = hook.method
   const resourceType = hook.service.name
@@ -129,7 +129,7 @@ export function authorise (hook) {
   if (resourceType) debug('Resource type is', resourceType)
 
   // If called internally we skip authorisation
-  let checkAuthorisation = hook.params.hasOwnProperty('provider')
+  let checkAuthorisation = _.has(hook.params, 'provider')
   debug('Access check ' + (checkAuthorisation ? 'enabled' : 'disabled') + ' for provider')
   // If already checked we skip authorisation
   if (hook.params.authorised) {
@@ -142,8 +142,8 @@ export function authorise (hook) {
     checkAuthorisation = false
   }
   // If explicitely asked to perform/skip, override defaults
-  if (hook.params.hasOwnProperty('checkAuthorisation')) {
-    checkAuthorisation = hook.params.checkAuthorisation
+  if (_.has(hook.params, 'checkAuthorisation')) {
+    checkAuthorisation = _.get(hook.params, 'checkAuthorisation')
     // Bypass authorisation for next hooks otherwise we will loop infinitely
     delete hook.params.checkAuthorisation
     debug('Access check ' + (checkAuthorisation ? 'forced' : 'unforced'))
@@ -152,7 +152,7 @@ export function authorise (hook) {
   const context = hook.service.context
   if (checkAuthorisation) {
     // Build ability for user
-    let authorisationService = hook.app.getService('authorisations')
+    const authorisationService = hook.app.getService('authorisations')
     const abilities = authorisationService.getAbilities(hook.params.user)
     hook.params.abilities = abilities
     debug('User abilities are', abilities.rules)
@@ -167,7 +167,7 @@ export function authorise (hook) {
       // In this specific case there is no query to be run,
       // simply check against the object we'd like to create
       if (operation === 'create') {
-        let resource = hook.data
+        const resource = hook.data
         debug('Target resource is ', resource)
         if (!hasResourceAbilities(abilities, operation, resourceType, context, resource)) {
           debug('Resource access not granted')
@@ -191,21 +191,21 @@ export function authorise (hook) {
     } else if (typeof hook.service.get === 'function') {
       // In this case (single get/update/patch/remove) we need to fetch the item first
       return hook.service.get(hook.id, Object.assign({ checkAuthorisation: false }, hook.params))
-      .then(resource => {
-        debug('Target resource is', resource)
-        // Then check against the object we'd like to manage
-        if (!hasResourceAbilities(abilities, operation, resourceType, context, resource)) {
-          debug('Resource access not granted')
-          throw new Forbidden(`You are not allowed to perform ${operation} operation on ${resourceType}`)
-        }
-        // Avoid fetching again the object in this case
-        if (operation === 'get') {
-          hook.result = resource
-        }
-        hook.params.authorised = true
-        debug('Resource access granted')
-        return hook
-      })
+        .then(resource => {
+          debug('Target resource is', resource)
+          // Then check against the object we'd like to manage
+          if (!hasResourceAbilities(abilities, operation, resourceType, context, resource)) {
+            debug('Resource access not granted')
+            throw new Forbidden(`You are not allowed to perform ${operation} operation on ${resourceType}`)
+          }
+          // Avoid fetching again the object in this case
+          if (operation === 'get') {
+            hook.result = resource
+          }
+          hook.params.authorised = true
+          debug('Resource access granted')
+          return hook
+        })
     }
   } else {
     debug('Authorisation check skipped, access granted')
@@ -217,9 +217,9 @@ export function authorise (hook) {
 
 export function updateAbilities (options = {}) {
   return async function (hook) {
-    let app = hook.app
-    let params = hook.params
-    let authorisationService = app.getService('authorisations')
+    const app = hook.app
+    const params = hook.params
+    const authorisationService = app.getService('authorisations')
     let subject = (options.subjectAsItem ? getItems(hook) : params.user)
     // We might not have all information required eg on patch to compute new abilities,
     // in this case we have to fetch the whole subject

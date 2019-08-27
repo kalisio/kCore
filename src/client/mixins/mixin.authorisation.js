@@ -2,7 +2,7 @@ import logger from 'loglevel'
 import { Store } from '../store'
 import { defineAbilities } from '../../common/permissions'
 
-let authorisationMixin = {
+const authorisationMixin = {
   methods: {
     updateAbilities () {
       const user = Store.get('user')
@@ -19,7 +19,7 @@ let authorisationMixin = {
   },
   created () {
     // Check if abilities are already computed
-    let abilities = Store.get('user.abilities')
+    const abilities = Store.get('user.abilities')
     if (!abilities) {
       // Otherwise try to compute them
       this.updateAbilities()

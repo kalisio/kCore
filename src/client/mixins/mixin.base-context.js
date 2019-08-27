@@ -1,4 +1,4 @@
-let baseContextMixin = {
+const baseContextMixin = {
   props: {
     contextId: {
       type: String,
@@ -23,9 +23,9 @@ let baseContextMixin = {
     // This method could be overriden in app for more dynamic behaviour
     // default one is to get the action list from the configuration and set it in app bar
     getActionsForContext (context) {
-      let actions = this.$config('context.actions', [])
+      const actions = this.$config('context.actions', [])
       // Update actions to use current context
-      actions.forEach(action => { action.route.params['contextId'] = this.contextId })
+      actions.forEach(action => { action.route.params.contextId = this.contextId })
       return actions
     },
     clearContext () {
@@ -37,7 +37,7 @@ let baseContextMixin = {
       // Set context in store so that contextual services are aware of it
       this.$store.set('context', context)
       this.contextLoaded = true
-      let actions = this.getActionsForContext(context)
+      const actions = this.getActionsForContext(context)
       this.$store.patch('appBar', { toolbar: actions.toolbar, menu: actions.menu })
     },
     refreshContext () {
@@ -49,7 +49,7 @@ let baseContextMixin = {
         this.clearContext()
         // Then update the context
         this.service.get(this.contextId)
-        .then(context => this.setContext(context))
+          .then(context => this.setContext(context))
       } else {
         this.clearContext()
       }

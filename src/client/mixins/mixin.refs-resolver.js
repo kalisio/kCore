@@ -19,7 +19,7 @@ export default function refsResolverMixin (refs) {
         // While we don't have anything to resolve stop as well
         if (!this._refs || this._refs.length === 0) return
 
-        let resolvedRefs = this._refs.filter(ref => this.$refs[ref])
+        const resolvedRefs = this._refs.filter(ref => this.$refs[ref])
         // If none are missing we can resolve the promise
         if (resolvedRefs.length === this._refs.length) {
           this.refsResolver(resolvedRefs)

@@ -104,7 +104,7 @@ export default {
       if (typeof newTag === 'string') return
       if (_.findIndex(this.tags, tag => tag.value === newTag.value) === -1) {
         // Filter the tag data and transform the icon provided by the autocomplete into an icon object
-        let tag = _.pick(newTag, ['value', 'scope', 'icon'])
+        const tag = _.pick(newTag, ['value', 'scope', 'icon'])
         this.tags.push(tag)
         this.updateModel()
       }

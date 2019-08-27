@@ -35,62 +35,62 @@ export default {
   methods: {
     getSchema () {
       return {
-        '$schema': 'http://json-schema.org/draft-06/schema#',
-        '$id': 'http://kalisio.xyz/schemas/register.json#',
-        'title': 'Registration Form',
-        'type': 'object',
-        'properties': {
-          'name': {
-            'type': 'string',
-            'minLength': 3,
-            'maxLength': 128,
-            'field': {
-              'component': 'form/KTextField',
-              'helper': 'KRegister.NAME_FIELD_HELPER'
+        $schema: 'http://json-schema.org/draft-06/schema#',
+        $id: 'http://kalisio.xyz/schemas/register.json#',
+        title: 'Registration Form',
+        type: 'object',
+        properties: {
+          name: {
+            type: 'string',
+            minLength: 3,
+            maxLength: 128,
+            field: {
+              component: 'form/KTextField',
+              helper: 'KRegister.NAME_FIELD_HELPER'
             }
           },
-          'email': {
-            'type': 'string',
-            'format': 'email',
-            'field': {
-              'component': 'form/KEmailField',
-              'helper': 'KRegister.EMAIL_FIELD_HELPER'
+          email: {
+            type: 'string',
+            format: 'email',
+            field: {
+              component: 'form/KEmailField',
+              helper: 'KRegister.EMAIL_FIELD_HELPER'
             }
           },
-          'password': {
-            'type': 'string',
-            'field': {
-              'component': 'form/KPasswordField',
-              'helper': 'KRegister.PASSWORD_FIELD_HELPER'
+          password: {
+            type: 'string',
+            field: {
+              component: 'form/KPasswordField',
+              helper: 'KRegister.PASSWORD_FIELD_HELPER'
             }
           },
-          'confirmPassword': {
-            'const': {
-              '$data': '1/password'
+          confirmPassword: {
+            const: {
+              $data: '1/password'
             },
-            'field': {
-              'component': 'form/KPasswordField',
-              'helper': 'KRegister.CONFIRM_PASSWORD_FIELD_HELPER'
+            field: {
+              component: 'form/KPasswordField',
+              helper: 'KRegister.CONFIRM_PASSWORD_FIELD_HELPER'
             }
           },
-          'consentTerms': {
-            'type': 'boolean',
-            'default': false,
-            'enum': [ true ],
-            'field': {
-              'component': 'form/KToggleField',
-              'helper': this.$t('KRegister.ACCEPT_TERMS_HELPER', { domain: this.$config('domain') }),
-              'errorLabel': this.$t('KRegister.ACCEPT_TERMS_ERROR_LABEL', { domain: this.$config('domain') }),
+          consentTerms: {
+            type: 'boolean',
+            default: false,
+            enum: [true],
+            field: {
+              component: 'form/KToggleField',
+              helper: this.$t('KRegister.ACCEPT_TERMS_HELPER', { domain: this.$config('domain') }),
+              errorLabel: this.$t('KRegister.ACCEPT_TERMS_ERROR_LABEL', { domain: this.$config('domain') }),
               'checked-icon': 'check',
               'unchecked-icon': 'clear'
             }
           }
         },
-        'required': ['name', 'email', 'password', 'confirmPassword', 'consentTerms']
+        required: ['name', 'email', 'password', 'confirmPassword', 'consentTerms']
       }
     },
     async onRegister (event) {
-      let result = this.$refs.form.validate()
+      const result = this.$refs.form.validate()
       if (result.isValid) {
         this.loading = true
         // Add the locale information

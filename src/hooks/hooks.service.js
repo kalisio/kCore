@@ -14,7 +14,7 @@ export function rateLimit (options) {
 
   return function (hook) {
     if (hook.type !== 'before') {
-      throw new Error(`The 'rateLimit' hook should only be used as a 'before' hook.`)
+      throw new Error('The \'rateLimit\' hook should only be used as a \'before\' hook.')
     }
     const operation = hook.method
     const service = hook.service.name
@@ -39,9 +39,9 @@ export function rateLimit (options) {
 export function countLimit (options) {
   return async function (hook) {
     if (hook.type !== 'before') {
-      throw new Error(`The 'countLimit' hook should only be used as a 'before' hook.`)
+      throw new Error('The \'countLimit\' hook should only be used as a \'before\' hook.')
     }
-    let app = hook.app
+    const app = hook.app
     const customMax = (typeof options.max === 'function')
     const max = (customMax ? await options.max(hook) : options.max)
     // -1 means no limit
@@ -57,7 +57,7 @@ export function countLimit (options) {
           service = app.getService(options.service, hook.service.context)
         }
         // Indicate we'd only like to count
-        let query = { $limit: 0 }
+        const query = { $limit: 0 }
         if (typeof options.query === 'function') {
           Object.assign(query, options.query(hook))
         } else {

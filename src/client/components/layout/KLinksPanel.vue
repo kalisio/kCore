@@ -31,11 +31,11 @@ export default {
   },
   methods: {
     onLinkClicked (link) {
-      let route = { name: link.route.name }
+      const route = { name: link.route.name }
       if (link.route.params) {
-        let resolvedParams = Object.assign({}, link.route.params)
+        const resolvedParams = Object.assign({}, link.route.params)
         if (resolvedParams.context) {
-          let context = this.$store.get(resolvedParams.context)
+          const context = this.$store.get(resolvedParams.context)
           resolvedParams.context = context
         }
         route.params = resolvedParams

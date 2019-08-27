@@ -8,7 +8,7 @@ export default function (name, api, options) {
   return {
 
     async get (id) {
-      let data = {}
+      const data = {}
       _.forOwn(mapping, (value, key) => {
         _.set(data, key, Store.get(value))
       })
@@ -25,7 +25,7 @@ export default function (name, api, options) {
     },
 
     saveSettings () {
-      let data = {}
+      const data = {}
       _.forOwn(mapping, (value, key) => {
         if (Store.has(value)) {
           _.set(data, key, Store.get(value))

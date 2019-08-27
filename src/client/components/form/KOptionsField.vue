@@ -34,7 +34,7 @@ export default {
   mixins: [mixins.baseField],
   methods: {
     emptyModel () {
-      let type = _.get(this.properties.field, 'type', 'radio')
+      const type = _.get(this.properties.field, 'type', 'radio')
       if (type === 'radio') return ''
       return []
     }

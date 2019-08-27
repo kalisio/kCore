@@ -49,10 +49,10 @@ export default {
     // A component is defined with
     //   - the renderer: the Vue component to be used for the rendering
     //   - the name: the key to retrieve the configuration
-    let content = this.$config('sideNav.components', {})
+    const content = this.$config('sideNav.components', {})
     Object.entries(content).forEach(element => {
       // Setup the component
-      let component = {}
+      const component = {}
       component.name = element[0]
       const componentClass = element[1]
       if (componentClass) {

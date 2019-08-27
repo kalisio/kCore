@@ -80,8 +80,10 @@
 
 <script>
 import _ from 'lodash'
-import { QCard, QCardSection, QCardActions, QSeparator, QBtn, QIcon,
-         QMenu, QList, QItem, QItemSection, QItemLabel, QTooltip, QChip } from 'quasar'
+import {
+  QCard, QCardSection, QCardActions, QSeparator, QBtn, QIcon,
+  QMenu, QList, QItem, QItemSection, QItemLabel, QTooltip, QChip
+} from 'quasar'
 import { KTextArea } from '../frame'
 import { getInitials, processIcon } from '../../utils'
 import mixins from '../../mixins'

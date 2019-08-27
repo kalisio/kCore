@@ -45,7 +45,7 @@ import mixins from '../../mixins'
 import { getLocale } from '../../utils'
 
 // Create the AJV instance
-let ajv = new Ajv({
+const ajv = new Ajv({
   allErrors: true,
   coerceTypes: true,
   $data: true
@@ -91,11 +91,11 @@ export default {
       // Checks whether the form is valid
       if (!this.validator(this.values())) {
         const locale = getLocale()
-        if (AjvLocalize.hasOwnProperty(locale)) {
+        if (AjvLocalize[locale]) {
           AjvLocalize[locale](this.validator.errors)
         }
         // Checks whether the touched field has an error
-        let error = this.hasFieldError(field)
+        const error = this.hasFieldError(field)
         if (error) {
           // Invalidate the field
           this.getField(field).invalidate(error.message)
@@ -107,13 +107,13 @@ export default {
     },
     hasFieldError (field) {
       for (let i = 0; i < this.validator.errors.length; i++) {
-        let error = this.validator.errors[i]
+        const error = this.validator.errors[i]
         // Check whether the field is required
         if (error.keyword === 'required') {
           if (error.params.missingProperty === field) return error
         } else {
           // Check whether is the field in invalid
-          let fieldDataPath = '.' + field
+          const fieldDataPath = '.' + field
           if (error.dataPath === fieldDataPath) return error
         }
       }
@@ -130,12 +130,12 @@ export default {
       // 2- assign a component key corresponding to the component path
       // 3- load the component if not previously loaded
       Object.keys(this.schema.properties).forEach(property => {
-        let field = this.schema.properties[property]
+        const field = this.schema.properties[property]
         // 1- assign a name corresponding to the key to enable a binding between properties and fields
-        field['name'] = property
+        field.name = property
         // 2- assign a component key corresponding to the component path
-        let componentKey = _.kebabCase(field.field.component)
-        field['componentKey'] = componentKey
+        const componentKey = _.kebabCase(field.field.component)
+        field.componentKey = componentKey
         // Adds the field to the list of fields to be rendered
         this.fields.push(field)
         if (field.group && !this.groups.includes(field.group)) this.groups.push(field.group)
@@ -144,7 +144,7 @@ export default {
           this.$options.components[componentKey] = this.$load(field.field.component)
         }
         // 4- Assign whether the field is required or not
-        field['required'] = _.includes(this.schema.required, property)
+        field.required = _.includes(this.schema.required, property)
       })
       // Set the refs to be resolved
       this.setRefs(this.fields.map(field => field.name))
@@ -178,7 +178,7 @@ export default {
       })
     },
     values () {
-      let values = {}
+      const values = {}
       _.forEach(this.fields, field => {
         if (!this.getField(field.name).isEmpty()) {
           Object.assign(values, { [field.name]: this.getField(field.name).value() })
@@ -194,7 +194,7 @@ export default {
     validate () {
       if (!this.loadRefs().isFulfilled()) throw Error('Cannot validate the form while not ready')
       logger.debug('Validating form', this.schema.$id)
-      let result = {
+      const result = {
         isValid: false,
         values: this.values()
       }
@@ -202,11 +202,11 @@ export default {
       // to update the validation status of each field
       if (!this.validator(result.values)) {
         const locale = getLocale()
-        if (AjvLocalize.hasOwnProperty(locale)) {
+        if (AjvLocalize[locale]) {
           AjvLocalize[locale](this.validator.errors)
         }
         this.fields.forEach(field => {
-          let error = this.hasFieldError(field.name)
+          const error = this.hasFieldError(field.name)
           if (error) {
             this.getField(field.name).invalidate(error.message)
           } else {
@@ -246,10 +246,10 @@ export default {
     if (this.schema) {
       logger.debug('Initializing form', this.schema.$id)
       this.build()
-      .then(() => {
-        if (this.clearOnCreate) this.clear()
-        this.$emit('form-ready', this)
-      })
+        .then(() => {
+          if (this.clearOnCreate) this.clear()
+          this.$emit('form-ready', this)
+        })
     }
   }
 }

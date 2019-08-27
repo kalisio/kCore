@@ -35,8 +35,8 @@ export function authenticationGuard (user, to, from) {
 export function beforeGuard (to, from, next) {
   const user = Store.get('user')
   // Run registered guards
-  for (let guard of guards) {
-    let result = guard(user, to, from)
+  for (const guard of guards) {
+    const result = guard(user, to, from)
     if (typeof result === 'string') {
       logger.debug('Navigation guard would redirect to route ' + result)
       if (typeof next === 'function') {

@@ -7,7 +7,7 @@ import makeDebug from 'debug'
 const debug = makeDebug('kalisio:kCore:query:hooks')
 
 export function marshallTimeQuery (hook) {
-  let query = hook.params.query
+  const query = hook.params.query
   if (query) {
     // Need to convert from client/server side types : string or moment dates
     marshallTime(query, 'time')
@@ -15,7 +15,7 @@ export function marshallTimeQuery (hook) {
 }
 
 export function marshallComparisonQuery (hook) {
-  let query = hook.params.query
+  const query = hook.params.query
   if (query) {
     // Complex queries might have nested objects so we call a recursive function to handle this
     marshallComparisonFields(query)
@@ -23,7 +23,7 @@ export function marshallComparisonQuery (hook) {
 }
 
 export function marshallSortQuery (hook) {
-  let query = hook.params.query
+  const query = hook.params.query
   if (query && query.$sort) {
     // Complex queries might have nested objects so we call a recursive function to handle this
     marshallSortFields(query.$sort)
@@ -31,7 +31,7 @@ export function marshallSortQuery (hook) {
 }
 
 export function marshallCollationQuery (hook) {
-  let query = hook.params.query
+  const query = hook.params.query
   if (!query) return
   // Locale shortcut or whole query provided
   if (query.$locale) {
@@ -46,10 +46,10 @@ export function marshallCollationQuery (hook) {
 
 export function populateObject (options) {
   return function (hook) {
-    let app = hook.app
-    let data = hook.data
-    let params = hook.params
-    let query = params.query
+    const app = hook.app
+    const data = hook.data
+    const params = hook.params
+    const query = params.query
     const context = hook.service.context
     const idProperty = options.nameIdAs || options.idField
     const serviceProperty = options.nameServiceAs || options.serviceField
@@ -79,13 +79,13 @@ export function populateObject (options) {
       else return Promise.resolve(hook)
     }
     // Then the object ID
-    let id = _.get(data, options.idField) || _.get(query, options.idField) || _.get(hook, 'id')
+    const id = _.get(data, options.idField) || _.get(query, options.idField) || _.get(hook, 'id')
     if (!id) {
       if (options.throwOnNotFound) throw new Error(`Cannot find the ${options.idField} to dynamically populate.`)
       else return Promise.resolve(hook)
     }
     // Then the perspective if any
-    let perspective = _.get(data, options.perspectiveField) || _.get(query, options.perspectiveField)
+    const perspective = _.get(data, options.perspectiveField) || _.get(query, options.perspectiveField)
 
     debug(`Populating ${idProperty} with ID ${id}`)
     // Set the retrieved service on the same field or given one in hook params
@@ -113,7 +113,7 @@ export function populateObject (options) {
 
 export function unpopulateObject (options) {
   return function (hook) {
-    let params = hook.params
+    const params = hook.params
     const idProperty = options.nameIdAs || options.idField
     const serviceProperty = options.nameServiceAs || options.serviceField
 
@@ -127,10 +127,10 @@ export function unpopulateObject (options) {
 
 export function populateObjects (options) {
   return function (hook) {
-    let app = hook.app
-    let data = hook.data
-    let params = hook.params
-    let query = params.query
+    const app = hook.app
+    const data = hook.data
+    const params = hook.params
+    const query = params.query
     const context = hook.service.context
     const idProperty = options.nameIdAs || options.idField
     const serviceProperty = options.nameServiceAs || options.serviceField
@@ -164,7 +164,7 @@ export function populateObjects (options) {
     _.set(params, serviceProperty, service)
 
     // Then the object ID
-    let id = _.get(data, options.idField) || _.get(query, options.idField)
+    const id = _.get(data, options.idField) || _.get(query, options.idField)
     // If no ID given we perform a find, no pagination to be sure we get all objects
     if (!id) {
       debug(`Populating ${idProperty}`)

@@ -50,8 +50,8 @@ export default {
     updateModel (items) {
       // filter rendering properties only if not used as data model properties
       const renderingProperties = ['value', 'label', 'icon']
-      let filteredItems = items.map(function (item) {
-        let filteredProperties = []
+      const filteredItems = items.map(function (item) {
+        const filteredProperties = []
         renderingProperties.forEach(property => {
           if (!_.has(item, property)) filteredProperties.push(property)
         })

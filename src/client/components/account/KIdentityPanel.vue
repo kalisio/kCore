@@ -40,7 +40,7 @@ export default {
       this.name = this.$store.get('user.name', '')
       this.objectId = this.$store.get('user._id', '')
       // This field indicates that the avatar has been set
-      let avatarId = this.$store.get('user.avatar._id', '')
+      const avatarId = this.$store.get('user.avatar._id', '')
       if (avatarId) {
         // Then we need to fetch it from global storage service
         // Force global context as a storage service might also be available as contextual

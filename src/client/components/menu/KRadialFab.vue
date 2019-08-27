@@ -52,7 +52,7 @@ export default {
       // Not yet ready ?
       if (!this.$slots.default) return
       // Manually add prop data to the items
-      let items = []
+      const items = []
       this.$slots.default.forEach(vnode => {
         if (vnode.componentOptions && vnode.tag) items.push(vnode.componentOptions.propsData)
       })

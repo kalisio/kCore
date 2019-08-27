@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     emptyModel () {
-      let multiple = _.get(this.properties, 'field.multiple', false)
+      const multiple = _.get(this.properties, 'field.multiple', false)
       if (multiple) return []
       return (this.properties.type === 'object' ? {} : '')
     }

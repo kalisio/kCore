@@ -1,20 +1,20 @@
 <template>
   <div class="row full-width items-baseline q-gutter-sm">
     <template v-for="item in items">
-      <q-chip 
+      <q-chip
         dense
-        removable 
-        color="primary" 
-        text-color="white" 
+        removable
+        color="primary"
+        text-color="white"
         :key="item._id"
         :icon="itemIcon(item)"
         :label="itemName(item)"
         @remove="onItemRemoved(item)" />
     </template>
-    <k-autocomplete v-if="!isCompleted" 
-      ref="autocomplete" 
+    <k-autocomplete v-if="!isCompleted"
+      ref="autocomplete"
       :clearable="false"
-      :services="services" 
+      :services="services"
       @changed="onAutocompleteChanged" />
   </div>
 </template>
@@ -96,7 +96,7 @@ export default {
         if (_.findIndex(this.items, item => item._id === value._id) === -1) {
           // Check wether a limit has been defined for the service
           if (value.limit) {
-            let serviceItems = _.filter(this.items, { service: value.service })
+            const serviceItems = _.filter(this.items, { service: value.service })
             if (serviceItems.length === value.limit) {
               _.remove(this.items, { _id: serviceItems.pop()._id })
             }
