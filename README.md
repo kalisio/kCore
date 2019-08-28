@@ -5,7 +5,7 @@
 [![Test Coverage](https://codeclimate.com/github/kalisio/kCore/badges/coverage.svg)](https://codeclimate.com/github/kalisio/kCore/coverage)
 [![Dependency Status](https://img.shields.io/david/kalisio/kCore.svg?style=flat-square)](https://david-dm.org/kalisio/kCore)
 [![Documentation](https://img.shields.io/badge/documentation-available-brightgreen.svg)](https://kalisio.github.io/kdk/)
-[![Known Vulnerabilities](https://snyk.io/test/github/kalisio/kCore/badge.svg)](https://snyk.io/test/github/kalisio/kCore)
+[![Known Vulnerabilities](https://snyk.io/test/github/kalisio/kCore/badge.svg)](https://snyk.io/test/github/kalisio/kCore) [![Greenkeeper badge](https://badges.greenkeeper.io/kalisio/kCore.svg)](https://greenkeeper.io/)
 
 > Basic utils to support KDK-based applications and services
 
