@@ -288,13 +288,17 @@ export function createService (name, app, options = {}) {
   return service
 }
 
-function setupLogger (logsConfig) {
+function setupLogger (app) {
+  debug('Setup application loggers')
+  const logsConfig = app.get('logs')
+  // Use winston default logger
+  app.logger = logger
   // Remove winston defaults
   try {
-    logger.remove(logger.transports.Console)
+    logger.clear()
   } catch (error) {
     // Logger might be down, use console
-    console.error('Could not remove default logger transport', error)
+    console.error('Could not remove default logger transport(s)', error)
   }
   // We have one entry per log type
   const logsTypes = logsConfig ? Object.getOwnPropertyNames(logsConfig) : []
@@ -428,7 +432,7 @@ export function kalisio () {
   // Load app configuration first
   app.configure(configuration())
   // Then setup logger
-  setupLogger(app.get('logs'))
+  setupLogger(app)
 
   // This retrieve corresponding service options from app config if any
   app.getServiceOptions = function (name) {

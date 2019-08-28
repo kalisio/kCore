@@ -4,7 +4,7 @@ import { getBase64DataURI } from 'dauria'
 import request from 'superagent'
 import chai, { util, expect } from 'chai'
 import chailint from 'chai-lint'
-import core, { kalisio } from '../src'
+import core, { kalisio, hooks } from '../src'
 
 describe('kCore:storage', () => {
   let app, server, port, baseUrl, userService, userObject, storageService, storageObject
@@ -17,6 +17,8 @@ describe('kCore:storage', () => {
   before(() => {
     chailint(chai, util)
     app = kalisio()
+    // Register log hook
+    app.hooks({ error: { all: hooks.log } })
     port = app.get('port')
     baseUrl = `http://localhost:${port}${app.get('apiPath')}`
     return app.db.connect()

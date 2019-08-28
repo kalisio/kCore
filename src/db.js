@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import logger from 'winston'
 import moment from 'moment'
 import makeDebug from 'debug'
 import mongodb, { ObjectID } from 'mongodb'
@@ -128,7 +127,7 @@ export class MongoDatabase extends Database {
       }
       return this._db
     } catch (error) {
-      logger.error('Could not connect to ' + this.adapter + ' database(s), please check your configuration', error)
+      this.app.logger.error('Could not connect to ' + this.adapter + ' database(s), please check your configuration', error)
       throw error
     }
   }
@@ -147,7 +146,7 @@ export class MongoDatabase extends Database {
         debug('Disconnected from secondaries DB ' + this.adapter)
       }
     } catch (error) {
-      logger.error('Could not disconnect from ' + this.adapter + ' database(s)', error)
+      this.app.logger.error('Could not disconnect from ' + this.adapter + ' database(s)', error)
       throw error
     }
   }
