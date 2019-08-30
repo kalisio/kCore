@@ -30,16 +30,8 @@
       Actions section
     -->
     <slot name="item-actions">
-      <q-item-section v-if="itemActions.length > 0" side>
-        <q-btn icon="more_vert" size="md" flat dense round>
-          <q-menu>
-            <q-list>
-              <q-item v-for="action in itemActions" clickable @click="onActionTriggered(action, item)" :key="key(action, 'label')">
-                <q-item-section>{{ action.label }}</q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-btn>
+      <q-item-section side>
+        <k-overflow-menu :actions="itemActions" :dense="$q.screen.lt.md" />
       </q-item-section>
     </slot>
   </q-item>
@@ -96,6 +88,10 @@ export default {
       // If a route is given activate it
       else if (action.route) this.$router.push(action.route)
     }
+  },
+  created () {
+    // Loads the required components
+    this.$options.components['k-overflow-menu'] = this.$load('layout/KOverflowMenu')
   }
 }
 </script>

@@ -18,34 +18,11 @@
     <!--
       Toolbar section
      -->
-    <template v-if="hasToolbar">
-      <template v-for="action in appBar.toolbar">
-        <q-btn :id ="action.name" :key="action.name" flat :dense="$q.screen.lt.md" @click="onActionTriggered(action)">
-          <q-icon :name="action.icon" />
-          <q-tooltip>
-            {{ action.label }}
-          </q-tooltip>
-        </q-btn>
-      </template>
-    </template>
+     <k-tool-bar :actions="appBar.toolbar" :dense="$q.screen.lt.md" />
     <!--
       Menu section
      -->
-    <template v-if="hasMenu">
-      <q-btn id="overflow-menu-entry" flat :dense="$q.screen.lt.md">
-        <q-menu id="overflow-menu" ref="menu">
-          <q-list dense>
-            <template v-for="action in appBar.menu">
-              <q-item :id="action.name" :key="action.name" clickable @click="onActionTriggered(action)">
-                <q-item-section avatar><q-icon :name="action.icon"/></q-item-section>
-                <q-item-section>{{action.label}}</q-item-section>
-              </q-item>
-            </template>
-          </q-list>
-        </q-menu>
-        <q-icon name="more_vert"></q-icon>
-      </q-btn>
-    </template>
+    <k-overflow-menu :actions="appBar.menu"  :dense="$q.screen.lt.md" />
   </q-toolbar>
 </template>
 
@@ -79,6 +56,11 @@ export default {
       // If a route is given activate it
       else if (action.route) this.$router.push(action.route)
     }
+  },
+  created () {
+    // Loads the required components
+    this.$options.components['k-tool-bar'] = this.$load('layout/KToolBar')
+    this.$options.components['k-overflow-menu'] = this.$load('layout/KOverflowMenu')
   }
 }
 </script>

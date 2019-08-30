@@ -8,14 +8,8 @@
 </template>
 
 <script>
-import { QBtn, QIcon } from 'quasar'
-
 export default {
   name: 'k-search-bar',
-  components: {
-    QBtn,
-    QIcon
-  },
   data () {
     return {
       isVisible: false,

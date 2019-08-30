@@ -51,27 +51,11 @@
       -->
       <q-separator />
       <slot name="card-actions">
-        <q-card-actions align="right">
+        <q-card-actions class="q-pa-xs" align="right">
           <!-- Pane -->
-          <template v-for="action in itemActions.pane">
-            <q-btn :id="action.name" :key="key(action, 'name')" :icon="action.icon" size="md" flat round dense :color="action.warning ? 'red' : 'grey-7'" @click="onActionTriggered(action, item)">
-              <q-tooltip>{{action.warning ? action.warning : action.label}}</q-tooltip>
-            </q-btn>
-          </template>
+          <k-tool-bar :actions="itemActions.pane" :dense="$q.screen.lt.md" />
           <!-- Menu -->
-          <q-btn id="card-overflow-menu-entry" v-if="itemActions.menu && itemActions.menu.length > 0" size="md" flat round dense>
-            <q-menu id="card-overflow-menu" ref="menu">
-              <q-list>
-                <template v-for="action in itemActions.menu">
-                  <q-item :id="action.name" link :key="key(action, 'name')" clickable @click="$refs.menu.hide(); onActionTriggered(action, item)">
-                    <q-item-section avatar><q-icon :name="action.icon"/></q-item-section>
-                    <q-item-section>{{action.label}}</q-item-section>
-                  </q-item>
-                </template>
-              </q-list>
-            </q-menu>
-            <q-icon color="grey-7" name="more_vert"></q-icon>
-          </q-btn>
+          <k-overflow-menu :actions="itemActions.menu" :dense="$q.screen.lt.md" />
         </q-card-actions>
       </slot>
     </q-card>
@@ -80,10 +64,6 @@
 
 <script>
 import _ from 'lodash'
-import {
-  QCard, QCardSection, QCardActions, QSeparator, QBtn, QIcon,
-  QMenu, QList, QItem, QItemSection, QItemLabel, QTooltip, QChip
-} from 'quasar'
 import { KTextArea } from '../frame'
 import { getInitials, processIcon } from '../../utils'
 import mixins from '../../mixins'
@@ -92,19 +72,6 @@ export default {
   name: 'k-card',
   mixins: [mixins.baseItem],
   components: {
-    QCard,
-    QCardSection,
-    QCardActions,
-    QSeparator,
-    QList,
-    QItem,
-    QItemSection,
-    QItemLabel,
-    QBtn,
-    QIcon,
-    QMenu,
-    QTooltip,
-    QChip,
     KTextArea
   },
   props: {
@@ -169,6 +136,11 @@ export default {
       // If a route is given activate it
       else if (action.route) this.$router.push(action.route)
     }
+  },
+  created () {
+    // Loads the required components
+    this.$options.components['k-tool-bar'] = this.$load('layout/KToolBar')
+    this.$options.components['k-overflow-menu'] = this.$load('layout/KOverflowMenu')
   }
 }
 </script>
