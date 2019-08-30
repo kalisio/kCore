@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { QResizeObserver } from 'quasar'
+import { QResizeObserver, colors } from 'quasar'
 import mixins from '../../mixins'
 import KTimeInterval from './KTimeInterval'
 import KTimePointer from './KTimePointer'
@@ -75,9 +75,9 @@ export default {
   mixins: [mixins.rangeCompute],
   props: {
     lineHeight: { type: Number, default: 4 },
-    color: { type: String, default: 'black' },
-    activeColor: { type: String, default: 'white' },
-    pointerColor: { type: String, default: 'orange' },
+    color: { type: String, default: colors.getBrand('primary') },
+    activeColor: { type: String, default: colors.getBrand('secondary') },
+    pointerColor: { type: String, default: colors.getBrand('secondary') },
     pointerTextColor: { type: String, default: 'white' },
     labelFontSize: { type: Number, default: 16 }
   },
