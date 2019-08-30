@@ -66,6 +66,10 @@ export default {
       }
       return new Date(now).toISOString()
     },
+    isEmpty () {
+      // Can't actually be
+      return false
+    },
     onChangeLocalDatetime (datetime) {
       // Convert from date object to string
       this.model = moment.utc(datetime).toISOString()

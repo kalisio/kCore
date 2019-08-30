@@ -33,6 +33,10 @@ export default {
   methods: {
     emptyModel () {
       return false
+    },
+    isEmpty () {
+      // Can't actually be
+      return false
     }
   }
 }
