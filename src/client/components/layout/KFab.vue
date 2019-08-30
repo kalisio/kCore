@@ -10,7 +10,7 @@
             <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 col-xl-2" align="center" v-for="action in fab.actions" :key="action.id">
               <q-btn
                 :id="action.id"
-                color="accent"
+                color="secondary"
                 round
                 @click="closeModal(action)">
                 <q-icon :name="action.icon" />
@@ -25,7 +25,7 @@
       </k-modal>
       <q-btn
         id="modal-action"
-        color="accent"
+        color="secondary"
         class="fixed"
         style="right: 18px; bottom: 18px"
         round
@@ -41,12 +41,12 @@
       class="fixed"
       style="right: 18px; bottom: 18px"
       direction ="up"
-      color="accent">
+      color="secondary">
         <q-fab-action
           v-for="action in fab.actions"
           :id="action.id"
           :key="action.id"
-          color="accent"
+          color="secondary"
           @click="onActionTriggered(action)"
           :icon="action.icon">
           <q-tooltip v-if="action.label" anchor="center left" self="center right" :offset="[20, 0]">
@@ -59,7 +59,7 @@
      -->
     <q-btn v-else-if="fab.actions.length > 0"
       :id="fab.actions[0].id"
-      color="accent"
+      color="secondary"
       :icon="fab.actions[0].icon"
       class="fixed"
       style="right: 18px; bottom: 18px"

@@ -13,7 +13,7 @@
     -->
     <q-drawer v-model="leftDrawerIsVisible" v-bind="options.leftDrawer" side="left" bordered>
       <div v-if="options.leftDrawer.behavior!=='mobile'" class="row justify-end">
-        <q-btn id="left-drawer-close" flat color="accent" icon="chevron_left" @click="toggleLeftDrawer" />
+        <q-btn id="left-drawer-close" flat color="secondary" icon="chevron_left" @click="toggleLeftDrawer" />
       </div>
       <div v-if="leftDrawerComponent!=''">
         <component :is="leftDrawerComponent" v-bind="leftDrawer.options" />
@@ -24,7 +24,7 @@
      -->
     <q-drawer v-model="rightDrawerIsVisible" v-bind="options.rightDrawer" side="right" bordered>
       <div v-if="options.rightDrawer.behavior!=='mobile'" class="row justify-start">
-        <q-btn id="right-drawer-close" flat color="accent" icon="chevron_right" @click="toggleRightDrawer" />
+        <q-btn id="right-drawer-close" flat color="secondary" icon="chevron_right" @click="toggleRightDrawer" />
       </div>
       <div v-if="rightDrawerComponent!=''">
         <component :is="rightDrawerComponent" v-bind="rightDrawer.options" />
