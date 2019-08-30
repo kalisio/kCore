@@ -5,7 +5,7 @@
       <q-btn v-else
         :key="key(action)"
         :icon="action.icon"
-        :color="action.warning ? 'red' : ''"
+        :color="action.warning ? 'red' : 'primary'"
         flat
         round
         :dense="dense"
