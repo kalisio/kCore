@@ -1,42 +1,29 @@
 <template>
-  <q-page-sticky :position="currentCorner" :offset="currentOffset">
-    <q-menu
-      ref="popover" @show="onOpen" @hide="onClose"
-      :anchor-click="false"
-      anchor="top left"
-      :self="currentSelf"
-      max-height="100vh"
-      max-width="100vw"
-      :content-style="currentCss"
-      persistent
-    >
-        <!--
-         Toolbar section
-        -->
-        <div class="row justify-end">
-          <template v-for="action in toolbar">
-            <q-btn :id="action.name" v-bind:key="action.name" flat round small color="primary" @click="action.handler">
-              <q-icon :name="action.icon" />
-              <q-tooltip v-if="action.label">{{action.label}}</q-tooltip>
-            </q-btn>
-          </template>
-        </div>
-        <!--
-          Title section
-        -->
-        <div class="row justify-start" style="margin-left: 18px">
-          <div class="modal-title">
-            {{title}}
-          </div>
-        </div>
-        <!--
-          Content section
-        -->
-        <div style="padding: 16px">
-          <slot name="widget-content" />
-        </div>
-    </q-menu>
-  </q-page-sticky>
+  <div v-show="isOpened" :style="css" class="k-widget q-pa-md">
+    <div class="row">
+      <!--
+        Title section
+      -->
+      <div class="col-8 text-h5">
+        {{title}}
+      </div>
+      <!--
+       Toolbar section
+      -->
+      <div class="col-4 text-right">
+        <template v-for="action in toolbar">
+          <q-btn :id="action.name" v-bind:key="action.name" flat round small color="primary" @click="action.handler">
+            <q-icon :name="action.icon" />
+            <q-tooltip v-if="action.label">{{action.label}}</q-tooltip>
+          </q-btn>
+        </template>
+      </div>
+    </div>
+    <!--
+      Content section
+    -->
+    <slot name="widget-content" />
+  </div>
 </template>
 
 <script>
@@ -48,47 +35,15 @@ export default {
     title: {
       type: String,
       default: ''
-    },
-    corner: {
-      type: Object,
-      default: () => {
-        return {
-          minimized: 'top-left',
-          maximized: 'top-left'
-        }
-      }
-    },
-    offset: {
-      type: Object,
-      default: () => {
-        return {
-          minimized: [0, 0],
-          maximized: [0, 0]
-        }
-      }
-    },
-    css: {
-      type: Object,
-      default: () => {
-        return {
-          minimized: 'width:40vw',
-          maximized: 'width:100vw;height:100vh'
-        }
-      }
     }
   },
   computed: {
-    currentCorner () {
-      return this.corner[this.mode]
-    },
-    currentOffset () {
-      return this.offset[this.mode]
-    },
-    currentCss () {
-      return this.css[this.mode]
-    },
-    currentSelf () {
-      return _.replace(this.corner[this.mode], '-', ' ')
+    css () {
+      if (this.mode === 'maximized') return 'width: 100vw;'
+      if (this.$q.screen.lt.sm) return 'width: 100vw;'
+      if (this.$q.screen.lt.md) return 'width: 90vw;'
+      if (this.$q.screen.lt.lg) return 'width: 80vw;'
+      return 'width: 60vw;'
     },
     toolbar () {
       return [
@@ -116,23 +71,18 @@ export default {
   methods: {
     async setMode (mode) {
       this.mode = mode
-      window.dispatchEvent(new Event('resize'))
-      // We need to force a refresh so that the style is correctly updated by Vuejs
-      await this.$nextTick()
       this.$emit('state-changed', this.mode)
     },
     async toggleMode () {
       await this.setMode(this.mode === 'minimized' ? 'maximized' : 'minimized')
     },
     open () {
-      if (this.isOpened) return
-      this.$refs.popover.show()
       this.isOpened = true
+      this.$emit('state-changed', this.mode)
     },
     close () {
-      if (!this.isOpened) return
-      this.$refs.popover.hide()
       this.isOpened = false
+      this.$emit('state-changed', 'closed')
     },
     toggle () {
       if (!this.isOpened) {
@@ -143,22 +93,17 @@ export default {
     },
     isOpen () {
       return this.isOpened
-    },
-    onOpen () {
-      this.$emit('state-changed', this.mode)
-    },
-    onClose () {
-      this.$emit('state-changed', 'closed')
     }
   }
 }
 </script>
 
-<style>
-.modal-title {
-  font-size: 18px;
-  font-weight: 400;
-  letter-spacing: normal;
-  line-height: 2rem
-}
+<style lang="stylus">
+.k-widget
+  border: solid 1px lightgrey;
+  border-radius: 8px;
+  background: #ffffff
+
+.k-widget:hover
+  border: solid 1px $primary;
 </style>
