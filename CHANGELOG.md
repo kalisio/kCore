@@ -1,5 +1,32 @@
 # Changelog
 
+## [v1.1.3](https://github.com/kalisio/kCore/tree/v1.1.3) (2019-09-04)
+
+[Full Changelog](https://github.com/kalisio/kCore/compare/v1.1.2...v1.1.3)
+
+**Implemented enhancements:**
+
+- Remove KRightPanel [\#135](https://github.com/kalisio/kCore/issues/135)
+- KGrid should handle selection [\#130](https://github.com/kalisio/kCore/issues/130)
+- Add a radial floating action button component [\#129](https://github.com/kalisio/kCore/issues/129)
+- Allow to disable user registration by configuration [\#128](https://github.com/kalisio/kCore/issues/128)
+- Allow to target different databases [\#127](https://github.com/kalisio/kCore/issues/127)
+- Create an overflow menu and toolbar components [\#59](https://github.com/kalisio/kCore/issues/59)
+
+**Fixed bugs:**
+
+- Tag field does not correctly take current context into account [\#134](https://github.com/kalisio/kCore/issues/134)
+- Same tags from different contexts might cause bugs [\#45](https://github.com/kalisio/kCore/issues/45)
+- KModalEditor is not closable after a refresh [\#34](https://github.com/kalisio/kCore/issues/34)
+
+**Closed issues:**
+
+- options.params=fn does not work in createProxyService [\#132](https://github.com/kalisio/kCore/issues/132)
+
+**Merged pull requests:**
+
+- Closes \#132 [\#133](https://github.com/kalisio/kCore/pull/133) ([batolye](https://github.com/batolye))
+
 ## [v1.1.2](https://github.com/kalisio/kCore/tree/v1.1.2) (2019-05-15)
 
 [Full Changelog](https://github.com/kalisio/kCore/compare/v1.1.1...v1.1.2)
@@ -7,14 +34,11 @@
 **Fixed bugs:**
 
 - Sometimes editors cannot build their forms [\#126](https://github.com/kalisio/kCore/issues/126)
+- KScreenHeader does not update its message according to app flavor [\#125](https://github.com/kalisio/kCore/issues/125)
 
 ## [v1.1.1](https://github.com/kalisio/kCore/tree/v1.1.1) (2019-05-14)
 
 [Full Changelog](https://github.com/kalisio/kCore/compare/v1.1.0...v1.1.1)
-
-**Fixed bugs:**
-
-- KScreenHeader does not update its message according to app flavor [\#125](https://github.com/kalisio/kCore/issues/125)
 
 ## [v1.1.0](https://github.com/kalisio/kCore/tree/v1.1.0) (2019-04-18)
 
