@@ -1,10 +1,10 @@
 <template>
-  <div v-show="isOpened" :style="css" class="k-widget q-pa-md">
+  <div v-show="isOpened" class="k-widget">
     <div class="row">
       <!--
         Title section
       -->
-      <div class="col-8 text-h5">
+      <div class="col-8 text-h5 q-pa-md">
         {{title}}
       </div>
       <!--
@@ -36,13 +36,6 @@ export default {
     }
   },
   computed: {
-    css () {
-      if (this.mode === 'maximized') return 'width: 100vw;'
-      if (this.$q.screen.lt.sm) return 'width: 100vw;'
-      if (this.$q.screen.lt.md) return 'width: 90vw;'
-      if (this.$q.screen.lt.lg) return 'width: 80vw;'
-      return 'width: 60vw;'
-    },
     toolbar () {
       return [
         {
@@ -91,6 +84,9 @@ export default {
     },
     isOpen () {
       return this.isOpened
+    },
+    isMinimized () {
+      return (this.mode === 'minimized')
     }
   }
 }
