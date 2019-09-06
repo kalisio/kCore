@@ -3,20 +3,15 @@
     <div slot="modal-content">
       <div class="column q-gutter-sm">
         <div class="row justify-between">
-          <q-input
-            v-model="searchQuery"
-            :label="$t('KIconChooser.SEARCH_FIELD_LABEL')"
-            clearable
-            class="col-7"
-            dense />
           <q-select
             v-if="categories"
             :label="$t('KIconChooser.SEARCH_CATEGORY_LABEL')"
-            :options="categories"
-            :value="selectedCategory"
+            :options="categoryOptions"
+            :value="selectedCategory ? selectedCategory.label : ''"
+            @filter="filterCategoryAutocomplete"
             @input="onSelectCategory"
-            emit-value
-            map-options
+            use-input
+            input-debounce="0"
             clearable
             class="col-4"
             dense />
@@ -73,12 +68,11 @@ export default {
   data () {
     return {
       allIcons: [],
-      searchQuery: '',
       categories: null,
       categoryInfos: null,
-      selectedCategory: '',
-      filteredIcons: [],
-      filteringDone: false,
+      categoryOptions: null,
+      selectedCategory: null,
+      filteredIcons: null,
       currentPage: 1,
       iconsPerPage: 70,
       selectedIcon: {
@@ -88,20 +82,27 @@ export default {
     }
   },
   computed: {
+    shouldFilter () {
+      return this.selectedCategory !== null
+    },
     icons () {
       // Return a filtered or unfiltered list of icons (depending on whether a filter was applied)
-      if (this.shouldFilter()) {
-        if (!this.filteringDone) {
+
+      // Do we need to filter?
+      if (this.shouldFilter) {
+
+        // Do we have a filtered list already?
+        if (!this.filteredIcons) {
           this.filteredIcons = this.buildFilter()
-          this.filteringDone = true
         }
+
+      // No need to filter
       } else {
-        this.filteredIcons = []
-        this.filteringDone = false
+        this.filteredIcons = null
       }
 
-      // If we performed filtering then return the filtered list, otherwise the complete list
-      return this.filteringDone ? this.filteredIcons : this.allIcons
+      // If we have a filtered list then return it, otherwise return the complete list
+      return this.filteredIcons || this.allIcons
     },
     maxPage () {
       return Math.ceil(this.icons.length / this.iconsPerPage)
@@ -113,20 +114,7 @@ export default {
       return this.icons.slice(firstIndex, lastIndex)
     }
   },
-  watch: {
-    searchQuery: function () {
-      this.doFilter()
-    }
-  },
   methods: {
-    doFilter: _.debounce(function () {
-      // Trigger filtering
-      this.filteringDone = false
-    }, 500),
-    shouldFilter () {
-      const query = this.searchQuery || ''
-      return query.trim().length > 1 || this.selectedCategory !== ''
-    },
     buildFilter () {
       // Reset the selected icon because it might fall outside of the filtered icons; same for current page
       this.resetSelectedIcon()
@@ -134,19 +122,14 @@ export default {
 
       let selectedIcons = this.allIcons
 
-      if (this.selectedCategory && this.selectedCategory !== '') {
-        selectedIcons = this.getIconsForCategory(this.selectedCategory)
+      if (this.selectedCategory) {
+        selectedIcons = this.getIconsForCategory(this.selectedCategory.value)
       }
-
-      let query = this.searchQuery || ''
-      query = query.trim().toLowerCase()
-
-      selectedIcons = selectedIcons.filter(icon => icon.title.toLowerCase().includes(query))
 
       return selectedIcons
     },
     getIconsForCategory (category) {
-      const categoryIcons = this.categoryInfos[this.selectedCategory].icons
+      const categoryIcons = this.categoryInfos[this.selectedCategory.value].icons
       const icons = []
 
       for (const categoryIcon of categoryIcons) {
@@ -159,10 +142,32 @@ export default {
 
       return icons
     },
+    filterCategoryAutocomplete (categoryInput, updateCallback) {
+
+      if (categoryInput.trim() === '') {
+        // empty input, return all categories
+        updateCallback(() => {
+          this.categoryOptions = this.getCategoryOptions(this.categories)
+        })
+
+      } else {
+        // non-empty input, return filtered categories
+        updateCallback(() => {
+          const needle = categoryInput.trim().toLowerCase()
+
+          this.categoryOptions = this.getCategoryOptions(this.categories).filter((option) => {
+            return option.label.toLowerCase().indexOf(needle) > -1
+          })
+        })
+      }
+    },
+    getCategoryOptions (categories) {
+      return categories.map(category => ({value: category, label: this.$t('KIconChooser.categories.' + category)}))
+    },
     onSelectCategory (value) {
       this.selectedCategory = value
-      // Trigger filtering
-      this.filteringDone = false
+      // Trigger filtering by clearing the filtered list (see computed prop 'icons()')
+      this.filteredIcons = null
     },
     getToolbar () {
       return [
@@ -193,10 +198,8 @@ export default {
       this.$refs.modal.open()
     },
     reset () {
-      this.searchQuery = ''
-      this.selectedCategory = ''
-      this.filteredIcons = []
-      this.filteringDone = false
+      this.selectedCategory = null
+      this.filteredIcons = null
       this.currentPage = 1
       this.resetSelectedIcon()
     },
@@ -320,6 +323,7 @@ export default {
 
     this.allIcons = result.icons
     this.categories = result.categories
+
     this.categoryInfos = result.categoryInfos
   }
 }
