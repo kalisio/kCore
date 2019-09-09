@@ -129,12 +129,6 @@ export default {
     },
     key (object, property) {
       return this.item._id + '-' + object[property]
-    },
-    onActionTriggered (action, item) {
-      // If a handler is given call it
-      if (action.handler) action.handler.call(this, item)
-      // If a route is given activate it
-      else if (action.route) this.$router.push(action.route)
     }
   },
   created () {
