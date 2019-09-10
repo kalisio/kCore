@@ -31,7 +31,7 @@
     -->
     <slot name="item-actions">
       <q-item-section side>
-        <k-overflow-menu :actions="itemActions" :dense="$q.screen.lt.md" />
+        <k-overflow-menu :actions="itemActions" :context="item" :dense="$q.screen.lt.md" />
       </q-item-section>
     </slot>
   </q-item>

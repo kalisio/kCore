@@ -27,6 +27,10 @@ export default {
       type: Array,
       default: () => { return [] }
     },
+    context: {
+      type: Object,
+      default: () => { return null }
+    },
     dense: {
       type: Boolean,
       default: false
@@ -44,7 +48,7 @@ export default {
     onActionTriggered (action) {
       this.isVisible = false
       // If a handler is given call it
-      if (action.handler) action.handler()
+      if (action.handler) action.handler(this.context)
       // If a route is given activate it
       else if (action.route) this.$router.push(action.route)
     }
