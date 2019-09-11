@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div v-if="readOnly && model">
+    <q-icon :name="model.name" :color="model.color" />
+  </div>
+  <div v-else>
     <q-field
       :error-message="errorLabel"
       :error="hasError"

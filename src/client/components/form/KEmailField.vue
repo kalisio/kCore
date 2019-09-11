@@ -1,5 +1,8 @@
 <template>
-  <q-input
+  <div v-if="readOnly">
+    <a :href="`mailto:${model}`">{{ model }}</a>
+  </div>
+  <q-input v-else
     :id="properties.name + '-field'"
     type="email"
     v-model="model"

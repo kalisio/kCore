@@ -1,5 +1,8 @@
 <template>
-  <q-input
+  <div v-if="readOnly">
+    {{ model }}
+  </div>
+  <q-input v-else
     :id="properties.name + '-field'"
     type="text"
     v-model="model"
@@ -17,15 +20,10 @@
 </template>
 
 <script>
-import { QField, QInput } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-text-field',
-  components: {
-    QField,
-    QInput
-  },
   mixins: [mixins.baseField]
 }
 </script>

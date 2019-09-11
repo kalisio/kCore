@@ -1,5 +1,9 @@
 <template>
-  <q-field :id="properties.name + '-field'"
+  <div v-if="readOnly">
+    {{ formattedDatetime }}
+  </div> 
+  <q-field v-else
+    :id="properties.name + '-field'"
     :error-message="errorLabel"
     :error="hasError"
     :disabled="disabled"

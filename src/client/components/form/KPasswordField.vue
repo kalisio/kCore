@@ -1,5 +1,7 @@
 <template>
-  <q-input
+  <div v-if="readOnly">
+  </div>
+  <q-input v-else
     :id="properties.name + '-field'"
     :type="isPwd ? 'password' : 'text'"
     v-model="model"

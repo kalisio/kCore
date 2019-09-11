@@ -1,5 +1,17 @@
 <template>
-  <div>
+  <div v-if="readOnly">
+    {{ model }}
+    <!--template v-for="(chip, index) in model">
+      <q-chip 
+        :key="chip.value + '-' + index"
+        :icon="chip.icon.name" 
+        :color="chip.icon.color"
+        dense>
+        {{chip.value}}
+      </q-chip>
+    </template-->
+  </div>    
+  <div v-else>
     <q-field
       :icon="icon"
       :label="label"

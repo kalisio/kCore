@@ -26,12 +26,7 @@ const schemaProxyMixin = {
     },
     getSchemaName () {
       // When used with a service by default use the same name for schema as for service
-      let schemaName = this.schemaName || this.service
-      schemaName += this.objectId ? '.update' : '.create'
-      if (this.perspective) {
-        schemaName += ('-' + this.perspective)
-      }
-      return schemaName
+      return (this.schemaName || this.service)
     },
     async loadSchemaFromResource (schemaName) {
       try {

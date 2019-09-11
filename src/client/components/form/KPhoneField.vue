@@ -1,5 +1,8 @@
 <template>
-  <q-input
+  <div v-if="readOnly">
+    <a :href="`tel:${model}`">{{ model }}</a>
+  </div>
+  <q-input v-else
     :id="properties.name + '-field'"
     type="tel"
     v-model="model"

@@ -8,11 +8,15 @@ const baseFieldMixin = {
     },
     required: {
       type: Boolean,
-      required: true
+      default: false
     },
     display: {
       type: Object,
       required: true
+    },
+    readOnly: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

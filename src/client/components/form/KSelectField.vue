@@ -1,5 +1,10 @@
 <template>
-  <q-select
+  <div v-if="readOnly">
+    <q-chip dense>
+      {{ model }}
+    </q-chip>
+  </div>
+  <q-select v-else
     :id="properties.name + '-field'"
     :multiple="properties.field.multiple ? properties.field.multiple : false"
     :toggle="properties.field.toggle ? properties.field.toggle : false"

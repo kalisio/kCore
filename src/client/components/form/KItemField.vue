@@ -1,5 +1,10 @@
 <template>
-  <q-field
+  <div v-if="readOnly && model">
+    <q-chip :color="model.color" dense> 
+      {{ model.name }}
+    </q-chip>
+  </div>
+  <q-field v-else
     :error-message="errorLabel"
     :error="hasError"
     :disabled="disabled"
@@ -12,7 +17,6 @@
       :default-items="defaultItems"
       :services="properties.services"
       @changed="updateModel" />
-
     <template v-if="helper" v-slot:hint>
       <span v-html="helper"></span>
     </template>

@@ -176,6 +176,15 @@ export default function baseEditorMixin (formRefs) {
         }
         return query
       },
+      getSchemaName () {
+        // When used with a service by default use the same name for schema as for service
+        let schemaName = this.schemaName || this.service
+        schemaName += this.objectId ? '.update' : '.create'
+        if (this.perspective) {
+          schemaName += ('-' + this.perspective)
+        }
+        return schemaName
+      },
       async apply () {
         let isValid = this.validateForms()
         // Now the form is validated apply it to the target object

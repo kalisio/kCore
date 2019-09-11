@@ -1,5 +1,10 @@
 <template>
-  <div>
+  <div v-if="readOnly">
+    <q-chip icon="fas fa-cloud-upload-alt">
+      {{ model.name }}
+    </q-chip>
+  </div>
+  <div v-else>
     <!--
       The field
     -->
@@ -21,13 +26,13 @@
           @click="onUpload" />
         <template v-for="file in files">
           <q-chip
-          :key="file.name"
-          dense
-          color="primary"
-          text-color="white"
-          :label="fileName(file)"
-          @remove="onFileRemoved(file)"
-          removable />
+            :key="file.name"
+            dense
+            color="primary"
+            text-color="white"
+            :label="fileName(file)"
+            @remove="onFileRemoved(file)"
+            removable />
         </template>
       </template>
       <!-- Helper -->
@@ -101,7 +106,7 @@ export default {
       } else {
         this.files = (!_.isEmpty(this.model) ? [this.model] : [])
       }
-      this.$refs.uploader.initialize(this.files)
+      if (!this.readOnly) this.$refs.uploader.initialize(this.files)
     },
     async apply (object, field) {
       // If not processing uploads on-the-fly upload when the form is being submitted on update

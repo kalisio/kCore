@@ -1,5 +1,8 @@
 <template>
-  <q-field
+  <div v-if="readOnly">
+    <q-chip dense :icon="model ? 'check' : 'block'" :color="model ? 'positive' : 'negative'" />
+  </div>
+  <q-field v-else
     :error-message="errorLabel"
     :error="hasError"
     :disabled="disabled"
@@ -11,24 +14,17 @@
       v-model="model"
       v-bind="properties.field"
       @blur="onChanged" />
-
     <template v-if="helper" v-slot:hint>
       <span v-html="helper"></span>
     </template>
-
   </q-field>
 </template>
 
 <script>
-import { QField, QToggle } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-toggle-field',
-  components: {
-    QField,
-    QToggle
-  },
   mixins: [mixins.baseField],
   methods: {
     emptyModel () {

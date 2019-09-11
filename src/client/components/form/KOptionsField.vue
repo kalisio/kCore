@@ -1,5 +1,10 @@
 <template>
-  <q-field
+  <div v-if="readOnly">
+    <q-chip dense>
+      {{ model }}
+    </q-chip>
+  </div>
+  <q-field v-else
     :error-message="errorLabel"
     :error="hasError"
     :disabled="disabled"

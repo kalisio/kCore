@@ -1,5 +1,8 @@
 <template>
-  <q-input
+  <div v-if="readOnly">
+    {{ model }}
+  </div>
+  <q-input v-else
     :id="properties.name + '-field'"
     type="textarea"
     v-model="model"
