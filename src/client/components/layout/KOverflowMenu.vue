@@ -1,5 +1,5 @@
 <template>
-  <q-btn v-if="actions.length > 0" id="overflow-menu-entry" icon="more_vert" flat round :dense="dense">
+  <q-btn v-if="actions.length > 0" id="overflow-menu-entry" icon="more_vert" :color="color" flat round :dense="dense">
     <q-menu id="overflow-menu" v-model="isVisible">
       <q-list :dense="dense">
         <template v-for="action in actions">
@@ -30,6 +30,10 @@ export default {
     context: {
       type: Object,
       default: () => { return null }
+    },
+    color: {
+      type: String,
+      default: 'primary'
     },
     dense: {
       type: Boolean,

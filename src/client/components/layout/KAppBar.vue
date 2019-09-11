@@ -18,11 +18,11 @@
     <!--
       Toolbar section
      -->
-     <k-tool-bar :actions="appBar.toolbar" :dense="$q.screen.lt.md" />
+     <k-tool-bar :actions="appBar.toolbar" color="white" :dense="$q.screen.lt.md" />
     <!--
       Menu section
      -->
-    <k-overflow-menu :actions="appBar.menu"  :dense="$q.screen.lt.md" />
+    <k-overflow-menu :actions="appBar.menu" color="white" :dense="$q.screen.lt.md" />
   </q-toolbar>
 </template>
 

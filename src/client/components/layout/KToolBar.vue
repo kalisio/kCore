@@ -5,7 +5,7 @@
       <q-btn v-else
         :key="key(action)"
         :icon="action.icon"
-        :color="action.warning ? 'red' : 'primary'"
+        :color="action.warning ? 'warning' : color"
         flat
         round
         :dense="dense"
@@ -31,6 +31,10 @@ export default {
     context: {
       type: Object,
       default: () => { return null }
+    },
+    color: {
+      type: String,
+      default: 'primary'
     },
     dense: {
       type: Boolean,
