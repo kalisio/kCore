@@ -131,7 +131,7 @@ export default {
         marginLeft: timeNowPosition + 'px',
         height: this.barHeight(),
         width: '6px',
-        backgroundColor: this.pointerColor
+        backgroundColor: this.pointerTextColor
       }
     },
     tickContainerStyle () {
