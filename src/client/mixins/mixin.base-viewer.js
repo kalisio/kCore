@@ -35,8 +35,7 @@ export default function baseViewerMixin (viewRefs) {
       },
       getSchemaName () {
         // When used with a service by default use the same name for schema as for service
-        let schemaName = this.schemaName || this.service
-        schemaName += '.get'
+        let schemaName = this.service + '.get'
         if (this.perspective) {
           schemaName += ('-' + this.perspective)
         }
@@ -47,7 +46,7 @@ export default function baseViewerMixin (viewRefs) {
         await this.loadService()
         // We can then load the schema/object and local refs in parallel
         await Promise.all([
-          this.loadSchema(),
+          this.loadSchema(this.getSchemaName()),
           this.loadObject(),
           this.loadRefs()
         ])
