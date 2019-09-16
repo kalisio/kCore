@@ -1,19 +1,22 @@
 <template>
-  <k-screen :title="canLogWith() ? $t('KLogin.TITLE') : ''" :links="links">
+  <k-screen :title="canLogWithExternalProviders ? $t('KLogin.TITLE') : ''" :links="links">
     <div slot="screen-content">
       <div class="column justify-center q-gutter-md">
         <!--
           Login providers
         -->
-        <div v-if="canLogWith()" class="q-gutter-md">
-          <div class="row ull-width justify-around">
+        <div v-if="canLogWithExternalProviders" class="q-gutter-md">
+          <div class="row full-width justify-around">
             <template v-for="provider in providers">
-              <q-btn :icon="'fab fa-' + provider" :id="provider" @click="onLogWith(provider)" :key="provider"
-                     :label="provider">
+              <q-btn :icon="getProviderIcon(provider)"
+                :id="getProviderName(provider)"
+                :key="getProviderName(provider)"
+                @click="onLogWith(provider)"
+                :label="getProviderLabel(provider)">
               </q-btn>
             </template>
           </div>
-          <div class="row full-width items-center">
+          <div v-if="canLogWithExternalProviders && canLogWithLocalProvider" class="row full-width items-center">
             <div class="col-1 text-subtitle1">{{ $t('KLogin.OR_LABEL') }}</div>
             <div class="col-11"><hr></div>
           </div>
@@ -21,10 +24,10 @@
         <!--
           Login form
         -->
-        <div>
+        <div v-if="canLogWithLocalProvider">
           <k-form ref="form" :schema="schema" @form-ready="onFormReady"/>
         </div>
-        <div class="q-pa-sm self-center">
+        <div v-if="canLogWithLocalProvider" class="q-pa-sm self-center">
           <q-btn :loading="loading" color="primary" id="local" :label="$t('KLogin.APPLY_BUTTON')" @click="onLogin"/>
         </div>
       </div>
@@ -45,6 +48,7 @@ export default {
     KForm,
     KScreen
   },
+  mixins: [mixins.authentication, mixins.version],
   data () {
     return {
       schema: {
@@ -77,11 +81,27 @@ export default {
       loading: false
     }
   },
-  mixins: [mixins.authentication, mixins.version],
-  methods: {
-    canLogWith () {
+  computed: {
+    canLogWithExternalProviders () {
       if (this.providers.length === 0) return false
       else return this.$config('flavor') === 'dev' ? true : !Platform.is.cordova
+    },
+    canLogWithLocalProvider () {
+      return this.$config('screens.login.localProvider', true)
+    }
+  },
+  methods: {
+    getProviderIcon (provider) {
+      if (typeof provider === 'object') return provider.icon
+      else return 'fab fa-' + provider
+    },
+    getProviderLabel (provider) {
+      if (typeof provider === 'object') return this.$t(provider.label)
+      else return provider
+    },
+    getProviderName (provider) {
+      if (typeof provider === 'object') return provider.name
+      else return provider
     },
     storeCredentials () {
       return Platform.is.cordova
@@ -112,7 +132,7 @@ export default {
       }
     },
     onLogWith (provider) {
-      const authUrl = this.$api.getBaseUrl() + '/auth/' + provider.toLowerCase()
+      const authUrl = this.$api.getBaseUrl() + '/auth/' + this.getProviderName(provider).toLowerCase()
       const callbackUrl = authUrl + '/callback'
       if (Platform.is.cordova) {
         // Use in app browser so that we can intercept the redirect on the callback URL

@@ -19,7 +19,7 @@
       <!-- Frame -->
       <q-card>
         <q-card-section>
-          <span class="text-subtitle1">{{ title }}</span>
+          <span class="text-subtitle1 row justify-center">{{ title }}</span>
         </q-card-section>
         <q-card-section>
           <div class="col q-gutter-xs">

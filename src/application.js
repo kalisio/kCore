@@ -21,6 +21,7 @@ import local from '@feathersjs/authentication-local'
 import oauth2 from '@feathersjs/authentication-oauth2'
 import GithubStrategy from 'passport-github'
 import GoogleStrategy from 'passport-google-oauth20'
+import CognitoStrategy from 'passport-oauth2-cognito'
 import OAuth2Verifier from './verifier'
 import PasswordValidator from 'password-validator'
 import { ObjectID } from 'mongodb'
@@ -84,6 +85,14 @@ function auth () {
       Verifier: OAuth2Verifier
     }))
     app.authenticationProviders.push('google')
+  }
+  if (config.cognito) {
+    app.configure(oauth2({
+      name: 'cognito',
+      Strategy: CognitoStrategy,
+      Verifier: OAuth2Verifier
+    }))
+    app.authenticationProviders.push('cognito')
   }
   // The `authentication` service is used to create a JWT.
   // The before `create` hook registers strategies that can be used
