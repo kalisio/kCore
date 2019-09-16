@@ -1,25 +1,23 @@
 <template>
   <k-screen :title="canLogWithExternalProviders ? $t('KLogin.TITLE') : ''" :links="links">
     <div slot="screen-content">
-      <div class="column justify-center q-gutter-md">
+      <div class="column justify-center">
         <!--
           Login providers
         -->
-        <div v-if="canLogWithExternalProviders" class="q-gutter-md">
-          <div class="row full-width justify-around">
-            <template v-for="provider in providers">
-              <q-btn :icon="getProviderIcon(provider)"
-                :id="getProviderName(provider)"
-                :key="getProviderName(provider)"
-                @click="onLogWith(provider)"
-                :label="getProviderLabel(provider)">
-              </q-btn>
-            </template>
-          </div>
-          <div v-if="canLogWithExternalProviders && canLogWithLocalProvider" class="row full-width items-center">
-            <div class="col-1 text-subtitle1">{{ $t('KLogin.OR_LABEL') }}</div>
-            <div class="col-11"><hr></div>
-          </div>
+        <div v-if="canLogWithExternalProviders" class="row justify-around">
+          <template v-for="provider in providers">
+            <q-btn :icon="getProviderIcon(provider)"
+              :id="getProviderName(provider)"
+              :key="getProviderName(provider)"
+              @click="onLogWith(provider)"
+              :label="getProviderLabel(provider)">
+            </q-btn>
+          </template>
+        </div>
+        <div v-if="canLogWithExternalProviders && canLogWithLocalProvider" class="row items-center">
+          <div class="col-1 text-subtitle1">{{ $t('KLogin.OR_LABEL') }}</div>
+          <div class="col-11"><hr></div>
         </div>
         <!--
           Login form
