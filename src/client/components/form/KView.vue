@@ -1,11 +1,11 @@
 <template>
-  <div class="colum full-width q-pa-sm q-gutter-sm">
+  <div class="column q-pa-md">
     <!-- Non-grouped fields first -->
-    <div v-for="field in fields" :key="field.name" class="row full-width items-center no-wrap q-gutter-xs">    
-      <div class="col-2">
+    <div v-for="field in fields" :key="field.name" class="row items-center full-width">    
+      <div class="col-12 col-md-6 col-lg-5 col-xl-4">
         <span class="text-caption">{{ field.field.label }}</span>
       </div>
-      <div class="col-10">
+      <div class="col-12 col-md-6 col-lg-7 col-xl-8">
         <component
           v-if="!field.group"
           :key="field.name + '-value'"
@@ -70,6 +70,17 @@ export default {
       groups: []
     }
   },
+  watch: {
+    schema: function (schema) {
+      if (this.schema) {
+        logger.debug('Updating view', this.schema.$id)
+        this.build()
+          .then(() => {
+            this.$emit('view-ready', this)
+          })
+      }
+    }
+  },
   methods: {
     getField (field) {
       return this.$refs[field][0]
@@ -123,13 +134,6 @@ export default {
           this.getField(field.name).clear()
         }
       })
-    },
-    async apply (object) {
-      if (!this.loadRefs().isFulfilled()) throw Error('Cannot apply the form while not ready')
-      for (let i = 0; i < this.fields.length; i++) {
-        const field = this.fields[i]
-        await this.getField(field.name).apply(object, field.name)
-      }
     }
   },
   created () {

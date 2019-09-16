@@ -49,7 +49,7 @@ export default {
   created () {
     // Loads the required components
     this.$options.components['k-modal'] = this.$load('frame/KModal')
-    this.$options.components['k-view'] = this.$load('viewer/KView')
+    this.$options.components['k-view'] = this.$load('form/KView')
     // Refresh the editor only when using a router. Otherwise it will be done when opening the editor
     if (this.router) this.refresh()
     this.$on('applied', _ => {

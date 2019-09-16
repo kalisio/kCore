@@ -24,7 +24,7 @@ export default {
   },
   created () {
     // Load the required components
-    this.$options.components['k-view'] = this.$load('viewer/KView')
+    this.$options.components['k-view'] = this.$load('form/KView')
     // Refresh the view
     this.refresh()
   }
