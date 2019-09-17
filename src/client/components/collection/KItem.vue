@@ -1,15 +1,15 @@
 <template>
-  <q-item @click="onItemSelected">
+  <q-item active-class="selected" class="cursor-pointer">
     <!--
       Avatar section
     -->
     <slot name="item-avatar">
-      <q-item-section avatar v-if="avatar">
+      <q-item-section @click="onItemSelected" avatar v-if="avatar">
         <q-avatar>
           <img :src="avatar">
         </q-avatar>
       </q-item-section>
-      <q-item-section avatar v-if="icon">
+      <q-item-section @click="onItemSelected" avatar v-if="icon">
         <q-icon :color="icon.color" :name="icon.name" />
       </q-item-section>
     </slot>
@@ -17,7 +17,7 @@
       Content section
     -->
     <slot name="item-content">
-      <q-item-section>
+      <q-item-section @click="onItemSelected">
         <slot name="item-label">
           <q-item-label>{{ name }}</q-item-label>
         </slot>
@@ -89,3 +89,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.selected {
+  font-weight: bold;
+}
+</style>

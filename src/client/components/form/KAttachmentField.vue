@@ -1,7 +1,7 @@
 <template>
   <div v-if="readOnly">
-    <q-chip icon="fas fa-cloud-upload-alt">
-      {{ model.name }}
+    <q-chip v-for="file in files" icon="fas fa-cloud-upload-alt">
+      {{ file.name }}
     </q-chip>
   </div>
   <div v-else>

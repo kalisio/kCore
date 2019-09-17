@@ -1,0 +1,58 @@
+<template>
+  <div v-if="readOnly">
+    <q-chip icon="fas fa-cloud-upload-alt">
+      {{ model.name }}
+    </q-chip>
+  </div>
+  <q-field v-else
+    :error-message="errorLabel"
+    :error="hasError"
+    :disabled="disabled"
+    no-error-icon
+    bottom-slots
+  >
+    <k-file-input
+      :id="properties.name + '-field'"
+      v-bind="properties.field"
+      :clearable="true"
+      @cleared="onInputFileCleared"
+      @rejected="onInputFileRejected"
+      @failed="onInputFileFailed"
+      @loaded="onInputFileLoaded" />
+    <template v-if="helper" v-slot:hint>
+      <span v-html="helper"></span>
+    </template>
+  </q-field>
+</template>
+
+<script>
+import mixins from '../../mixins'
+import { KFileInput } from '../input'
+
+export default {
+  name: 'k-file-field',
+  components: {
+    KFileInput
+  },
+  mixins: [mixins.baseField],
+  methods: {
+    emptyModel () {
+      return {}
+    },
+    onInputFileCleared () {
+      this.error = ''
+      this.model = this.emptyModel()
+    },
+    onInputFileRejected (file) {
+      this.error = 'KFileField.INVALID_FILE_TYPE'
+    },
+    onInputFileFailed (file) {
+      this.error = 'KFileField.ERROR_WHILE_LOADING_THE_FILE'
+    },
+    onInputFileLoaded (file, content) {
+      this.error = ''
+      this.model = { name: file.name, size: file.size, content }
+    }
+  }
+}
+</script>

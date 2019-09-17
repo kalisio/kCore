@@ -229,6 +229,10 @@
   "KTagField": {
     "CREATE_TAG": "Create <b>{{tag}}</b>"
   },
+  "KFileField": {
+    "ERROR_WHILE_LOADING_THE_FILE": "Error while loading the file, did you select a valid file ?",
+    "INVALID_FILE_TYPE": "Invalid file type, please select the right file type."
+  },
   "KMediaBrowser": {
     "LOADING": "Loading... ",
     "NO_MEDIA": "There is nothing to show, please add medias first!"
