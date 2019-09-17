@@ -50,6 +50,8 @@ const ajv = new Ajv({
   coerceTypes: true,
   $data: true
 })
+// Backward compatibility for our old schemas as now AJV supports draft-07 by default
+ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
 
 export default {
   name: 'k-form',
