@@ -13,9 +13,8 @@
   >
     <q-option-group
       :id="properties.name + '-field'"
-      :type="properties.field.type"
+      v-bind="properties.field"
       v-model="model"
-      :options="properties.field.options"
       @change="onChanged"
       @blur="onChanged" />
 
