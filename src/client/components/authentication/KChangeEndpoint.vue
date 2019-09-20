@@ -71,16 +71,14 @@ export default {
       this.$router.push({ name: 'login' })
     }
   },
-  created () {
+  async created () {
     // configure this screen
     this.links = this.$config('screens.changeEndpoint.links', [])
-    this.loadRefs()
-      .then(() => this.$refs.form.build())
-      .then(() => {
-        this.$refs.form.fill({
-          baseUrl: this.$api.getBaseUrl()
-        })
-      })
+    await this.loadRefs()
+    await this.$refs.form.build()
+    this.$refs.form.fill({
+      baseUrl: this.$api.getBaseUrl()
+    })
   }
 }
 </script>

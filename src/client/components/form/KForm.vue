@@ -2,16 +2,20 @@
   <div class="column q-gutter-sm">
     <!-- Non-grouped fields first -->
     <template v-for="field in fields">
-      <component
-        v-if="!field.group"
-        :key="field.name"
-        :is="field.componentKey"
-        :ref="field.name"
-        :required="field.required"
-        :properties="field"
-        :display="display"
-        @field-changed="onFieldChanged"
-      />
+      <slot :name="'before-' + field.name"/>
+      <slot :name="field.name">
+        <component
+          v-if="!field.group"
+          :key="field.name"
+          :is="field.componentKey"
+          :ref="field.name"
+          :required="field.required"
+          :properties="field"
+          :display="display"
+          @field-changed="onFieldChanged"
+        />
+      </slot>
+      <slot :name="'after-' + field.name"/>
     </template>
     <!-- Grouped fields then -->
     <template v-for="group in groups">
@@ -19,15 +23,18 @@
         <q-card>
           <q-card-section>
             <template v-for="field in fields">
-              <component
-                v-if="field.group === group"
-                :key="field.name"
-                :is="field.componentKey"
-                :ref="field.name"
-                :required="field.required"
-                :properties="field"
-                :display="display"
-                @field-changed="onFieldChanged" />
+              <slot v-if="field.group === group" :name="'before-' + field.name"/>
+              <slot v-if="field.group === group" :name="field.name">
+                <component
+                  :key="field.name"
+                  :is="field.componentKey"
+                  :ref="field.name"
+                  :required="field.required"
+                  :properties="field"
+                  :display="display"
+                  @field-changed="onFieldChanged" />
+              </slot>
+              <slot v-if="field.group === group" :name="'after-' + field.name"/>
             </template>
           </q-card-section>
         </q-card>
@@ -238,7 +245,7 @@ export default {
       }
     }
   },
-  created () {
+  async created () {
     // Store the AJV instance
     this.ajv = ajv
     // If a schema is already registered automatially build the form
@@ -247,11 +254,9 @@ export default {
     logger.debug('Creating form', this.schema ? this.schema.$id : 'without schema')
     if (this.schema) {
       logger.debug('Initializing form', this.schema.$id)
-      this.build()
-        .then(() => {
-          if (this.clearOnCreate) this.clear()
-          this.$emit('form-ready', this)
-        })
+      await this.build()
+      if (this.clearOnCreate) this.clear()
+      this.$emit('form-ready', this)
     }
   }
 }

@@ -2,56 +2,46 @@
 
 const authenticationMixin = {
   methods: {
-    restoreUser (accessToken) {
-      return this.$api.passport.verifyJWT(accessToken)
-        .then(payload => {
-        // Anonymous user or service account ?
-          if (!payload.userId) return { name: this.$t('ANONYMOUS'), anonymous: true }
-          else return this.$api.getService('users').get(payload.userId)
-        })
-        .then(user => {
-          this.$store.set('user', user)
-          return user
-        })
+    async restoreUser (accessToken) {
+      const payload = await this.$api.passport.verifyJWT(accessToken)
+      // Anonymous user or service account ?
+      if (!payload.userId) return { name: this.$t('ANONYMOUS'), anonymous: true }
+      else {
+        const user = await this.$api.getService('users').get(payload.userId)
+        this.$store.set('user', user)
+        return user
+      }
     },
-    register (user) {
+    async register (user) {
       delete user.confirmPassword
       // TODO: delete user.policiesAccepted
-      return this.$api.getService('users').create(user)
-        .then(() => {
-          return this.login(user.email, user.password)
-        })
+      await this.$api.getService('users').create(user)
+      await this.login(user.email, user.password)
     },
-    restoreSession () {
-      return this.$api.authenticate()
-        .then(response => {
-          return this.restoreUser(response.accessToken)
-            .catch(error => {
-              // This ensure an old token is not kept when the user has been deleted
-              if (error.code === 404) {
-                this.logout()
-              }
-              // Rethrow for caller to handle
-              throw error
-            })
-        })
+    async restoreSession () {
+      const response = await this.$api.authenticate()
+      try {
+        const user = await this.restoreUser(response.accessToken)
+        return user
+      } catch (error) {
+        // This ensure an old token is not kept when the user has been deleted
+        if (error.code === 404) await this.logout()
+        // Rethrow for caller to handle
+        throw error
+      }
     },
-    login (email, password) {
+    async login (email, password) {
       const payload = {
         strategy: 'local',
         email: email,
         password: password
       }
-      return this.$api.authenticate(payload)
-        .then(response => {
-          return this.restoreUser(response.accessToken)
-        })
+      const response = await this.$api.authenticate(payload)
+      await this.restoreUser(response.accessToken)
     },
-    logout () {
-      return this.$api.logout()
-        .then(response => {
-          this.$store.set('user', null)
-        })
+    async logout () {
+      await this.$api.logout()
+      this.$store.set('user', null)
     }
   }
 }

@@ -71,13 +71,11 @@ export default {
     }
   },
   watch: {
-    schema: function (schema) {
+    schema: async function (schema) {
       if (this.schema) {
         logger.debug('Updating view', this.schema.$id)
-        this.build()
-          .then(() => {
-            this.$emit('view-ready', this)
-          })
+        await this.build()
+        this.$emit('view-ready', this)
       }
     }
   },
@@ -136,14 +134,12 @@ export default {
       })
     }
   },
-  created () {
+  async created () {
     logger.debug('Creating view', this.schema ? this.schema.$id : 'without schema')
     if (this.schema) {
       logger.debug('Initializing view', this.schema.$id)
-      this.build()
-        .then(() => {
-          this.$emit('view-ready', this)
-        })
+      await this.build()
+      this.$emit('view-ready', this)
     }
   }
 }

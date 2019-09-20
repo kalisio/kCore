@@ -70,12 +70,13 @@ const baseFieldMixin = {
     invalidate (error) {
       this.error = error
     },
-    onChanged () {
+    async onChanged () {
       // Tell the form that this field has a new value.
       // Consequently the form will validate or invalidate the field
       // Warning: This method must be called once the form is mounted
       // We need to force a refresh so that the model is correctly updated by Vuejs
-      this.$nextTick().then(() => this.$emit('field-changed', this.properties.name, this.model))
+      await this.$nextTick()
+      this.$emit('field-changed', this.properties.name, this.model)
     },
     apply (object, field) {
       // To be overloaded if you need to perform specific operations before the form has been submitted
