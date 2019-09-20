@@ -1,6 +1,6 @@
 <template>
   <div v-if="readOnly">
-    <q-chip v-for="file in files" icon="fas fa-cloud-upload-alt">
+    <q-chip v-for="file in files" :key="file.name" icon="fas fa-cloud-upload-alt">
       {{ file.name }}
     </q-chip>
   </div>
