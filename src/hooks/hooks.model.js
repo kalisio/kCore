@@ -98,8 +98,8 @@ export function serialize (rules, options = {}) {
   }
 }
 
-// The hook objectify allows to transform the value bound to an '_id' like key as a string
-// into a Mongo ObjectId on client queries
+// The hook allows to transform the values bound to '_id' like keys as strings into Mongo ObjectIds
+// It inspects hook data as well as query data
 export function processObjectIDs (hook) {
   let items = getItems(hook)
   const isArray = Array.isArray(items)
@@ -112,8 +112,8 @@ export function processObjectIDs (hook) {
   return hook
 }
 
-// The hook convert allows to transform a set of input properties as a string
-// into a Mongo ObjectId on client queries
+// The hook allows to transform a set of input properties as strings into Mongo ObjectIds
+// It inspects hook data as well as query data
 export function convertObjectIDs (properties) {
   return function (hook) {
     let items = getItems(hook)
@@ -145,8 +145,8 @@ export function toDates (object, properties, asMoment) {
   })
 }
 
-// The hook allows to transform a set of input properties as a string
-// into a Date/Moment object on client queries
+// The hook allows to transform a set of input properties as strings into a Date/Moment objects
+// It inspects hook data as well as query data
 export function convertDates (properties, asMoment) {
   return function (hook) {
     let items = getItems(hook)
@@ -156,6 +156,48 @@ export function convertDates (properties, asMoment) {
     replaceItems(hook, isArray ? items : items[0])
 
     if (hook.params.query) toDates(hook.params.query, properties, asMoment)
+    return hook
+  }
+}
+
+// Utility function used to convert from string to JSON a fixed set of properties on a given object
+export function toJson (object, properties) {
+  properties.forEach(property => {
+    const string = _.get(object, property)
+    if (string) _.set(object, property, JSON.parse(string))
+  })
+}
+
+// The hook allows to transform a set of input properties as strings into JSON objects
+export function convertToJson (properties) {
+  return function (hook) {
+    let items = getItems(hook)
+    const isArray = Array.isArray(items)
+    items = (isArray ? items : [items])
+    items.forEach(item => toJson(item, properties))
+    replaceItems(hook, isArray ? items : items[0])
+
+    return hook
+  }
+}
+
+// Utility function used to convert from string to JSON a fixed set of properties on a given object
+export function toString (object, properties) {
+  properties.forEach(property => {
+    const json = _.get(object, property)
+    if (json) _.set(object, property, JSON.stringify(json))
+  })
+}
+
+// The hook allows to transform a set of input properties from JSON objects into strings
+export function convertToString (properties) {
+  return function (hook) {
+    let items = getItems(hook)
+    const isArray = Array.isArray(items)
+    items = (isArray ? items : [items])
+    items.forEach(item => toString(item, properties))
+    replaceItems(hook, isArray ? items : items[0])
+
     return hook
   }
 }
