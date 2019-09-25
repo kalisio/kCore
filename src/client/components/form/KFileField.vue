@@ -51,6 +51,9 @@ export default {
     },
     onInputFileLoaded (file, content) {
       this.error = ''
+      // Provide JSON object directly in this case
+      const mimeTypes = _.get(this, 'properties.field.mimeTypes', [])
+      if (mimeTypes.includes('application/json')) content = JSON.parse(content)
       this.model = { name: file.name, size: file.size, content }
     }
   }
