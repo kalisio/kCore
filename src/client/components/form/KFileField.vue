@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import mixins from '../../mixins'
 import { KFileInput } from '../input'
 
