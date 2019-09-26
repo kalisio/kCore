@@ -42,36 +42,46 @@ export function marshallSortFields (queryObject) {
 // Helper function to convert time objects or array of time objects
 export function marshallTime (item, property) {
   if (!item) return
-  const time = item[property]
+  const time = _.get(item, property)
   if (!time) return
   if (Array.isArray(time)) {
-    item[property] = time.map(t => {
+    _.set(item, property, time.map(t => {
       if (moment.isMoment(t)) return new Date(t.format())
       else if (typeof t === 'string') return new Date(t)
       else return t
-    })
+    }))
   } else if (moment.isMoment(time)) {
-    item[property] = new Date(time.format())
+    _.set(item, property, new Date(time.format()))
   } else if (typeof time === 'string') {
-    item[property] = new Date(time)
+    _.set(item, property, new Date(time))
   } else if (typeof time === 'object') { // Check if complex object such as comparison operator
     // If so this will recurse
     _.keys(time).forEach(key => marshallTime(time, key))
   }
 }
 
+// Helper function to convert time objects or array of time objects for a fixed set of properties on a given object
+export function marshallTimes (object, properties) {
+  properties.forEach(property => marshallTime(object, property))
+}
+
 // Helper function to convert time objects or array of time objects
 export function unmarshallTime (item, property) {
   if (!item) return
-  const time = item[property]
+  const time = _.get(item, property)
   if (!time) return
   if (Array.isArray(time)) {
-    item[property] = time.map(t => !moment.isMoment(t) ? moment.utc(t.toISOString()) : t)
+    _.set(item, property, time.map(t => !moment.isMoment(t) ? moment.utc(t.toISOString()) : t))
   } else if (!moment.isMoment(time)) {
     // Check if complex object indexed by element
     const keys = _.keys(time)
     // If so recurse
     if (keys.length > 0) keys.forEach(key => unmarshallTime(time, key))
-    else item[property] = moment.utc(time.toISOString())
+    else _.set(item, property, moment.utc(time.toISOString()))
   }
+}
+
+// Helper function to convert time objects or array of time objects for a fixed set of properties on a given object
+export function unmarshallTimes (object, properties) {
+  properties.forEach(property => unmarshallTime(object, property))
 }
