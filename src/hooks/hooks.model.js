@@ -168,7 +168,10 @@ export function convertDates (properties, asMoment) {
 export function toJson (object, properties) {
   properties.forEach(property => {
     const string = _.get(object, property)
-    if (string) _.set(object, property, JSON.parse(string))
+    if (string && (typeof string === 'string')) {
+      const json = JSON.parse(string)
+      _.set(object, property, json)
+    }
   })
 }
 
@@ -189,7 +192,7 @@ export function convertToJson (properties) {
 export function toString (object, properties) {
   properties.forEach(property => {
     const json = _.get(object, property)
-    if (json) _.set(object, property, JSON.stringify(json))
+    if (json && (typeof json === 'object')) _.set(object, property, JSON.stringify(json))
   })
 }
 
