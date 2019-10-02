@@ -4,7 +4,7 @@ import fs from 'fs-extra'
 import request from 'superagent'
 import chai, { util, expect } from 'chai'
 import chailint from 'chai-lint'
-import core, { kalisio, hooks, permissions } from '../src'
+import core, { kalisio, hooks, permissions, createTagService } from '../src'
 const { hashPassword } = require('@feathersjs/authentication-local').hooks
 
 describe('kCore', () => {
@@ -41,6 +41,8 @@ describe('kCore', () => {
     userService.hooks({
       after: { create: hooks.updateTags, remove: hooks.updateTags }
     })
+    // Create a global tag service for tests
+    createTagService.call(app)
     tagService = app.getService('tags')
     expect(tagService).toExist()
     authorisationService = app.getService('authorisations')

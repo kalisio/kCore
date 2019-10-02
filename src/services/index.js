@@ -10,18 +10,16 @@ const servicesPath = path.join(__dirname, '..', 'services')
 
 const debug = makeDebug('kalisio:kCore:services')
 
-export function createTagService (context, db) {
+export function createTagService (options = {}) {
   const app = this
 
-  app.createService('tags', {
+  app.createService('tags', Object.assign({
     servicesPath,
-    modelsPath,
-    context,
-    db
-  })
+    modelsPath
+  }, options))
 }
 
-export function removeTagService (context) {
+export function removeTagService (options) {
   // TODO
 }
 
@@ -36,14 +34,13 @@ function proxyStorageId (context) {
   }
 }
 
-export function createStorageService (blobService, context) {
+export function createStorageService (blobService, options = {}) {
   const app = this
   // Closure to keep track of context
-  const proxyId = proxyStorageId(context)
-  app.createService('storage', {
+  const proxyId = proxyStorageId(options.context)
+  app.createService('storage', Object.assign({
     servicesPath,
     modelsPath,
-    context,
     // Create a proxy on top of a Feathers blob service,
     // adding context as prefix on all keys on input
     // removing context as prefix on all keys as result
@@ -63,10 +60,10 @@ export function createStorageService (blobService, context) {
         }
       ]
     }
-  })
+  }, options))
 }
 
-export function removeStorageService (context) {
+export function removeStorageService (options) {
   // TODO
 }
 
@@ -96,7 +93,4 @@ export default async function () {
     })
     app.createService('authorisations', { servicesPath })
   }
-
-  // We have a global tag/storage service and one by context if app requires it
-  app.createService('tags', { modelsPath, servicesPath })
 }
