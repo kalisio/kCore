@@ -28,7 +28,9 @@ const baseCollectionMixin = {
       this.itemListener = this.loadService().watch({ listStrategy: this.listStrategy || 'always' })
         .find({ query })
         .subscribe(response => {
-          this.items = response.data
+          // Manage GeoJson features collection as well
+          if (response.type === 'FeatureCollection') this.items = response.features
+          else this.items = response.data
           this.nbTotalItems = response.total
           this.$emit('collection-refreshed')
         }, error => {
