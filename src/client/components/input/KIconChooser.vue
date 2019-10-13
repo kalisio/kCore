@@ -11,6 +11,8 @@
             @filter="filterCategoryAutocomplete"
             @input="onSelectCategory"
             use-input
+            fill-input
+            hide-selected
             input-debounce="0"
             clearable
             class="col-4"
