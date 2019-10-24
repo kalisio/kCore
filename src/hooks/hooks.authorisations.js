@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { getItems } from 'feathers-hooks-common'
+import { getItems, replaceItems } from 'feathers-hooks-common'
 import { Forbidden } from '@feathersjs/errors'
 import { populateObject, unpopulateObject, populateObjects, unpopulateObjects } from './hooks.query'
 import { objectifyIDs } from '../db'
@@ -7,6 +7,28 @@ import { hasServiceAbilities, hasResourceAbilities, getQueryForAbilities, Roles 
 import makeDebug from 'debug'
 
 const debug = makeDebug('kalisio:kCore:authorisations:hooks')
+
+export function createJWT (options = {}) {
+  return async function (hook) {
+    const defaults = hook.app.get('authentication') || hook.app.get('auth')
+    const user = _.get(hook, 'params.user')
+    let items = getItems(hook)
+    const isArray = Array.isArray(items)
+    items = (isArray ? items : [items])
+    // Generate access tokens for all items
+    const accessTokens = await Promise.all(items.map(item => hook.app.passport.createJWT(
+      // Provided function can be used to pick or omit properties in JWT payload
+      (typeof options.payload === 'function' ? options.payload(user) : {}),
+      // Provided function can be used for custom options cdepending on the user,
+      // then we merge with default auth options for global properties like aud, iss, etc.
+      _.merge({}, defaults, (typeof options.jwt === 'function' ? { jwt: options.jwt(user) } : options)))
+    ))
+    // Store access token on items
+    items.forEach((item, index) => _.set(item, options.name || 'accessToken', accessTokens[index]))
+    replaceItems(hook, isArray ? items : items[0])
+    return hook
+  }
+}
 
 export function populateSubjects (hook) {
   if (hook.type !== 'before') {

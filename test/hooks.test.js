@@ -1,3 +1,7 @@
+import feathers from '@feathersjs/feathers'
+import authentication from '@feathersjs/authentication'
+import configuration from '@feathersjs/configuration'
+import express from '@feathersjs/express'
 import chai, { util, expect } from 'chai'
 import chailint from 'chai-lint'
 import { hooks } from '../src'
@@ -110,6 +114,35 @@ describe('kCore:hooks', () => {
         expect(hook.n).to.equal(2)
         done()
       })
+  })
+
+  it('generate JWT', async () => {
+    let app = express(feathers())
+    app.configure(configuration())
+    const config = app.get('authentication')
+    app.configure(authentication(config))
+    const hook = { type: 'before', app, data: {}, params: { user: { _id: 'toto' } } }
+    await hooks.createJWT()(hook)
+    expect(typeof hook.data['accessToken']).to.equal('string')
+    const payload = await app.passport.verifyJWT(hook.data['accessToken'], config)
+    expect(payload.userId).beUndefined()
+  })
+
+  it('generate custom JWT', async () => {
+    let app = express(feathers())
+    app.configure(configuration())
+    const config = app.get('authentication')
+    app.configure(authentication(config))
+    const hook = { type: 'before', app, data: {}, params: { user: { _id: 'toto' } } }
+    await hooks.createJWT({
+      name: 'accessToken',
+      jwt: user => ({ subject: user._id }),
+      payload: user => ({ userId: user._id })
+    })(hook)
+    expect(typeof hook.data['accessToken']).to.equal('string')
+    const payload = await app.passport.verifyJWT(hook.data['accessToken'], config)
+    expect(payload.sub).to.equal('toto')
+    expect(payload.userId).to.equal('toto')
   })
 
   // Cleanup
