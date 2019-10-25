@@ -1,6 +1,6 @@
 <template>
   <div v-if="readOnly && model">
-    <q-chip :color="model.color" dense> 
+    <q-chip :color="model.color" dense>
       {{ model.name }}
     </q-chip>
   </div>

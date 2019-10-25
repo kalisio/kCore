@@ -92,7 +92,6 @@ export default {
 
       // Do we need to filter?
       if (this.shouldFilter) {
-
         // Do we have a filtered list already?
         if (!this.filteredIcons) {
           this.filteredIcons = this.buildFilter()
@@ -145,13 +144,11 @@ export default {
       return icons
     },
     filterCategoryAutocomplete (categoryInput, updateCallback) {
-
       if (categoryInput.trim() === '') {
         // empty input, return all categories
         updateCallback(() => {
           this.categoryOptions = this.getCategoryOptions(this.categories)
         })
-
       } else {
         // non-empty input, return filtered categories
         updateCallback(() => {
@@ -164,7 +161,7 @@ export default {
       }
     },
     getCategoryOptions (categories) {
-      return categories.map(category => ({value: category, label: this.$t('KIconChooser.categories.' + category)}))
+      return categories.map(category => ({ value: category, label: this.$t('KIconChooser.categories.' + category) }))
     },
     onSelectCategory (value) {
       this.selectedCategory = value

@@ -1,7 +1,7 @@
 <template>
   <div class="column q-pa-md">
     <!-- Non-grouped fields first -->
-    <div v-for="field in fields" :key="field.name" class="row items-center full-width">    
+    <div v-for="field in fields" :key="field.name" class="row items-center full-width">
       <div class="col-12 col-md-6 col-lg-5 col-xl-4">
         <span class="text-caption">{{ field.field.label }}</span>
       </div>

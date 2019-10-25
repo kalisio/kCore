@@ -1,5 +1,4 @@
 import logger from 'loglevel'
-import _ from 'lodash'
 
 export default function baseViewerMixin (viewRefs) {
   return {

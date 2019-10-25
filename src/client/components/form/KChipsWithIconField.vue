@@ -2,9 +2,9 @@
   <div>
     <div v-if="readOnly">
       <template v-for="(chip, index) in model">
-        <q-chip 
+        <q-chip
           :key="chip.value + '-' + index"
-          :icon="chip.icon.name" 
+          :icon="chip.icon.name"
           :color="chip.icon.color"
           dense>
           {{chip.value}}

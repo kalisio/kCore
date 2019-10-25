@@ -1,7 +1,7 @@
 <template>
   <div v-if="readOnly">
     {{ formattedDatetime }}
-  </div> 
+  </div>
   <q-field v-else
     :id="properties.name + '-field'"
     :error-message="errorLabel"
