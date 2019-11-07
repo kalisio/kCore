@@ -11,7 +11,8 @@ import oauth2 from '@feathersjs/authentication-oauth2'
 import GithubStrategy from 'passport-github'
 import GoogleStrategy from 'passport-google-oauth20'
 import CognitoStrategy from 'passport-oauth2-cognito'
-import OAuth2Verifier from './verifier'
+import OAuth2Verifier from './oauth2-verifier'
+import OAuth2Handler from './oauth2-handler'
 import PasswordValidator from 'password-validator'
 
 const debug = makeDebug('kalisio:kCore:authentication')
@@ -40,7 +41,8 @@ function addGithubOAuth2Client (app, clientConfig) {
   app.configure(oauth2({
     name,
     Strategy: GithubStrategy,
-    Verifier: OAuth2Verifier
+    Verifier: OAuth2Verifier,
+    handler: OAuth2Handler(clientConfig)
   }))
 }
 
@@ -50,7 +52,8 @@ function addGoogleOAuth2Client (app, clientConfig) {
   app.configure(oauth2({
     name,
     Strategy: GoogleStrategy,
-    Verifier: OAuth2Verifier
+    Verifier: OAuth2Verifier,
+    handler: OAuth2Handler(clientConfig)
   }))
 }
 
@@ -60,7 +63,8 @@ function addCognitoOAuth2Client (app, clientConfig) {
   app.configure(oauth2({
     name,
     Strategy: CognitoStrategy,
-    Verifier: OAuth2Verifier
+    Verifier: OAuth2Verifier,
+    handler: OAuth2Handler(clientConfig)
   }))
 }
 
