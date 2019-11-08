@@ -8,15 +8,44 @@ class OAuth2Verifier extends Verifier {
   constructor (app, options = {}) {
     options.emailField = options.emailField || 'email'
     options.emailFieldInProfile = options.emailFieldInProfile || 'emails[0].value'
+    options.idFieldInProfile = options.idFieldInProfile || 'id'
     super(app, options)
   }
 
+  _updateEntity (entity, data) {
+    const options = this.options
+    const name = options.name
+    const id = entity[this.service.id]
+    debug(`Updating ${options.entity}: ${id}`)
+
+    const newData = {
+      [options.idField]: _.get(data.profile, options.idFieldInProfile),
+      [name]: data
+    }
+
+    return this.service.patch(id, newData, { oauth: { provider: name } })
+  }
+
+  _createEntity (data) {
+    const options = this.options
+    const name = options.name
+    const entity = {
+      [options.idField]: _.get(data.profile, options.idFieldInProfile),
+      [name]: data
+    }
+
+    const id = entity[options.idField]
+    debug(`Creating new ${options.entity} with ${options.idField}: ${id}`)
+
+    return this.service.create(entity, { oauth: { provider: name } })
+  }
+  
   verify (req, accessToken, refreshToken, profile, done) {
     debug('Checking credentials')
     const options = this.options
     const query = {
       $or: [
-        { [options.idField]: profile.id },
+        { [options.idField]: _.get(profile, options.idFieldInProfile) },
         { [options.emailField]: _.get(profile, options.emailFieldInProfile) }
       ],
       $limit: 1

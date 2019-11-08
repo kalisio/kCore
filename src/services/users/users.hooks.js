@@ -11,14 +11,18 @@ module.exports = {
     create: [
       commonHooks.when(hook => _.get(hook.app.get('authentication'), 'disallowRegistration'),
         commonHooks.disallow('external')),
-      commonHooks.when(hook => hook.data.googleId, serialize([
-        { source: 'google.profile.displayName', target: 'name' },
-        { source: 'google.profile.emails[0].value', target: 'email' }
-      ], { throwOnNotFound: true })),
-      commonHooks.when(hook => hook.data.githubId, serialize([
-        { source: 'github.profile.displayName', target: 'name' },
-        { source: 'github.profile.emails[0].value', target: 'email' }
-      ], { throwOnNotFound: true })),
+      hook => {
+        const config = hook.app.get('authentication')
+        if (!config) return hook
+        hook.app.authenticationProviders.forEach(provider => {
+          const clientConfig = config[provider]
+          if (_.has(hook, `data.${provider}`)) serialize([
+            { source: `${provider}.profile.` + (clientConfig.nameFieldInProfile || 'displayName'), target: 'name' },
+            { source: `${provider}.profile.` + (clientConfig.emailFieldInProfile || 'emails[0].value'), target: 'email' }
+          ], { throwOnNotFound: true })(hook)
+        })
+        return hook
+      },
       serialize([
         { source: 'name', target: 'profile.name', delete: true },
         { source: 'email', target: 'profile.description' }
