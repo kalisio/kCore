@@ -17,9 +17,9 @@ export function addQueryParameter(baseUrl, parameter, value) {
 
 // Build an encoded URL from a given set of parameters
 export function buildUrl(baseUrl, parameters) {
-	let url = baseUrl
-	_.forOwn(parameters, function(value, key) {
-	  url = addQueryParameter(url, key, value)
-	})
+  let url = baseUrl
+  _.forOwn(parameters, function(value, key) {
+    url = addQueryParameter(url, key, value)
+  })
   return encodeURI(url)
 }
