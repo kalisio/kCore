@@ -15,11 +15,16 @@ export function addQueryParameter(baseUrl, parameter, value) {
   return `${baseUrl}${prefix}${parameter}=${Array.isArray(value) ? JSON.stringify(value) : value}`
 }
 
-// Build an encoded URL from a given set of parameters
+// Build an URL from a given set of parameters
 export function buildUrl(baseUrl, parameters) {
   let url = baseUrl
   _.forOwn(parameters, function(value, key) {
     url = addQueryParameter(url, key, value)
   })
-  return encodeURI(url)
+  return url
+}
+
+// Build an encoded URL from a given set of parameters
+export function buildEncodedUrl(baseUrl, parameters) {
+  return encodeURI(buildEncodedUrl(baseUrl, parameters))
 }
