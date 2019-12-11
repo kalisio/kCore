@@ -78,7 +78,6 @@
 
 <script>
 import _ from 'lodash'
-import { openURL } from 'quasar'
 import mixins from '../../mixins'
 
 export default {
