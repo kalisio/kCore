@@ -48,8 +48,8 @@
     "NAME_FIELD_HELPER": "Saisissez votre nom"
   },
   "KScreen": {
-    "CLIENT_VERSION": "Version du client",
-    "API_VERSION": "Version de l'API",
+    "CLIENT_VERSION": "Client v",
+    "API_VERSION": "API v",
     "EMAIL_FIELD_HELPER": "Saisissez votre adresse mail",
     "CHANGE_ENDPOINT_LINK": "Modifier l'adresse du serveur",
     "DEVELOPMENT_VERSION": "VERSION DE DEVELOPPEMENT",

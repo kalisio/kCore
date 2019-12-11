@@ -48,8 +48,8 @@
     "NAME_FIELD_HELPER": "Enter your name"
   },
   "KScreen": {
-    "CLIENT_VERSION": "Client version",
-    "API_VERSION": "API version",
+    "CLIENT_VERSION": "Client v",
+    "API_VERSION": "API v",
     "EMAIL_FIELD_HELPER": "Enter your email address",
     "CHANGE_ENDPOINT_LINK": "Change endpoint" ,
     "DEVELOPMENT_VERSION": "DEVELOPMENT VERSION",
