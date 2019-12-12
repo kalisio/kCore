@@ -11,7 +11,7 @@
         </q-item-section>
         <q-item-section>
           <q-item-label>
-            {{ $t('sideNav.ABOUT') }}
+            {{ $t('KAbout.SIDENAV') }}
           </q-item-label>
         </q-item-section>
       </q-item>

@@ -246,6 +246,7 @@
     "MAXIMIZE_ACTION": "Réduire"
   },
   "KAbout": {
+    "SIDENAV": "A propos",
     "TITLE": "A propos",
     "CLOSE_ACTION": "$t(CLOSE)",
     "CLIENT_VERSION": "$t(KScreen.CLIENT_VERSION)",
