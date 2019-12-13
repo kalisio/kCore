@@ -15,6 +15,14 @@ export function isObjectID (id) {
   return id && (typeof id.toHexString === 'function') && (typeof id.getTimestamp === 'function')
 }
 
+export function idToString (id) {
+  return (typeof id === 'object'
+      ? (ObjectID.isValid(id)
+        ? id.toString()
+        : idToString(id._id))
+      : id)
+}
+
 export function createObjectID (id) {
   // This ensure it works even if id is already an ObjectID
   if (isObjectID(id)) return id

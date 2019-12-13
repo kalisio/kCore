@@ -56,6 +56,22 @@ describe('kCore', () => {
     server.once('listening', _ => done())
   })
 
+  it('register webhooks', () => {
+    app.createWebhook('webhook', { services: ['users'] })
+  })
+
+  it('unauthorized user cannot access webhooks', (done) => {
+    request
+      .post(`${baseUrl}/webhooks/webhook`)
+      .send({ accessToken: 'xxx', service: 'authorisations' })
+      .catch(data => {
+        const error = data.response.body
+        expect(error).toExist()
+        expect(error.name).to.equal('Forbidden')
+        done()
+      })
+  })
+
   it('unauthenticated user cannot access services', (done) => {
     tagService.create({}, { checkAuthorisation: true })
       .catch(error => {
@@ -150,6 +166,28 @@ describe('kCore', () => {
       .then(response => {
         accessToken = response.body.accessToken
         expect(accessToken).toExist()
+      })
+  })
+
+  it('unauthorized service cannot be accessed through webhooks', (done) => {
+    request
+      .post(`${baseUrl}/webhooks/webhook`)
+      .send({ accessToken, service: 'authorisations' })
+      .catch(data => {
+        const error = data.response.body
+        expect(error).toExist()
+        expect(error.name).to.equal('Forbidden')
+        done()
+      })
+  })
+
+  it('authenticated user can access services through webhooks', () => {
+    return request
+      .post(`${baseUrl}/webhooks/webhook`)
+      .send({ accessToken, service: 'users', id: userObject._id, operation: 'get' })
+      .then(response => {
+        const user = response.body
+        expect(user._id.toString() === userObject._id.toString()).beTrue()
       })
   })
 

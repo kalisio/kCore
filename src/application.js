@@ -11,13 +11,13 @@ import { RateLimiter as SocketLimiter } from 'limiter'
 import HttpLimiter from 'express-rate-limit'
 import feathers from '@feathersjs/feathers'
 import configuration from '@feathersjs/configuration'
-import { TooManyRequests } from '@feathersjs/errors'
+import { TooManyRequests, Forbidden, BadRequest } from '@feathersjs/errors'
 import express from '@feathersjs/express'
 import rest from '@feathersjs/express/rest'
 import socketio from '@feathersjs/socketio'
 import memory from 'feathers-memory'
 import { ObjectID } from 'mongodb'
-import { Database } from './db'
+import { Database, idToString } from './db'
 import auth, { authSocket } from './authentication'
 
 const debug = makeDebug('kalisio:kCore:application')
@@ -168,11 +168,7 @@ export function createService (name, app, options = {}) {
   let servicePath = serviceOptions.path || name
   let contextId
   if (serviceOptions.context) {
-    contextId = (typeof serviceOptions.context === 'object'
-      ? (ObjectID.isValid(serviceOptions.context)
-        ? serviceOptions.context.toString()
-        : serviceOptions.context._id.toString())
-      : serviceOptions.context)
+    contextId = idToString(serviceOptions.context)
     servicePath = contextId + '/' + servicePath
   }
   service = declareService(servicePath, app, service, serviceOptions.middlewares)
@@ -219,6 +215,56 @@ export function createService (name, app, options = {}) {
   app.emit('service', service)
 
   return service
+}
+
+export function createWebhook (path, app, options = {}) {
+  let webhookPath = path
+  if (options.context) {
+    webhookPath = idToString(options.context) + '/' + webhookPath
+  }
+  const isWebhookService = (service) => {
+    // Default is to expose all services
+    if (!options.services) return true
+    if (typeof options.services === 'function') return options.services(service)
+    else return options.services.includes(service)
+  }
+
+  app.post(app.get('apiPath') + '/webhooks/' + webhookPath, async (req, res, next) => {
+    const payload = req.body
+    const headers = req.headers
+    const config = app.get('authentication')
+    res.set('Content-Type', 'application/json')
+    try {
+      // Authenticate when required
+      if (config) {
+        try {
+          await app.passport.verifyJWT(payload.accessToken, config)
+        } catch (error) {
+          throw new Forbidden('Could not verify webhook')
+        }
+      }
+      if (!isWebhookService(payload.service)) throw new Forbidden('Service not allowed for webhook')
+      const service = app.getService(payload.service, payload.context)
+      if (!service) throw new BadRequest('Service could not be found')
+      let args = []
+      // Update/Patch/Remove
+      if (_.has(payload, 'id')) args.push(_.get(payload, 'id'))
+      // Create/Update/Patch
+      if (_.has(payload, 'data')) args.push(_.get(payload, 'data'))
+      try {
+        let result = await service[payload.operation].apply(service, args)
+        // Send back result
+        res.json(result)
+      } catch (error) {
+        throw new BadRequest('Service operation could not be performed')
+      }
+    } catch (error) {
+      // Send back error
+      res.status(error.code).json(error.toJSON())
+    }
+  })
+
+  debug(`Webhook ${webhookPath} registration completed`)
 }
 
 function setupLogger (app) {
@@ -371,6 +417,10 @@ export function kalisio () {
   // This is used to create standard services
   app.createService = function (name, options) {
     return createService(name, app, options)
+  }
+  // This is used to create webhooks
+  app.createWebhook = function (path, options) {
+    return createWebhook(path, app, options)
   }
   // Override Feathers configure that do not manage async operations,
   // here we also simply call the function given as parameter but await for it
