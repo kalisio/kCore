@@ -235,11 +235,16 @@ export function createWebhook (path, app, options = {}) {
     const headers = req.headers
     const config = app.get('authentication')
     res.set('Content-Type', 'application/json')
+    let params = {}
     try {
       // Authenticate when required
       if (config) {
         try {
-          await app.passport.verifyJWT(payload.accessToken, config)
+          const tokenPayload = await app.passport.verifyJWT(payload.accessToken, config)
+          if (tokenPayload.userId) {
+            params.user = await app.getService('users').get(tokenPayload.userId)
+            params.checkAuthorisation = true
+          }
         } catch (error) {
           throw new Forbidden('Could not verify webhook')
         }
@@ -252,6 +257,8 @@ export function createWebhook (path, app, options = {}) {
       if (_.has(payload, 'id')) args.push(_.get(payload, 'id'))
       // Create/Update/Patch
       if (_.has(payload, 'data')) args.push(_.get(payload, 'data'))
+      // Params
+      args.push(params)
       try {
         let result = await service[payload.operation].apply(service, args)
         // Send back result
