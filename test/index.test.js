@@ -57,7 +57,7 @@ describe('kCore', () => {
   })
 
   it('register webhooks', () => {
-    app.createWebhook('webhook', { services: ['users'] })
+    app.createWebhook('webhook', { filter: { service: { $in: ['users'] }, operation: 'get' } })
   })
 
   it('unauthorized user cannot access webhooks', (done) => {
@@ -181,7 +181,19 @@ describe('kCore', () => {
       })
   })
 
-  it('authenticated user can access services through webhooks', () => {
+  it('unauthorized service operation cannot be accessed through webhooks', (done) => {
+    request
+      .post(`${baseUrl}/webhooks/webhook`)
+      .send({ accessToken, service: 'users', operation: 'create' })
+      .catch(data => {
+        const error = data.response.body
+        expect(error).toExist()
+        expect(error.name).to.equal('Forbidden')
+        done()
+      })
+  })
+
+  it('authenticated user can access service operation through webhooks', () => {
     return request
       .post(`${baseUrl}/webhooks/webhook`)
       .send({ accessToken, service: 'users', id: userObject._id, operation: 'get' })

@@ -2,6 +2,7 @@ import path from 'path'
 import makeDebug from 'debug'
 import logger from 'winston'
 import _ from 'lodash'
+import sift from 'sift'
 import 'winston-daily-rotate-file'
 import compress from 'compression'
 import cors from 'cors'
@@ -222,11 +223,11 @@ export function createWebhook (path, app, options = {}) {
   if (options.context) {
     webhookPath = idToString(options.context) + '/' + webhookPath
   }
-  const isWebhookService = (service) => {
-    // Default is to expose all services
-    if (!options.services) return true
-    if (typeof options.services === 'function') return options.services(service)
-    else return options.services.includes(service)
+  const isAllowed = (payload) => {
+    // Default is to expose all services/operations
+    if (!options.filter) return true
+    const result = [payload].filter(sift(options.filter))
+    return result.length > 0
   }
 
   app.post(app.get('apiPath') + '/webhooks/' + webhookPath, async (req, res, next) => {
@@ -243,7 +244,7 @@ export function createWebhook (path, app, options = {}) {
           throw new Forbidden('Could not verify webhook')
         }
       }
-      if (!isWebhookService(payload.service)) throw new Forbidden('Service not allowed for webhook')
+      if (!isAllowed(payload)) throw new Forbidden('Service not allowed for webhook')
       const service = app.getService(payload.service, payload.context)
       if (!service) throw new BadRequest('Service could not be found')
       let args = []
