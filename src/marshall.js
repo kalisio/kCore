@@ -71,13 +71,16 @@ export function unmarshallTime (item, property) {
   const time = _.get(item, property)
   if (!time) return
   if (Array.isArray(time)) {
-    _.set(item, property, time.map(t => !moment.isMoment(t) ? moment.utc(t.toISOString()) : t))
+    _.set(item, property, time.map(t => {
+      if (typeof t === 'string') return moment.utc(t)
+      else if (typeof t.toISOString === 'function') return moment.utc(t.toISOString())
+      else return t
+    }))
   } else if (!moment.isMoment(time)) {
-    // Check if complex object indexed by element
-    const keys = _.keys(time)
-    // If so recurse
-    if (keys.length > 0) keys.forEach(key => unmarshallTime(time, key))
-    else _.set(item, property, moment.utc(time.toISOString()))
+    if (typeof time === 'string') _.set(item, property, moment.utc(time))
+    else if (typeof time.toISOString === 'function') _.set(item, property, moment.utc(time.toISOString()))
+    // Recurse on complex object such as comparison operator
+    else if (typeof time === 'object') _.keys(time).forEach(key => unmarshallTime(time, key))
   }
 }
 
