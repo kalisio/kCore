@@ -152,6 +152,7 @@ export function createService (name, app, options = {}) {
     service = memory(serviceOptions.memory)
   } if (dbService) {
     service = createFeathersService(serviceOptions)
+    dbService = service
   } else if (serviceOptions.proxy) {
     service = createProxyService(serviceOptions.proxy)
   } else {
@@ -181,7 +182,7 @@ export function createService (name, app, options = {}) {
       let serviceMixin = require(path.join(serviceOptions.servicesPath, fileName, fileName + '.service'))
       // If we get a function try to call it assuming it will return the mixin object
       if (typeof serviceMixin === 'function') {
-        serviceMixin = serviceMixin(fileName, app, serviceOptions)
+        serviceMixin = serviceMixin.bind(dbService)(fileName, app, serviceOptions)
       }
       service.mixin(serviceMixin)
     } catch (error) {
