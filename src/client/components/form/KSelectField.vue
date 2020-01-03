@@ -6,10 +6,10 @@
   </div>
   <q-select v-else
     :id="properties.name + '-field'"
-    :multiple="properties.field.multiple ? properties.field.multiple : false"
-    :toggle="properties.field.toggle ? properties.field.toggle : false"
-    :radio="properties.field.radio ? properties.field.radio : false"
-    :use-chips="properties.field.chips ? properties.field.chips : false"
+    :multiple="multiple"
+    :toggle="toggle"
+    :radio="radio"
+    :use-chips="chips"
     v-model="model"
     :options="options"
     @change="onChanged"
@@ -36,8 +36,21 @@ export default {
   name: 'k-select-field',
   mixins: [mixins.baseField],
   computed: {
+    multiple () {
+      return _.get(this.properties, 'field.multiple', false)
+    },
+    toggle () {
+      return _.get(this.properties, 'field.toggle', false)
+    },
+    radio () {
+      return _.get(this.properties, 'field.radio', false)
+    },
+    chips () {
+      return _.get(this.properties, 'field.chips', false)
+    },
     options () {
-      return this.properties.field.options.map(option => {
+      const options = _.get(this.properties, 'field.options', [])
+      return options.map(option => {
         // Check if we have a translation key or directly the label content
         const label = _.get(option, 'label', '')
         return Object.assign({}, option, { label: (this.$i18n.i18next.exists(label) ? this.$t(label) : label) })
