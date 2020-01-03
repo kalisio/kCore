@@ -34,7 +34,7 @@
           </template>
         </div>
         <div class="row justify-center items-center q-gutter-sm">
-          <q-pagination v-model="currentPage" :max="maxPage" />
+          <q-pagination v-model="currentPage" :max="maxPage" :input="true" />
         </div>
         <div class="row justify-between items-center q-gutter-sm">
           <k-palette shape="round" v-model="selectedIcon.color" />
