@@ -63,6 +63,14 @@ export const Colors = {
   'blue-grey': '#607d8b'
 }
 
+export function getPaletteFromColor (color) {
+  return _.findKey(Colors, item => item === color)
+}
+
+export function getColorFromPalette (color) {
+  return Colors[color]
+}
+
 export function getLocale () {
   const locale =
     navigator.language ||
