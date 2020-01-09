@@ -1,77 +1,146 @@
 <template>
-    <q-select
-      :id="properties.name + '-field'"
+  <div>
+    <div v-if="readOnly">
+      <template v-for="(chip, index) in model">
+        <q-chip
+          :key="chip.value + '-' + index"
+          :icon="chip.icon.name"
+          :color="chip.icon.color"
+          dense>
+          {{chip.value}}
+        </q-chip>
+      </template>
+    </div>
+    <q-field v-else
       :error-message="errorLabel"
       :error="hasError"
       :disabled="disabled"
-      use-chips
-      use-input
-      multiple
-      hide-dropdown-icon
-      new-value-mode="add"
-      @new-value="createValue"
-      @input.native="onInput($event.target.value)"
-      @keydown.tab.native="onClick"
-      @change="onChanged"
-      @blur="onChanged"
-      ref="chipsInput"
       no-error-icon
       bottom-slots
     >
-    <template v-if="showSendIcon" v-slot:append>
-      <q-icon
-        color="primary"
-        name="send"
-        class="cursor-pointer"
-        @click="onClick"
-      ></q-icon>
-    </template>
-    <!-- Helper -->
-    <template v-if="helper" v-slot:hint>
-      <span v-html="helper"></span>
-    </template>
-  </q-select>
+      <template v-slot:default>
+        <div class="row items-center">
+          <div class="q-pa-xs">
+            <template v-for="(chip, index) in chips">
+              <q-chip
+                class="chip"
+                :key="chip.value + '-' + index"
+                text-color="white"
+                :icon="chipIcon(chip)"
+                :color="chip.icon.color"
+                @remove="onChipRemoved(chip)"
+                @click="onChipClicked(chip)"
+                clickable
+                removable
+                dense
+              >
+                {{chip.value}}
+              </q-chip>
+            </template>
+          </div>
+          <div :class="inputClass">
+            <q-input type="text" v-model="input" :after="inputActions" @keyup.enter="onChipAdded()"/>
+          </div>
+        </div>
+      </template>
+      <!-- Helper -->
+      <template v-if="helper" v-slot:hint>
+        <span v-html="helper"></span>
+      </template>
+    </q-field>
+
+    <k-icon-chooser
+      :id="properties.name + '-field'"
+      ref="iconChooser"
+      @icon-choosed="onIconChoosed" />
+  </div>
 </template>
 
 <script>
-// Stuff below (inputValue, showSendIcon) is meant to show an icon which, when clicked, would add a "chip" value,
-// similar to what the "q-chips-input" component from Quasar 0.x offered.
-//
-// (without this 'icon' the only way to add the chip value is to press the ENTER key)
-//
-// The approach for adding the icon was taken from: https://codepen.io/smolinari/pen/bJWEaX
-// and see also https://github.com/quasarframework/quasar/issues/3866
-// and https://forum.quasar-framework.org/topic/3407/q-select-as-chip-input/2
-//
-// However unfortunately it does not work at the moment - see TODO below.
+import _ from 'lodash'
+import { KIconChooser } from '../input'
 import mixins from '../../mixins'
+import { getIconName } from '../../utils'
 
 export default {
-  name: 'k-chips-field',
-  data () {
-    return {
-      inputValue: '',
-      showSendIcon: false
-    }
+  name: 'k-chips-with-icon-field',
+  components: {
+    KIconChooser
   },
   mixins: [mixins.baseField],
+  computed: {
+    inputClass () {
+      return this.chips.length > 0 ? 'col-auto' : 'col-12'
+    },
+    inputActions () {
+      const actions = []
+      if (_.findIndex(this.chips, { value: this.input }) === -1) {
+        actions.push({
+          icon: 'send',
+          content: true,
+          handler: () => this.onChipAdded()
+        })
+      }
+      actions.push({
+        icon: 'cancel',
+        content: true,
+        handler: () => { this.input = '' }
+      })
+      return actions
+    }
+  },
+  data () {
+    return {
+      input: '',
+      chips: []
+    }
+  },
   methods: {
     emptyModel () {
       return []
     },
-    createValue (val, done) {
-      this.showSendIcon = false
-      done(val)
+    fill (value) {
+      this.model = value
+      this.chips = this.model.slice()
     },
-    onInput (val) {
-      this.showSendIcon = (val && val.trim().length > 0)
-      this.inputValue = val
+    chipIcon (chip) {
+      return getIconName(chip)
     },
-    onClick (e) {
-      this.showSendIcon = false
-      this.$refs.chipsInput.add(this.inputValue)
-      this.$refs.chipsInput.updateInputValue('')
+    onChipAdded () {
+      const chip = {
+        value: this.input,
+        icon: {
+          name: _.get(this.properties.field, 'icon.name', ''),
+          color: _.get(this.properties.field, 'icon.color', 'black')
+        }
+      }
+      this.chips.push(chip)
+      this.input = ''
+      this.updateModel()
+    },
+    onChipRemoved (oldChip) {
+      this.chips = this.chips.filter(chip => chip.value !== oldChip.value)
+      this.updateModel()
+    },
+    onChipClicked (chip) {
+      this.selectedChip = chip
+      this.$refs.iconChooser.open(chip.icon)
+    },
+    onIconChoosed (icon) {
+      this.selectedChip.icon = Object.assign({}, icon)
+      this.updateModel()
+    },
+    updateModel () {
+      // filter rendering properties only
+      this.model = this.chips
+      this.onChanged()
     }
   }
 }
 </script>
+
+<style>
+.chip {
+  cursor: pointer;
+}
+</style>
