@@ -10,14 +10,10 @@
 </template>
 
 <script>
-import { QBtn } from 'quasar'
 import { Colors } from '../../utils'
 
 export default {
   name: 'k-palette',
-  components: {
-    QBtn
-  },
   props: {
     value: {
       type: String,
