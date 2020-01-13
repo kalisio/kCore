@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { Notify } from 'quasar'
+import { Notify, Loading } from 'quasar'
 
 /**
  * This function allow you to modify a JS Promise by adding some status properties.
@@ -97,6 +97,13 @@ Notify.setDefaults({
   timeout: 5000,
   textColor: 'white',
   actions: [{ icon: 'close', color: 'white' }]
+})
+
+Loading.setDefaults({
+  spinnerColor: 'primary',
+  spinnerSize: 140,
+  messageColor: 'white',
+  customClass: 'full-width'
 })
 
 export function toast (options) {
