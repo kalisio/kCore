@@ -110,7 +110,7 @@ describe('kCore', () => {
       })
   })
   // Let enough time to process
-    .timeout(5000)
+    .timeout(10000)
 
   it('creates a user', () => {
     // Test password generation

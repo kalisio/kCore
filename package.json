@@ -39,8 +39,8 @@
     "watch:vue": "cpx src/**/*.vue lib/ --watch",
     "watch": "npm-run-all --parallel watch:**",
     "lint": "standard src/**/*.js src/**/*.vue test/**/*.js --fix",
-    "mocha": "cross-env NODE_CONFIG_DIR=./test/config/ mocha --exit --require babel-core/register",
-    "coverage": "cross-env NODE_CONFIG_DIR=./test/config/ node node_modules/istanbul/lib/cli cover node_modules/mocha/bin/_mocha -- --exit --require babel-core/register",
+    "mocha": "cross-env NODE_CONFIG_DIR=./test/config/ mocha --require babel-core/register",
+    "coverage": "cross-env NODE_CONFIG_DIR=./test/config/ node node_modules/istanbul/lib/cli cover node_modules/mocha/bin/_mocha -- --require babel-core/register",
     "test": "npm run compile && npm run lint && npm run coverage",
     "start": "npm run compile && node lib"
   },
