@@ -7,7 +7,7 @@
         </div>
       </template>
       <div v-if="nbPages > 1" class="col-12">
-        <q-pagination class="justify-center q-ma-md" v-model="currentPage" :max="nbPages" @input="onPageChanged" />
+        <q-pagination class="justify-center q-ma-md" v-model="currentPage" :max="nbPages" @input="onPageChanged" :input="true"/>
       </div>
     </div>
     <div v-else class="row justify-center text-center">
