@@ -45,19 +45,9 @@ export default {
   name: 'k-item',
   mixins: [mixins.baseItem],
   props: {
-    item: {
-      type: Object,
-      required: true
-    },
     itemActions: {
       type: Array,
       default: () => { return [] }
-    },
-    options: {
-      type: Object,
-      default: function () {
-        return {}
-      }
     }
   },
   computed: {

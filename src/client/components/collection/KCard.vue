@@ -75,10 +75,6 @@ export default {
     KTextArea
   },
   props: {
-    item: {
-      type: Object,
-      required: true
-    },
     itemActions: {
       type: Object,
       default: function () {
@@ -86,12 +82,6 @@ export default {
           pane: [],
           menu: []
         }
-      }
-    },
-    options: {
-      type: Object,
-      default: function () {
-        return {}
       }
     }
   },
@@ -108,7 +98,7 @@ export default {
       return this.options.descriptionField ? _.get(this.item, this.options.descriptionField, '') : this.item.description
     },
     tags () {
-      // Check for custom name field
+      // Check for custom tags field
       let tags = this.options.tagsField ? _.get(this.item, this.options.tagsField, '') : this.item.tags
       // Filter tags from current context
       tags = _.filter(tags, { context: this.$store.get('context._id') })
