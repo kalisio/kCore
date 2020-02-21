@@ -1,28 +1,29 @@
 <template>
   <div>
     <q-timeline color="secondary" :layout="layout()">
-    	<q-timeline-entry heading class="row justify-center text-center">
+      <q-timeline-entry heading class="row justify-center text-center">
         <slot name="heading"></slot>
       </q-timeline-entry>
       <div v-if="items.length === 0" class="row justify-center text-center">
-	      <div>
-	        <q-icon size="3rem" name="error_outline" />
-	        <p>{{$t('KList.EMPTY_LIST')}}</p>
-	      </div>
-    	</div>
+        <div>
+          <q-icon size="3rem" name="error_outline" />
+          <p>{{$t('KList.EMPTY_LIST')}}</p>
+        </div>
+      </div>
       <template v-for="(item, index) in items">
-	    	<component class="row justify-center" :key="item._id" :id="item._id" :item="item" :contextId="contextId" :is="renderer.component" v-bind="renderer.props" item-selected="onItemSelected(item)" />
+        <component class="row justify-center" :key="item._id" :id="item._id" :item="item" :contextId="contextId" :is="renderer.component" v-bind="renderer.props" item-selected="onItemSelected(item)" />
       </template>
     </q-timeline>
     <div v-if="nbPages > 1" class="row justify-center text-center">
-    	<div class="col-12">
-      	<q-pagination class="justify-center q-ma-md" v-model="currentPage" :max="nbPages" @input="onPageChanged" :input="true"/>
-    	</div>
+      <div class="col-12">
+        <q-pagination class="justify-center q-ma-md" v-model="currentPage" :max="nbPages" @input="onPageChanged" :input="true"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import _ from 'lodash'
 import mixins from '../../mixins'
 
 export default {
@@ -80,7 +81,7 @@ export default {
       return this.filterQuery
     },
     onCollectionRefreshed () {
-    	// FIXME: passing the side as a prop on the entry component does not seem to work
+      // FIXME: passing the side as a prop on the entry component does not seem to work
       this.items.forEach((item, index) => {
         item.side = (index % 2 ? 'left' : 'right')
       })
