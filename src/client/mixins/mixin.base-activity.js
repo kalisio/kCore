@@ -72,8 +72,7 @@ const baseActivityMixin = {
     },
     setSearchBar (field, services = []) {
       // Patch only activity-specific fields, pattern/items are updated by the search bar
-      for (let i = 0; i < services.length; i++) services[i].limit = 1
-      this.$store.patch('searchBar', { field: field, services: services })
+      this.$store.patch('searchBar', { field, services })
     },
     clearSearchBar () {
       // Patch all fields to reset search

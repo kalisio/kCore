@@ -9,7 +9,7 @@
     :options="options"
     @filter="onSearch"
     @input="onSelected">
-    <template v-slot:no-option>
+    <template v-if="services.length" v-slot:no-option>
       <q-item>
         <q-item-section class="text-grey">{{$t('KAutocomplete.NO_RESULTS')}}</q-item-section>
       </q-item>
@@ -71,6 +71,8 @@ export default {
     async onSearch (pattern, update, abort) {
       if (pattern.length < this.minLength) {
         abort()
+        // Emit change on clear
+        if (!pattern) this.$emit('changed', '')
         return
       }
       // Perform request for partial match to all registered services
@@ -95,7 +97,6 @@ export default {
           response.data.forEach(data => {
             data.service = serviceDescriptor.service
             data.field = serviceDescriptor.field
-            data.limit = serviceDescriptor.limit
             if (!data.icon) data.icon = serviceDescriptor.icon
             const result = {
               label: _.get(data, serviceDescriptor.field),
@@ -115,7 +116,7 @@ export default {
       if (this.processResults) {
         this.processResults(pattern, results)
       }
-      this.$emit('pattern-changed', pattern)
+      this.$emit('changed', pattern)
       update(() => { this.options = results })
     },
     onSelected (item) {
