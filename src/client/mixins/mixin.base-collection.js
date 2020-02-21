@@ -7,7 +7,12 @@ const baseCollectionMixin = {
     nbItemsPerPage: {
       type: Number,
       default: 12
-    }
+    },
+    // This value indicate if items of each page replace or are appended to previous ones
+    appendItems: {
+      type: Boolean,
+      default: false
+    } 
   },
   computed: {
     nbPages () {
@@ -30,6 +35,7 @@ const baseCollectionMixin = {
         .subscribe(response => {
           // Manage GeoJson features collection as well
           if (response.type === 'FeatureCollection') this.items = response.features
+          else if (this.appendItems) this.items = this.items.concat(response.data)
           else this.items = response.data
           this.nbTotalItems = response.total
           this.$emit('collection-refreshed')
