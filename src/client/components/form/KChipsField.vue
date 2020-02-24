@@ -3,11 +3,12 @@
     <div v-if="readOnly">
       <template v-for="(chip, index) in model">
         <q-chip
-          :key="chip.value + '-' + index"
-          :icon="chip.icon.name"
-          :color="chip.icon.color"
+          :key="chipValue(chip) + '-' + index"
+          :icon="chipIcon(chip)"
+          :color="chipColor(chip)"
+          text-color="white"
           dense>
-          {{chip.value}}
+          {{chipValue(chip)}}
         </q-chip>
       </template>
     </div>
@@ -24,10 +25,10 @@
             <template v-for="(chip, index) in chips">
               <q-chip
                 class="chip"
-                :key="chip.value + '-' + index"
+                :key="chipValue(chip) + '-' + index"
                 text-color="white"
                 :icon="chipIcon(chip)"
-                :color="chip.icon.color"
+                :color="chipColor(chip)"
                 @remove="onChipRemoved(chip)"
                 @click="onChipClicked(chip)"
                 clickable
@@ -105,6 +106,12 @@ export default {
     },
     chipIcon (chip) {
       return getIconName(chip)
+    },
+    chipColor (chip) {
+      return _.get(chip, 'icon.color', 'primary')
+    },
+    chipValue (chip) {
+      return chip.value || chip.name
     },
     onChipAdded () {
       const chip = {

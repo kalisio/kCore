@@ -20,6 +20,11 @@ const baseFieldMixin = {
     }
   },
   computed: {
+    label () {
+      // Check if we have a translation key or directly the label content
+      const label = _.get(this.properties.field, 'label', '')
+      return (this.$i18n.i18next.exists(label) ? this.$t(label) : label)
+    },
     helper () {
       // Check if we have a translation key or directly the helper content
       const helper = _.get(this.properties.field, 'helper', '')
