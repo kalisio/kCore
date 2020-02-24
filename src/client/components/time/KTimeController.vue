@@ -97,13 +97,8 @@ export default {
   },
   mounted () {
     this.updateComponentDimensions()
-
-    // update current time immediately, and then every 30 seconds
-    this.updateTime()
-    this.timeUpdater = setInterval(this.updateTime, 30000)
   },
   beforeDestroy () {
-    clearInterval(this.timeUpdater)
   },
   computed: {
     barStyle () {
@@ -199,9 +194,6 @@ export default {
       this.timeIndicatorIsVisible = true
       this.timeIndicatorPosition = newPosition
       this.timeIndicatorValue = this.calculateValue(newPosition, this.min, this.max, this.componentWidth)
-    },
-    updateTime () {
-      this.timeNow = Date.now()
     }
   }
 }
