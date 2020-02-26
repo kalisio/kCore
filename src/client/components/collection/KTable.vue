@@ -10,6 +10,7 @@
         @selection="onSelectionChanged"
         row-key="_id"
         :pagination.sync="pagination"
+        :rows-per-page-options="[]"
         @request="onRequest"
       >
         <template v-slot:body-cell-actions="props">
@@ -122,7 +123,8 @@ export default {
           name: key,
           // Check if we have a translation key or directly the label content
           label: (this.$i18n.i18next.exists(label) ? this.$t(label) : label),
-          field: row => _.get(row, key),
+          // This will support GeoJson out-of-the-box
+          field: row => _.get(row, key, _.get(row, `properties.${key}`)),
           align: 'center',
           sortable: true,
           format: (value) => {
@@ -146,8 +148,9 @@ export default {
     },
     onRequest (props) {
       const { page, rowsPerPage, sortBy, descending } = props.pagination
+      const geoJson = (_.get(this.items, '[0].type') === 'Feature')
       this.currentPage = page
-      this.tableQuery.$sort = { [sortBy]: (descending ? -1 : 1) }
+      this.tableQuery.$sort = { [geoJson ? `properties.${sortBy}` : sortBy]: (descending ? -1 : 1) }
       this.refreshCollection()
       // don't forget to update local pagination object
       this.pagination.page = page
