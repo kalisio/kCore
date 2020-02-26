@@ -11,7 +11,13 @@
         row-key="_id"
         :pagination.sync="pagination"
         @request="onRequest"
-      />
+      >
+        <template v-slot:body-cell-actions="props">
+          <q-td :props="props">
+            <k-overflow-menu :actions="itemActions" :context="props.row" :dense="$q.screen.lt.md" />
+          </q-td>
+        </template>
+      </q-table>
     </div>
     <div v-else class="row justify-center text-center">
       <div class="q-ma-xl">
@@ -25,16 +31,23 @@
 <script>
 import _ from 'lodash'
 import moment from 'moment'
-import { QTable } from 'quasar'
+import { QTable, QTd } from 'quasar'
+import { KOverflowMenu } from '../layout'
 import mixins from '../../mixins'
 
 export default {
   name: 'k-table',
   mixins: [mixins.service, mixins.schemaProxy, mixins.baseCollection],
   components: {
-    QTable
+    QTable, QTd, KOverflowMenu
   },
   props: {
+    itemActions: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    },
     baseQuery: {
       type: Object,
       default: function () {
@@ -94,7 +107,11 @@ export default {
       return Object.assign({}, this.tableQuery, this.filterQuery)
     },
     processSchema () {
-      this.columns = []
+      this.columns = [{
+        name: 'actions',
+        style: 'width: 24px',
+        align: 'center'
+      }]
       _.forOwn(this.schema.properties, (value, key) => {
         const type = _.get(value, 'type')
         // FIXME: allow for custom representation of complex objects
