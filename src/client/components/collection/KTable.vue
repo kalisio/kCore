@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import _ from 'lodash'
+import moment from 'moment'
 import { QTable } from 'quasar'
 import mixins from '../../mixins'
 
@@ -110,13 +112,10 @@ export default {
             switch (type) {
               case 'number':
                 return value.toFixed(2)
-                break
               case 'integer':
                 return value.toFixed(0)
-                break
               case 'string':
                 return (format === 'date-time' ? moment.utc(value).format() : value) 
-                break
               default:
                 return value.toString()
             }
