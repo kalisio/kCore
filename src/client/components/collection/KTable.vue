@@ -5,6 +5,7 @@
         :title="title"
         :data="items"
         :columns="columns"
+        :visible-columns="visibleColumns" 
         :selection="selection"
         :selected.sync="selectedItems"
         @selection="onSelectionChanged"
@@ -13,6 +14,11 @@
         :rows-per-page-options="[]"
         @request="onRequest"
       >
+        <template v-slot:top="props">
+          <q-select v-model="visibleColumns" multiple borderless dense options-dense
+            :display-value="$t('KTable.TABLE_COLUMNS')" emit-value map-options
+            :options="selectableColumns" option-value="field" style="min-width: 150px"/>
+        </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props">
             <k-overflow-menu :actions="itemActions" :context="props.row" :dense="$q.screen.lt.md" />
@@ -71,12 +77,19 @@ export default {
       type: String
     }
   },
+  computed: {
+    selectableColumns () {
+      // Remove special column used for actions
+      return this.columns.filter(column => column.name !== 'actions')
+    }
+  },
   data () {
     return {
       tableQuery: {
         $sort: { _id: 1 } // Implicit default sort
       },
       columns: [],
+      visibleColumns: [],
       selectedItems: [],
       pagination: {
         sortBy: '_id',
@@ -141,6 +154,7 @@ export default {
           }
         })
       })
+      this.visibleColumns = this.columns.map(column => column.name)
     },
     onCollectionRefreshed () {
       // Update pagination for table
