@@ -11,6 +11,9 @@
     no-error-icon
     bottom-slots
   >
+    <q-chip>
+      {{ model.name }}
+    </q-chip>
     <k-file-input
       :id="properties.name + '-field'"
       v-bind="properties.field"
