@@ -59,6 +59,7 @@ export default {
       const mimeTypes = _.get(this, 'properties.field.mimeTypes', [])
       if (mimeTypes.includes('application/json')) content = JSON.parse(content)
       this.model = { name: file.name, size: file.size, content }
+      this.onChanged()
     }
   }
 }
