@@ -1,38 +1,35 @@
 <template>
   <div class="column q-pa-md">
     <!-- Non-grouped fields first -->
-    <div v-for="field in fields" :key="field.name" class="row items-center full-width">
-      <div class="col-12 col-md-6 col-lg-5 col-xl-4">
-        <span class="text-caption">{{ $t(field.field.label) }}</span>
-      </div>
-      <div class="col-12 col-md-6 col-lg-7 col-xl-8">
-        <component
-          v-if="!field.group"
+    <div v-for="field in fields" :key="field.name" >
+      <div v-if="!field.group" class="row">
+        <span class="col-6 text-caption">{{ $t(field.field.label) }}</span>
+        <component class="col-6"
           :key="field.name + '-value'"
           :is="field.componentKey"
           :ref="field.name"
           :properties="field"
           :display="display"
           :readOnly="true" />
+        <q-separator v-if="display.separators" class="col-12"/>
       </div>
     </div>
     <!-- Grouped fields then -->
     <template v-for="group in groups">
       <q-expansion-item :key="group" icon="wrap_text" :group="group" :label="$t(group)">
-        <q-card>
-          <q-card-section>
-            <template v-for="field in fields">
-              <component
-                v-if="field.group === group"
-                :key="field.name"
-                :is="field.componentKey"
-                :ref="field.name"
-                :properties="field"
-                :display="display"
-                :readOnly="true" />
-            </template>
-          </q-card-section>
-        </q-card>
+        <template v-for="field in fields">
+          <div v-if="field.group === group" class="row">
+            <span class="col-6 text-caption">{{ $t(field.field.label) }}</span>
+            <component class="col-6"
+              :key="field.name"
+              :is="field.componentKey"
+              :ref="field.name"
+              :properties="field"
+              :display="display"
+              :readOnly="true" />
+            <q-separator v-if="display.separators" class="col-12"/>
+          </div>
+        </template>
       </q-expansion-item>
     </template>
   </div>
@@ -59,7 +56,8 @@ export default {
         return {
           icon: false,
           label: false,
-          labelWidth: 3
+          labelWidth: 3,
+          separators: false
         }
       }
     }
