@@ -1,6 +1,6 @@
 <template>
   <div v-if="readOnly">
-    <q-chip icon="fas fa-cloud-upload-alt">
+    <q-chip v-if="model.name" icon="fas fa-cloud-upload-alt">
       {{ model.name }}
     </q-chip>
   </div>
@@ -11,7 +11,7 @@
     no-error-icon
     bottom-slots
   >
-    <q-chip>
+    <q-chip v-if="model.name">
       {{ model.name }}
     </q-chip>
     <k-file-input
