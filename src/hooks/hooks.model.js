@@ -252,3 +252,14 @@ export function setExpireAfter (delayInSeconds) {
     return hook
   }
 }
+
+// Allow to use the distinct function of MongoDB
+export async function distinct (hook) {
+  const params = hook.params
+  const query = params.query
+  if (!query.$distinct) return hook
+  const collection = hook.service.Model
+  hook.result = await collection.distinct(query.$distinct, _.omit(query, ['$distinct']))
+  return hook
+}
+

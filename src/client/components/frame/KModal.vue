@@ -2,9 +2,10 @@
   <q-dialog
     ref="modal"
     persistent
+    :maximized="maximized"
     @show="$emit('opened')"
     @hide="$emit('closed')">
-    <q-card :class="contentClass" :style="contentStyle">
+    <q-card :class="contentClass" :style="maximized ? '' : contentStyle">
       <!--
          Toolbar section
        -->
@@ -82,8 +83,18 @@ export default {
       default: false
     }
   },
+  data () {
+    return {
+      maximized: false
+    }
+  },
   methods: {
     open () {
+      this.maximized = false
+      this.$refs.modal.show()
+    },
+    openMaximized () {
+      this.maximized = true
       this.$refs.modal.show()
     },
     close () {

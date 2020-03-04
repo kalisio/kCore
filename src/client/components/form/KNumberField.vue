@@ -5,8 +5,9 @@
   <q-input v-else
     :id="properties.name + '-field'"
     type="number"
-    v-model="model"
+    v-model.number="model"
     clearable
+    @blur="onChanged"
     :disabled="disabled"
     :error="hasError"
     :error-message="errorLabel"

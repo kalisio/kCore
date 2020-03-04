@@ -1,6 +1,6 @@
 <template>
   <div v-if="readOnly">
-    <q-chip icon="fas fa-cloud-upload-alt">
+    <q-chip v-if="model.name" icon="fas fa-cloud-upload-alt">
       {{ model.name }}
     </q-chip>
   </div>
@@ -11,6 +11,9 @@
     no-error-icon
     bottom-slots
   >
+    <q-chip v-if="model.name">
+      {{ model.name }}
+    </q-chip>
     <k-file-input
       :id="properties.name + '-field'"
       v-bind="properties.field"
@@ -56,6 +59,7 @@ export default {
       const mimeTypes = _.get(this, 'properties.field.mimeTypes', [])
       if (mimeTypes.includes('application/json')) content = JSON.parse(content)
       this.model = { name: file.name, size: file.size, content }
+      this.onChanged()
     }
   }
 }

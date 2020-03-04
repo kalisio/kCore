@@ -8,6 +8,7 @@
     v-model="model"
     clearable
     @blur="onChanged"
+    :disabled="disabled"
     :error="hasError"
     :error-message="errorLabel"
     no-error-icon

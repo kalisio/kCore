@@ -79,8 +79,10 @@ const baseCollectionMixin = {
       this.refreshCollection()
     },
     onItemSelected (item) {
-      // FIXME: support multi-selection
       this.$emit('selection-changed', item)
+    },
+    onItemsSelected (items) {
+      this.$emit('selection-changed', items)
     }
   },
   beforeDestroy () {
